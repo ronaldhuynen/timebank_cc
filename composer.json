@@ -16,6 +16,7 @@
         "maatwebsite/excel": "^3.1",
         "mediconesystems/livewire-datatables": "^0.8.0",
         "psr/simple-cache": "^2.0",
+        "rtippin/messenger": "^1.21",
         "victorybiz/laravel-simple-select": "^1.4"
     },
     "require-dev": {

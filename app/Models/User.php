@@ -4,14 +4,17 @@ namespace App\Models;
 
 use App\Models\Account;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Query\Builder;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
+use RTippin\Messenger\Traits\Messageable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use RTippin\Messenger\Contracts\MessengerProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MessengerProvider
 {
     use HasApiTokens;
     use HasFactory;
@@ -19,6 +22,7 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasProfilePhoto;
+    use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
 
 
     /**
@@ -67,5 +71,45 @@ class User extends Authenticatable
     public function accounts()
     {
         return $this->morphMany(Account::class, 'accountable');
+    }
+
+
+    // Rtippin Messenger:
+    // Implement the MessengerProvider interface for each provider registered
+    public static function getProviderSettings(): array
+    {
+        return [
+            'alias' => 'user',
+            'searchable' => true,
+            'friendable' => true,
+            'devices' => true,
+            'default_avatar' => public_path('vendor/messenger/images/users.png'),
+            'cant_message_first' => [],
+            'cant_search' => [],
+            'cant_friend' => [],
+        ];
+    }
+
+
+    // Rtippin Messenger:
+    // Searchable
+    public static function getProviderSearchableBuilder(Builder $query,
+                                                        string $search,
+                                                        array $searchItems)
+    {
+        $query->where(function (Builder $query) use ($searchItems) {
+            foreach ($searchItems as $item) {
+                $query->orWhere('first_name', 'LIKE', "%{$item}%")
+                ->orWhere('last_name', 'LIKE', "%{$item}%");
+            }
+        })->orWhere('email', '=', $search);
+    }
+
+
+    // Rtippin Messenger:
+    // messenger avator / profile photo location
+    public function getProviderAvatarColumn(): string
+    {
+        return 'profile_photo_path';
     }
 }

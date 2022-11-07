@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "beyondcode/laravel-websockets": "^1.12",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^9.0",
@@ -17,6 +18,7 @@
         "mediconesystems/livewire-datatables": "^0.8.0",
         "psr/simple-cache": "^2.0",
         "rtippin/messenger": "^1.21",
+        "rtippin/messenger-ui": "^2.6",
         "victorybiz/laravel-simple-select": "^1.4"
     },
     "require-dev": {

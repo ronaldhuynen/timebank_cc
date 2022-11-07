@@ -44,11 +44,11 @@ return [
     'storage' => [
         'avatars' => [
             'disk' => 'public',
-            'directory' => 'images',
+            'directory' => 'profile-photos',
         ],
         'threads' => [
             'disk' => 'public',
-            'directory' => 'threads',
+            'directory' => 'messenger-threads',
         ],
     ],
 
@@ -102,7 +102,7 @@ return [
     | Whether routes generated from messenger use the absolute or shortened path.
     |
     */
-    'use_absolute_routes' => env('MESSENGER_USE_ABSOLUTE_ROUTES', false),
+    'use_absolute_routes' => env('MESSENGER_USE_ABSOLUTE_ROUTES', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -154,7 +154,7 @@ return [
             'mime_types' => env('MESSENGER_MESSAGE_VIDEO_MIME_TYPES', 'avi,mp4,ogv,webm,3gp,3g2,wmv,mov'),
         ],
         'avatars' => [
-            'providers' => env('MESSENGER_PROVIDER_AVATARS_ENABLED', true),
+            'providers' => env('MESSENGER_PROVIDER_AVATARS_ENABLED', false),
             'threads' => env('MESSENGER_THREAD_AVATARS_ENABLED', true),
             'bots' => env('MESSENGER_BOT_AVATARS_ENABLED', true),
             'size_limit' => env('MESSENGER_AVATARS_SIZE_LIMIT', 5120),

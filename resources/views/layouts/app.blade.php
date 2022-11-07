@@ -47,5 +47,8 @@
         @stack('modals')
 
         @livewireScripts
+        @include('messenger::scripts')
+
+
     </body>
 </html>

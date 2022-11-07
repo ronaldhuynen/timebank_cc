@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Account;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Query\Builder;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use RTippin\Messenger\Traits\Messageable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -99,10 +99,10 @@ class User extends Authenticatable implements MessengerProvider
     {
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
-                $query->orWhere('first_name', 'LIKE', "%{$item}%")
-                ->orWhere('last_name', 'LIKE', "%{$item}%");
+                $query->orWhere('name', 'LIKE', "%{$item}%")
+                ->orWhere('email', 'LIKE', "%{$item}%");
             }
-        })->orWhere('email', '=', $search);
+        });
     }
 
 
@@ -112,4 +112,19 @@ class User extends Authenticatable implements MessengerProvider
     {
         return 'profile_photo_path';
     }
+
+
+    /**
+     * Get the route of the avatar for your provider. We will call this
+     * from our resource classes using sm/md/lg .
+     *
+     * @param  string  $size
+     * @return string|null
+     */
+    public function getProviderAvatarRoute(string $size = 'sm'): ?string
+    {
+        // dd($this);
+        return '/storage/' . $this->profile_photo_path;
+    }
+
 }

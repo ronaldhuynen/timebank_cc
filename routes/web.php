@@ -27,12 +27,12 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
     Route::get('/transfer', 'App\Http\Controllers\TransactionController@transfer')->name('transfer');
+
     Route::post('/transfer', 'App\Http\Controllers\TransactionController@saveTransfer')->name('saveTransfer');
 
     Route::get('/transactions', 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
@@ -41,4 +41,10 @@ Route::middleware([
         return view('admin.users-overview');
     })->name('users-overview');
 
+    Route::get('/chat2', 'RTippin\MessengerUi\Http\Controllers\ViewPortalController@index')->name('chat2');
+
+
+    Route::get('/chat3', function () {
+        return view('chat.show')->with('mode', 5);
+    })->name('chat');
 });

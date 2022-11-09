@@ -24,7 +24,7 @@
     @else
         <link id="main_css" href="{{ asset(mix('dark.css', 'vendor/messenger')) }}" rel="stylesheet">
     @endauth
-    <!--- Fotawasomw icons for Messenger-ui ---->
+    <!--- Fontawesome icons for Messenger-ui ---->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css">
     {{-- <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
     @stack('css')

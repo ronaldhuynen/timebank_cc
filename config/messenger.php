@@ -136,12 +136,12 @@ return [
         'message_documents' => [
             'upload' => env('MESSENGER_MESSAGE_DOCUMENT_UPLOAD', true),
             'size_limit' => env('MESSENGER_MESSAGE_DOCUMENT_SIZE_LIMIT', 10240),
-            'mime_types' => env('MESSENGER_MESSAGE_DOCUMENT_MIME_TYPES', 'csv,doc,docx,json,pdf,ppt,pptx,rar,rtf,txt,xls,xlsx,xml,zip,7z'),
+            'mime_types' => env('MESSENGER_MESSAGE_DOCUMENT_MIME_TYPES', 'csv,doc,docx,dotx,json,odp,ods,odt,ott,otp,pdf,ppt,pptx,rar,rtf,txt,xls,xlsx,xml,zip,7z'),
         ],
         'message_images' => [
             'upload' => env('MESSENGER_MESSAGE_IMAGE_UPLOAD', true),
             'size_limit' => env('MESSENGER_MESSAGE_IMAGE_SIZE_LIMIT', 5120),
-            'mime_types' => env('MESSENGER_MESSAGE_IMAGE_MIME_TYPES', 'jpg,jpeg,png,bmp,gif,webp'),
+            'mime_types' => env('MESSENGER_MESSAGE_IMAGE_MIME_TYPES', 'jpg,jpeg,png,psd,bmp,gif,webp,svg'),
         ],
         'message_audio' => [
             'upload' => env('MESSENGER_MESSAGE_AUDIO_UPLOAD', true),
@@ -153,7 +153,7 @@ return [
             'size_limit' => env('MESSENGER_MESSAGE_VIDEO_SIZE_LIMIT', 15360),
             'mime_types' => env('MESSENGER_MESSAGE_VIDEO_MIME_TYPES', 'avi,mp4,ogv,webm,3gp,3g2,wmv,mov'),
         ],
-        'avatars' => [
+        'avatars' => [  
             'providers' => env('MESSENGER_PROVIDER_AVATARS_ENABLED', false),
             'threads' => env('MESSENGER_THREAD_AVATARS_ENABLED', true),
             'bots' => env('MESSENGER_BOT_AVATARS_ENABLED', true),

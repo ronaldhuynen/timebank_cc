@@ -64,8 +64,9 @@
             api_endpoint : '{{messenger()->getApiEndpoint()}}',
             web_endpoint : '{{'/'.config('messenger-ui.routing.prefix')}}',
             socket_endpoint : '{{config('messenger-ui.socket_endpoint')}}',
-            base_css : '{{ asset(mix('app.css', 'vendor/messenger')) }}',
-            dark_css : '{{ asset(mix('dark.css', 'vendor/messenger')) }}',
+            base_css : '{{ asset(mix('app.css', 'resources/css/messenger')) }}',
+            dark_css : '{{ asset(mix('dark.css', 'resources/css/messenger')) }}',
+
             dark_mode : true,
             mobile : false,
         },

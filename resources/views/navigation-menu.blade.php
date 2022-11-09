@@ -24,9 +24,6 @@
                     <x-jet-nav-link href="{{ route('users-overview') }}" :active="request()->routeIs('admin.users-overview')">
                         {{ __('Users') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('chat') }}" :active="request()->routeIs('chat')">
-                        {{ __('Chat') }}
-                    </x-jet-nav-link>
                 </div>
             </div>
 
@@ -114,17 +111,17 @@
                         <x-slot name="content">
 
                             <!-- Messenger -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+                            {{-- <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Messenger') }}
-                            </div>
+                            </div> --}}
 
                             <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
                                 {{ __('Messages') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_thread_count"></span>
                             </x-jet-dropdown-link>
 
-                            <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
+                            {{-- <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
                                 {{ __('Calls') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_calls_count"></span>
-                            </x-jet-dropdown-link>
+                            </x-jet-dropdown-link> --}}
 
                             <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
                                 {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span>
@@ -132,9 +129,9 @@
 
 
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+                            {{-- <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Manage Account') }}
-                            </div>
+                            </div> --}}
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}

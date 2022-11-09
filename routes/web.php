@@ -41,10 +41,4 @@ Route::middleware([
         return view('admin.users-overview');
     })->name('users-overview');
 
-    Route::get('/chat2', 'RTippin\MessengerUi\Http\Controllers\ViewPortalController@index')->name('chat2');
-
-
-    Route::get('/chat3', function () {
-        return view('chat.show')->with('mode', 5);
-    })->name('chat');
 });

@@ -1,7 +1,5 @@
 @extends('messenger::messenger')
 
-
-
 @switch($mode)
     @case(0)
         @push('Messenger-load')

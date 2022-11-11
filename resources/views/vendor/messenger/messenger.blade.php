@@ -7,9 +7,7 @@
             <div class="card bg-transparent h-100">
                 <div class="card-header bg-light px-1 d-flex justify-content-between">
                     <div id="my_avatar_status">
-                        <img data-toggle="tooltip" data-placement="right" title="You are {{\Illuminate\Support\Str::lower(\RTippin\Messenger\Contracts\MessengerProvider::ONLINE_STATUS[messenger()->getProvider()->getProviderOnlineStatus()])}}"
-                             class="my-global-avatar ml-1 rounded-circle medium-image avatar-is-{{\Illuminate\Support\Str::lower(\RTippin\Messenger\Contracts\MessengerProvider::ONLINE_STATUS[messenger()->getProvider()->getProviderOnlineStatus()])}}"
-                             src="{{messenger()->getProvider()->getProviderAvatarRoute()}}" />
+                        <img data-toggle="tooltip" data-placement="right" title="You are {{\Illuminate\Support\Str::lower(\RTippin\Messenger\Contracts\MessengerProvider::ONLINE_STATUS[messenger()->getProvider()->getProviderOnlineStatus()])}}" class="my-global-avatar ml-1 rounded-circle medium-image avatar-is-{{\Illuminate\Support\Str::lower(\RTippin\Messenger\Contracts\MessengerProvider::ONLINE_STATUS[messenger()->getProvider()->getProviderOnlineStatus()])}}" src="{{messenger()->getProvider()->getProviderAvatarRoute()}}" />
                     </div>
                     <span class="d-none d-md-inline h4 font-weight-bold">Messenger</span>
                     <div class="dropdown">
@@ -31,13 +29,15 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-search"></i></div>
                                     </div>
-                                    <input autocomplete="off" type="search" class="form-control shadow-sm" id="thread_search_input" placeholder="Search conversations by name"/>
+                                    <input autocomplete="off" type="search" class="form-control shadow-sm" id="thread_search_input" placeholder="Search conversations by name" />
                                 </div>
                             </div>
                         </div>
                         <div id="allThread">
                             <ul id="messages_ul" class="messages-list">
-                                <div class="col-12 mt-5 text-center"><div class="spinner-grow spinner-grow-sm text-primary" role="status"></div></div>
+                                <div class="col-12 mt-5 text-center">
+                                    <div class="spinner-grow spinner-grow-sm text-dark" role="status"></div>
+                                </div>
                             </ul>
                         </div>
                     </div>
@@ -54,7 +54,9 @@
                     </div>
                 </div>
                 <div id="message_container" class="card-body px-0 pb-0 pt-3 bg-light">
-                    <div class="col-12 mt-5 text-center"><div class="spinner-grow spinner-grow-sm text-primary" role="status"></div></div>
+                    <div class="col-12 mt-5 text-center">
+                        <div class="spinner-grow spinner-grow-sm text-dark" role="status"></div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -62,51 +62,54 @@
     @endif --}}
 
     <!-- Page Content -->
-    {{-- <wrapper class="d-flex flex-column"> --}}
+        {{-- <wrapper class="d-flex flex-column"> --}}
 
-    {{-- <nav id="FS_navbar" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        {{-- <nav id="FS_navbar" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="{{url('/')}}">
-    <img src="{{ asset('vendor/messenger/images/messenger.png') }}" width="30" height="30" class="d-inline-block align-top" alt="Messenger">
-    {{config('messenger-ui.site_name')}}
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        <span class="badge badge-pill badge-danger mr-n2" id="nav_mobile_total_count"></span>
-    </button>
-    <div id="navbarNavDropdown" class="navbar-collapse collapse">
-        @auth
-        @include('messenger::nav')
-        @endauth
-    </div>
-    </nav> --}}
+        <img src="{{ asset('vendor/messenger/images/messenger.png') }}" width="30" height="30" class="d-inline-block align-top" alt="Messenger">
+        {{config('messenger-ui.site_name')}}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="badge badge-pill badge-danger mr-n2" id="nav_mobile_total_count"></span>
+        </button>
+        <div id="navbarNavDropdown" class="navbar-collapse collapse">
+            @auth
+            @include('messenger::nav')
+            @endauth
+        </div>
+        </nav> --}}
 
 
-    {{-- <wrapper class="d-flex flex-column"> --}}
-    <x-app-layout>
-        <x-slot name="header">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Chat Messenger') }}
-            </h2>
-        </x-slot>
-        {{-- <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8"> --}}
+        {{-- <wrapper class="d-flex flex-column"> --}}
+        <x-app-layout>
+            <x-slot name="header">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('Chat Messenger') }}
+                </h2>
+            </x-slot>
+            {{-- <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8"> --}}
 
-        <div class="py-12">
+            <div class="py-12">
 
 
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-                <div class="bg-white  shadow-xl sm:rounded-lg">
+                    <div class="bg-white  shadow-xl sm:rounded-lg">
 
-                    @yield('content')
+                        @yield('content')
+                    </div>
                 </div>
             </div>
-        </div>
 
-        </main>
-        {{-- </div> --}}
+    </main>
+
+    {{-- </div> --}}
     </x-app-layout>
 
     {{-- </wrapper> --}}
+
+
 </body>
 </html>
 

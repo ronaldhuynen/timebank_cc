@@ -53,7 +53,8 @@
             #messenger-style-overrides #message_container .message-reactions .text-primary {color:grey !important}
 
             /* Message container avatars */
-            #messenger-style-overrides img {height: 50px; width:50px;z-index:50;}
+            #messenger-style-overrides #thread_header_area img {height: 50px; width:50px;}
+            #messenger-style-overrides img.bobble-image {height: 30px; width:30px;}
             #messenger-style-overrides img.main-bobble-offline {box-shadow: 0px 0px 0px 2px #dee2e6; padding:1px}
             #messenger-style-overrides img.main-bobble-away{box-shadow: 0px 0px 0px 2px #000; padding:1px}
             #messenger-style-overrides img.main-bobble-online {box-shadow: 0px 0px 0px 2px #38c172; padding:1px}
@@ -66,7 +67,9 @@
             #messenger-style-overrides #thread_form .btn {margin-top:10px;}
 
             /* Modals like editing a message */
-            #messenger-style-overrides .bg-gradient-dark {background: #000 !important;}
+            #messenger-style-overrides .bg-gradient-dark {background: #fff!important; color:#000 !important;}
+            #messenger-style-overrides .bg-gradient-primary {background: #fff!important; color:#000 !important;}
+            #messenger-style-overrides .bg-gradient-danger {background: #fff!important; color:#000 !important;}
             #messenger-style-overrides #body_modal .bg-light {background-color: #fff !important; }
             #messenger-style-overrides #body_modal .shadow-sm {box-shadow:0 0 0 rgba(0,0,0,0) !important;}
             #messenger-style-overrides .btn-success:focus {
@@ -82,6 +85,26 @@
                 border-color: #f8f9fa;
                 box-shadow: inset 0 1px 0 hsla(0,0%,100%,.15),0 1px 1px rgba(0,0,0,.075);
                 color: #212529;}
+            #messenger-style-overrides .btn-primary:focus {
+                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
+                border-color: #dae0e5;
+                color: #212529;}
+            #messenger-style-overrides .btn-primary:hover {
+                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
+                border-color: #dae0e5;
+                color: #212529;}
+            #messenger-style-overrides .btn-primary {
+                background: #f8f9fa linear-gradient(180deg,#f8f9fa,#f8f9fa) repeat-x;
+                border-color: #f8f9fa;
+                box-shadow: inset 0 1px 0 hsla(0,0%,100%,.15),0 1px 1px rgba(0,0,0,.075);
+                color: #212529;}
+            #messenger-style-overrides .bg-warning {background: #000!important;color:#fff;}
+
+
+
+
+            /* Overall Messnger styles */
+            #messenger-style-overrides .text-info {color: #000 !important}
 
 
 

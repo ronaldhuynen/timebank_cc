@@ -5,7 +5,7 @@
     <div id="messenger_container" class="row inbox main-inbox d-flex">
         <div id="message_sidebar_container" class="w-25 px-0 h-100">
             <div class="card bg-transparent h-100">
-                <div class="bg-light px-1 mt-3 d-flex justify-content-between">
+                <div class="bg-light px-3 mt-3 mb-1 d-flex justify-content-between">
                     <div id="my_avatar_status">
                         <img data-toggle="tooltip" data-placement="right" title="You are {{\Illuminate\Support\Str::lower(\RTippin\Messenger\Contracts\MessengerProvider::ONLINE_STATUS[messenger()->getProvider()->getProviderOnlineStatus()])}}" class="my-global-avatar ml-1 rounded-circle medium-image avatar-is-{{\Illuminate\Support\Str::lower(\RTippin\Messenger\Contracts\MessengerProvider::ONLINE_STATUS[messenger()->getProvider()->getProviderOnlineStatus()])}}" src="{{messenger()->getProvider()->getProviderAvatarRoute()}}" />
                     </div>

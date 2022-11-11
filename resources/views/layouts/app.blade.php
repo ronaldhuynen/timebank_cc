@@ -26,6 +26,7 @@
             #messenger-style-overrides .avatar-is-offline {box-shadow: 0px 0px 0px 2px #dee2e6; padding:1px}
             #messenger-style-overrides .avator-is-away{box-shadow: 0px 0px 0px 2px #000; padding:1px}
             #messenger-style-overrides .avatar-is-online {box-shadow: 0px 0px 0px 2px #38c172; padding:1px}
+            #messenger-style-overrides .input-group {position:initial;}
 
             #messenger-style-overrides .messages-panel.card {border: none;}
 
@@ -35,7 +36,8 @@
             #messenger-style-overrides #message_container .btn.text-danger {color: #212529 !important;}
             #messenger-style-overrides #messenger_container .btn {border-color: #dee2e6}
             #messenger-style-overrides .badge-info {background-color: grey;}
-            #messenger-style-overrides .spinner-grow {color: grey; !important}
+            #messenger-style-overrides .badge-primary {background-color: grey;}
+            #messenger-style-overrides .spinner-grow {background-color: grey;}
 
             /* Change Font Awesome icons for better user experience */
             #messenger-style-overrides .fa-2x {font-size: 1em; color: #212529 !important;}
@@ -61,6 +63,39 @@
             /* Message footer and input field */
             #messenger-style-overrides .form-control:focus {border-color: #000; box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 0 .2rem rgba(194, 194, 194, 0.25);}
             #messenger-style-overrides .messages-panel .chat-footer .card.bg-light.mb-0.border-0 {background-color: #fff !important;}
+            #messenger-style-overrides #thread_form .btn {margin-top:10px;}
+
+            /* Modals like editing a message */
+            #messenger-style-overrides .bg-gradient-dark {background: #000 !important;}
+            #messenger-style-overrides #body_modal .bg-light {background-color: #fff !important; }
+            #messenger-style-overrides #body_modal .shadow-sm {box-shadow:0 0 0 rgba(0,0,0,0) !important;}
+            #messenger-style-overrides .btn-success:focus {
+                 background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
+                border-color: #dae0e5;
+                color: #212529;}
+            #messenger-style-overrides .btn-success:hover {
+                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
+                border-color: #dae0e5;
+                color: #212529;}
+            #messenger-style-overrides .btn-success {
+                background: #f8f9fa linear-gradient(180deg,#f8f9fa,#f8f9fa) repeat-x;
+                border-color: #f8f9fa;
+                box-shadow: inset 0 1px 0 hsla(0,0%,100%,.15),0 1px 1px rgba(0,0,0,.075);
+                color: #212529;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -24,7 +24,7 @@
 
             /* Side-bar avators */
             #messenger-style-overrides .avatar-is-offline {box-shadow: 0px 0px 0px 2px #dee2e6; padding:1px}
-            #messenger-style-overrides .avator-is-away{box-shadow: 0px 0px 0px 2px #000; padding:1px}
+            #messenger-style-overrides .avatar-is-away{box-shadow: 0px 0px 0px 2px #000; padding:1px}
             #messenger-style-overrides .avatar-is-online {box-shadow: 0px 0px 0px 2px #38c172; padding:1px}
             #messenger-style-overrides .input-group {position:initial;}
 
@@ -41,8 +41,12 @@
 
             /* Change Font Awesome icons for better user experience */
             #messenger-style-overrides .fa-2x {font-size: 1em; color: #212529 !important;}
-            #messenger-style-overrides .fas.fa-cog::before {content: "\f0c9" !important;}
-            #messenger-style-overrides .fas.fa-cogs::before {content: "\f4ad" !important;}
+            #messenger-style-overrides .fas.fa-cog::before {content: "\f0c9" !important;} /* Bars (Hamburger menu) */
+            #messenger-style-overrides .fas.fa-cogs::before {content: "\f4ad" !important;} /* Comment dots (Conversation menu) */
+            #messenger-style-overrides .container .fas.fa-search::before {content: "\f500" !important; color: #000;} /* Two profiles (Search profile) */
+            #messenger-style-overrides .container .fas.fa-edit::before {content: "\f0c0" !important; color: #000;} /* Three profiles (New group conversation) */
+            #messenger-style-overrides .container .fas.fa-user-friends::before {content: "\f4fc" !important; color: #000;} /* Profile with check sign (Friends) */
+            #messenger-style-overrides .container .fas.fa-cog::before {content: "\f0ad" !important; color: #000;} /* Wrench (Settings) */
 
             /* Message bubbles */
             #messenger-style-overrides .messages-panel .fa-clock {display: none;}
@@ -72,36 +76,66 @@
             #messenger-style-overrides .bg-gradient-danger {background: #fff!important; color:#000 !important;}
             #messenger-style-overrides #body_modal .bg-light {background-color: #fff !important; }
             #messenger-style-overrides #body_modal .shadow-sm {box-shadow:0 0 0 rgba(0,0,0,0) !important;}
-            #messenger-style-overrides .btn-success:focus {
+
+            #messenger-style-overrides #message_container .btn-success:focus, .btn-outline-success:focus{
+                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
+                border-color: #dae0e5;
+                color: #212529;}
+            #messenger-style-overrides #message_container .btn-success:hover, .btn-outline-success:hover {
+                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
+                border-color: #dae0e5;
+                color: #212529;}
+            #messenger-style-overrides #message_container .btn-success, .btn-outline-success{
+                background: #f8f9fa linear-gradient(180deg,#f8f9fa,#f8f9fa) repeat-x;
+                border-color: #f8f9fa;
+                box-shadow: inset 0 1px 0 hsla(0,0%,100%,.15),0 1px 1px rgba(0,0,0,.075);
+                color: #212529;}
+            #messenger-style-overrides #message_container .btn-primary:focus, .btn-outline-primary:focus, .btn-info:focus, .btn-outline-info:focus, .btn-dark:focus, .btn-outline-dark:focus {
                  background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
-                border-color: #dae0e5;
-                color: #212529;}
-            #messenger-style-overrides .btn-success:hover {
+                 border-color: #dae0e5;
+                 color: #212529;}
+            #messenger-style-overrides #message_container .btn-primary:hover, .btn-outline-primary:hover, .btn-info:hover, .btn-outline-info:hover, .btn-dark:hover, .btn-outline-dark:hover {
                 background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
                 border-color: #dae0e5;
                 color: #212529;}
-            #messenger-style-overrides .btn-success {
+            #messenger-style-overrides #message_container .btn-primary, .btn-outline-primary, .btn-info, .btn-outline-info, .btn-dark, .btn-outline-dark {                background: #f8f9fa linear-gradient(180deg,#f8f9fa,#f8f9fa) repeat-x;
+                border-color: #f8f9fa;
+                box-shadow: inset 0 1px 0 hsla(0,0%,100%,.15),0 1px 1px rgba(0,0,0,.075);
+                color: #212529;}
+            #messenger-style-overrides #message_container .bg-warning, .bg-outline-warning {background: #000!important;color:#fff;}
+
+            /* Settings modal*/
+            #messenger-style-overrides .switch input:checked + label::before {background-color:#38c172;}
+            #messenger-style-overrides #online_status_switch .glowing_btn {animation:none;}
+            #messenger-style-overrides #online_status_switch .btn-success {background: #38c172; border-color: #808080; color: #fff;}
+            #messenger-style-overrides #online_status_switch .btn-danger {
+                background: #333333;
+                border-color: #808080;
+                color: #fff;
+                }
+            #messenger-style-overrides #online_status_switch .btn-secondary {
+                background: #dee2e6;
+                border-color: #808080;
+                color: grey;
+                }
+            #messenger-style-overrides #online_status_switch .btn:not(:disabled):not(.disabled).active {box-shadow: inset 0px 6px 0px rgb(255, 255, 255) ;}
+
+            #messenger-style-overrides .modal-footer .btn-success:focus, .btn-outline-success:focus{
+                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
+                border-color: #dae0e5;
+                color: #212529;}
+            #messenger-style-overrides .modal-footer .btn-success:hover, .btn-outline-success:hover {
+                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
+                border-color: #dae0e5;
+                color: #212529;}
+            #messenger-style-overrides .modal-footer .btn-success, .btn-outline-success{
                 background: #f8f9fa linear-gradient(180deg,#f8f9fa,#f8f9fa) repeat-x;
                 border-color: #f8f9fa;
                 box-shadow: inset 0 1px 0 hsla(0,0%,100%,.15),0 1px 1px rgba(0,0,0,.075);
                 color: #212529;}
-            #messenger-style-overrides .btn-primary:focus {
-                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
-                border-color: #dae0e5;
-                color: #212529;}
-            #messenger-style-overrides .btn-primary:hover {
-                background: #e2e6ea linear-gradient(180deg,#e5e9ed,#e2e6ea) repeat-x;
-                border-color: #dae0e5;
-                color: #212529;}
-            #messenger-style-overrides .btn-primary {
-                background: #f8f9fa linear-gradient(180deg,#f8f9fa,#f8f9fa) repeat-x;
-                border-color: #f8f9fa;
-                box-shadow: inset 0 1px 0 hsla(0,0%,100%,.15),0 1px 1px rgba(0,0,0,.075);
-                color: #212529;}
-            #messenger-style-overrides .bg-warning {background: #000!important;color:#fff;}
 
-
-
+            #messenger-style-overrides #body_modal div.col-6:nth-child(2) {display:none;} /* Remove avatar change and remove options */
+            #messenger-style-overrides #main_modal span.h5:nth-child(1) > i:nth-child(1) {display:none;} /* Remove modal title bar icon */
 
             /* Overall Messnger styles */
             #messenger-style-overrides .text-info {color: #000 !important}

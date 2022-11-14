@@ -4,7 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="title" content="@yield('title', config('messenger-ui.site_name'))">
 
+        <title>@yield('title', config('messenger-ui.site_name'))</title>
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
@@ -18,7 +20,7 @@
 
             /* Set messenger container to match space viewport */
             #messenger-style-overrides #thread_header_area {position: initial;}
-            #messenger-style-overrides .chat-body {max-height: calc(75vh - 180px); margin: 1xpx 0px 10px 0px; padding: 30px 10px 10px;}
+            #messenger-style-overrides .chat-body {max-height: calc(75vh - 180px); margin: 1px 0px 10px 0px; padding: 30px 10px 10px;}
             #messenger-style-overrides #messenger_container {height:75vh; overflow:scroll;}
             #messenger-style-overrides #chat-footer {position:initial;}
 
@@ -31,8 +33,7 @@
             #messenger-style-overrides .messages-panel.card {border: none;}
 
             /* Message container header and buttons */
-            #messenger-style-overrides #messenger_container .bg-light { background-color: #fff !important;
-}
+            #messenger-style-overrides #messenger_container .bg-light { background-color: #fff !important;}
             #messenger-style-overrides #message_container .btn.text-danger {color: #212529 !important;}
             #messenger-style-overrides #messenger_container .btn {border-color: #dee2e6}
             #messenger-style-overrides .badge-info {background-color: grey;}

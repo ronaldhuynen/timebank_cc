@@ -204,11 +204,12 @@ class Transfer extends Component
 
                 $this->emit('resetForm');
 
+//              //Send TransferReceived mail
                 $now = now();
-                Mail::to($transfer->accountTo->accountable)->later($now->addSeconds(10),
+                Mail::to($transfer->accountTo->accountable)->later(
+                    $now->addSeconds(10),
                     new TransferReceived($transfer)
                 );
-
             } else {
                 // Toaster: custom Jetstream component. Styles: 'success', 'danger', ''
                 $this->dispatchBrowserEvent('toaster-message', [

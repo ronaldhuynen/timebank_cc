@@ -27,19 +27,11 @@ class NewMessageMail extends Mailable implements ShouldQueue  // ShouldQueue her
     public function __construct($event, $owner, $recipient)
     {
 
-        // $owner = $event->message->owner_type::where('id', $event->message->owner_id)->select('name', 'email', 'profile_photo_path')->first();
-        // $others = DB::table('participants')->where('thread_id', $event->thread->id)->whereNotIn('owner_id', [$event->message->owner_id])->select('owner_type', 'owner_id')->get();
-        // $recipients = $others->map(function ($others, $key) {
-        //     return $others->owner_type::where('id', $others->owner_id)->select('name', 'email', 'profile_photo_path')->get();
-        //     });
-
-
+        // TODO: remove debug logs
         Log::debug('Owner:');
         Log::debug($owner);
         Log::debug('Recipient:');
         Log::debug($recipient);
-
-
 
         return $this
             ->from('messages@timebank_2.cc', 'Timebank.cc Messenger')      // Optional: set alternative from data, other than the global one.
@@ -59,19 +51,5 @@ class NewMessageMail extends Mailable implements ShouldQueue  // ShouldQueue her
      */
     public function build()
     {
-        // TODO: Find out below!
-        // build method is not fires WHY?
-        // therefore sending of email method is writen inside constructor!
-
-
-        // Log::debug('3');
-        // Log::debug($this->event->message->body);
-        // $subject = __("Message received");
-        // return $this
-        //     ->from('info@timebank_2.cc', 'Ronald de admin')      // Optional: set alternative from data, other than the global one.
-        //     // ->replyTo('reply-to@test.nl', 'Reply to')
-        //     ->subject($subject)
-        //     ->markdown('emails.messages.new')
-        //     ->with(['body' => $this->event->message->body]);
     }
 }

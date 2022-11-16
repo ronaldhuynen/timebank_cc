@@ -204,7 +204,7 @@ class Transfer extends Component
 
                 $this->emit('resetForm');
 
-//              //Send TransferReceived mail
+                //Send TransferReceived mail
                 $now = now();
                 Mail::to($transfer->accountTo->accountable)->later(
                     $now->addSeconds(10),

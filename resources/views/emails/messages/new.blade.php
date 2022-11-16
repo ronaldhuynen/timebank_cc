@@ -1,28 +1,27 @@
 @component('mail::message')
-# New Timebank.cc Message Event
+@foreach($recipient as $type => $r)
+Hello {{ $r['name'] }},
+@endforeach
 
-Hello!
+Your conversation on Timebank.cc with **{{$event->thread->subject}}** has an update:
 
-Body:
+
+@component('mail::panel')
+### {{$owner->name}} wrote:
+
 {{ $event->message->body }}
+@endcomponent
 
-
-Url:
-{{ config('app.url') }}
-
-{{-- {{ $event->message->body }} --}}
+{{__('Join this conversation on our website by clicking the Respond button below:')}}
 
 
 @component('mail::button', ['url' => route('messenger.show', ['thread' => $event->thread->id])])
-
-
-
-
-<!--TODO ook nog juiste thread aan route toevoegen -->
-
-Respond
+{{__('Respond')}}
 @endcomponent
 
-Greetings!<br>
+{{__('Happy Timebanking!')}}<br>
+
 {{ config('app.name') }}
 @endcomponent
+
+{{-- TODO: make report as inapproprate link? --}}

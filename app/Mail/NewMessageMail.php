@@ -2,8 +2,10 @@
 
 namespace App\Mail;
 
+use Illuminate\Support\Arr;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
@@ -11,7 +13,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use RTippin\Messenger\Events\NewMessageEvent;
 
-class MessageReceived extends Mailable implements ShouldQueue  // ShouldQueue here creates the class as a background job
+class NewMessageMail extends Mailable implements ShouldQueue  // ShouldQueue here creates the class as a background job
 {
     use Queueable;
     use SerializesModels;
@@ -22,19 +24,32 @@ class MessageReceived extends Mailable implements ShouldQueue  // ShouldQueue he
      *
      * @return void
      */
-    public function __construct($event)
+    public function __construct($event, $owner, $recipient)
     {
 
-        Log::debug('3');
-        Log::debug($event->message->body);
+        // $owner = $event->message->owner_type::where('id', $event->message->owner_id)->select('name', 'email', 'profile_photo_path')->first();
+        // $others = DB::table('participants')->where('thread_id', $event->thread->id)->whereNotIn('owner_id', [$event->message->owner_id])->select('owner_type', 'owner_id')->get();
+        // $recipients = $others->map(function ($others, $key) {
+        //     return $others->owner_type::where('id', $others->owner_id)->select('name', 'email', 'profile_photo_path')->get();
+        //     });
 
-        $subject = __("Message received");
+
+        Log::debug('Owner:');
+        Log::debug($owner);
+        Log::debug('Recipient:');
+        Log::debug($recipient);
+
+
+
         return $this
-            ->from('info@timebank_2.cc', 'Ronald de admin')      // Optional: set alternative from data, other than the global one.
-            // ->replyTo('reply-to@test.nl', 'Reply to')
-            ->subject($subject)
+            ->from('messages@timebank_2.cc', 'Timebank.cc Messenger')      // Optional: set alternative from data, other than the global one.
+            ->subject($event->thread->subject . __(' has an update') )
             ->markdown('emails.messages.new')
-            ->with('event', $event);
+            ->with([
+                'event' => $event,
+                'owner' => $owner,
+                'recipient' => $recipient->toArray()
+                ]);
     }
 
     /**

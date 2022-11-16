@@ -2,7 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Mail\MessageReceived;
+use App\Mail\NewMessageMail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
@@ -11,7 +12,6 @@ use RTippin\Messenger\Events\NewMessageEvent;
 
 class SendEmailNewMessage
 {
-
     /**
      * Create the event listener.
      *
@@ -29,17 +29,6 @@ class SendEmailNewMessage
      */
     public function handle($event)
     {
-        Log::debug('1');
-        Log::debug($event->message);
-
-        Log::debug($event->thread);
-
-
-        Log::debug('recipient');
-
-        Log::debug($event->thread);
-
-
 
         // TODO: do not send immediately
 
@@ -49,6 +38,15 @@ class SendEmailNewMessage
         //     new MessageReceived($event)
         // );
 
-        Mail::to('test@test.nl')->send(new MessageReceived($event));
+
+        $owner = $event->message->owner_type::where('id', $event->message->owner_id)->select('name', 'email', 'profile_photo_path')->first();
+        $others = DB::table('participants')->where('thread_id', $event->thread->id)->whereNotIn('owner_id', [$event->message->owner_id])->select('owner_type', 'owner_id')->get();
+        $recipients = $others->map(function ($others, $key) {
+            return $others->owner_type::where('id', $others->owner_id)->select('name', 'email', 'profile_photo_path')->get();
+        });
+
+        foreach ($recipients as $recipient) {
+            Mail::to($recipient)->send(new NewMessageMail($event, $owner, $recipient));
+        }
     }
 }

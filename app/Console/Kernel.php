@@ -16,6 +16,18 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        // RTIPPIN MESSENGER SCHEDULER
+        // PURGE WILL BE EXECUTED FOR ARCHIVED (SOFT-DELETED) DATA
+        $schedule->command('messenger:calls:check-activity')->everyMinute();
+        $schedule->command('messenger:invites:check-valid')->everyFifteenMinutes();
+        $schedule->command('messenger:purge:threads --days=30')->dailyAt('1:00');
+        $schedule->command('messenger:purge:messages --days=30')->dailyAt('2:00');
+        $schedule->command('messenger:purge:images --days=30')->dailyAt('3:00');
+        $schedule->command('messenger:purge:documents --days=365')->dailyAt('4:00');
+        $schedule->command('messenger:purge:audio --days=30')->dailyAt('5:00');
+        $schedule->command('messenger:purge:bots --days=30')->dailyAt('6:00');
+        $schedule->command('messenger:purge:videos --days=30')->dailyAt('7:00');
     }
 
     /**

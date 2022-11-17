@@ -153,7 +153,7 @@ return [
             'size_limit' => env('MESSENGER_MESSAGE_VIDEO_SIZE_LIMIT', 15360),
             'mime_types' => env('MESSENGER_MESSAGE_VIDEO_MIME_TYPES', 'avi,mp4,ogv,webm,3gp,3g2,wmv,mov'),
         ],
-        'avatars' => [  
+        'avatars' => [
             'providers' => env('MESSENGER_PROVIDER_AVATARS_ENABLED', false),
             'threads' => env('MESSENGER_THREAD_AVATARS_ENABLED', true),
             'bots' => env('MESSENGER_BOT_AVATARS_ENABLED', true),
@@ -244,7 +244,7 @@ return [
     | that is not sent over presence. This system only works if you are using
     | our default BroadcastBroker for our broadcast driver.
     */
-    'push_notifications' => env('MESSENGER_PUSH_NOTIFICATIONS_ENABLED', false),
+    'push_notifications' => env('MESSENGER_PUSH_NOTIFICATIONS_ENABLED', true),
 
     /*
     |--------------------------------------------------------------------------

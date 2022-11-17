@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Listeners\SendEmailNewMessage;
 use Illuminate\Auth\Events\Registered;
+use RTippin\Messenger\Events\NewInviteEvent;
 use RTippin\Messenger\Events\NewMessageEvent;
+use RTippin\Messenger\Events\ParticipantsAddedEvent;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 // use RTippin\Messenger\Events\PushNotificationEvent;
@@ -21,7 +23,10 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
-        // Rtippin Messenger event
+        // Rtippin Messenger events:
+        // ParticipantsAddedEvent::class => [
+        //    SendEmailParticipantsAdded::class,
+        // ],
         NewMessageEvent::class => [
            SendEmailNewMessage::class,
         ],

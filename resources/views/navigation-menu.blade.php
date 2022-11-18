@@ -123,9 +123,51 @@
                                 {{ __('Calls') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_calls_count"></span>
                             </x-jet-dropdown-link> --}}
 
-                            <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
-                                {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span>
-                            </x-jet-dropdown-link>
+                            {{-- <x-jet-dropdown-link> --}}
+                                {{-- {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span> --}}
+
+                                <div id="pending_friends_nav" class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">
+                                    <a id="click_friends_tab" href="#" class="dropdown-toggle nav-link pt-1 pb-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick="drop()">
+
+
+                                        {{-- <i class="fas fa-user-friends fa-2x"></i> --}}
+                                        {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span>
+                                        </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right notify-drop bg-light" aria-labelledby="click_friends_tab">
+                                        <div class="row">
+                                            <div class="col-12 pill-tab-nav">
+                                                <nav id="nav-friend-tabs" class="nav nav-pills flex-column flex-sm-row" role="tablist">
+                                                    <a class="flex-sm-fill text-sm-center nav-link h6 active" id="tab-pending" data-toggle="pill" href="#f_pending" role="tab" aria-controls="f_pending" aria-selected="true"><i class="fas fa-user-friends"></i> Pending</a>
+                                                    <a class="flex-sm-fill text-sm-center nav-link h6" id="tab-sent" data-toggle="pill" href="#f_sent" role="tab" aria-controls="f_sent" aria-selected="false"><i class="fas fa-user-friends"></i> Sent</a>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                        <div class="tab-content">
+                                            <div id="f_pending" class="tab-pane fade show active">
+                                                <div id="pending_friends_ctnr" class="drop-content list-group">
+                                                    <div class="col-12 text-center">
+                                                        <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="f_sent" class="tab-pane fade">
+                                                <div id="sent_friends_ctnr" class="drop-content list-group">
+                                                    <div class="col-12 text-center">
+                                                        <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- <div class="col-12 text-center mt-2 pb-4 pb-lg-3">
+                                            <hr class="mb-1 mt-0">
+                                            <span class="float-right"><a class="nav-search-link text-dark" href="{{ route('messenger.portal') }}"><i class="fas fa-search"></i> Find Friends!</a></span>
+
+                                        </div> --}}
+                                    </div>
+                                </div>
+
+                            {{-- </x-jet-dropdown-link> --}}
 
 
                             <!-- Account Management -->
@@ -252,4 +294,14 @@
             </div>
         </div>
     </div>
+
+    <!--- Force dropdown of Messenger Friend menu --->
+    <script>
+        function drop() {
+            console.log('Hey there clicker!');
+            $('#click_friends_tab').dropdown('open')
+        }
+    </script>
+
 </nav>
+

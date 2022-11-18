@@ -61,6 +61,12 @@ class ToAccount extends Component
     }
 
 
+    /**
+     * updatedSearch: Search query To Accounts
+     *
+     * @param  mixed $newValue
+     * @return void
+     */
     public function updatedSearch($newValue)
     {
         $this->showDropdown = true;

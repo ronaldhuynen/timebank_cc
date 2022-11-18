@@ -207,7 +207,7 @@ class Transfer extends Component
                 //Send TransferReceived mail
                 $now = now();
                 Mail::to($transfer->accountTo->accountable)->later(
-                    $now->addSeconds(10),
+                    $now->addSeconds(1),
                     new TransferReceived($transfer)
                 );
             } else {

@@ -3,7 +3,7 @@
 Hello {{ $r['name'] }},
 @endforeach
 
-Your conversation on Timebank.cc with **{{$event->thread->subject}}** has an update:
+Your conversation on Timebank.cc with **{{$event->thread->subject}}** has an unread update:
 
 
 @component('mail::panel')

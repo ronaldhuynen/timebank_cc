@@ -17,15 +17,14 @@
                       {{ __('Users overview title')  }}
                   </div>
 
+                  @can('manage users')
                   <div class="mt-6 text-gray-500">
                        {{ __('Users overview intro here. How to search, filter etc.')  }}
                   </div>
                   <div >
-
-                          <livewire:user-datatables searchable="name, email, id" exportable />
-
+                      <livewire:user-datatables searchable="name, email, id" exportable />
                   </div>
-
+                  @endcan
               </div>
           </div>
       </div>

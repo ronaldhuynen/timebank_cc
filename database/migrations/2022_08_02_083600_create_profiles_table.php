@@ -20,7 +20,6 @@ class CreateProfilesTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
             $table->text('content')->nullable();
             $table->timestamps();
             $table->softDeletes();

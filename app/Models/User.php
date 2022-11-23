@@ -3,8 +3,7 @@
 namespace App\Models;
 
 use App\Models\Account;
-use Laravel\Sanctum\HasApiTokens;
-use Laravel\Jetstream\HasProfilePhoto;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use RTippin\Messenger\Traits\Messageable;
@@ -13,6 +12,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;use Laravel\Jetstream\HasProfilePhoto;
 
 class User extends Authenticatable implements MessengerProvider
 {
@@ -23,7 +23,7 @@ class User extends Authenticatable implements MessengerProvider
     use TwoFactorAuthenticatable;
     use HasProfilePhoto;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
-
+    use HasRoles; // Spatie Permissions
 
     /**
      * The attributes that are mass assignable.

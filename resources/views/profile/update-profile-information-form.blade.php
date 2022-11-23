@@ -38,7 +38,7 @@
                 {{ __('Select A New Photo') }}
             </x-jet-secondary-button>
 
-            @if ($this->user->profile->profile_photo_path)
+            @if ($this->user->profile_photo_path)
             <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
                 {{ __('Remove Photo') }}
             </x-jet-secondary-button>
@@ -53,13 +53,6 @@
             <x-jet-label for="name" value="{{ __('Name') }}" />
             <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name" />
             <x-jet-input-error for="name" class="mt-2" />
-        </div>
-
-        <!-- Language -->
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="locale" value="{{ __('Language') }}" />
-            <x-jet-input id="locale" type="text" class="mt-1 block w-full" wire:model.defer="state.locale" autocomplete="locale" />
-            <x-jet-input-error for="locale" class="mt-2" />
         </div>
 
         <!-- Email -->
@@ -88,7 +81,7 @@
 
     <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">
-            {{ __('Saved') }}
+            {{ __('Saved.') }}
         </x-jet-action-message>
 
         <x-jet-button wire:loading.attr="disabled" wire:target="photo">

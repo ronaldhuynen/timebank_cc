@@ -21,9 +21,11 @@
                     <x-jet-nav-link href="{{ route('transactions') }}" :active="request()->routeIs('transactions')">
                         {{ __('Transactions') }}
                     </x-jet-nav-link>
+                    @can('manage users')
                     <x-jet-nav-link href="{{ route('users-overview') }}" :active="request()->routeIs('admin.users-overview')">
                         {{ __('Users') }}
                     </x-jet-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -298,7 +300,6 @@
     <!--- Force dropdown of Messenger Friend menu --->
     <script>
         function drop() {
-            console.log('Hey there clicker!');
             $('#click_friends_tab').dropdown('open')
         }
     </script>

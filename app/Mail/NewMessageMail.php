@@ -33,6 +33,8 @@ class NewMessageMail extends Mailable //implements ShouldQueue  // ShouldQueue h
         info('Send to recipient:');
         info($recipient);
 
+        info($event->thread);
+
         return $this
             ->from('messages@timebank_2.cc', 'Timebank.cc Messenger')      // Optional: set alternative from data, other than the global one.
             ->subject($event->thread->subject . __(' has an update') )

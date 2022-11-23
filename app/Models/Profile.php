@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Jetstream\HasProfilePhoto;
+// use Laravel\Jetstream\HasProfilePhoto;
 
 
 class Profile extends Model
@@ -12,14 +12,14 @@ class Profile extends Model
     use HasFactory;
 
    //The attributes that are mass assignable.
-    protected $fillable = [
-        'profile_photo_path',
-    ];
+    // protected $fillable = [
+    //     'profile_photo_path',
+    // ];
 
 
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    // protected $appends = [
+    //     'profile_photo_url',
+    // ];
 
 
 

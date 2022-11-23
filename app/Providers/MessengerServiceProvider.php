@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use RTippin\Messenger\Facades\Messenger;
@@ -25,7 +26,8 @@ class MessengerServiceProvider extends ServiceProvider
     {
         // Register all provider models you wish to use in messenger.
         Messenger::registerProviders([
-            User::class
+            User::class,
+            Organisation::class
         ]);
 
         // Set the video call driver of your choosing.

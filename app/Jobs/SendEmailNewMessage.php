@@ -53,7 +53,7 @@ class SendEmailNewMessage implements ShouldQueue
         $recipients = $others->map(function ($others, $key) {
             return $others->owner_type::where('id', $others->owner_id)->select('name', 'email', 'profile_photo_path')->get();
         });
-
+        
 
         foreach ($recipients as $recipient) {
             Mail::to($recipient)->send(new NewMessageMail($this->event, $owner, $recipient));

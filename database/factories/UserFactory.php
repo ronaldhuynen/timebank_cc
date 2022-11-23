@@ -6,6 +6,7 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
+use RTippin\Messenger\Models\Messenger;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -33,6 +34,14 @@ class UserFactory extends Factory
             'locale' => $this->faker->randomElement(['nl', 'en', 'fr']),
             'profile_photo_path' => $this->faker->imageUrl(128, 128),
         ];
+    }
+
+    // Attach (Rtippin Messenger) Providers:
+    public function configure(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            Messenger::factory()->owner($user)->create();
+        });
     }
 
     /**

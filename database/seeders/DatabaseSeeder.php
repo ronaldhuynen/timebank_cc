@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if ($this->command->confirm('Do you want to refresh the database?'))
+        if ($this->command->confirm('Do you want to refresh the database? This removes all existing data stored in the current database!'))
         {
             $this->command->call('migrate:refresh');
             $this->command->info('Database was refreshed');
@@ -21,15 +21,17 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call([
+        PermissionRoleSeeder::class,
         UserSeeder::class,
-        ProfileSeeder::class,
+        ProfileSeeder::class, 
         OrganisationSeeder::class,
         AccountSeeder::class,
         TransactionSeeder::class,
         ]);
 
-        $this->command->info('You can login with: ronald@test.nl');
-        $this->command->info('All users have password: password');
+        $this->command->info('Super-Admin user: admin@admin.com');
+        $this->command->info('Super-Admin password: SecurePassword');
+        $this->command->info('All other users have password: password');
 
     }
 }

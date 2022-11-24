@@ -20,7 +20,8 @@
         "rtippin/messenger": "^1.21",
         "rtippin/messenger-ui": "^2.6",
         "spatie/laravel-permission": "^5.5",
-        "victorybiz/laravel-simple-select": "^1.4"
+        "victorybiz/laravel-simple-select": "^1.4",
+        "wireui/wireui": "^1.17"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

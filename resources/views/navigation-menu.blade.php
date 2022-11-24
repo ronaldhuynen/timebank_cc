@@ -30,7 +30,6 @@
             </div>
 
 
-
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
@@ -112,6 +111,7 @@
 
                         <x-slot name="content">
 
+
                             <!-- Messenger -->
                             {{-- <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Messenger') }}
@@ -164,7 +164,6 @@
                                         {{-- <div class="col-12 text-center mt-2 pb-4 pb-lg-3">
                                             <hr class="mb-1 mt-0">
                                             <span class="float-right"><a class="nav-search-link text-dark" href="{{ route('messenger.portal') }}"><i class="fas fa-search"></i> Find Friends!</a></span>
-
                                         </div> --}}
                                     </div>
                                 </div>
@@ -190,9 +189,17 @@
                             <div class="border-t border-gray-100"></div>
 
                             <!-- Authentication -->
+
+                            <div @click.stop>
+                                <x-select label="Select Relator" placeholder="Select relator" wire:model.defer="model" >
+                                    <x-select.user-option src="https://via.placeholder.com/500" label="Ronald" value="1" />
+                                    <x-select.user-option src="https://via.placeholder.com/500" label="Lekkernassuh" value="2" />
+                                    <x-select.user-option src="https://via.placeholder.com/500" label="Timebank.cc" value="3" />
+                                </x-select>
+                            </div>
+
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
-
                                 <x-jet-dropdown-link href="{{ route('logout') }}"
                                          @click.prevent="$root.submit();">
                                     {{ __('Log Out') }}
@@ -300,7 +307,7 @@
     <!--- Force dropdown of Messenger Friend menu --->
     <script>
         function drop() {
-            $('#click_friends_tab').dropdown('open')
+            $('#click_friends_tab').dropdown();
         }
     </script>
 

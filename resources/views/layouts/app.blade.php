@@ -9,6 +9,11 @@
         <title>@yield('title', config('messenger-ui.site_name'))</title>
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Scripts -->
+        <wireui:scripts />
+        <script src="//unpkg.com/alpinejs" defer></script>
+
+
         <!-- Fonts -->
 
         <!-- Styles -->
@@ -182,26 +187,6 @@
             #messenger-style-overrides .text-success {color: #1f2937 !important;}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </style>
 
 
@@ -229,7 +214,7 @@
             </main>
         </div>
         <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        {{-- <script src="{{ mix('js/app.js') }}" defer></script> --}}
         @livewireScripts
         @stack('modals')
         @include('messenger::scripts')

@@ -1,17 +1,14 @@
 <div @click.stop>
-    {{-- <x-select
-        placeholder="switrch"
-        wire:model.defer="organisationId"
-        />
-        @foreach($userOrganisations as $index => $userOrganisation)
-            <x-select.user-option src="https://via.placeholder.com/500" label="{{ $userOrganisation['name'] }}" value="{{ $userOrganisation['id'] }}" />
-        @endforeach
-    </x-select> --}}
 
-        <x-select placeholder="Switch profile" wire:model.defer="organisationId">
+        <select wire:model="organisationId" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option wire:click="organisationSelected({{ null }})" value={{ null }}>{{ \Illuminate\Support\Str::limit($user['name'], 25, $end='...') }}
+
+            </option>
             @foreach($userOrganisations as $index => $userOrganisation)
-                <x-select.user-option src="{{ Storage::url($userOrganisation['profile_photo_path']) }}" label=" {{ $userOrganisation['name'] }}" value="{{ $userOrganisation['id'] }}" />
+            <option wire:key="{{ $index }}" wire:click="organisationSelected({{ $userOrganisation['id'] }})" value={{ $userOrganisation['id'] }}> {{ \Illuminate\Support\Str::limit($userOrganisation['name'], 25, $end='...') }}
+
+            </option>
             @endforeach
-        </x-select>
+        </select>
 
 </div>

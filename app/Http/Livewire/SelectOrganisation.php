@@ -9,11 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class SelectOrganisation extends Component
 {
+    public $user;
     public $userOrganisations = [];
     public $organisationId;
 
     public function mount()
     {
+        $this->user = Auth::user();
         $orgs = User::with('organisations')->find(Auth::user()->id)->organisations;
         $this->userOrganisations = $orgs->map(function ($org, $key) {
             return [
@@ -22,17 +24,19 @@ class SelectOrganisation extends Component
                 'profile_photo_path' => $org->profile_photo_path
              ];
         });
-        info($this->userOrganisations);
     }
 
-    public function organisationIdSelected($organisationId)
+    public function organisationSelected($organisationId = null)
     {
-
-        Session([
-            'activeProfileType' => Organisation::class,
-            'activeProfileId' => $organisationId]);
-        $this->emit('organisationId', $organisationId);
-        dd($organisationId);
+        if ($organisationId != null) {
+            Session([
+                'activeProfileType' => Organisation::class,
+                'activeProfileId' => $organisationId]);
+        } else {
+            Session([
+                            'activeProfileType' => User::class,
+                            'activeProfileId' => Auth::user()->id]);
+        }
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use RTippin\Messenger\Traits\Messageable;
@@ -20,6 +21,13 @@ class Organisation extends Model implements MessengerProvider
     public function accounts()
     {
         return $this->morphMany(Account::class, 'accountable');
+    }
+
+    // Get the organisation's user(s)
+    // Many-to-many
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 
 

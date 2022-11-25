@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Account;
+use App\Models\Organisation;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -63,6 +64,13 @@ class User extends Authenticatable implements MessengerProvider
     public function profile()
     {
         return $this->hasOne(Profile::class);
+    }
+
+    // Get the user's organisation(s)
+    // Many-to-many
+    public function organisations()
+    {
+        return $this->belongsToMany(Organisation::class);
     }
 
 

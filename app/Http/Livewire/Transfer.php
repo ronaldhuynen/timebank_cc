@@ -8,13 +8,15 @@ use App\Models\Transaction;
 use App\Mail\TransferReceived;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TransferReceivedMarkdown;
 use App\Http\Controllers\TransactionController;
+use WireUi\Traits\Actions;
+
 
 class Transfer extends Component
 {
+    use Actions;
+
     public $amount;
-    public $userAccounts;
     public $fromAccountId;
     public $toAccountId;
     public $toAccountName;
@@ -196,11 +198,12 @@ class Transfer extends Component
             $transfer->creator_user_id = Auth::user()->id;
             $save = $transfer->save();
             if ($save) {
-                // Toaster: custom Jetstream component. Styles: 'success', 'danger', ''
-                $this->dispatchBrowserEvent('toaster-message', [
-                'style' => 'success',
-                'message' => __('Success message!')
-                ]);
+
+                // WireUI notification
+                $this->notification()->success(
+                    $title = __('Transfer complete!'),
+                    $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.'
+                );
 
                 $this->emit('resetForm');
 
@@ -211,11 +214,12 @@ class Transfer extends Component
                     new TransferReceived($transfer)
                 );
             } else {
-                // Toaster: custom Jetstream component. Styles: 'success', 'danger', ''
-                $this->dispatchBrowserEvent('toaster-message', [
-                'style' => 'danger',
-                'message' => __('Oops, we have an error: the transfer was not saved!') // TODO: Update Danger message text
-                ]);
+
+                // WireUI notification
+                $this->notification()->error(
+                    $title = __('Transfer failed!'),
+                    $description = __('Oops, we have an error: the transfer was not saved!')
+                );
 
                 return back();
             }
@@ -225,8 +229,11 @@ class Transfer extends Component
 
     public function resetForm()
     {
-        $this->reset();
-        $this->emit('refreshComponent');
+        $this->amount = null;
+        $this->toAccountId = null;
+        $this->toAccountName = null;
+        $this->description = null;
+        $this->modalVisible = false;
     }
 
 

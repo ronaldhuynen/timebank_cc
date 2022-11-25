@@ -27,9 +27,14 @@ class FromAccount extends Component
 
     public function resetForm()
     {
+        info('resetForm starts');
+        // $this->reset();
+        // $this->emit('refreshComponent');
         $this->userAccounts = $this->getUserAccounts();
         $this->emitSelf('preSelected)');
+        info('reset form on FromAccount');
     }
+
 
 
     public function preSelected()

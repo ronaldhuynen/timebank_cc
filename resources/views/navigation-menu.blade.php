@@ -1,6 +1,7 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <x-notifications />
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -85,10 +86,11 @@
 
 
 
-                <!-- Settings Dropdown -->
+                <!-- Settings / Profile Dropdown -->
                 <div class="ml-3 relative">
                     <x-jet-dropdown align="right" width="48">
                         <x-slot name="trigger">
+
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
@@ -111,71 +113,60 @@
 
                         <x-slot name="content">
 
+                            <!---- Switch Profile --->
+                            <div @click.stop>
+                                <x-select placeholder="Switch Profile" wire:model.defer="model">
+                                    <x-select.user-option src="https://via.placeholder.com/500" label="Ronald" value="1" />
+                                    <x-select.user-option src="https://via.placeholder.com/500" label="Lekkernassuh" value="2" />
+                                    <x-select.user-option src="https://via.placeholder.com/500" label="Timebank.cc" value="3" />
+                                </x-select>
+                            </div>
 
-                            <!-- Messenger -->
-                            {{-- <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Messenger') }}
-                            </div> --}}
-
+                            <!--- Messenger --->
                             <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
                                 {{ __('Messages') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_thread_count"></span>
                             </x-jet-dropdown-link>
 
-                            {{-- <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
-                                {{ __('Calls') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_calls_count"></span>
-                            </x-jet-dropdown-link> --}}
 
-                            {{-- <x-jet-dropdown-link> --}}
-                                {{-- {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span> --}}
+                            <!--- Messender Friends --->
+                            <div id="pending_friends_nav" class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">
+                                <a id="click_friends_tab" href="#" class="dropdown-toggle nav-link pt-1 pb-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick="drop()">
+                                    {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span>
+                                </a>
 
-                                <div id="pending_friends_nav" class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">
-                                    <a id="click_friends_tab" href="#" class="dropdown-toggle nav-link pt-1 pb-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick="drop()">
-
-
-                                        {{-- <i class="fas fa-user-friends fa-2x"></i> --}}
-                                        {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span>
-                                        </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right notify-drop bg-light" aria-labelledby="click_friends_tab">
-                                        <div class="row">
-                                            <div class="col-12 pill-tab-nav">
-                                                <nav id="nav-friend-tabs" class="nav nav-pills flex-column flex-sm-row" role="tablist">
-                                                    <a class="flex-sm-fill text-sm-center nav-link h6 active" id="tab-pending" data-toggle="pill" href="#f_pending" role="tab" aria-controls="f_pending" aria-selected="true"><i class="fas fa-user-friends"></i> Pending</a>
-                                                    <a class="flex-sm-fill text-sm-center nav-link h6" id="tab-sent" data-toggle="pill" href="#f_sent" role="tab" aria-controls="f_sent" aria-selected="false"><i class="fas fa-user-friends"></i> Sent</a>
-                                                </nav>
-                                            </div>
+                                <div class="dropdown-menu dropdown-menu-right notify-drop bg-light" aria-labelledby="click_friends_tab">
+                                    <div class="row">
+                                        <div class="col-12 pill-tab-nav">
+                                            <nav id="nav-friend-tabs" class="nav nav-pills flex-column flex-sm-row" role="tablist">
+                                                <a class="flex-sm-fill text-sm-center nav-link h6 active" id="tab-pending" data-toggle="pill" href="#f_pending" role="tab" aria-controls="f_pending" aria-selected="true"><i class="fas fa-user-friends"></i> Pending</a>
+                                                <a class="flex-sm-fill text-sm-center nav-link h6" id="tab-sent" data-toggle="pill" href="#f_sent" role="tab" aria-controls="f_sent" aria-selected="false"><i class="fas fa-user-friends"></i> Sent</a>
+                                            </nav>
                                         </div>
-                                        <div class="tab-content">
-                                            <div id="f_pending" class="tab-pane fade show active">
-                                                <div id="pending_friends_ctnr" class="drop-content list-group">
-                                                    <div class="col-12 text-center">
-                                                        <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="f_sent" class="tab-pane fade">
-                                                <div id="sent_friends_ctnr" class="drop-content list-group">
-                                                    <div class="col-12 text-center">
-                                                        <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {{-- <div class="col-12 text-center mt-2 pb-4 pb-lg-3">
-                                            <hr class="mb-1 mt-0">
-                                            <span class="float-right"><a class="nav-search-link text-dark" href="{{ route('messenger.portal') }}"><i class="fas fa-search"></i> Find Friends!</a></span>
-                                        </div> --}}
                                     </div>
+                                    <div class="tab-content">
+                                        <div id="f_pending" class="tab-pane fade show active">
+                                            <div id="pending_friends_ctnr" class="drop-content list-group">
+                                                <div class="col-12 text-center">
+                                                    <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="f_sent" class="tab-pane fade">
+                                            <div id="sent_friends_ctnr" class="drop-content list-group">
+                                                <div class="col-12 text-center">
+                                                    <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-12 text-center mt-2 pb-4 pb-lg-3">
+                                        <hr class="mb-1 mt-0">
+                                        <span class="float-right"><a class="nav-search-link text-dark" href="{{ route('messenger.portal') }}"><i class="fas fa-search"></i> Find Friends!</a></span>
+                                    </div> --}}
                                 </div>
+                            </div>
 
-                            {{-- </x-jet-dropdown-link> --}}
-
-
-                            <!-- Account Management -->
-                            {{-- <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
-                            </div> --}}
-
+                            <!---- Profile settings --->
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
                             </x-jet-dropdown-link>
@@ -189,15 +180,6 @@
                             <div class="border-t border-gray-100"></div>
 
                             <!-- Authentication -->
-
-                            <div @click.stop>
-                                <x-select label="Select Relator" placeholder="Select relator" wire:model.defer="model" >
-                                    <x-select.user-option src="https://via.placeholder.com/500" label="Ronald" value="1" />
-                                    <x-select.user-option src="https://via.placeholder.com/500" label="Lekkernassuh" value="2" />
-                                    <x-select.user-option src="https://via.placeholder.com/500" label="Timebank.cc" value="3" />
-                                </x-select>
-                            </div>
-
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
                                 <x-jet-dropdown-link href="{{ route('logout') }}"

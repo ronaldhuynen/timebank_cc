@@ -11,10 +11,6 @@ class Description extends Component
 
     protected $listeners = ['resetForm'];
 
-    // protected $rules = [
-    //     'description' => 'required|string|min:3|max:255'
-    // ];
-
 
     /**
      * Extra check if field is empty on blur textarea
@@ -48,7 +44,6 @@ class Description extends Component
         // }
         // // Execution stops here if validation fails.
         // $this->requiredError = false;
-
         $this->emit('description', $this->description);
 
     }

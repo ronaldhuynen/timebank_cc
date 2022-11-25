@@ -114,13 +114,14 @@
                         <x-slot name="content">
 
                             <!---- Switch Profile --->
-                            <div @click.stop>
+                            <livewire:select-organisation>
+                            {{-- <div @click.stop>
                                 <x-select placeholder="Switch Profile" wire:model.defer="model">
                                     <x-select.user-option src="https://via.placeholder.com/500" label="Ronald" value="1" />
                                     <x-select.user-option src="https://via.placeholder.com/500" label="Lekkernassuh" value="2" />
                                     <x-select.user-option src="https://via.placeholder.com/500" label="Timebank.cc" value="3" />
                                 </x-select>
-                            </div>
+                            </div> --}}
 
                             <!--- Messenger --->
                             <x-jet-dropdown-link href="{{ route('messenger.portal') }}">

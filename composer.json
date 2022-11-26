@@ -34,13 +34,17 @@
         "panique/laravel-sass": "dev-master"
     },
     "autoload": {
+        "exclude-from-classmap": [
+        "vendor/rtippin/messenger/src/Http/Middleware/SetMessengerProvider.php"
+        ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/TimeFormat.php"
+            "app/Helpers/TimeFormat.php",
+            "app/Overrides/Rtippin/Messenger/Http/Middleware/SetMessengerProvider.php"
         ]
     },
     "autoload-dev": {

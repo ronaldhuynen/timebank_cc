@@ -4,9 +4,9 @@ namespace RTippin\Messenger\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use RTippin\Messenger\Messenger;
 use Illuminate\Support\Facades\Auth;
 use RTippin\Messenger\Exceptions\InvalidProviderException;
+use RTippin\Messenger\Messenger;
 
 class SetMessengerProvider
 {

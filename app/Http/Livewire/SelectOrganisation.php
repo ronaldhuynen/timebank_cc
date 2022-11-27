@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\User;
-use Livewire\Component;
 use App\Models\Organisation;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use RTippin\Messenger\Messenger;
 
 class SelectOrganisation extends Component
 {
@@ -34,10 +36,12 @@ class SelectOrganisation extends Component
                 'activeProfileId' => $organisationId]);
         } else {
             Session([
-                            'activeProfileType' => User::class,
-                            'activeProfileId' => Auth::user()->id]);
+                'activeProfileType' => User::class,
+                'activeProfileId' => Auth::user()->id]);
         }
+        return redirect()->route('dashboard');
     }
+
 
 
     public function render()

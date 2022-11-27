@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,13 +42,6 @@ Route::middleware([
 
     Route::get('/transactions', 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
 
-
     Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
-
-
-    // Route::get('/users-overview', function () {
-    //     $this->authorize('manage users');
-    //     return view('admin.users-overview');
-    // })->name('users-overview');
 
 });

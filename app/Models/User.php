@@ -4,16 +4,17 @@ namespace App\Models;
 
 use App\Models\Account;
 use App\Models\Organisation;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
-use RTippin\Messenger\Traits\Messageable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use RTippin\Messenger\Contracts\MessengerProvider;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
+use RTippin\Messenger\Contracts\MessengerProvider;
+use RTippin\Messenger\Traits\Messageable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MessengerProvider
 {
@@ -101,9 +102,11 @@ class User extends Authenticatable implements MessengerProvider
 
     // Rtippin Messenger:
     // Searchable
-    public static function getProviderSearchableBuilder(Builder $query,
-                                                        string $search,
-                                                        array $searchItems)
+    public static function getProviderSearchableBuilder(
+        Builder $query,
+        string $search,
+        array $searchItems
+    )
     {
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
@@ -122,6 +125,7 @@ class User extends Authenticatable implements MessengerProvider
     }
 
 
+    // Rtippin Messenger:
     /**
      * Get the route of the avatar for your provider. We will call this
      * from our resource classes using sm/md/lg .
@@ -134,5 +138,4 @@ class User extends Authenticatable implements MessengerProvider
         // dd($this);
         return '/storage/' . $this->profile_photo_path;
     }
-
 }

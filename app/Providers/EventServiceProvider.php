@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
+use App\Listeners\LoginSuccessful;
 use App\Listeners\SendEmailNewMessage;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use RTippin\Messenger\Events\NewInviteEvent;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Events\ParticipantsAddedEvent;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 // use RTippin\Messenger\Events\PushNotificationEvent;
 
 class EventServiceProvider extends ServiceProvider
@@ -30,6 +32,8 @@ class EventServiceProvider extends ServiceProvider
         NewMessageEvent::class => [
            SendEmailNewMessage::class,
         ],
+
+        Login::class => [LoginSuccessful::class],
     ];
 
     /**

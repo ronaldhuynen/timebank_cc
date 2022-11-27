@@ -5,7 +5,7 @@
             <option wire:click="organisationSelected({{ null }})" value={{ null }}>{{ \Illuminate\Support\Str::limit($user['name'], 25, $end='...') }}
             </option>
             @foreach($userOrganisations as $index => $userOrganisation)
-            <option wire:key="index-{{ $userOrganisation['id'] }}" wire:click="organisationSelected({{ $userOrganisation['id'] }})" value={{ $userOrganisation['id'] }}> {{ \Illuminate\Support\Str::limit($userOrganisation['name'], 25, $end='...') }}
+            <option wire:key="{{ $index }}" wire:click="organisationSelected({{ $userOrganisation['id'] }})" value={{ $userOrganisation['id'] }}> {{ \Illuminate\Support\Str::limit($userOrganisation['name'], 25, $end='...') }}
             </option>
             @endforeach
         </select>

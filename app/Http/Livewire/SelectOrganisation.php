@@ -23,7 +23,7 @@ class SelectOrganisation extends Component
             return [
                 'id' => $org->id,
                 'name' => $org->name,
-                'profile_photo_path' => $org->profile_photo_path
+                'photo' => $org->profile_photo_path
              ];
         });
     }
@@ -33,11 +33,17 @@ class SelectOrganisation extends Component
         if ($organisationId != null) {
             Session([
                 'activeProfileType' => Organisation::class,
-                'activeProfileId' => $organisationId]);
+                'activeProfileId' => $organisationId,
+                'activeProfileName'=> $this->userOrganisations[$organisationId-1]['name'],
+                'activeProfilePhoto'=> $this->userOrganisations[$organisationId-1]['photo']
+            ]);
         } else {
             Session([
                 'activeProfileType' => User::class,
-                'activeProfileId' => Auth::user()->id]);
+                'activeProfileId' => Auth::user()->id,
+                'activeProfileName'=> $this->user->name,
+                'activeProfilePhoto'=> $this->user->profile_photo_path
+            ]);
         }
         return redirect()->route('dashboard');
     }

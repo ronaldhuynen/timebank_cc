@@ -6,9 +6,8 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-    {{-- TODO change into canTransfer --}}
+    {{-- TODO: change into canTransfer --}}
         @if (Laravel\Fortify\Features::canUpdateProfileInformation())
-
 
         <div>
             <div class="md:grid md:grid-cols-3 md:gap-6">

@@ -2,10 +2,9 @@
 
 
     @csrf
-    <div class="shadow sm:rounded-md">
-        <div class="px-4 py-5 bg-white sm:p-6">
+    <div class="px-4 py-5 sm:p-6 bg-white shadow sm:rounded-lg">
             <div class="grid grid-cols-6 gap-6">
-                <div class="col-span-6 sm:col-span-3">
+                <div class="col-span-6 sm:col-span-4">
 
                     <!--- Amount --->
                     <livewire:amount>
@@ -38,16 +37,17 @@
                         @enderror
 
 
-                </div>
             </div>
 
-            <div class="px-4 py-3 bg-white text-right sm:px-6">
-                <x-jet-button>
-                    {{ __('Pay') }}
-                </x-jet-button>
-            </div>
+
 
         </div>
+                    <div class="text-right">
+                        <x-jet-button>
+                            {{ __('Pay') }}
+                        </x-jet-button>
+                    </div>
+
     </div>
 
     <!---- Confirmation Modal ---->

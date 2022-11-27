@@ -83,17 +83,17 @@
                 @endif
 
                 <!-- Settings / Profile Dropdown -->
-                                            <div class="block px-1 py-0 text-s italic text-grey-500">
-                                               {{ Session('activeProfileName') }}
-                                            </div>
+                <div class="block px-1 py-0 text-s text-grey-500">
+                    {{ Session('activeProfileName') }}
+                </div>
 
                 <div class="ml-3 relative">
                     <x-jet-dropdown align="right" width="48">
                         <x-slot name="trigger">
 
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                    <img class="h-8 w-8 rounded-full object-cover" src="{{ Storage::url(Session('activeProfilePhoto')) }}" alt="{{ Session('activeProfileName') }}" />
+                                <button class="flex text-sm border-1 border-white border-2 shadow-sm rounded-full hover:border-grey-900 focus:border-grey-900 focus:border-gray-300 transition">
+                                    <img class="h-9 w-9 rounded-full object-cover" src="{{ Storage::url(Session('activeProfilePhoto')) }}" alt="{{ Session('activeProfileName') }}" />
 
                                 </button>
                             @else

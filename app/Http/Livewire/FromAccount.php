@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-
 use App\Http\Controllers\TransactionController;
+
+use Livewire\Component;
 
 class FromAccount extends Component
 {
@@ -19,11 +19,13 @@ class FromAccount extends Component
         $this->userAccounts = $this->getUserAccounts();
     }
 
+    
     public function getUserAccounts()
     {
         $transactions = new TransactionController();
         return  $transactions->userAccounts();
     }
+
 
     public function resetForm()
     {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
@@ -96,7 +96,9 @@ class TransactionController extends Controller
 
     public function userAccounts()
     {
-        $accounts = User::with('accounts')->find(Auth::user()->id)->accounts;
+        $class = new (Session('activeProfileType'));
+        $activeProfile = $class->find(Session('activeProfileId'));
+        $accounts = $class->with('accounts')->find($activeProfile->id)->accounts;
 
         $userAccounts = $accounts->map(function ($account, $key) {
             return [
@@ -107,7 +109,6 @@ class TransactionController extends Controller
         });
         return $userAccounts;
     }
-
 
 
     public function getBalance($accountId)

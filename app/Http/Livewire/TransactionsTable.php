@@ -66,7 +66,7 @@ class TransactionsTable extends Component
                     'type' => 'Debit',
                     'account_to' => $dt->to_account_id,
                     'relation' => 'To ' . $dt->accountTo->accountable->name,
-                    'profile_photo' => $dt->accountFrom->accountable->profile_photo_path,
+                    'profile_photo' => $dt->accountTo->accountable->profile_photo_path,
                     'description' => (strlen($dt->description) > 58) ? substr_replace($dt->description, '...', 55) : $dt->description,
                 ];
             }

@@ -1,11 +1,11 @@
-<div>
+<div my-6>
     @if($beforeTableSlot)
         <div class="mt-8">
             @include($beforeTableSlot)
         </div>
     @endif
     <div class="relative">
-        <div class="flex items-center justify-between mb-1">
+        <div class="flex items-center justify-between my-6">
             <div class="flex items-center h-10">
                 @if($this->searchableColumns()->count())
                     <div class="flex rounded-lg w-96 shadow-sm">
@@ -27,7 +27,7 @@
             </div>
 
             @if($this->activeFilters)
-                <span class="text-xl text-blue-400 uppercase">FILTERS ACTIVE</span>
+                <span class="text-xl text-gray-500 uppercase">{{ __('Fileters Active') }}</span>
             @endif
 
             <div class="flex flex-wrap items-center space-x-1">
@@ -69,7 +69,7 @@
                         <div x-data="{ init() {
                         window.livewire.on('startDownload', link => window.open(link, '_blank'))
                         } }" x-init="init">
-                        <button wire:click="export" class="flex items-center px-3 text-xs font-medium tracking-wider text-green-500 uppercase bg-white border border-green-400 space-x-2 rounded-md leading-4 hover:bg-green-200 focus:outline-none"><span>{{ __('Export') }}</span>
+                        <button wire:click="export" class="flex items-center px-3 text-xs font-medium tracking-wider text-gray-600 uppercase bg-white border border-gray-600 space-x-2 rounded-md leading-4 hover:text-gray-400 focus:outline-none"><span>{{ __('Export') }}</span>
                             <x-icons.excel class="m-2" /></button>
                         </div>
                     @endif
@@ -100,18 +100,18 @@
             </div>
         @endif
 
-        <div wire:loading.class="opacity-50" class="rounded-lg @unless($complex || $this->hidePagination) rounded-b-none @endunless shadow-lg bg-white max-w-screen overflow-x-scroll border-4 @if($this->activeFilters) border-blue-500 @else border-transparent @endif @if($complex) rounded-b-none border-b-0 @endif">
+        <div wire:loading.class="opacity-50" class="rounded-sm @unless($complex || $this->hidePagination) rounded-sm @endunless shadow-sm bg-white max-w-screen overflow-x-scroll @if($this->activeFilters) border-blue-500 @else border-gray-100 border-b-2 rounded-sm @endif @if($complex) @endif">
             <div>
                 <div class="table min-w-full align-middle">
                     @unless($this->hideHeader)
-                        <div class="table-row divide-x divide-gray-200">
+                        <div class="table-row divide-x divide-gray-200 bg-gray-900">
                             @foreach($this->columns as $index => $column)
                                 @if($hideable === 'inline')
                                     @include('datatables::header-inline-hide', ['column' => $column, 'sort' => $sort])
                                 @elseif($column['type'] === 'checkbox')
                                     @unless($column['hidden'])
-                                        <div class="flex justify-center table-cell w-32 h-12 px-6 py-4 overflow-hidden text-xs font-medium tracking-wider text-left text-gray-500 uppercase align-top border-b border-gray-200 bg-gray-50 leading-4 focus:outline-none">
-                                            <div class="px-3 py-1 rounded @if(count($selected)) bg-orange-400 @else bg-gray-200 @endif text-white text-center">
+                                        <div class="flex justify-center table-cell w-32 h-12 px-6 py-4 overflow-hidden text-xs font-medium tracking-wider text-left text-gray-700 uppercase align-top border-gray-100 bg-gray-50 leading-4 focus:outline-none">
+                                            <div class="px-3 py-1 rounded @if(count($selected)) bg-orange-400 @else bg-gray-900 text-white @endif text-white text-center">
                                                 {{ count($selected) }}
                                             </div>
                                         </div>
@@ -170,7 +170,7 @@
                             @endforeach
                         </div>
                     @empty
-                        <p class="p-3 text-lg text-teal-600">
+                        <p class="p-3 text-lg text-gray-700">
                             {{ __("There's Nothing to show at the moment") }}
                         </p>
                     @endforelse
@@ -195,7 +195,7 @@
         </div>
 
         @unless($this->hidePagination)
-            <div class="max-w-screen bg-white @unless($complex) rounded-b-lg @endunless border-4 border-t-0 border-b-0 @if($this->activeFilters) border-blue-500 @else border-transparent @endif">
+            <div class="max-w-screen bg-white @unless($complex) @endunless border-2 @if($this->activeFilters) border-blue-500 @else border-transparent @endif">
                 <div class="items-center justify-between p-2 sm:flex">
                     {{-- check if there is any data --}}
                     @if(count($this->results))
@@ -229,7 +229,7 @@
     </div>
 
     @if($complex)
-        <div class="bg-gray-50 px-4 py-4 rounded-b-lg rounded-t-none shadow-lg border-4 @if($this->activeFilters) border-blue-500 @else border-transparent @endif @if($complex) border-t-0 @endif">
+        <div class="bg-gray-50 px-4 py-4 rounded-b-lg rounded-t-none shadow-sm border-4 @if($this->activeFilters) border-blue-500 @else border-transparent @endif @if($complex) border-t-0 @endif">
             <livewire:complex-query :columns="$this->complexColumns" :persistKey="$this->persistKey" :savedQueries="method_exists($this, 'getSavedQueries') ? $this->getSavedQueries() : null" />
         </div>
     @endif

@@ -12,9 +12,10 @@
             <span class="inline text-xs text-blue-400">
                 @if($sort === $index)
                     @if($direction)
-                        <x-icons.chevron-up wire:loading.remove class="w-6 h-6 text-green-600 stroke-current" />
+                        <x-icons.chevron-up wire:loading.remove class="w-6 h-6 text-gray-900 hover:text-gray-600 stroke-current" />
                     @else
-                        <x-icons.chevron-down wire:loading.remove class="w-6 h-6 text-green-600 stroke-current" />
+                        <x-icons.chevron-down wire:loading.remove class="w-6 h-6 text-gray-900 hover:text-gray-600 stroke-current" />
+
                     @endif
                 @endif
             </span>

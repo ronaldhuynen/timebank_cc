@@ -26,9 +26,11 @@
             <span class="inline text-xs text-blue-400">
                 @if($sort === $index)
                 @if($direction)
-                <x-icons.chevron-up class="h-6 w-6 text-green-600 stroke-current" />
+                <x-icons.chevron-up class="h-6 w-6 text-gray-700 hover:text-gray-600 stroke-current" />
+
                 @else
-                <x-icons.chevron-down class="h-6 w-6 text-green-600 stroke-current" />
+                <x-icons.chevron-down class="h-6 w-6 text-gray-700 hover:text-gray-600 stroke-current" />
+
                 @endif
                 @endif
             </span>

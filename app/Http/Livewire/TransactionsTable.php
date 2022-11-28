@@ -27,11 +27,18 @@ class TransactionsTable extends Component
     public function clear()
     {
         $this->search = '';
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
+    {
+     $this->resetPage();
     }
 
 
     public function fromAccountId($fromAccount)
     {
+        $this->resetPage();
         $this->fromAccountId = $fromAccount;
     }
 

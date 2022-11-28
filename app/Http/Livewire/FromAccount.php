@@ -19,7 +19,7 @@ class FromAccount extends Component
         $this->userAccounts = $this->getUserAccounts();
     }
 
-    
+
     public function getUserAccounts()
     {
         $transactions = new TransactionController();

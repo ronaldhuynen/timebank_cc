@@ -1,50 +1,46 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Livewire;
 
-use App\Http\Livewire\TransactionsTable;
+use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Request;
+use Livewire\Component;
+use Livewire\WithPagination;
 
-class TransactionController extends Controller
+
+class TransactionsTable extends Component
 {
-    /**
-    * Create a new controller instance.
-    *
-    * @return void
-    */
-    public function __construct()
+    use WithPagination;
+
+    public $search = '';
+    public $perPage = 5;
+    public $sortField;
+    public $sortAsc = true;
+    public $fromAccountId;
+
+    protected $listeners = [
+        'fromAccountId',
+    ];
+
+
+
+    public function clear()
     {
-        $this->middleware('auth');
+        $this->search = '';
     }
 
 
-    public function transfer()
+    public function fromAccountId($fromAccount)
     {
-        // $userAccounts = $this->userAccounts();
-
-        return view('transfer.show',
-            // compact('userAccounts')
-        );
+        $this->fromAccountId = $fromAccount;
     }
 
-    public function transactions()
-    {
-        $userAccounts = $this->userAccounts();
-        $transactions = $this->getTransactions();
-        $transactionsCollection = collect($this->getTransactions());
-        $transactions = $transactionsCollection->reverse()->paginate(15);
-        return view('transactions.show', compact('userAccounts', 'transactions'));
-    }
 
-    // TODO: Remove as this function is used in Livewire componenent transactions-table ???
     public function getTransactions()
     {
         $transactions = [];
         $balance = 0;
-        $accountId = Session('accountId');
+        $accountId = $this->fromAccountId;
         // TODO select account id from dropdown
         $allTransfers = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->where('to_account_id', $accountId)->orWhere('from_account_id', $accountId)
         ->get();
@@ -92,36 +88,12 @@ class TransactionController extends Controller
         return $transactions;
     }
 
-
-    public function userAccounts()
+    public function render()
     {
-        $class = new (Session('activeProfileType'));
-        $activeProfile = $class->find(Session('activeProfileId'));
-        $accounts = $class->with('accounts')->find($activeProfile->id)->accounts;
-
-        $userAccounts = $accounts->map(function ($account, $key) {
-            return [
-                'id' => $account->id,
-                'name' => $account->name,
-                'balance' => $this->getBalance($account->id)
-            ];
-        });
-        return $userAccounts;
-    }
-
-
-    public function getBalance($accountId)
-    {
-        $balance = 0;
-        $transactions = Transaction::where('from_account_id', $accountId)->orWhere('to_account_id', $accountId)->select('from_account_id', 'to_account_id', 'amount')->get();
-        foreach ($transactions as $t) {
-            if ($t->to_account_id === $accountId) {
-                $balance += $t->amount;
-            } else {
-                $balance -= $t->amount;
-            }
-        }
-        //TODO store  current balance in cache until it it is updated?
-        return $balance;
+        return view('livewire.transactions-table', [
+            'transactions' => collect($this->getTransactions())
+            ->sortByDesc('datetime')
+            ->paginate($this->perPage)
+        ]);
     }
 }

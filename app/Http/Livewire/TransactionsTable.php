@@ -4,9 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
+use Illuminate\Contracts\Database\Query\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
-
 
 class TransactionsTable extends Component
 {
@@ -23,7 +23,6 @@ class TransactionsTable extends Component
     ];
 
 
-
     public function clear()
     {
         $this->search = '';
@@ -32,7 +31,7 @@ class TransactionsTable extends Component
 
     public function updatingPerPage()
     {
-     $this->resetPage();
+        $this->resetPage();
     }
 
 
@@ -45,12 +44,22 @@ class TransactionsTable extends Component
 
     public function getTransactions()
     {
+
+        // $this->search = '';
+        $search = $this->search;
         $transactions = [];
         $balance = 0;
         $accountId = $this->fromAccountId;
-        // TODO select account id from dropdown
-        $allTransfers = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->where('to_account_id', $accountId)->orWhere('from_account_id', $accountId)
-        ->get();
+
+            $allTransfers = Transaction::
+            with('accountTo.accountable', 'accountFrom.accountable')
+            ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+            ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+            ->get();
+
+        info(array($allTransfers));
+
+
         foreach ($allTransfers as $t) {
             if ($t->to_account_id === $accountId) {
                 // Credit transfer
@@ -60,9 +69,9 @@ class TransactionsTable extends Component
                     'amount' => $ct->amount,
                     'type' => 'Credit',
                     'account_from' => $ct->from_account_id,
-                    'relation' => 'From ' . $ct->accountFrom->accountable->name,
-                    'profile_photo' => $ct->accountFrom->accountable->profile_photo_path,
-                    'description' => (strlen($ct->description) > 58) ? substr_replace($ct->description, '...', 55) : $ct->description,
+                    'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
+                    'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
+                    'description' => $ct->description,
                 ];
             } else {
                 // Debit transfer
@@ -72,14 +81,15 @@ class TransactionsTable extends Component
                     'amount' => $dt->amount,
                     'type' => 'Debit',
                     'account_to' => $dt->to_account_id,
-                    'relation' => 'To ' . $dt->accountTo->accountable->name,
-                    'profile_photo' => $dt->accountTo->accountable->profile_photo_path,
-                    'description' => (strlen($dt->description) > 58) ? substr_replace($dt->description, '...', 55) : $dt->description,
+                    'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
+                    'profile_photo' => ($dt->accountFrom->accountable->profile_photo_path != null ? $dt->accountFrom->accountable->profile_photo_path : ''),
+                    'description' => $dt->description,
                 ];
             }
         }
 
         $transactions = collect($transactions)->sortBy('datetime');
+
         $state = [];
         foreach ($transactions as $s) {
             if ($s['type'] == 'Debit') {
@@ -88,9 +98,12 @@ class TransactionsTable extends Component
                 $balance += $s['amount'];
             }
             $s['balance'] = $balance;
+
             $state[] = $s;
         }
         $transactions = $state;
+
+        $contents = collect($transactions)->where('relation', $this->search);
 
         return $transactions;
     }

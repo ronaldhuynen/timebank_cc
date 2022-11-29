@@ -75,7 +75,7 @@
              </td>
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-8/16">
                  <p class="text-gray-900 whitespace-no-wrap">
-                     {{ $transaction['description'] }}
+                     {{ (strlen($transaction['description']) > 58) ? substr_replace($transaction['description'], '...', 55) : $transaction['description'] }}
                  </p>
              </td>
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
@@ -91,7 +91,8 @@
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
 
                  <p class="text-gray-900 whitespace-no-wrap">
-                     {{ tbFormat($transaction['balance']) }}
+                     {{ ($search != null ? '' : tbFormat($transaction['balance'])) }}
+
                  </p>
              </td>
          </tr>

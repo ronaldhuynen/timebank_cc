@@ -22,14 +22,14 @@ class TransactionFactory extends Factory
      */
     public function definition()
     {
-        //TODO use all fields
+        //TODO: use all fields
         $fromAccountId = Account::all()->random()->id;
         $toAccountId = Account::all()->random()->id;
         return [
            'from_account_id' => $fromAccountId,
            'to_account_id' => $toAccountId,
         //    'creator_user_id' => Account::find($fromAccountId)->accountable->id,
-           'creator_user_id' => 13,
+           'creator_user_id' => 1,
            'amount' => $this->faker->numberBetween(15, 2000),
            'description' => $this->faker->sentence(),
         ];

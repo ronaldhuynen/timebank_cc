@@ -3,10 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\TransactionController;
+use App\Models\Organisation;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Contracts\Database\Query\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Searchable\Search;
 
 class TransactionsTable extends Component
 {
@@ -51,16 +54,21 @@ class TransactionsTable extends Component
         $balance = 0;
         $accountId = $this->fromAccountId;
 
-            $allTransfers = Transaction::
+            $transactionResults = Transaction::
             with('accountTo.accountable', 'accountFrom.accountable')
-            ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-            ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-            ->get();
+                ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+                ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+                ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                     ->orWhere('email', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+                })
+                ->get();
 
-        info(array($allTransfers));
-
-
-        foreach ($allTransfers as $t) {
+        foreach ($transactionResults as $t) {
             if ($t->to_account_id === $accountId) {
                 // Credit transfer
                 $ct = $t;
@@ -73,7 +81,8 @@ class TransactionsTable extends Component
                     'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
                     'description' => $ct->description,
                 ];
-            } else {
+            }
+            if ($t->from_account_id === $accountId) {
                 // Debit transfer
                 $dt = $t;
                 $transactions[] = [
@@ -82,7 +91,7 @@ class TransactionsTable extends Component
                     'type' => 'Debit',
                     'account_to' => $dt->to_account_id,
                     'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
-                    'profile_photo' => ($dt->accountFrom->accountable->profile_photo_path != null ? $dt->accountFrom->accountable->profile_photo_path : ''),
+                    'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
                     'description' => $dt->description,
                 ];
             }

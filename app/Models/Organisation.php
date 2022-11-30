@@ -8,12 +8,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Organisation extends Model implements MessengerProvider
+
+class Organisation extends Model implements MessengerProvider, Searchable
 {
     use HasFactory;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
 
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'email',
+        'password',
+    ];
 
 
     // Get all of the organisation's accounts
@@ -72,7 +85,7 @@ class Organisation extends Model implements MessengerProvider
         return 'profile_photo_path';
     }
 
-        // Rtippin Messenger:
+    // Rtippin Messenger:
     /**
      * Get the route of the avatar for your provider. We will call this
      * from our resource classes using sm/md/lg .
@@ -85,4 +98,15 @@ class Organisation extends Model implements MessengerProvider
         // dd($this);
         return '/storage/' . $this->profile_photo_path;
     }
+
+
+    // Spatie Laravel-Searchable
+    public function getSearchResult(): SearchResult
+    {
+         return new \Spatie\Searchable\SearchResult(
+            $this,
+            $this->name,
+         );
+     }
+
 }

@@ -45,9 +45,9 @@ class TransactionController extends Controller
         $transactions = [];
         $balance = 0;
         $accountId = Session('accountId');
-        // TODO select account id from dropdown
-        $allTransfers = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->where('to_account_id', $accountId)->orWhere('from_account_id', $accountId)
-        ->get();
+        $allTransfers = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+            ->where('to_account_id', $accountId)->orWhere('from_account_id', $accountId)
+            ->get();
         foreach ($allTransfers as $t) {
             if ($t->to_account_id === $accountId) {
                 // Credit transfer

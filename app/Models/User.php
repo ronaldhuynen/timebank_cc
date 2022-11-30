@@ -15,8 +15,10 @@ use Laravel\Sanctum\HasApiTokens;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable implements MessengerProvider
+class User extends Authenticatable implements MessengerProvider, Searchable
 {
     use HasApiTokens;
     use HasFactory;
@@ -45,6 +47,7 @@ class User extends Authenticatable implements MessengerProvider
      * @var array
      */
     protected $hidden = [
+        'email',
         'password',
         'remember_token',
         'two_factor_recovery_codes',
@@ -106,8 +109,7 @@ class User extends Authenticatable implements MessengerProvider
         Builder $query,
         string $search,
         array $searchItems
-    )
-    {
+    ) {
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
                 $query->orWhere('name', 'LIKE', "%{$item}%")
@@ -137,5 +139,15 @@ class User extends Authenticatable implements MessengerProvider
     {
         // dd($this);
         return '/storage/' . $this->profile_photo_path;
+    }
+
+
+    // Spatie Laravel-Searchable
+    public function getSearchResult(): SearchResult
+    {
+        return new \Spatie\Searchable\SearchResult(
+            $this,
+            $this->name,
+        );
     }
 }

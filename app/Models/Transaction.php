@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Transaction extends Model
+class Transaction extends Model implements Searchable
 {
     use HasFactory;
 
@@ -32,5 +34,16 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'creator_user_id');
     }
+
+
+    // Spatie Laravel-Searchable
+    public function getSearchResult(): SearchResult
+    {
+         return new \Spatie\Searchable\SearchResult(
+            $this,
+            $this->amount,
+            $this->description,
+         );
+     }
 
 }

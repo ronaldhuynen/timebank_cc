@@ -1,15 +1,19 @@
-<div>
-<input wire:model="search" type="text" placeholder="Search...">
-<button wire:click="clear">Clear</button>
+<div class="mt-6">
 
-<div class="my-6">
-<select wire:model="perPage" class="mt-1 block w-16 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-    <option value="5">5</option>
-    <option value="10">10</option>
-    <option value="50">50</option>
-</select>
-{{ __('Results') }}
-</div>
+    <div class="flex space-x-12">
+        <div class="flex-none w-2/4 my-6">
+            <x-input wire:model="search" right-icon="search" label="{{ __('Search keywords') }}" placeholder="Name, description, amount..." />
+        </div>
+        <div class="flex-auto my-6 z-50">
+            <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model="fromDate" :min="now()->subYear(2)" :max="now()" :without-time="true" />
+        </div>
+        <div class="flex-auto my-6 z-50">
+            <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model="toDate" :min="now()->subYear(2)" :max="now()" :without-time="true" />
+        </div>
+
+    </div>
+
+
 
 <!-- Results table -->
  <table class="min-w-full w-full leading-normal" id="transactions">
@@ -89,10 +93,8 @@
                  </p>
              </td>
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
-
                  <p class="text-gray-900 whitespace-no-wrap">
                      {{ ($search != null ? '' : tbFormat($transaction['balance'])) }}
-
                  </p>
              </td>
          </tr>
@@ -102,11 +104,17 @@
 
 <!-- Pagination -->
  <div class="row my-16 relative">
+    <div class="flex">
+        <select wire:model="perPage" class="w-16 py-2 px-3 border border-gray-300 bg-white text-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="50">50</option>
+        </select>
+        <div class="flex-auto px-3 mt-2 text-gray-400">{{ __('results') }}</div>
+    </div>
     <div class="absolute right-0">
         {{ $transactions->links('livewire.datatables.tailwind-pagination') }}
     </div>
  </div>
-
-
 
 </div>

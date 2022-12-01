@@ -2,11 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\Http\Controllers\TransactionController;
-use App\Models\Organisation;
+
 use App\Models\Transaction;
-use App\Models\User;
-use Illuminate\Contracts\Database\Query\Builder;
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Searchable\Search;
@@ -16,6 +14,8 @@ class TransactionsTable extends Component
     use WithPagination;
 
     public $search = '';
+    public $fromDate;
+    public $toDate;
     public $perPage = 5;
     public $sortField;
     public $sortAsc = true;
@@ -25,17 +25,30 @@ class TransactionsTable extends Component
         'fromAccountId',
     ];
 
-
+ 
     public function clear()
     {
         $this->search = '';
         $this->resetPage();
     }
 
-    public function updatingPerPage()
+
+    function updatingPerPage()
     {
         $this->resetPage();
     }
+
+
+    function updatingFromDate()
+    {
+        $this->resetPage();
+    }
+
+    function updatingToDate()
+    {
+        $this->resetPage();
+    }
+
 
 
     public function fromAccountId($fromAccount)
@@ -47,28 +60,34 @@ class TransactionsTable extends Component
 
     public function getTransactions()
     {
-
-        // $this->search = '';
         $search = $this->search;
         $transactions = [];
         $balance = 0;
         $accountId = $this->fromAccountId;
 
-            $transactionResults = Transaction::
+        //TODO: Zoeken op amount mogelijk maken!
+        $searchResults = Transaction::
             with('accountTo.accountable', 'accountFrom.accountable')
-                ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-                ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-                ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                     ->orWhere('email', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('email', 'like', '%' . $search . '%');
-                })
-                ->get();
+            ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+            ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+            ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+            })
+            ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+            })
+            ->get();
 
-        foreach ($transactionResults as $t) {
+
+        if (!isset($this->fromDate) ? $this->fromDate = Carbon::now()->subYear(2)->toDateString() : $this->fromDate);
+        if (!isset($this->toDate) ? $this->toDate = Carbon::now()->toDateString() : $this->toDate);
+
+        $periodResults = $searchResults->whereBetween('created_at', [$this->fromDate, $this->toDate]);
+
+
+        foreach ($periodResults as $t) {
             if ($t->to_account_id === $accountId) {
                 // Credit transfer
                 $ct = $t;

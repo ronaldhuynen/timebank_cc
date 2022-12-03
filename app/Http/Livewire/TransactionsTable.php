@@ -13,6 +13,8 @@ class TransactionsTable extends Component
 {
     use WithPagination;
 
+
+    public $searchState = false;
     public $search = '';
     public $fromDate;
     public $toDate;
@@ -25,7 +27,7 @@ class TransactionsTable extends Component
         'fromAccountId',
     ];
 
- 
+
     public function clear()
     {
         $this->search = '';
@@ -33,22 +35,31 @@ class TransactionsTable extends Component
     }
 
 
-    function updatingPerPage()
+    function updatingSearch()
     {
+        $this->searchState = true;
         $this->resetPage();
     }
 
 
     function updatingFromDate()
     {
+        $this->searchState = true;
         $this->resetPage();
     }
+
 
     function updatingToDate()
     {
+        $this->searchState = true;
         $this->resetPage();
     }
 
+
+   function updatingPerPage()
+   {
+       $this->resetPage();
+   }
 
 
     public function fromAccountId($fromAccount)
@@ -60,14 +71,66 @@ class TransactionsTable extends Component
 
     public function getTransactions()
     {
-        $search = $this->search;
-        $transactions = [];
-        $balance = 0;
-        $accountId = $this->fromAccountId;
+    $search = $this->search;
+    $transactions = [];
+    $balance = 0;
+    $accountId = $this->fromAccountId;
 
-        //TODO: Zoeken op amount mogelijk maken!
-        $searchResults = Transaction::
-            with('accountTo.accountable', 'accountFrom.accountable')
+    //TODO: Zoeken op amount mogelijk maken!
+
+if ($this->searchState === false) {
+        $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+            ->where('to_account_id', $accountId)
+            ->orWhere('from_account_id', $accountId)
+            ->get();
+
+        foreach ($results as $t) {
+            if ($t->to_account_id === $accountId) {
+                // Credit transfer
+                $ct = $t;
+                $transactions[] = [
+                    'datetime' => $ct->created_at,
+                    'amount' => $ct->amount,
+                    'type' => 'Credit',
+                    'account_from' => $ct->from_account_id,
+                    'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
+                    'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
+                    'description' => $ct->description,
+                ];
+            }
+            if ($t->from_account_id === $accountId) {
+                // Debit transfer
+                $dt = $t;
+                $transactions[] = [
+                    'datetime' => $dt->created_at,
+                    'amount' => $dt->amount,
+                    'type' => 'Debit',
+                    'account_to' => $dt->to_account_id,
+                    'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
+                    'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
+                    'description' => $dt->description,
+                ];
+            }
+        }
+
+        $transactions = collect($transactions)->sortBy('datetime');
+
+        $state = [];
+        foreach ($transactions as $s) {
+            if ($s['type'] == 'Debit') {
+                $balance -= $s['amount'];
+            } else {
+                $balance += $s['amount'];
+            }
+            $s['balance'] = $balance;
+
+            $state[] = $s;
+        }
+        $transactions = $state;
+
+        } else {
+            // $searchState == true
+            $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
             ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
             ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
             ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
@@ -81,13 +144,20 @@ class TransactionsTable extends Component
             ->get();
 
 
-        if (!isset($this->fromDate) ? $this->fromDate = Carbon::now()->subYear(2)->toDateString() : $this->fromDate);
-        if (!isset($this->toDate) ? $this->toDate = Carbon::now()->toDateString() : $this->toDate);
-
-        $periodResults = $searchResults->whereBetween('created_at', [$this->fromDate, $this->toDate]);
+    // if (!isset($this->fromDate) ? $this->fromDate = Carbon::now()->subYear(1)->toDateString() : $this->fromDate);
+    // if (!isset($this->toDate) ? $this->toDate = Carbon::now()->toDateString() : $this->toDate);
 
 
-        foreach ($periodResults as $t) {
+        if ($this->fromDate == null) {
+            $this->fromDate = "";
+        }
+        if ($this->toDate == null) {
+            $this->toDate = Carbon::now()->toDateString();
+        }
+
+        $results = $searchResults->whereBetween('created_at', [$this->fromDate, $this->toDate]);
+
+        foreach ($results as $t) {
             if ($t->to_account_id === $accountId) {
                 // Credit transfer
                 $ct = $t;
@@ -132,6 +202,7 @@ class TransactionsTable extends Component
         $transactions = $state;
 
         $contents = collect($transactions)->where('relation', $this->search);
+        }
 
         return $transactions;
     }

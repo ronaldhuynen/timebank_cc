@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ProfileSwitchEvent;
 use App\Listeners\LoginSuccessful;
+use App\Listeners\RedirectToDashboard;
 use App\Listeners\SendEmailNewMessage;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
@@ -25,6 +27,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
+        Login::class => [LoginSuccessful::class],
+
         // Rtippin Messenger events:
         // ParticipantsAddedEvent::class => [
         //    SendEmailParticipantsAdded::class,
@@ -33,7 +37,10 @@ class EventServiceProvider extends ServiceProvider
            SendEmailNewMessage::class,
         ],
 
-        Login::class => [LoginSuccessful::class],
+        // ProfileSwitchEvent::class => [
+        //     RedirectToDashboard::class,
+        // ]
+
     ];
 
     /**

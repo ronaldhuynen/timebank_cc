@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\ProfileSwitchEvent;
+use App\Listeners\RedirectToDashboard;
 use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Livewire\Component;
 use RTippin\Messenger\Messenger;
 
@@ -46,6 +49,7 @@ class SelectOrganisation extends Component
             ]);
         }
         return redirect()->route('dashboard');
+        // return Event::dispatch(new ProfileSwitchEvent);
     }
 
 

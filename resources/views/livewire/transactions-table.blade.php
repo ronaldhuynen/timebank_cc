@@ -2,21 +2,20 @@
 
     <div class="flex space-x-12">
         <div class="flex-none w-2/4 my-6">
-            <x-input wire:model="search" right-icon="search" label="{{ __('Search keywords') }}" placeholder="Name, description, amount..." />
+            <x-input wire:model="search" right-icon="search" label="{{ __('Search keywords') }}" placeholder="Name, email, description, amount..." />
         </div>
         <div class="flex-auto my-6 z-50">
-            <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model="fromDate" :min="now()->subYear(2)" :max="now()" :without-time="true" />
+            <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model="fromDate" :without-time="true" />
         </div>
         <div class="flex-auto my-6 z-50">
-            <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model="toDate" :min="now()->subYear(2)" :max="now()" :without-time="true" />
+            <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model="toDate" :without-time="true" />
         </div>
-
     </div>
 
 
 
 <!-- Results table -->
- <table class="min-w-full w-full leading-normal" id="transactions">
+ <table wire:model="searchState" class="min-w-full w-full leading-normal" id="transactions">
      <thead>
          <tr>
             <th class="py-6 border-b border-gray-200">
@@ -50,7 +49,11 @@
 
 
                 <a wire:click.prevent="sortBy('balance')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-800 text-sm uppercase font-normal">
-                 {{ __('Balance') }}
+                    @if ($searchState === false )
+                            {{ __('Balance') }}
+                        @else
+                            {{ __('Total') }}
+                    @endif
                 </a>
             </th>
          </tr>
@@ -84,17 +87,20 @@
              </td>
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
                  <p class="text-gray-900 whitespace-no-wrap">
-                     {{ tbFormat($transaction['amount']) }}
                      @if ( $transaction['type'] === 'Debit' )
-                     -
+                     <span class="text-red-700"> {{ tbFormat($transaction['amount']) }} -</span>
                      @else
-                     +
+                        <span class="text-gray-900"> {{ tbFormat($transaction['amount']) }} +</span>
                      @endif
                  </p>
              </td>
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
                  <p class="text-gray-900 whitespace-no-wrap">
-                     {{ ($search != null ? '' : tbFormat($transaction['balance'])) }}
+                    @if ( $transaction['balance'] < 0 )
+                        <span class="text-red-700"> {{ tbFormat($transaction['balance']) }} </span>
+                    @else
+                        <span class="text-gray-900"> {{ tbFormat($transaction['balance']) }} </span>
+                    @endif
                  </p>
              </td>
          </tr>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Livewire\TransactionsTable;
 use App\Models\Transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Request;
 
@@ -33,63 +34,18 @@ class TransactionController extends Controller
     public function transactions()
     {
         $userAccounts = $this->userAccounts();
-        $transactions = $this->getTransactions();
-        $transactionsCollection = collect($this->getTransactions());
-        $transactions = $transactionsCollection->reverse()->paginate(15);
-        return view('transactions.show', compact('userAccounts', 'transactions'));
+
+        return view('transactions.show', compact('userAccounts'));
     }
 
-    // TODO: Remove as this function is used in Livewire componenent transactions-table ???
-    public function getTransactions()
+
+    public function singleTransaction($transactionId, $accountId)
     {
-        $transactions = [];
-        $balance = 0;
-        $accountId = Session('accountId');
-        $allTransfers = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
-            ->where('to_account_id', $accountId)->orWhere('from_account_id', $accountId)
-            ->get();
-        foreach ($allTransfers as $t) {
-            if ($t->to_account_id === $accountId) {
-                // Credit transfer
-                $ct = $t;
-                $transactions[] = [
-                    'datetime' => $ct->created_at,
-                    'amount' => $ct->amount,
-                    'type' => 'Credit',
-                    'account_from' => $ct->from_account_id,
-                    'relation' => 'From ' . $ct->accountFrom->accountable->name,
-                    'profile_photo' => $ct->accountFrom->accountable->profile_photo_path,
-                    'description' => (strlen($ct->description) > 58) ? substr_replace($ct->description, '...', 55) : $ct->description,
-                ];
-            } else {
-                // Debit transfer
-                $dt = $t;
-                $transactions[] = [
-                    'datetime' => $dt->created_at,
-                    'amount' => $dt->amount,
-                    'type' => 'Debit',
-                    'account_to' => $dt->to_account_id,
-                    'relation' => 'To ' . $dt->accountTo->accountable->name,
-                    'profile_photo' => $dt->accountFrom->accountable->profile_photo_path,
-                    'description' => (strlen($dt->description) > 58) ? substr_replace($dt->description, '...', 55) : $dt->description,
-                ];
-            }
-        }
+        info('test');
+        info($transactionId);
+        info($accountId);
 
-        $transactions = collect($transactions)->sortBy('datetime');
-        $state = [];
-        foreach ($transactions as $s) {
-            if ($s['type'] == 'Debit') {
-                $balance -= $s['amount'];
-            } else {
-                $balance += $s['amount'];
-            }
-            $s['balance'] = $balance;
-            $state[] = $s;
-        }
-        $transactions = $state;
-
-        return $transactions;
+        return view('transactions.single-transaction', compact(['transactionId', 'accountId']));
     }
 
 

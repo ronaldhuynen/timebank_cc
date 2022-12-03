@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/clear-cache', function() {
+Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
 });
@@ -42,6 +42,10 @@ Route::middleware([
 
     Route::get('/transactions', 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
 
-    Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
+    //TODO: Route fixen!
+    // Route::get('/transaction/{transactionId}/{accountId}', function ($transactionId, $acountId {return 'Transaction '.$id, 'Account '.$id})'App\Http\Controllers\TransactionController@singleTransaction')->name('transaction');
 
+    Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
 });
+
+

@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
@@ -37,6 +38,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'locale' => $input['locale'],
                 'email' => $input['email'],
             ])->save();
+
+            // Also update session with new name and profile_photo_path
+            Session([
+                'activeProfileName'=> Auth::user()->name,
+                'activeProfilePhoto'=> Auth::user()->profile_photo_path
+            ]);
         }
     }
 

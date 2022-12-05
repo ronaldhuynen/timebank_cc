@@ -221,13 +221,15 @@
 
 
         {{-- Broadcast test! --}}
-        {{-- <script src="{{ asset('js/app.js') }}"></script><!-- add a new script tag, and listen for the upcoming event --> --}}
-        {{-- <script type="text/javascript">
-            // Echo is available via window.Echo, in app.js file
-         {
-                    console.log('hello');
-                };
-        </script> --}}
+    {{-- <script>
+    console.log('excute app.blade');
+            Echo.channel('private-messenger')
+                .listen('UserLangChangedEvent', (e) => {
+                    console.log(e);
+                });
+
+    </script> --}}
+
 
 
     </body>

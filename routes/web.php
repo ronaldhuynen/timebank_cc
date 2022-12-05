@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,24 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+// Laracat Broadcast lesson:
+Route::get('/test/broadcast', function () {
+    $user = User::find(2);
+    return view('test.broadcast', ['user' => $user]);
+});
+
+
+Route::get('/test/broadcast-private', function () {
+    // manually authorize user 2
+    $user = User::find(2);
+    $toUserId = 2;
+    // Auth::login($user);
+    return view('test.broadcast-private', compact(['user' , 'toUserId']));
+});
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,6 +66,6 @@ Route::middleware([
     // Route::get('/transaction/{transactionId}/{accountId}', function ($transactionId, $acountId {return 'Transaction '.$id, 'Account '.$id})'App\Http\Controllers\TransactionController@singleTransaction')->name('transaction');
 
     Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
-});
 
+});
 

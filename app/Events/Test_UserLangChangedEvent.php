@@ -26,6 +26,7 @@ class Test_UserLangChangedEvent implements ShouldBroadcastNow
     public function __construct(User $user)
     {
         $this->user = $user;
+        info('change-lang'. $this->user->id);
    }
 
 
@@ -36,6 +37,6 @@ class Test_UserLangChangedEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('change-lang');
+        return new PrivateChannel('change-lang.'. $this->user->id);
     }
 }

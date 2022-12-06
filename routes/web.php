@@ -17,19 +17,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// Laracat Broadcast lesson:
+// // Laracat Broadcast lesson:
+// Route::get('/test/broadcast', function () {
+//     $user = User::find(2);
+//     return view('test.broadcast', ['user' => $user]);
+// });
+
+
 Route::get('/test/broadcast', function () {
-    $user = User::find(2);
-    return view('test.broadcast', ['user' => $user]);
-});
-
-
-Route::get('/test/broadcast-private', function () {
     // manually authorize user 2
     $user = User::find(2);
     $toUserId = 2;
-    // Auth::login($user);
-    return view('test.broadcast-private', compact(['user' , 'toUserId']));
+    Auth::login($user);
+    return view('test.broadcast', compact(['user' , 'toUserId']));
 });
 
 

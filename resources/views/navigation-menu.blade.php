@@ -116,7 +116,7 @@
 
                             <!---- Switch Profile --->
                             <livewire:select-organisation>
-                
+
                             <!--- Messenger --->
                             <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
                                 {{ __('Messages') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_thread_count"></span>
@@ -285,8 +285,17 @@
     <script>
         function drop() {
             $('#click_friends_tab').dropdown();
-        }
+        };
     </script>
+
+    {{-- <script>
+        window.Pusher.logToConsole = true;
+        window.Echo.private('switchProfile')
+        .listen('ProfileSwitchEvent', (e) => {
+             window.location.reload();
+             });
+
+    </script> --}}
 
 </nav>
 

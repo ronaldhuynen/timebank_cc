@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Events\ProfileSwitchEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class RedirectToDashboard implements ShouldQueue
 {
@@ -30,6 +32,10 @@ class RedirectToDashboard implements ShouldQueue
      */
     public function handle()
     {
-        // return redirect()->route('dashboard');
+        $userId = Auth::id();
+
+        ProfileSwitchEvent::dispatch($userId);
+
+        return 0;
     }
 }

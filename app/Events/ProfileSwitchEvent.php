@@ -7,13 +7,15 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileSwitchEvent implements ShouldBroadcast
+class ProfileSwitchEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
 
     /**
      * Create a new event instance.
@@ -22,11 +24,7 @@ class ProfileSwitchEvent implements ShouldBroadcast
      */
     public function __construct()
     {
-        //
-    }
-
-    public function broadcastAs () {
-        // return 'redirect-monitor';
+        info('ProfileSwchEvent');
     }
 
 
@@ -37,6 +35,6 @@ class ProfileSwitchEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        // return new Channel('redirect-channel');
+        return new PrivateChannel('switchProfile');
     }
 }

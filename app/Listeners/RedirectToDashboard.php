@@ -28,8 +28,7 @@ class RedirectToDashboard
      */
     public function handle($event)
     {
-
-        // info('Redirect to Dashboard');
-        // dispatch(new JobsRedirectToDashboard);
+        info('Redirect to Dashboard');
+        dispatch(new JobsRedirectToDashboard);
     }
 }

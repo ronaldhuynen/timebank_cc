@@ -5,6 +5,8 @@ window._ = require('lodash');
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
+console.log('bootstrap!');
+
 
 window.axios = require('axios');
 
@@ -15,6 +17,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
+
+console.log('bootstrap.js:');
 
 import Echo from 'laravel-echo';
 
@@ -29,5 +33,4 @@ window.Echo = new Echo({
     disableStats: true,
 });
 
-console.log('bootstrap!');
 

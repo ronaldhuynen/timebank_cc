@@ -67,7 +67,7 @@
             base_css : '{{ asset(mix('app.css', 'resources/css/messenger')) }}',
             dark_css : '{{ asset(mix('dark.css', 'resources/css/messenger')) }}',
 
-            dark_mode : true,
+            dark_mode : false,
             mobile : false,
         },
         modules : {

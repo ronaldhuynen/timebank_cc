@@ -18,11 +18,17 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
+
 // Test private broadcast: $toUserId is provided in web.php route
 Broadcast::channel('change-lang.{toUserId}', function ($user, $toUserId) {
     info((int) $user->id);
     info((int) $toUserId);
     return (int) $user->id == (int) $toUserId;
+});
+
+
+Broadcast::channel('switchProfile', function ($user) {
+    return true;
 });
 
 

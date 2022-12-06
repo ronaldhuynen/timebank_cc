@@ -48,8 +48,8 @@ class SelectOrganisation extends Component
                 'activeProfilePhoto'=> $this->user->profile_photo_path
             ]);
         }
-        return redirect()->route('dashboard');
-        // return Event::dispatch(new ProfileSwitchEvent);
+        // return redirect()->route('dashboard');
+        return Event::dispatch(new ProfileSwitchEvent);
     }
 
 

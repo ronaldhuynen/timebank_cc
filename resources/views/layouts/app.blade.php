@@ -14,6 +14,7 @@
         <script src="//unpkg.com/alpinejs" defer></script>
 
 
+
         <!-- Fonts -->
 
         <!-- Styles -->
@@ -214,22 +215,22 @@
             </main>
         </div>
         <!-- Scripts -->
-        {{-- <script src="{{ mix('js/app.js') }}" defer></script> --}}
+        {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
+              {{-- Broadcast test! --}}
+
         @livewireScripts
         @stack('modals')
         @include('messenger::scripts')
 
-
-        {{-- Broadcast test! --}}
-    {{-- <script>
-    console.log('excute app.blade');
-            Echo.channel('private-messenger')
-                .listen('UserLangChangedEvent', (e) => {
-                    console.log(e);
+        <script>
+        console.log('app.blade');
+            window.Pusher.logToConsole = true;
+            window.Echo.private('switchProfile')
+                .listen('ProfileSwitchEvent', (e) => {
+                    window.location.reload();
                 });
 
-    </script> --}}
-
+        </script>
 
 
     </body>

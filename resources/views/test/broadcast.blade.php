@@ -7,22 +7,14 @@
         </div>
 
         <script src="{{ mix('js/app.js') }}"></script>
-        {{-- <script>
+
+        <script>
             window.Pusher.logToConsole = true;
             window.Echo.private('change-lang.{{ $toUserId }}')
                 .listen('Test_UserLangChangedEvent', (e) => {
-                    console.log(e);
-                    document.getElementById('lang').innerHTML = e.user.locale;
-                    });
-        </script> --}}
-
-          <script>
-              window.Pusher.logToConsole = true;
-              window.Echo.private('change-lang.{{ $toUserId }}')
-                  .listen('Test_UserLangChangedEvent', (e) => {
-                      window.location.reload();
-                  });
-          </script>
+                    window.location.reload();
+                });
+        </script>
 
     </body>
 </html>

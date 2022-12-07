@@ -21,14 +21,14 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 
 // Test private broadcast: $toUserId is provided in web.php route
 Broadcast::channel('change-lang.{toUserId}', function ($user, $toUserId) {
-    info((int) $user->id);
-    info((int) $toUserId);
     return (int) $user->id == (int) $toUserId;
 });
 
 
-Broadcast::channel('switchProfile', function ($user) {
-    return true;
+Broadcast::channel('switch-profile.{userId}', function ($user, $userId) {
+    // Verify that the user listens to his/her channel and that his/her $user->id matches with the $data['userId'] that was broascasted.
+    // If this returns true, the channel is authorized.
+    return (int) $user->id == (int) $userId;
 });
 
 

@@ -16,14 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-// // Laracat Broadcast lesson:
-// Route::get('/test/broadcast', function () {
-//     $user = User::find(2);
-//     return view('test.broadcast', ['user' => $user]);
-// });
-
-
+// Broadcast test
 Route::get('/test/broadcast', function () {
     // manually authorize user 2
     $user = User::find(2);

@@ -3,20 +3,22 @@
 namespace App\Http\Livewire;
 
 use App\Events\ProfileSwitchEvent;
-use App\Listeners\RedirectToDashboard;
 use App\Models\Organisation;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
 use Livewire\Component;
-use RTippin\Messenger\Messenger;
+use WireUi\Traits\Actions;
+
 
 class SelectOrganisation extends Component
 {
+    use Actions;
+
     public $user;
     public $userOrganisations = [];
     public $organisationId;
+    public $notifySwitchProfile;
+    public $activeProfile = [];
 
     public function mount()
     {
@@ -30,6 +32,42 @@ class SelectOrganisation extends Component
              ];
         });
     }
+
+
+    public function getListeners()
+    {
+        return [
+            "echo-private:switch-profile.{$this->user->id},ProfileSwitchEvent" => 'notifySwitchProfile',
+        ];
+    }
+
+
+    Public function notifySwitchProfile($activeProfile)
+    {
+        $this->notifySwitchProfile = true;
+        info('notifySwitchProfile!');
+        info($activeProfile);
+
+        Session([
+                    'activeProfileType' => $activeProfile['type'],
+                    'activeProfileId' => $activeProfile['id'],
+                    'activeProfileName'=> $activeProfile['name'],
+                    'activeProfilePhoto'=> $activeProfile['photo']
+                ]);
+
+
+        // WireUI notification
+        // $this->notification()->success(
+        //     $title = __('Active Profile is changed'),
+        //     $description = __('You are now acting as: ') . $activeProfile['name'] . '.',
+        //     $timeout = 3
+        // );
+        redirect('/dashboard')->with('success', 'Active profile has switched!');
+
+
+    }
+
+
 
     public function organisationSelected($organisationId = null)
     {
@@ -48,8 +86,15 @@ class SelectOrganisation extends Component
                 'activeProfilePhoto'=> $this->user->profile_photo_path
             ]);
         }
-        // return redirect()->route('dashboard');
-        return Event::dispatch(new ProfileSwitchEvent);
+        $activeProfile = [
+            'userId' => Auth::user()->id,
+            'type' => Session('activeProfileType'),
+            'id' => Session('activeProfileId'),
+            'name' => Session('activeProfileName'),
+            'photo' => Session('activeProfilePhoto')
+          ];
+
+        return event(new ProfileSwitchEvent($activeProfile));
     }
 
 

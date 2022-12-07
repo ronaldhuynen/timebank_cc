@@ -15,6 +15,7 @@
 
 
 
+
         <!-- Fonts -->
 
         <!-- Styles -->
@@ -215,22 +216,23 @@
             </main>
         </div>
         <!-- Scripts -->
-        {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
-              {{-- Broadcast test! --}}
+        <!-- FIXME: Without this app.js Pusher and Echo will not load, however it causes a lot of errors and warnings. However no functionality is lost --->
+        <script src="{{ mix('js/app.js') }}"></script>
 
         @livewireScripts
         @stack('modals')
         @include('messenger::scripts')
 
-        <script>
-        console.log('app.blade');
-            window.Pusher.logToConsole = true;
-            window.Echo.private('switchProfile')
+        <!-- ProfileSwitchEvent --->
+        {{-- <script>
+        console.log('Inside app.blade.php');
+            window.Pusher.logToConsole = false;
+            window.Echo.private('switch-profile.{{ auth()->id() }}')
                 .listen('ProfileSwitchEvent', (e) => {
-                    window.location.reload();
-                });
-
-        </script>
+                    console.log('ProfileSwitchEvent received.');
+                    console.log(e);
+                  });
+        </script> --}}
 
 
     </body>

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Livewire\Component;
 
 class SingleTransactionTable extends Component
@@ -17,21 +18,21 @@ class SingleTransactionTable extends Component
     {
         $this->transactionId = $transactionId;
         $this->accountId = $accountId;
-
-
+        $this->getTransaction();
     }
 
     public function getTransaction()
     {
         $balance = $this->balance;
-        $results= Transaction::with('accountTo.accountable', 'accountFrom.accountable')->findOrFail($this->transactionId);
-
+        $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->findOrFail($this->transactionId);
+        // dd($results->accountFrom->accountable->name);
         info($results);
+        info($this->accountId);
+        // dd($results->to_account_id);
 
-        foreach ($results as $t) {
-            if ($t->to_account_id === $this->accountId) {
+            if ($results->to_account_id === (int) $this->accountId) {
                 // Credit transfer
-                $ct = $t;
+                $ct = $results;
                 $transaction[] = [
                     'datetime' => $ct->created_at,
                     'amount' => $ct->amount,
@@ -42,9 +43,9 @@ class SingleTransactionTable extends Component
                     'description' => $ct->description,
                 ];
             }
-            if ($t->from_account_id === $this->accountId) {
+            if ($results->from_account_id === (int) $this->accountId) {
                 // Debit transfer
-                $dt = $t;
+                $dt = $results;
                 $transaction[] = [
                     'datetime' => $dt->created_at,
                     'amount' => $dt->amount,
@@ -55,9 +56,6 @@ class SingleTransactionTable extends Component
                     'description' => $dt->description,
                 ];
             }
-        }
-
-        $transaction = collect($transaction)->sortBy('datetime');
 
         $state = [];
         foreach ($transaction as $s) {
@@ -70,19 +68,16 @@ class SingleTransactionTable extends Component
 
             $state[] = $s;
         }
-        $transactions = $state;
+        $transaction = $state;
+        // dd($transaction);
 
-        $contents = collect($transaction)->where('relation', $this->search);
-
-        return $transaction;
+        return Arr::collapse($transaction);
     }
 
     public function render()
     {
-        return view('livewire.single-transaction-table', [
-            'transaction' => collect($this->getTransaction())
-            ->sortByDesc('datetime')
-        ]);
+        $this->transaction = $this->getTransaction();
+        return view('livewire.single-transaction-table');
     }
 }
 

@@ -39,13 +39,13 @@ class TransactionController extends Controller
     }
 
 
-    public function singleTransaction($transactionId, $accountId)
+    public function statement($transactionId, $accountId)
     {
-        info('test');
+        // dd('test');
         info($transactionId);
         info($accountId);
 
-        return view('transactions.single-transaction', compact(['transactionId', 'accountId']));
+        return view('transactions.statement', compact(['transactionId', 'accountId']));
     }
 
 

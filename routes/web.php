@@ -56,7 +56,10 @@ Route::middleware([
     Route::get('/transactions', 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
 
     //TODO: Route fixen!
-    // Route::get('/transaction/{transactionId}/{accountId}', function ($transactionId, $acountId {return 'Transaction '.$id, 'Account '.$id})'App\Http\Controllers\TransactionController@singleTransaction')->name('transaction');
+    Route::get('/statement/{transactionId}/{accountId}', 'App\Http\Controllers\TransactionController@statement')
+    ->where(['transactionId' => '[0-9]+'])     // Add constraint: only numbers allowed
+    ->where(['accountId' => '[0-9]+'])         // Add constraint: only numbers allowed
+    ->name('transaction.show');
 
     Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
 

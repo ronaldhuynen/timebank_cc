@@ -1,5 +1,4 @@
 <div class="mt-6">
-
     <!-- Results table -->
     <table class="min-w-full w-full leading-normal" id="transaction">
         <thead>
@@ -31,13 +30,6 @@
                         {{ __('Amount') }}
                     </a>
                 </th>
-                <th class="py-6 border-b border-gray-200 text-right">
-
-
-                    <a wire:click.prevent="sortBy('balance')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-800 text-sm uppercase font-normal">
-                        {{ __('Balance') }}
-                    </a>
-                </th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +55,7 @@
                 </td>
                 <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-8/16">
                     <p class="text-gray-900 whitespace-no-wrap">
-                        {{ (strlen($transaction['description']) > 58) ? substr_replace($transaction['description'], '...', 55) : $transaction['description'] }}
+                        {{ $transaction['description'] }}
                     </p>
                 </td>
                 <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
@@ -76,14 +68,13 @@
                         @endif
                     </p>
                 </td>
-                <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
-                    <p class="text-gray-900 whitespace-no-wrap">
-                        {{ ($search != null ? '' : tbFormat($transaction['balance'])) }}
-                    </p>
-                </td>
             </tr>
         </tbody>
     </table>
+    <div class="my-6 text-gray-500 text-right">
+
+        {{ __('Footer texts here.') }}
+    </div>
 
 </div>
 

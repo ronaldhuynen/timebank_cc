@@ -14,7 +14,6 @@
                         {{ __('Transaction Statement') }}
                     </div>
 
-
                     <div class="mt-6 mb-12 text-gray-500">
                         {{__('Here a short intro about this page.')}}
                     </div>

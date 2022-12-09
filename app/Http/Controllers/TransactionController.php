@@ -46,12 +46,6 @@ class TransactionController extends Controller
 
         $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
             ->where('id', $transactionId)
-            // ->whereHas('accountTo.accountable', function ($query) {
-            //     $query->where('id', auth()->id());
-            // })
-            // ->orWhereHas('accountFrom.accountable', function ($query) {
-            //     $query->where('id', auth()->id());
-            // })
             ->whereHas('accountTo', function ($query) {
                 $query->where('accountable_type', Session('activeProfileType'))
                 ->where('accountable_id',  Session('activeProfileId'));

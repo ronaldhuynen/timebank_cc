@@ -26,7 +26,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('amount');
             $table->integer('amount-max')->default(12000); //TODO remove default
             $table->dateTime('programmed_time')->nullable();
-            $table->string('description');
+            $table->text('description');
             $table->string('from_reference')->default('from_reference'); //TODO remove default;
             $table->string('to_reference')->default('to_reference'); //TODO remove default;
             $table->unsignedBigInteger('transaction_type_id')->default(1); //TODO remove default;

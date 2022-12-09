@@ -20,35 +20,35 @@
          <tr>
             <th class="py-6 border-b border-gray-200">
 
-                <a wire:click.prevent="sortBy('datetime')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-800 text-sm uppercase font-normal">
+                <a wire:click.prevent="sortBy('datetime')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
                     {{ __('Date') }}
                 </a>
              </th>
              <th class="py-6 border-b border-gray-200">
 
 
-                <a wire:click.prevent="sortBy('relation')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-800 text-sm uppercase font-normal">
+                <a wire:click.prevent="sortBy('relation')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
                     {{ __('From / to') }}
                 </a>
              </th>
              <th class="py-6 border-b border-gray-200">
 
 
-                <a wire:click.prevent="sortBy('description')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-800 text-sm uppercase font-normal">
+                <a wire:click.prevent="sortBy('description')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
                     {{ __('Details') }}
                 </a>
             </th>
             <th class="py-6 border-b border-gray-200 text-right">
 
 
-                <a wire:click.prevent="sortBy('amount')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-800 text-sm uppercase font-normal">
+                <a wire:click.prevent="sortBy('amount')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
                     {{ __('Amount') }}
                 </a>
             </th>
             <th class="py-6 border-b border-gray-200 text-right">
 
 
-                <a wire:click.prevent="sortBy('balance')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-800 text-sm uppercase font-normal">
+                <a wire:click.prevent="sortBy('balance')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
                     @if ($searchState === false )
                             {{ __('Balance') }}
                         @else
@@ -60,7 +60,7 @@
      </thead>
      <tbody>
          @foreach($transactions as $transaction)
-         <tr>
+         <tr onclick="window.location='{{ route('transaction.show', $transaction['trans_id']) }}'" style="cursor: pointer;">
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-2/16">
                  <p class="text-gray-900 whitespace-no-wrap">
                      {{ date('d-m-Y', strtotime($transaction['datetime'])) }}

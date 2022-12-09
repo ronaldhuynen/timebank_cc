@@ -89,6 +89,7 @@ if ($this->searchState === false) {
                 // Credit transfer
                 $ct = $t;
                 $transactions[] = [
+                    'trans_id' =>  $ct->id,
                     'datetime' => $ct->created_at,
                     'amount' => $ct->amount,
                     'type' => 'Credit',
@@ -102,6 +103,7 @@ if ($this->searchState === false) {
                 // Debit transfer
                 $dt = $t;
                 $transactions[] = [
+                    'trans_id' =>  $dt->id,
                     'datetime' => $dt->created_at,
                     'amount' => $dt->amount,
                     'type' => 'Debit',
@@ -162,6 +164,7 @@ if ($this->searchState === false) {
                 // Credit transfer
                 $ct = $t;
                 $transactions[] = [
+                    'trans_id' => $ct->id,
                     'datetime' => $ct->created_at,
                     'amount' => $ct->amount,
                     'type' => 'Credit',
@@ -171,10 +174,12 @@ if ($this->searchState === false) {
                     'description' => $ct->description,
                 ];
             }
+
             if ($t->from_account_id === $accountId) {
                 // Debit transfer
                 $dt = $t;
                 $transactions[] = [
+                    'trans_id' =>  $dt->id,
                     'datetime' => $dt->created_at,
                     'amount' => $dt->amount,
                     'type' => 'Debit',
@@ -187,7 +192,6 @@ if ($this->searchState === false) {
         }
 
         $transactions = collect($transactions)->sortBy('datetime');
-
         $state = [];
         foreach ($transactions as $s) {
             if ($s['type'] == 'Debit') {
@@ -200,8 +204,6 @@ if ($this->searchState === false) {
             $state[] = $s;
         }
         $transactions = $state;
-
-        $contents = collect($transactions)->where('relation', $this->search);
         }
 
         return $transactions;

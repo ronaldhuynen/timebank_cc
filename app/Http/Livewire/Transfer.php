@@ -2,13 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Account;
-use Livewire\Component;
-use App\Models\Transaction;
+use App\Http\Controllers\TransactionController;
 use App\Mail\TransferReceived;
+use App\Models\Account;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\TransactionController;
+use Livewire\Component;
 use WireUi\Traits\Actions;
 
 
@@ -39,7 +39,7 @@ class Transfer extends Component
     protected $rules = [
         'amount' => 'required|regex:/^\d*:[0-5]\d$/',
         'toAccountId' => 'required',
-        'description' => 'required|string|min:3|max:255'
+        'description' => 'required|string|min:3|max:1500'
     ];
 
 

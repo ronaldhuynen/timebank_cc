@@ -2884,7 +2884,7 @@ select {
   color: rgb(99 102 241 / var(--tw-text-opacity));
 }
 
-.text-gray-800 {
+.text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
@@ -3231,7 +3231,7 @@ select {
   color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
-.hover\:text-gray-800:hover {
+.hover\:text-gray-900:hover {
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
@@ -3381,7 +3381,7 @@ select {
   color: rgb(55 48 163 / var(--tw-text-opacity));
 }
 
-.focus\:text-gray-800:focus {
+.focus\:text-gray-900:focus {
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
@@ -3471,7 +3471,7 @@ select {
   color: rgb(107 114 128 / var(--tw-text-opacity));
 }
 
-.active\:text-gray-800:active {
+.active\:text-gray-900:active {
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }

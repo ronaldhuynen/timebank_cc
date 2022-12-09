@@ -108,7 +108,7 @@
                                     </button>
                                 </span>
                             @endif
-                                        <span class="badge badge-pill badge-danger mr-n2" id="nav_mobile_total_count"></span>
+                            <span class="badge badge-pill badge-danger mr-n2" id="nav_mobile_total_count"></span>
 
                         </x-slot>
 
@@ -220,7 +220,7 @@
                 @endif
 
                 <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-base text-gray-900">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
             </div>

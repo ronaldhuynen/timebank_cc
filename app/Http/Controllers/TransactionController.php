@@ -6,6 +6,7 @@ use App\Http\Livewire\TransactionsTable;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Request;
 
@@ -43,7 +44,28 @@ class TransactionController extends Controller
     {
         info($transactionId);
 
-        return view('transactions.statement', compact(['transactionId']));
+        $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+            ->where('id', $transactionId)
+            // ->whereHas('accountTo.accountable', function ($query) {
+            //     $query->where('id', auth()->id());
+            // })
+            // ->orWhereHas('accountFrom.accountable', function ($query) {
+            //     $query->where('id', auth()->id());
+            // })
+            ->whereHas('accountTo', function ($query) {
+                $query->where('accountable_type', Session('activeProfileType'))
+                ->where('accountable_id',  Session('activeProfileId'));
+            })
+            ->orWhereHas('accountFrom.accountable', function ($query) {
+                 $query->where('accountable_type', Session('activeProfileType'))
+                ->where('accountable_id', Session('activeProfileId'));
+            })
+            ->find($transactionId);
+
+            //TODO: add permission check
+            //TODO: if 403, but has permission, redirect with message to switch profile
+            //TODO: replace 403 with custom redirect page incl explanation
+        return ($results != null ? view('transactions.statement', compact(['transactionId'])) : abort(403));
     }
 
 

@@ -286,10 +286,6 @@
         function drop() {
             $('#click_friends_tab').dropdown();
         };
-
-        Echo.private('messenger.user.1')
-        .listen('.new.message', (e) => console.log(e))
-
     </script>
 
     {{-- <script>

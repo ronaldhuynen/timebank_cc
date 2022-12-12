@@ -19,11 +19,10 @@ class NotifySwitchProfile extends Component
     {
         // WireUI notification
 
-$this->notification()->success(
-    $title = 'Profile saved',
-    $description = 'Your profile was successfull saved'
-);
-
+        $this->notification()->success(
+            $title = 'Profile saved',
+            $description = 'Your profile was successfull saved'
+        );
     }
 
 

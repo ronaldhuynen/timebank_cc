@@ -13,9 +13,6 @@
         <wireui:scripts />
         <script src="//unpkg.com/alpinejs" defer></script>
 
-
-
-
         <!-- Fonts -->
 
         <!-- Styles -->
@@ -216,8 +213,8 @@
             </main>
         </div>
         <!-- Scripts -->
-        <!-- FIXME: Without this app.js Pusher and Echo will not load, however it causes a lot of errors and warnings. However no functionality is lost --->
-        <script src="{{ mix('js/app.js') }}"></script>
+        <script src="{{ mix('js/echo.js') }}"></script>
+        <script src="{{ mix('js/app.js') }}" defer></script>
 
         @livewireScripts
         @stack('modals')

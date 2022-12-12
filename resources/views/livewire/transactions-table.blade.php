@@ -6,6 +6,7 @@
         </div>
         <div class="flex-auto my-6 z-50">
             <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model="fromDate" :without-time="true" />
+
         </div>
         <div class="flex-auto my-6 z-50">
             <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model="toDate" :without-time="true" />

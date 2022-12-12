@@ -18,6 +18,8 @@
         "autoprefixer": "^10.4.7",
         "axios": "^0.21",
         "bootstrap": "^4.6.2",
+        "browser-sync": "^2.27.10",
+        "browser-sync-webpack-plugin": "^2.3.0",
         "laravel-echo": "^1.14.2",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",

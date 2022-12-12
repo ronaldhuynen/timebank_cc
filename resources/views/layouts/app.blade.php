@@ -11,7 +11,9 @@
 
         <!-- Scripts -->
         <wireui:scripts />
-        <script src="//unpkg.com/alpinejs" defer></script>
+        {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
+        <script src="{{ asset('js/app.js') }}" defer></script>
+
 
         <!-- Fonts -->
 
@@ -214,11 +216,11 @@
         </div>
         <!-- Scripts -->
         <script src="{{ mix('js/echo.js') }}"></script>
-        <script src="{{ mix('js/app.js') }}" defer></script>
-
         @livewireScripts
         @stack('modals')
         @include('messenger::scripts')
+
+
 
         <!-- ProfileSwitchEvent --->
         {{-- <script>

@@ -6,6 +6,9 @@ module.exports = {
     // purge: [
     //     './public/**/*.html',
     //     './src/**/*.{js,jsx,ts,tsx,vue}'],
+    presets: [
+        require('./vendor/wireui/wireui/tailwind.config.js')
+    ],
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',

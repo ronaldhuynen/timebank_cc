@@ -2,14 +2,17 @@
 
     <div class="flex space-x-12">
         <div class="flex-none w-2/4 my-6">
-            <x-input wire:model="search" right-icon="search" label="{{ __('Search keywords') }}" placeholder="Name, email, description, amount..." />
-        </div>
-        <div class="flex-auto my-6 z-50">
-            <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model="fromDate" :without-time="true" />
+            <x-input wire:model="search" right-icon="search" label="{{ __('Search keywords') }}" placeholder="Name, email, description, amount..." :clearable="true" />
 
         </div>
         <div class="flex-auto my-6 z-50">
-            <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model="toDate" :without-time="true" />
+            <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model="fromDate" :without-time="true" display-format="DD-MM-YYYY" />
+
+        </div>
+
+        <div class="flex-auto my-6 z-50">
+            <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model="toDate" :without-time="true" display-format="DD-MM-YYYY" />
+
         </div>
     </div>
 

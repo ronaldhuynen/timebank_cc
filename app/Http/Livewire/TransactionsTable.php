@@ -2,17 +2,14 @@
 
 namespace App\Http\Livewire;
 
-
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Searchable\Search;
 
 class TransactionsTable extends Component
 {
     use WithPagination;
-
 
     public $searchState = false;
     public $search = '';
@@ -35,30 +32,30 @@ class TransactionsTable extends Component
     }
 
 
-    function updatingSearch()
+    public function updatingSearch()
     {
         $this->searchState = true;
         $this->resetPage();
     }
 
 
-    function updatingFromDate()
+    public function updatingFromDate()
     {
         $this->searchState = true;
         $this->resetPage();
     }
 
 
-    function updatingToDate()
+    public function updatingToDate()
     {
         $this->searchState = true;
         $this->resetPage();
     }
 
 
-   function updatingPerPage()
+   public function updatingPerPage()
    {
-       $this->resetPage();
+        $this->resetPage();
    }
 
 
@@ -71,67 +68,66 @@ class TransactionsTable extends Component
 
     public function getTransactions()
     {
-    $search = $this->search;
-    $transactions = [];
-    $balance = 0;
-    $accountId = $this->fromAccountId;
+        $search = $this->search;
+        $transactions = [];
+        $balance = 0;
+        $accountId = $this->fromAccountId;
 
-    //TODO: Zoeken op amount mogelijk maken!
+        //TODO: Zoeken op amount mogelijk maken!
 
-if ($this->searchState === false) {
-        $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
-            ->where('to_account_id', $accountId)
-            ->orWhere('from_account_id', $accountId)
-            ->get();
+        if ($this->searchState === false) {
+            $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+                ->where('to_account_id', $accountId)
+                ->orWhere('from_account_id', $accountId)
+                ->get();
 
-        foreach ($results as $t) {
-            if ($t->to_account_id === $accountId) {
-                // Credit transfer
-                $ct = $t;
-                $transactions[] = [
-                    'trans_id' =>  $ct->id,
-                    'datetime' => $ct->created_at,
-                    'amount' => $ct->amount,
-                    'type' => 'Credit',
-                    'account_from' => $ct->from_account_id,
-                    'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
-                    'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
-                    'description' => $ct->description,
-                ];
+            foreach ($results as $t) {
+                if ($t->to_account_id === $accountId) {
+                    // Credit transfer
+                    $ct = $t;
+                    $transactions[] = [
+                        'trans_id' =>  $ct->id,
+                        'datetime' => $ct->created_at,
+                        'amount' => $ct->amount,
+                        'type' => 'Credit',
+                        'account_from' => $ct->from_account_id,
+                        'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
+                        'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
+                        'description' => $ct->description,
+                    ];
+                }
+                if ($t->from_account_id === $accountId) {
+                    // Debit transfer
+                    $dt = $t;
+                    $transactions[] = [
+                        'trans_id' =>  $dt->id,
+                        'datetime' => $dt->created_at,
+                        'amount' => $dt->amount,
+                        'type' => 'Debit',
+                        'account_to' => $dt->to_account_id,
+                        'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
+                        'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
+                        'description' => $dt->description,
+                    ];
+                }
             }
-            if ($t->from_account_id === $accountId) {
-                // Debit transfer
-                $dt = $t;
-                $transactions[] = [
-                    'trans_id' =>  $dt->id,
-                    'datetime' => $dt->created_at,
-                    'amount' => $dt->amount,
-                    'type' => 'Debit',
-                    'account_to' => $dt->to_account_id,
-                    'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
-                    'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
-                    'description' => $dt->description,
-                ];
+
+            $transactions = collect($transactions)->sortBy('datetime');
+
+            $state = [];
+            foreach ($transactions as $s) {
+                if ($s['type'] == 'Debit') {
+                    $balance -= $s['amount'];
+                } else {
+                    $balance += $s['amount'];
+                }
+                $s['balance'] = $balance;
+
+                $state[] = $s;
             }
-        }
-
-        $transactions = collect($transactions)->sortBy('datetime');
-
-        $state = [];
-        foreach ($transactions as $s) {
-            if ($s['type'] == 'Debit') {
-                $balance -= $s['amount'];
-            } else {
-                $balance += $s['amount'];
-            }
-            $s['balance'] = $balance;
-
-            $state[] = $s;
-        }
-        $transactions = $state;
-
+            $transactions = $state;
         } else {
-            // $searchState == true
+            // $searchState is true
             $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
             ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
             ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
@@ -146,64 +142,63 @@ if ($this->searchState === false) {
             ->get();
 
 
-    // if (!isset($this->fromDate) ? $this->fromDate = Carbon::now()->subYear(1)->toDateString() : $this->fromDate);
-    // if (!isset($this->toDate) ? $this->toDate = Carbon::now()->toDateString() : $this->toDate);
+            if ($this->fromDate == null) {
+                // $this->fromDate = Carbon::now()->subDays(365)->toDateString();
+                $this->fromDate = '';
 
 
-        if ($this->fromDate == null) {
-            $this->fromDate = "";
-        }
-        if ($this->toDate == null) {
-            $this->toDate = Carbon::now()->toDateString();
-        }
-
-        $results = $searchResults->whereBetween('created_at', [$this->fromDate, $this->toDate]);
-
-        foreach ($results as $t) {
-            if ($t->to_account_id === $accountId) {
-                // Credit transfer
-                $ct = $t;
-                $transactions[] = [
-                    'trans_id' => $ct->id,
-                    'datetime' => $ct->created_at,
-                    'amount' => $ct->amount,
-                    'type' => 'Credit',
-                    'account_from' => $ct->from_account_id,
-                    'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
-                    'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
-                    'description' => $ct->description,
-                ];
+            }
+            if ($this->toDate == null) {
+                $this->toDate = Carbon::now()->toDateString();
             }
 
-            if ($t->from_account_id === $accountId) {
-                // Debit transfer
-                $dt = $t;
-                $transactions[] = [
-                    'trans_id' =>  $dt->id,
-                    'datetime' => $dt->created_at,
-                    'amount' => $dt->amount,
-                    'type' => 'Debit',
-                    'account_to' => $dt->to_account_id,
-                    'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
-                    'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
-                    'description' => $dt->description,
-                ];
-            }
-        }
+            $results = $searchResults->whereBetween('created_at', [$this->fromDate, $this->toDate]);
 
-        $transactions = collect($transactions)->sortBy('datetime');
-        $state = [];
-        foreach ($transactions as $s) {
-            if ($s['type'] == 'Debit') {
-                $balance -= $s['amount'];
-            } else {
-                $balance += $s['amount'];
-            }
-            $s['balance'] = $balance;
+            foreach ($results as $t) {
+                if ($t->to_account_id === $accountId) {
+                    // Credit transfer
+                    $ct = $t;
+                    $transactions[] = [
+                        'trans_id' => $ct->id,
+                        'datetime' => $ct->created_at,
+                        'amount' => $ct->amount,
+                        'type' => 'Credit',
+                        'account_from' => $ct->from_account_id,
+                        'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
+                        'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
+                        'description' => $ct->description,
+                    ];
+                }
 
-            $state[] = $s;
-        }
-        $transactions = $state;
+                if ($t->from_account_id === $accountId) {
+                    // Debit transfer
+                    $dt = $t;
+                    $transactions[] = [
+                        'trans_id' =>  $dt->id,
+                        'datetime' => $dt->created_at,
+                        'amount' => $dt->amount,
+                        'type' => 'Debit',
+                        'account_to' => $dt->to_account_id,
+                        'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
+                        'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
+                        'description' => $dt->description,
+                    ];
+                }
+            }
+
+            $transactions = collect($transactions)->sortBy('datetime');
+            $state = [];
+            foreach ($transactions as $s) {
+                if ($s['type'] == 'Debit') {
+                    $balance -= $s['amount'];
+                } else {
+                    $balance += $s['amount'];
+                }
+                $s['balance'] = $balance;
+
+                $state[] = $s;
+            }
+            $transactions = $state;
         }
 
         return $transactions;

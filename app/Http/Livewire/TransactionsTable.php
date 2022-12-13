@@ -145,8 +145,6 @@ class TransactionsTable extends Component
             if ($this->fromDate == null) {
                 // $this->fromDate = Carbon::now()->subDays(365)->toDateString();
                 $this->fromDate = '';
-
-
             }
             if ($this->toDate == null) {
                 $this->toDate = Carbon::now()->toDateString();

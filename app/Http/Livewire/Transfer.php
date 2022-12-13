@@ -202,7 +202,7 @@ class Transfer extends Component
                 // WireUI notification
                 $this->notification()->success(
                     $title = __('Transfer complete!'),
-                    $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.'
+                    $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />'. '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>'
                 );
 
                 $this->emit('resetForm');

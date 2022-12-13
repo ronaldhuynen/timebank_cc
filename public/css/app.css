@@ -1533,9 +1533,6 @@ select {
 .mb-1 {
   margin-bottom: 0.25rem;
 }
-.-mt-px {
-  margin-top: -1px;
-}
 .mr-4 {
   margin-right: 1rem;
 }
@@ -1544,6 +1541,9 @@ select {
 }
 .mt-0 {
   margin-top: 0px;
+}
+.-mt-px {
+  margin-top: -1px;
 }
 .ml-auto {
   margin-left: auto;
@@ -1800,14 +1800,14 @@ select {
 .max-w-xl {
   max-width: 36rem;
 }
-.max-w-6xl {
-  max-width: 72rem;
-}
 .max-w-sm {
   max-width: 24rem;
 }
 .max-w-md {
   max-width: 28rem;
+}
+.max-w-6xl {
+  max-width: 72rem;
 }
 .max-w-lg {
   max-width: 32rem;
@@ -2234,9 +2234,6 @@ select {
 }
 .border-b {
   border-bottom-width: 1px;
-}
-.border-r {
-  border-right-width: 1px;
 }
 .border-l {
   border-left-width: 1px;
@@ -2992,9 +2989,6 @@ select {
 .pb-0 {
   padding-bottom: 0px;
 }
-.pt-8 {
-  padding-top: 2rem;
-}
 .pl-4 {
   padding-left: 1rem;
 }
@@ -3009,6 +3003,9 @@ select {
 }
 .pr-8 {
   padding-right: 2rem;
+}
+.pt-8 {
+  padding-top: 2rem;
 }
 .pl-10 {
   padding-left: 2.5rem;
@@ -3142,11 +3139,11 @@ select {
 .tracking-widest {
   letter-spacing: 0.1em;
 }
-.tracking-wider {
-  letter-spacing: 0.05em;
-}
 .tracking-tight {
   letter-spacing: -0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
 .tracking-wide {
   letter-spacing: 0.025em;
@@ -3255,14 +3252,6 @@ select {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity));
 }
-.text-gray-200 {
-  --tw-text-opacity: 1;
-  color: rgb(229 231 235 / var(--tw-text-opacity));
-}
-.text-gray-300 {
-  --tw-text-opacity: 1;
-  color: rgb(209 213 219 / var(--tw-text-opacity));
-}
 .text-secondary-900 {
   --tw-text-opacity: 1;
   color: rgb(15 23 42 / var(--tw-text-opacity));
@@ -3270,6 +3259,14 @@ select {
 .text-primary-500 {
   --tw-text-opacity: 1;
   color: rgb(99 102 241 / var(--tw-text-opacity));
+}
+.text-gray-200 {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+.text-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
 }
 .text-green-800 {
   --tw-text-opacity: 1;
@@ -4985,16 +4982,16 @@ input[type="number"].appearance-number-none {
   --tw-bg-opacity: 1;
   background-color: rgb(51 65 85 / var(--tw-bg-opacity));
 }
-.dark .dark\:bg-gray-900 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
-}
 .dark .dark\:bg-secondary-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(71 85 105 / var(--tw-bg-opacity));
 }
 .dark .dark\:bg-transparent {
   background-color: transparent;
+}
+.dark .dark\:bg-gray-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
 }
 .dark .dark\:bg-gray-800 {
   --tw-bg-opacity: 1;

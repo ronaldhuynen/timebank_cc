@@ -97,12 +97,36 @@
     </div>
 
     <div class="my-6 text-gray-900 text-right align-bottom">
-        <span class="float-right inline align-bottom">
+        <span wire:click="$toggle('qrModalVisible')" class="float-right inline align-bottom">
+
             {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(60)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
         </span>
         <x-icon name="link" class="inline w-6 h-6 mx-3 mt-9" solid />
         <x-icon name="mail" class="inline w-6 h-6 mr-4 mt-9" solid />
     </div>
+
+
+    <!---- Confirmation Modal ---->
+    <x-jet-dialog-modal wire:model="qrModalVisible">
+        <x-slot name="title">
+        </x-slot>
+
+        <x-slot name="content">
+        <div class="absolute"></div>
+
+            <!-- TODO: Align qr in center and scale to max width -->
+            <div wire:click="$toggle('qrModalVisible')" class="object-cover relative inset-0">
+                {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(280)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
+            </div>
+            {{ route('transaction.show', ['transactionId' => $transactionId]) }}
+
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+        </x-slot>
+    </x-jet-dialog-modal>
+
 
 </div>
 

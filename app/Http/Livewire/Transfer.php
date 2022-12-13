@@ -132,10 +132,10 @@ class Transfer extends Component
 
 
     /**
-             * Shows the transfer confirmation modal after a 2nd and complete validation
-             *`
-             * @return void
-             */
+    * Shows the transfer confirmation modal after a 2nd and complete validation
+    *
+    * @return void
+    */
     public function confirmModal()
     {
         try {

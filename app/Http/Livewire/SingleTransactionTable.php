@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Transaction;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 
@@ -12,6 +11,7 @@ class SingleTransactionTable extends Component
     // public $singleTransaction = [];
     public $balance = 0;
     public $transaction;
+    public $qrModalVisible = false;
 
     public function mount($transactionId)
     {
@@ -41,6 +41,12 @@ class SingleTransactionTable extends Component
         // dd($transaction);
 
         return Arr::collapse($transaction);
+    }
+
+
+    public function qrModal()
+    {
+        $this->qrModalVisible = true;
     }
 
     public function render()

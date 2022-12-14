@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RegisterStep2Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,7 @@ Route::get('/', function () {
 });
 
 
+
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
@@ -45,22 +47,25 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::group(['middleware' => ['registration-complete']], function () {
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
 
-    Route::get('/transfer', 'App\Http\Controllers\TransactionController@transfer')->name('transfer');
+        Route::get('/transfer', 'App\Http\Controllers\TransactionController@transfer')->name('transfer');
+        Route::post('/transfer', 'App\Http\Controllers\TransactionController@saveTransfer')->name('saveTransfer');
+        Route::get('/transactions', 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
 
-    Route::post('/transfer', 'App\Http\Controllers\TransactionController@saveTransfer')->name('saveTransfer');
+        Route::get('/statement/{transactionId}', 'App\Http\Controllers\TransactionController@statement')
+            ->where(['transactionId' => '[0-9]+'])     // Add constraint: only numbers allowed
+            ->name('transaction.show');
 
-    Route::get('/transactions', 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
+        Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
+    });
 
-    //TODO: Route fixen!
-    Route::get('/statement/{transactionId}', 'App\Http\Controllers\TransactionController@statement')
-    ->where(['transactionId' => '[0-9]+'])     // Add constraint: only numbers allowed
-    ->name('transaction.show');
-
-    Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
-
+    //Registration steps, protected with auth middleware
+    Route::get('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'create'])
+        ->name('register-step2.create');
+    Route::post('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'store'])
+        ->name('register-step2.post');
 });
-

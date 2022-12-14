@@ -97,7 +97,9 @@
     </div>
 
     <div class="my-6 text-gray-900 text-right align-bottom">
-        <span wire:click="$toggle('qrModalVisible')" class="float-right inline align-bottom" style="cursor: pointer;">
+        <span wire:click="$toggle('qrModalVisible')" class="float-right inline align-bottom" style="cursor: pointer;" onclick="qrModal()">
+
+
             {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(60)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
         </span>
         <x-icon name="link" class="inline w-6 h-6 mx-3 mt-9" solid />
@@ -107,6 +109,7 @@
 
     <!---- Confirmation Modal ---->
     <x-jet-dialog-modal wire:model="qrModalVisible">
+
         <x-slot name="title">
         </x-slot>
 
@@ -114,18 +117,24 @@
         <div class="absolute"></div>
 
             <!-- TODO: Align qr in center and scale to max width -->
-            <div wire:click="$toggle('qrModalVisible')" class="object-cover relative inset-0">
+            <div wire:click="$toggle('qrModalVisible')" class="object-cover relative inset-0" id="qr-container">
                 {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(280)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
-            </div>
-            {{ route('transaction.show', ['transactionId' => $transactionId]) }}
+               <script>
+                   function qrModal() {
+                       console.log('qrModal exxcutes');
+                        document.getElementById('qr-container').firstElementChild.setAttribute("width", "100%");
+                        document.getElementById('qr-container').firstElementChild.setAttribute("height", "100%");
+                        document.getElementById('qr-container').firstElementChild.setAttribute("viewBox", "0 0 600 600");
+                        console.log(document.getElementById('qr-container').firstElementChild);
+                   }
+               </script>
 
             </div>
+            {{ route('transaction.show', ['transactionId' => $transactionId]) }}
         </x-slot>
 
         <x-slot name="footer">
         </x-slot>
     </x-jet-dialog-modal>
-
-
 </div>
 

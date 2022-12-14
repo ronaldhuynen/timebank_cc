@@ -55,18 +55,9 @@ class SelectOrganisation extends Component
                     'activeProfilePhoto'=> $activeProfile['photo']
                 ]);
 
-
-        // WireUI notification
-        // $this->notification()->success(
-        //     $title = __('Active Profile is changed'),
-        //     $description = __('You are now acting as: ') . $activeProfile['name'] . '.',
-        //     $timeout = 3
-        // );
         redirect('/dashboard')->with('success', 'Active profile has switched!');
 
-
     }
-
 
 
     public function organisationSelected($organisationId = null)

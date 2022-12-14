@@ -1,8 +1,7 @@
 <form wire:submit.prevent="confirmModal">
 
-
     @csrf
-    <div class="px-4 py-5 sm:p-6 bg-white shadow sm:rounded-lg">
+    <div class="px-4 py-4 sm:p-6 bg-white shadow sm:rounded-lg">
             <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-4">
 

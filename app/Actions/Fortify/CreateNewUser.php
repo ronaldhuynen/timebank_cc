@@ -3,11 +3,11 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\Facades\Hash;
-use RTippin\Messenger\Facades\Messenger;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Laravel\Jetstream\Jetstream;
+use RTippin\Messenger\Facades\Messenger;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -25,7 +25,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string','max:25', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+            // 'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
         $user = User::create([
@@ -34,8 +34,6 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
-        // Assign (Spatie Permission) Role:
-        // $user->assignRole('User');
 
         // Attach (Rtippin Messenger) Provider:
         Messenger::getProviderMessenger($user);

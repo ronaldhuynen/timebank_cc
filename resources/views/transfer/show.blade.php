@@ -17,7 +17,7 @@
                         <p class="mt-1 text-sm text-gray-600">{{ __('Regardless the type of help you provided. You can include preparation time that is directly related to this exchange. For group exchanges your total work-time should be split by the number of participants. Timebank.cc exchanges are only for non-profit puproses.')  }}</p>
                     </div>
                 </div>
-                <div class="mt-5 md:mt-0 md:col-span-2 ">
+                <div class="mt-0 md:mt-0 md:col-span-2 ">
 
                     <livewire:transfer>
 

@@ -1,4 +1,4 @@
-<div class="mt-6">
+<div class="my-4">
 
     <div class="flex space-x-12">
         <div class="flex-none w-2/4 my-6">
@@ -19,7 +19,7 @@
 
 
 <!-- Results table -->
- <table wire:model="searchState" class="min-w-full w-full leading-normal" id="transactions">
+ <table wire:model="searchState" class="mbt-2 mb-20 min-w-full w-full leading-normal" id="transactions">
      <thead>
          <tr>
             <th class="py-6 border-b border-gray-200">
@@ -49,17 +49,13 @@
                     {{ __('Amount') }}
                 </a>
             </th>
+            @if ($searchState === false )
             <th class="py-6 border-b border-gray-200 text-right">
-
-
                 <a wire:click.prevent="sortBy('balance')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
-                    @if ($searchState === false )
-                            {{ __('Balance') }}
-                        @else
-                            {{ __('Total') }}
-                    @endif
+                    {{ __('Balance') }}
                 </a>
             </th>
+            @endif
          </tr>
      </thead>
      <tbody>
@@ -85,9 +81,15 @@
                  </div>
              </td>
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-8/16">
-                 <p class="text-gray-900 whitespace-no-wrap">
-                     {{ (strlen($transaction['description']) > 58) ? substr_replace($transaction['description'], '...', 55) : $transaction['description'] }}
-                 </p>
+                @if ($searchState === false )
+                    <p class="text-gray-900 whitespace-no-wrap">
+                        {{ (strlen($transaction['description']) > 63) ? substr_replace($transaction['description'], '...', 60) : $transaction['description'] }}
+                    </p>
+                @else
+                    <p class="text-gray-900 whitespace-no-wrap">
+                        {{ (strlen($transaction['description']) > 83) ? substr_replace($transaction['description'], '...', 80) : $transaction['description'] }}
+                    </p>
+                @endif
              </td>
              <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
                  <p class="text-gray-900 whitespace-no-wrap">
@@ -98,22 +100,24 @@
                      @endif
                  </p>
              </td>
-             <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
-                 <p class="text-gray-900 whitespace-no-wrap">
-                    @if ( $transaction['balance'] < 0 )
-                        <span class="text-red-700"> {{ tbFormat($transaction['balance']) }} </span>
-                    @else
-                        <span class="text-gray-900"> {{ tbFormat($transaction['balance']) }} </span>
-                    @endif
-                 </p>
-             </td>
+            @if ($searchState === false )
+                <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
+                    <p class="text-gray-900 whitespace-no-wrap">
+                        @if ( $transaction['balance'] < 0 )
+                            <span class="text-red-700"> {{ tbFormat($transaction['balance']) }} </span>
+                        @else
+                            <span class="text-gray-900"> {{ tbFormat($transaction['balance']) }} </span>
+                        @endif
+                    </p>
+                </td>
+            @endif
          </tr>
          @endforeach
      </tbody>
  </table>
 
 <!-- Pagination -->
- <div class="row my-16 relative">
+ <div class="row my-6 relative">
     <div class="flex">
         <select wire:model="perPage" class="w-16 py-2 px-3 border border-gray-300 bg-white text-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             <option value="5">5</option>

@@ -21,6 +21,11 @@ return new class extends Migration
             $table->string('password');
             $table->string('locale', 3)->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+
+            $table->text('about')->nullable();
+            $table->text('motivation')->nullable();
+            $table->date('date_of_birth')->nullable();
+
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->timestamps();

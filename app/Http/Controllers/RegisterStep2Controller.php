@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ProfileSwitchEvent;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -26,16 +25,16 @@ class RegisterStep2Controller extends Controller
             auth()->user()->updateProfilePhoto($request->photo);
         }
 
-
+        // Final action before registration is complete.
+        // Always move this section to the final registration step.
         Session([
             'activeProfileType' => User::class,
             'activeProfileId' => auth()->user()->id,
             'activeProfileName'=> auth()->user()->name,
-            'activeProfilePhoto'=> auth()->user()->profile_photo_path
+            'activeProfilePhoto'=> auth()->user()->profile_photo_path,
+            'firstLogin' => true
         ]);
-
-
-            //TODO: Add special welcom text on ow to get started
+        //TODO: Welcome and introduction with Session('firstLogin') on rest of site views
         return redirect()->route('dashboard');
 
     }

@@ -15,7 +15,7 @@
 
                 <!--- Stepper --->
                 <h1 class="mt-12 text-gray-500">{{ __('Step 1 of 3') }}</h1>
-                <div class="mb-10 mt-2 ml-10 sm:ml-80 h-4 relative rounded-full overflow-hidden">
+                <div class="mb-10 mt-2 relative inset-x-0 bottom-0 h-4  rounded-full overflow-hidden">
                     <div class=" w-full h-full bg-gray-200 absolute "></div>
                     <div class=" h-full bg-gray-500 absolute" style="width:33%"></div>
                 </div>

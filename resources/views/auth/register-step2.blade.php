@@ -7,12 +7,12 @@
         <x-jet-section-title>
             <x-slot name="title">{{ __('Please introduce yourself') }}</x-slot>
             <x-slot name="description">
-                <div class="my-4">{{ __('Other Timebankers like to know a bit about you before they start their first exchange with you.') }}</div>
+                <div class="my-4">{{ __('Other Timebankers like to know who you are before they start their first exchange with you.') }}</div>
                 <div class="my-4">{{ __('Explaining why you like to be part of our time economy can also help with getting new exhanges.') }}</div>
 
                 <!--- Stepper --->
                 <h1 class="mt-12 text-gray-500">{{ __('Step 2 of 3') }}</h1>
-                <div class="mb-10 mt-2 ml-10 sm:ml-80 h-4 relative rounded-full overflow-hidden">
+                <div class="mb-10 mt-2 relative inset-x-0 bottom-0 h-4  rounded-full overflow-hidden">
                     <div class=" w-full h-full bg-gray-200 absolute "></div>
                     <div class=" h-full bg-gray-500 absolute" style="width:66%"></div>
                 </div>
@@ -35,6 +35,9 @@
 
                             <form method="POST" action="{{ route('register-step2.create') }}" enctype="multipart/form-data">
                                 @csrf
+
+
+
 
                                 <div class="mt-4">
                                     <x-jet-label for="photo" value="{{ __('Profile photo') }}" />

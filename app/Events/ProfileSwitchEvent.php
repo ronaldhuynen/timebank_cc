@@ -13,7 +13,9 @@ use Illuminate\Queue\SerializesModels;
 
 class ProfileSwitchEvent implements ShouldBroadcastNow
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $activeProfile;
 
@@ -24,17 +26,18 @@ class ProfileSwitchEvent implements ShouldBroadcastNow
      */
     public function __construct($activeProfile)
     {
-        info('ProfileSwichEvent starts');
         $this->activeProfile = $activeProfile;
     }
 
 
-    public function broadcastQueue () {
+    public function broadcastQueue()
+    {
         return 'broadcastable';
     }
 
 
-    public function broadcastWith () {
+    public function broadcastWith()
+    {
         return [
             'userId' => $this->activeProfile['userId'],
             'type' => $this->activeProfile['type'],
@@ -52,7 +55,6 @@ class ProfileSwitchEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        // dd('switch-profile.'.$this->data['userId']);
         return new PrivateChannel('switch-profile.' . $this->activeProfile['userId']);
     }
 }

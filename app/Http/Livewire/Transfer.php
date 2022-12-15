@@ -175,20 +175,35 @@ class Transfer extends Component
                 $transferToAccount = $account_exists->id;
             }
 
-            $from = Account::where('id', $fromAccountId)->select('limit_min')->first();
-            $to = Account::where('id', $transferToAccount)->select('limit_max')->first();
+            $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
+            $limitMinFrom = $f->limit_min;
+            $t = Account::where('id', $transferToAccount)->select('limit_max')->first();
+            $limitMaxTo = $t->limit_max;
 
-            $transferBudget = ($from->limit_min < 0) ? abs($from->limit_min) + $balanceFrom : $balanceFrom - $from->limit_min;
+            $transferBudgetFrom = $balanceFrom - $limitMinFrom;
+            $transferBudgetTo = $limitMaxTo - $balanceTo;
 
             // TODO ONDERSTAANDE VALIDATIES WERKEN NOG NIET!
             // transactie wordt niet uitgevoerd, maar foutmelding is niet getoond.
 
-            if ($amount > $transferBudget) {
-                return redirect()->back()->with('error', 'Sorry, your balance is too low for this transfer. Maximum amount available: ' . tbFormat($transferBudget));
+
+            if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
+                info('Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom));
+                return redirect()->back()->with('error', 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom));
             }
-            if ($amount > ($to->limit_max - $balanceTo)) {
-                return redirect()->back()->with('error', 'Sorry, this transfer would exceed the maximum balance of the receiving account');
+            if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
+                info('Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo));
+                return redirect()->back()->with('error', 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo));
             }
+            if ($amount > $transferBudgetFrom) {
+                info('Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom));
+                return redirect()->back()->with('error', 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom));
+            }
+            if ($amount > $transferBudgetTo) {
+                info('Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo));
+                return redirect()->back()->with('error', 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo));
+            }
+
 
             $transfer = new Transaction();
             $transfer->from_account_id = $fromAccountId;

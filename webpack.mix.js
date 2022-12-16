@@ -11,10 +11,19 @@ const mix = require('laravel-mix');
  |
  */
 
+mix.setPublicPath('public');
+mix.setResourceRoot('../');
+
 mix.js('resources/js/echo.js', 'public/js')
     .js('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css/app.css')
     .postCss('resources/css/app.css', 'public/css', [
         //
     ])
+    .copy(
+        'node_modules/@fortawesome/fontawesome-free/webfonts',
+        'public/webfonts'
+    )
     .sourceMaps()
     .version();
+

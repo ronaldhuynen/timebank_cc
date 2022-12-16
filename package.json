@@ -11,6 +11,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^6.2.1",
         "@popperjs/core": "^2.11.6",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/typography": "^0.5.0",
@@ -28,7 +29,8 @@
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.56.1",
         "sass-loader": "^12.6.0",
-        "tailwindcss": "^3.1.0"
+        "tailwindcss": "^3.1.0",
+        "ts-loader": "^9.4.2"
     },
     "dependencies": {
         "emoji-toolkit": "^7.0.0"

@@ -11,11 +11,12 @@
 
         <!-- Scripts -->
         <wireui:scripts />
-        {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
         <script src="{{ asset('js/app.js') }}" defer></script>
 
 
         <!-- Fonts -->
+
+
 
         <!-- Styles -->
         @livewireStyles
@@ -35,6 +36,7 @@
             #messenger-style-overrides .pill-tab-nav > .nav-pills > a.active:hover {background-color: #1f2937; color: #fff !important;}
             #messenger-style-overrides .pill-tab-nav > .nav-pills > a:hover {background-color: #e2e6ea; color: #1f2937 !important;}
             #messenger-style-overrides .pill-tab-nav > .nav-pills > a {background-color: #f8f9fa; color: #000; border: 1px #dee2e6 solid;}
+
 
             /* Set messenger container to match space viewport */
             #messenger-style-overrides #thread_header_area {position: initial;}
@@ -186,6 +188,22 @@
             #messenger-style-overrides b, strong {font-weight: lighter;}
             #messenger-style-overrides .badge {font-weight: 500;}
             #messenger-style-overrides .text-success {color: #1f2937 !important;}
+
+            /* Toast Notifications */
+            #messenger-style-overrides .toast-info {background-color: #1f2937}
+            #messenger-style-overrides .toast-warning {background-color: #808080}
+            #messenger-style-overrides .toast-error {background-color: #e3342f}
+            #messenger-style-overrides .toast-error {background-color: #e3342f}
+            #messenger-style-overrides .toast-succes {background-color: #fffff; color: #1f2937!important}
+
+
+
+
+
+
+
+
+
 
 
         </style>

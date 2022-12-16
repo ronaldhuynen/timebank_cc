@@ -16,6 +16,5 @@ mix.js('resources/js/echo.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         //
     ])
-    .browserSync('http://127.0.0.1:8000/')
     .sourceMaps()
     .version();

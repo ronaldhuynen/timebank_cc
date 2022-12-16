@@ -27,12 +27,6 @@
         @endif
 
 
-
     </div>
-
-
-
-
  </div>
-
 </x-app-layout>

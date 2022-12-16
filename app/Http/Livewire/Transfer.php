@@ -23,9 +23,12 @@ class Transfer extends Component
     public $toHolderId;
     public $toHolderName;
     public $description;
+    public $limitError;
     public $requiredError = false;
     public $submitEnabled = false;
     public $modalVisible = false;
+    public $modalErrorVisible = false;
+
 
     protected $listeners = [
         'amount',
@@ -131,22 +134,79 @@ class Transfer extends Component
     }
 
 
-    /**
-    * Shows the transfer confirmation modal after a 2nd and complete validation
-    *
-    * @return void
-    */
-    public function confirmModal()
+    public function validateModal()
     {
-        try {
-            $this->validate();
-        } catch (\Illuminate\Validation\ValidationException $errors) {
-            // dump($errors);
-            $this->validate();
-            // Execution stops here if validation fails.
-        }
-        $this->modalVisible = true;
+    try {
+        $this->validate();
+    } catch (\Illuminate\Validation\ValidationException $errors) {
+        // dump($errors);
+        $this->validate();
+        // Execution stops here if validation fails.
     }
+
+    $fromAccountId = $this->fromAccountId;
+    $toAccountId = $this->toAccountId;
+    $amount = dbFormat($this->amount);
+    $transactions = new TransactionController();
+    $balanceFrom = $transactions->getBalance($fromAccountId);
+    $balanceTo = $transactions->getBalance($toAccountId);
+
+    if ($toAccountId === $fromAccountId) {
+        return redirect()->back()->with('error', 'You cannot transfer Hours from and to the same account');
+        } else {
+            $account_exists = Account::where('id', $toAccountId)->first();
+            if (!$account_exists) {
+                return redirect()->back()->with('error', 'Account not found.');
+            } else {
+                $transferToAccount = $account_exists->id;
+            }
+
+            $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
+            $limitMinFrom = $f->limit_min;
+            $t = Account::where('id', $transferToAccount)->select('limit_max')->first();
+            $limitMaxTo = $t->limit_max;
+
+            $transferBudgetFrom = $balanceFrom - $limitMinFrom;
+            $transferBudgetTo = $limitMaxTo - $balanceTo;
+
+
+            if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
+                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
+                return $this->modalErrorVisible = true;
+            }
+            if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
+                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
+                return $this->modalErrorVisible = true;
+            }
+            if ($amount > $transferBudgetFrom) {
+                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
+                return $this->modalErrorVisible = true;
+            }
+            if ($amount > $transferBudgetTo) {
+                $this->limitError = 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
+                return $this->modalErrorVisible = true;
+            }
+
+            $this->modalVisible = true;
+        }
+    }
+
+    // /**
+    // * Shows the transfer confirmation modal after a 2nd and complete validation
+    // *
+    // * @return void
+    // */
+    // public function confirmModal()
+    // {
+    //     try {
+    //         $this->validate();
+    //     } catch (\Illuminate\Validation\ValidationException $errors) {
+    //         // dump($errors);
+    //         $this->validate();
+    //         // Execution stops here if validation fails.
+    //     }
+    //     $this->modalVisible = true;
+    // }
 
 
     /**
@@ -183,27 +243,24 @@ class Transfer extends Component
             $transferBudgetFrom = $balanceFrom - $limitMinFrom;
             $transferBudgetTo = $limitMaxTo - $balanceTo;
 
-            // TODO ONDERSTAANDE VALIDATIES WERKEN NOG NIET!
-            // transactie wordt niet uitgevoerd, maar foutmelding is niet getoond.
-
-
+            // TODO: Line breaks in error message of modal
+            // TODO: Translation keys
             if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
-                info('Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom));
-                return redirect()->back()->with('error', 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom));
+                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
+                return $this->modalErrorVisible = true;
             }
             if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
-                info('Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo));
-                return redirect()->back()->with('error', 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo));
+                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
+                return $this->modalErrorVisible = true;
             }
             if ($amount > $transferBudgetFrom) {
-                info('Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom));
-                return redirect()->back()->with('error', 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom));
+                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
+                return $this->modalErrorVisible = true;
             }
             if ($amount > $transferBudgetTo) {
-                info('Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo));
-                return redirect()->back()->with('error', 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo));
+                $this->limitError = 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
+                return $this->modalErrorVisible = true;
             }
-
 
             $transfer = new Transaction();
             $transfer->from_account_id = $fromAccountId;

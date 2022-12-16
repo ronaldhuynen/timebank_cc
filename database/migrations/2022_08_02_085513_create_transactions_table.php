@@ -24,7 +24,6 @@ class CreateTransactionsTable extends Migration
             $table->boolean('to_authorised_by_user_id')->default(false);
             $table->timestamp('to_authorisation_time')->nullable();
             $table->integer('amount');
-            $table->integer('amount-max')->default(12000); //TODO remove default
             $table->dateTime('programmed_time')->nullable();
             $table->text('description');
             $table->string('from_reference')->default('from_reference'); //TODO remove default;

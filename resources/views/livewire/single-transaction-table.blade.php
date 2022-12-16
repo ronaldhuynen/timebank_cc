@@ -97,13 +97,12 @@
     </div>
 
     <div class="my-6 text-gray-900 text-right align-bottom">
-        <span wire:click="$toggle('qrModalVisible')" class="float-right inline align-bottom" style="cursor: pointer;" onclick="qrModal()">
+        <span wire:click="$toggle('qrModalVisible')" class="float-right my-12" style="cursor: pointer;" onclick="qrModal()">
 
 
             {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(60)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
         </span>
-        <x-icon name="link" class="inline w-6 h-6 mx-3 mt-9" solid />
-        <x-icon name="mail" class="inline w-6 h-6 mr-4 mt-9" solid />
+
     </div>
 
 

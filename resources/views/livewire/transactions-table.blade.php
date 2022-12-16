@@ -74,9 +74,12 @@
                          </p>
                      </div>
                      <div class="ml-3">
-                         <p class="text-gray-900 whitespace-no-wrap ">
-                             {{ $transaction['relation'] }}
-                         </p>
+                            <p class="text-gray-900 whitespace-no-wrap">
+                                {{ $transaction['relation'] }}
+                            </p>
+                            <p class="text-gray-500 whitespace-no-wrap">
+                                {{ $transaction['account_name'] }}
+                            </p>
                      </div>
                  </div>
              </td>

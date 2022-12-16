@@ -1,4 +1,4 @@
-<form wire:submit.prevent="confirmModal">
+<form wire:submit.prevent="validateModal">
 
     @csrf
     <div class="px-4 py-4 sm:p-6 bg-white shadow sm:rounded-lg">
@@ -35,19 +35,32 @@
                         </div>
                         @enderror
 
-
             </div>
-
-
-
         </div>
-                    <div class="text-right">
-                        <x-jet-button>
-                            {{ __('Pay') }}
-                        </x-jet-button>
-                    </div>
-
+    <div class="text-right">
+        <x-jet-button>
+            {{ __('Pay') }}
+        </x-jet-button>
     </div>
+</div>
+
+
+    <!----Transfer limit error Modal ---->
+    <x-jet-dialog-modal wire:model="modalErrorVisible">
+        <x-slot name="title">
+        </x-slot>
+
+        <x-slot name="content">
+            {{ $limitError }}
+        </x-slot>
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$toggle('modalErrorVisible')" wire:loading.attr="disabled">
+                {{ __('Back') }}
+            </x-jet-secondary-button>
+        </x-slot>
+    </x-jet-dialog-modal>
+
+
 
     <!---- Confirmation Modal ---->
     <x-jet-dialog-modal wire:model="modalVisible">

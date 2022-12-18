@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,16 +17,24 @@ class DatabaseSeeder extends Seeder
         if ($this->command->confirm('Do you want to refresh the database? This removes all existing data stored in the current database!'))
         {
             $this->command->call('migrate:refresh');
-            $this->command->info('Database was refreshed');
+            $this->call([PermissionRoleSeeder::class]);
 
+            // Seed Super-Admin with user id 1
+            $admin = User::factory()->create([
+                'name' => 'Super-Admin',
+                'email' => 'admin@admin.com',
+                'locale' => 'en',
+                'password' => bcrypt('SecurePassword')  // Super-Admin password: 'SecurePassword'
+            ]);
+            $admin->assignRole('Super-Admin');
+
+            $this->command->info('Database was refreshed');
         }
 
         $this->call([
-        PermissionRoleSeeder::class,
+        TestUserSeeder::class,
         UserSeeder::class,
-        ProfileSeeder::class, 
         OrganisationSeeder::class,
-        AccountSeeder::class,
         TransactionSeeder::class,
         ]);
 

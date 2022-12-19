@@ -4,9 +4,7 @@
         <select wire:model="country" class="border shadow p-2 bg-white">
             <option disabled>Choose a country</option>
             @foreach($countries as $country)
-
-            <option value="{{ $country->id }}">{{ $country->name }}</option>
-
+            <option value="{{ $country->id }}">{{ $country->local_name }}</option>
             @endforeach
         </select>
     </div>
@@ -17,7 +15,7 @@
         <select wire:model="city" class="p-2 px-4 py-2 pr-8 leading-tight bg-white border border-gray-400 rounded shadow appearance-none hover:border-gray-500 focus:outline-none focus:shadow-outline">
             <option disabled>Choose a city</option>
             @foreach($cities as $city)
-            <option value={{ $city->id }}>{{ $city->name }}</option>
+            <option value={{ $city->id }}>{{ $city->local_name }}</option>
             @endforeach
         </select>
     </div>

@@ -6,23 +6,29 @@ use Illuminate\Support\Str;
 
 trait LocationTrait
 {
+
+    // default locale should be English
+    // The countries, devisions, cities, districts tables shoudl have their local name
+
+
     /**
      * default locale setting
      *
      * @var string
      */
-    protected $defaultLocale = "en";
+    protected $defaultLocale = "";
 
     /**
      * current locale setting
      *
      * @var string
      */
-    protected $locale = "en";
+    protected $locale = "";
 
     protected $supported_locales = [
         'en',
         'nl',
+        'fr'
     ];
 
     public function __construct(array $attributes = [])
@@ -67,6 +73,7 @@ trait LocationTrait
      */
     protected function getLocalized()
     {
+        info('localized');
         return $this->locales()->where('locale', $this->locale)->first();
     }
 
@@ -81,6 +88,7 @@ trait LocationTrait
             return $this->name;
         }
         $localized = $this->getLocalized();
+        info($localized);
         return !is_null($localized) ? $localized->name : $this->name;
     }
 

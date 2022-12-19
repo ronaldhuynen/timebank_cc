@@ -9,9 +9,9 @@ use Livewire\Component;
 
 class SelectDropdown extends Component
 {
-    public $country;
+    public $country = 1;
     public $cities = [];
-    public $city;
+    public $city = 305;
     public $districts = [];
     public $district;
 
@@ -20,7 +20,6 @@ class SelectDropdown extends Component
         if (!empty($this->country)) {
             $this->cities = City::where('country_id', $this->country)->orderBy('name')->get();
         }
-
 
         if (!empty($this->city)) {
             $this->districts = District::where('city_id', $this->city)->orderBy('name')->get();

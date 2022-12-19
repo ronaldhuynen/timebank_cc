@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Models\Locations;
 
-class LocationController extends Controller
+use Illuminate\Database\Eloquent\Model;
+
+
+class LocationController extends Model
 {
     public static function Districts()
     {

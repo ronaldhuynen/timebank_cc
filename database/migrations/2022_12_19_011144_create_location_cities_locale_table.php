@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('location_cities_locale', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('city_id')->unsigned();
-            $table->string('name', 255)->default('')->comment('Localized city name');
-            $table->string('alias', 255)->nullable()->comment('Localized city alias');
-            $table->string('full_name', 255)->nullable()->comment('Localized city fullname');
-            $table->string('locale', 6)->nullable()->comment('locale name');
+            $table->string('name', 255)->default('');
+            $table->string('alias', 255)->nullable();
+            $table->string('full_name', 255)->nullable();
+            $table->string('locale', 6)->nullable();
             $table->unique(['city_id','locale'], 'uniq_city_id_locale');
         });
     }

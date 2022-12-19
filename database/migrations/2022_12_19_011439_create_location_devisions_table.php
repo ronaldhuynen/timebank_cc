@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('country_id')->unsigned();
             $table->string('name', 255)->default('');
             $table->string('full_name', 255)->nullable();
-            $table->boolean('has_city')->default(0);
             $table->unique(['country_id','name'], 'uniq_division');
         });
     }

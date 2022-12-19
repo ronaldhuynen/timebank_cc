@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name', 255)->default('');
             $table->string('alias', 255)->nullable();
             $table->string('abbr', 16)->nullable();
-            $table->string('currency_name', 255)->nullable();
+            $table->string('full_name', 255)->nullable();
             $table->string('locale', 6)->nullable();
             $table->unique(['country_id','locale'], 'uniq_country_id_locale');
         });

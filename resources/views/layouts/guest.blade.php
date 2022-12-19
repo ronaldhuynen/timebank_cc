@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
         <!-- Scripts -->
+        <wireui:scripts />
         <script src="{{ mix('js/app.js') }}" defer></script>
 
     </head>
@@ -23,5 +24,12 @@
         <div class="font-sans text-gray-900 antialiased">
             {{ $slot }}
         </div>
+
+
+         <!-- Scripts -->
+         <script src="{{ mix('js/echo.js') }}"></script>
+         @livewireScripts
+
+
     </body>
 </html>

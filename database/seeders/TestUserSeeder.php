@@ -47,10 +47,11 @@ class TestUserSeeder extends Seeder
 
             $org1 = Organisation::factory()
                 ->has(Account::factory()->state(['name' => 'General Account'])->state(
-                    ['name' => 'Currency Creation Account',
+                    ['name' => 'Currency Creation',
                     'limit_min' => -12000
-                    ]),
-                )
+                    ]))
+                ->has(Account::factory()->state(
+                    ['name' => 'General']))
                 ->create([
                     'name' => 'Timebank.cc Den Haag',
                     'email' => 'tb-den-haag@test.nl',
@@ -59,13 +60,16 @@ class TestUserSeeder extends Seeder
                     ]);
 
             $org2 = Organisation::factory()
-                ->has(Account::factory()->state(new Sequence(
-                    ['name' => 'Algemene rekening'],
-                    ['name' => 'Gymzaal'],
-                    ['name' => 'Wonnebald'],
-                    ['name' => 'Spinozahof'],
-                    ['name' => 'Mozartlaan']
-                     )))
+                ->has(Account::factory()->state(
+                    ['name' => 'Algemeen']))
+                ->has(Account::factory()->state(
+                    ['name' => 'Gymzaal']))
+                ->has(Account::factory()->state(
+                    ['name' => 'Wonnebald']))
+                ->has(Account::factory()->state(
+                    ['name' => 'Spinozahof']))
+                ->has(Account::factory()->state(
+                    ['name' => 'Mozartlaan']))
                 ->create([
                     'name' => 'Lekkernassuh',
                     'email' => 'lekkernassuh@test.nl',

@@ -29,7 +29,15 @@ class DatabaseSeeder extends Seeder
             $admin->assignRole('Super-Admin');
 
             $this->command->info('Database was refreshed');
-        }
+            $this->call(LocationCountriesTableSeeder::class);
+        $this->call(LocationCountriesLocalesTableSeeder::class);
+        $this->call(LocationDivisionsTableSeeder::class);
+        $this->call(LocationDivisionsLocalesTableSeeder::class);
+        $this->call(LocationCitiesTableSeeder::class);
+        $this->call(LocationCitiesLocalesTableSeeder::class);
+        $this->call(LocationDistrictsTableSeeder::class);
+        $this->call(LocationDistrictsLocalesTableSeeder::class);
+    }
 
         $this->call([
         TestUserSeeder::class,

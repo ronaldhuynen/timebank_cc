@@ -16,14 +16,14 @@ trait LocationTrait
      *
      * @var string
      */
-    protected $defaultLocale = "";
+    protected $defaultLocale = "en";
 
     /**
      * current locale setting
      *
      * @var string
      */
-    protected $locale = "";
+    protected $locale = "en";
 
     protected $supported_locales = [
         'en',
@@ -73,7 +73,8 @@ trait LocationTrait
      */
     protected function getLocalized()
     {
-        info('localized');
+        info('localized:');
+        info($this->locale);
         return $this->locales()->where('locale', $this->locale)->first();
     }
 

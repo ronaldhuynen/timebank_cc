@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-     use LocationTrait;
+    //  use LocationTrait;
 
     /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
@@ -29,7 +29,12 @@ class Country extends Model
      *
      * @var array
      */
-    protected $appends = ['local_name','local_full_name','local_alias', 'local_abbr'];
+    // protected $appends = ['local_name','local_full_name','local_alias', 'local_abbr'];
+
+
+    // Always eager load this model with:
+    // protected $with = ['locales'];
+
 
     public function divisions()
     {

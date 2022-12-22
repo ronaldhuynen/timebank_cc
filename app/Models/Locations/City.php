@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
 {
-use LocationTrait;
+// use LocationTrait;
 
     /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
@@ -28,7 +28,11 @@ use LocationTrait;
      *
      * @var array
      */
-    protected $appends = ['local_name', 'local_full_name', 'local_alias', 'local_abbr'];
+    // protected $appends = ['local_name', 'local_alias', 'local_full_name'];
+
+
+    // Always eager load this model with:
+    // protected $with = ['locales'];
 
 
     public function districts()

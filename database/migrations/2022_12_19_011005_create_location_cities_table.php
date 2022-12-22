@@ -15,11 +15,10 @@ return new class extends Migration
     {
         Schema::create('location_cities', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('country_id')->unsigned();
-            $table->bigInteger('division_id')->unsigned()->nullable()->index('division_id');
-            $table->string('name', 255)->default('');
-            $table->string('full_name', 255)->nullable();
-            $table->index(['country_id','division_id','name'], 'uniq_city');
+            $table->unsignedBigInteger('country_id')->index();
+            $table->foreign('country_id')->references('id')->on('location_countries')->onDelete('cascade');
+            $table->unsignedBigInteger('division_id')->nullable()->index();
+            $table->foreign('division_id')->references('id')->on('location_divisions')->onDelete('cascade');
         });
     }
 

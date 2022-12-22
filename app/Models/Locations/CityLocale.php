@@ -18,7 +18,7 @@ class Citylocale extends Model
      *
      * @var string
      */
-    protected $table = 'location_cities_locale';
+    protected $table = 'location_cities_locales';
 
     /**
      * return belonged City

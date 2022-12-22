@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_devisions', function (Blueprint $table) {
+        Schema::create('location_countries', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('country_id')->unsigned();
-            $table->string('name', 255)->default('');
-            $table->string('full_name', 255)->nullable();
-            $table->unique(['country_id','name'], 'uniq_division');
+            $table->string('abbr', 16)->nullable()->unique()->comment('Int. abbrevation');
+            $table->string('flag', 16)->nullable()->comment('Country Emoji');
+            $table->string('callingcode', 8)->nullable()->comment('Int. dial code');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_devisions');
+        Schema::dropIfExists('location_countries');
     }
 };

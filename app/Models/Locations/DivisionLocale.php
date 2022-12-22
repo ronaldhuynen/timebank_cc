@@ -18,10 +18,10 @@ class DivisionLocale extends Model
      *
      * @var string
      */
-    protected $table = 'location_divisions_locale';
+    protected $table = 'location_divisions_locales';
 
     public function division()
     {
         return $this->belongsTo(Division::class);
     }
-    }
+}

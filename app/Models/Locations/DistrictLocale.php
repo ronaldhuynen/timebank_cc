@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Locations;
+namespace App\Model\Locations;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CountryLocale extends Model
+class DistrictLocale extends Model
 {
- /**
+    /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
      *
      * @var bool
@@ -18,10 +18,10 @@ class CountryLocale extends Model
      *
      * @var string
      */
-    protected $table = 'location_countries_locales';
+    protected $table = 'location_districts_locales';
 
-    public function country()
+    public function district()
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(District::class);
     }
 }

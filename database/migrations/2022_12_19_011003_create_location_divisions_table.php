@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_districts', function (Blueprint $table) {
+        Schema::create('location_divisions', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('city_id')->unsigned();
-            $table->string('name', 255)->default('');
-            $table->string('full_name', 255)->nullable();
-            $table->unique(['city_id','name'], 'uniq_district');
+            $table->bigInteger('country_id')->unsigned()->nullable()->index();
+            $table->foreign('country_id')->references('id')->on('location_countries')->onDelete('cascade');
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_districts');
+        Schema::dropIfExists('location_divisions');
     }
 };

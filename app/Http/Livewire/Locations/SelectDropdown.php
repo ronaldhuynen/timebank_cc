@@ -30,17 +30,20 @@ class SelectDropdown extends Component
         // Country has a hasMany relation with CountryLocele, this returns another collection for the relations. But we only need one translation, so ->first()->name
         // Check fall-back methods! if user has russian query fails
 
-        $r = Country::with(['locales' => function ($query) {
-            $query->where('locale', App::getLocale());
-            }])->get();
+        // $r = Country::with(['locales' => function ($query) {
+        //     $query->where('locale', App::getLocale());
+        //     }])->get();
 
 
-        foreach ($r as $i) {
-        echo "{$i->locales->first()->name }<br>";
-        }
+        // foreach ($r as $i) {
+        // echo "{$i->locales->first()->name }<br>";
+        // }
 
         if (!empty($this->city)) {
-            $this->districts = District::where('city_id', $this->city)->get();
+            $this->districts = District::with('locales')->where('city_id', $this->city)
+                ->whereHas('locales', function ($query) {
+                    $query->where('locale', 'nl');
+                })->get();
         }
 
         return view('livewire.locations.select-dropdown')

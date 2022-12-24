@@ -2,6 +2,7 @@
 
 namespace App\Models\Locations;
 
+use App\Models\Locations\DistrictLocale;
 use App\Traits\LocationTrait;
 use Illuminate\Database\Eloquent\Model;
 

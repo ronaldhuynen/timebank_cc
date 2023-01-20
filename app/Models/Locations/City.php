@@ -4,6 +4,7 @@ namespace App\Models\Locations;
 
 use App\Traits\LocationTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 class City extends Model
 {
@@ -70,7 +71,8 @@ class City extends Model
 
     public function locales()
     {
-        return $this->hasMany(CityLocale::class);
+        return $this->hasMany(CityLocale::class, 'city_id');
+       // Note 'city_id' as foreign key needed as table name is not conventional
     }
 
     /**

@@ -63,7 +63,9 @@ class Country extends Model
 
     public function locales()
     {
-        return $this->hasMany(CountryLocale::class);
+        return $this->hasMany(CountryLocale::class, 'country_id');
+       // 'country_id' as foreign key is needed as table name is not conventional
+
     }
 
     /**

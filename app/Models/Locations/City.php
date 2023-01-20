@@ -72,7 +72,7 @@ class City extends Model
     public function locales()
     {
         return $this->hasMany(CityLocale::class, 'city_id');
-       // Note 'city_id' as foreign key needed as table name is not conventional
+       // 'city_id' as foreign key is needed as table name is not conventional
     }
 
     /**

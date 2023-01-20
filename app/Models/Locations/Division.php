@@ -53,7 +53,8 @@ class Division extends Model
 
     public function locales()
     {
-        return $this->hasMany(DivisionLocale::class);
+        return $this->hasMany(DivisionLocale::class, 'division_id');
+       // 'division_id' as foreign key is needed as table name is not conventional
     }
     /**
      * Get Division by name

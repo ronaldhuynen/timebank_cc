@@ -17,7 +17,6 @@
         <!-- Fonts -->
 
 
-
         <!-- Styles -->
         @livewireStyles
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
@@ -36,7 +35,7 @@
             #messenger-style-overrides .pill-tab-nav > .nav-pills > a.active:hover {background-color: #1f2937; color: #fff !important;}
             #messenger-style-overrides .pill-tab-nav > .nav-pills > a:hover {background-color: #e2e6ea; color: #1f2937 !important;}
             #messenger-style-overrides .pill-tab-nav > .nav-pills > a {background-color: #f8f9fa; color: #000; border: 1px #dee2e6 solid;}
- 
+
 
             /* Set messenger container to match space viewport */
             #messenger-style-overrides #thread_header_area {position: initial;}
@@ -195,15 +194,6 @@
             #messenger-style-overrides .toast-error {background-color: #e3342f}
             #messenger-style-overrides .toast-error {background-color: #e3342f}
             #messenger-style-overrides .toast-succes {background-color: #fffff; color: #1f2937!important}
-
-
-
-
-
-
-
-
-
 
 
         </style>

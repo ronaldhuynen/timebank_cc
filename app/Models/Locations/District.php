@@ -54,7 +54,8 @@ use LocationTrait;
 
     public function locales()
     {
-        return $this->hasMany(DistrictLocale::class);
+        return $this->hasMany(DistrictLocale::class, 'district_id');
+       // 'distruct_id' as foreign key is needed as table name is not conventional
     }
 
     /**

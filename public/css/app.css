@@ -21066,6 +21066,9 @@ select {
 .mb-10 {
   margin-bottom: 2.5rem;
 }
+.-mt-px {
+  margin-top: -1px;
+}
 .mb-8 {
   margin-bottom: 2rem;
 }
@@ -21074,9 +21077,6 @@ select {
 }
 .mt-0 {
   margin-top: 0px;
-}
-.-mt-px {
-  margin-top: -1px;
 }
 .mb-0 {
   margin-bottom: 0px;
@@ -21288,12 +21288,6 @@ select {
 .w-20 {
   width: 5rem;
 }
-.w-64 {
-  width: 16rem;
-}
-.w-32 {
-  width: 8rem;
-}
 .w-9 {
   width: 2.25rem;
 }
@@ -21305,6 +21299,9 @@ select {
 }
 .w-96 {
   width: 24rem;
+}
+.w-32 {
+  width: 8rem;
 }
 .w-3 {
   width: 0.75rem;
@@ -21323,6 +21320,9 @@ select {
 }
 .w-3\.5 {
   width: 0.875rem;
+}
+.w-80 {
+  width: 20rem;
 }
 .min-w-0 {
   min-width: 0px;
@@ -22504,14 +22504,14 @@ select {
 .pb-1 {
   padding-bottom: 0.25rem;
 }
+.pt-8 {
+  padding-top: 2rem;
+}
 .pr-8 {
   padding-right: 2rem;
 }
 .pb-0 {
   padding-bottom: 0px;
-}
-.pt-8 {
-  padding-top: 2rem;
 }
 .pl-10 {
   padding-left: 2.5rem;
@@ -22636,11 +22636,11 @@ select {
 .font-semibold {
   font-weight: 600;
 }
-.font-bold {
-  font-weight: 700;
-}
 .font-extrabold {
   font-weight: 800;
+}
+.font-bold {
+  font-weight: 700;
 }
 .font-normal {
   font-weight: 400;
@@ -24121,6 +24121,11 @@ input[type="number"].appearance-number-none {
 }
 .focus\:z-10:focus {
   z-index: 10;
+}
+.focus\:appearance-none:focus {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 .focus\:border:focus {
   border-width: 1px;

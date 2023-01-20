@@ -62,9 +62,7 @@
                                 <!-- TODO: Explanantion for location dropdowns -->
                                 @livewire('locations.select-dropdown')
                             </div>
-
-
-
+                            
                         </div>
                     </div>
 

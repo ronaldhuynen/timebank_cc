@@ -66,3 +66,7 @@ class SelectDropdown extends Component
                 ->get());
     }
 }
+
+
+//TODO NEXT: Create livewire register form and replace jetstream one.
+// see https://cerwyn.medium.com/dynamic-interfaces-using-livewire-and-laravel-for-registration-and-login-forms-26df0e3e578f

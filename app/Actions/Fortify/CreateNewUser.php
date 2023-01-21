@@ -28,16 +28,35 @@ class CreateNewUser implements CreatesNewUsers
             // 'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
+
+        // if ($request->hasFile('photo')) {
+        //     auth()->user()->updateProfilePhoto($request->photo);
+        // }
+
+
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            // 'city_id_1' => $city,
+            // 'district_id_1' => $district,
         ]);
 
 
         // Attach (Rtippin Messenger) Provider:
         Messenger::getProviderMessenger($user);
 
+
+        // Always move this section to the final registration step.
+        Session([
+            'activeProfileType' => User::class,
+            'activeProfileId' => auth()->user()->id,
+            'activeProfileName'=> auth()->user()->name,
+            'activeProfilePhoto'=> auth()->user()->profile_photo_path,
+            'firstLogin' => true
+        ]);
+        //TODO: Welcome and introduction with Session('firstLogin') on rest of site views
         return $user;
+
     }
 }

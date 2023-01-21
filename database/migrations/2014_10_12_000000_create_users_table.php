@@ -22,10 +22,14 @@ return new class extends Migration
             $table->string('locale', 3)->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
 
+            $table->unsignedBigInteger('city_id_1')->unsigned();
+            $table->unsignedBigInteger('district_id_1')->unsigned()->nullable();
+            $table->unsignedBigInteger('city_id_2')->unsigned()->nullable();
+            $table->unsignedBigInteger('district_id_2')->unsigned()->nullable();
+
             $table->text('about')->nullable();
             $table->text('motivation')->nullable();
             $table->date('date_of_birth')->nullable();
-            
 
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();

@@ -63,9 +63,12 @@ Route::middleware([
         Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
     });
 
-    //Registration steps, protected with auth middleware
-    Route::get('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'create'])
-        ->name('register-step2.create');
-    Route::post('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'store'])
-        ->name('register-step2.post');
+
+    // // Route when full registration has NOT yet been completed.
+    // // See RegistrationComplete.php
+    // //Registration steps, protected with auth middleware
+    // Route::get('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'create'])
+    //     ->name('register-step2.create');
+    // Route::post('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'store'])
+    //     ->name('register-step2.post');
 });

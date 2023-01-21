@@ -10,24 +10,20 @@ use Livewire\Component;
 
 class SelectDropdown extends Component
 {
-    public $country = 1;
+    public $country;
     public $cities = [];
-    public $city = 305;
+    public $city;
     public $districts = [];
     public $district;
 
     public function updatedCountry()
     {
-       $this->reset('cities');
-       $this->reset('city');
-       $this->reset('districts');
-       $this->reset('district');
+        $this->reset(['district', 'districts', 'city', 'cities']);
     }
 
     public function updatedCity()
     {
-       $this->reset('districts');
-       $this->reset('district');
+        $this->reset(['district', 'districts']);
     }
 
     public function render()
@@ -44,7 +40,6 @@ class SelectDropdown extends Component
                 ->orWhere([['country_id', $this->country], ['location_cities_locales.locale', $country_locale]])
                 ->orderBy('location_cities_locales.name', 'ASC')
                 ->get();
-
         }
 
         // Refactor into model method!
@@ -54,7 +49,6 @@ class SelectDropdown extends Component
         if (!empty($this->city)) {
 
             //TODO: Test met districts in meerdere talen!
-            //TODO: Reset if city changes!
             $this->districts = District::with(['locales'])
                 ->join('location_districts_locales', 'location_districts.id', '=', 'location_districts_locales.district_id')
                 ->where([[ 'city_id', $this->city], ['location_districts_locales.locale', App::getLocale()]])

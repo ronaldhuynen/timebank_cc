@@ -1,0 +1,18 @@
+{
+    "Registration": "Registeren",
+    "Name": "Naam",
+    "Email": "Email",
+    "Password": "Wachtwoord",
+    "Confirm Password": "Bevestig wachtwoord",
+    "Already registered?": "Al geregistreerd?",
+
+    "Choose a country": "Selecteer een land",
+    "Country": "Land",
+    "Choose a city": "Selecteer een plaats",
+    "City": "Plaats",
+    "Choose a district": "Selecteer een buurt",
+    "District": "Buurt",
+
+    "Submit": "Verzenden"
+
+}

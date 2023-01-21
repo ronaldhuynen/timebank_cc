@@ -62,7 +62,7 @@
                                 <!-- TODO: Explanantion for location dropdowns -->
                                 @livewire('locations.select-dropdown')
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -71,7 +71,7 @@
                             {{ __('Already registered?') }}
                         </a>
                         <x-jet-button class="ml-4">
-                            {{ __('Next') }}
+                            {{ __('Submit') }}
                         </x-jet-button>
                     </div>
 

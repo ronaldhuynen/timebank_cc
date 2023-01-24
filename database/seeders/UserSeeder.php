@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
     {
         $usersCount = max((int)$this->command->ask('How many users would you like?', 200), 1);
         User::factory()->count($usersCount)
-            ->has(Profile::factory())
+            // ->has(Profile::factory())
             ->has(Account::factory()->state(['name' => 'Personal Account']))
             ->create();
     }

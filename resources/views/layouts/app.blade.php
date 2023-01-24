@@ -13,9 +13,7 @@
         <wireui:scripts />
         <script src="{{ asset('js/app.js') }}" defer></script>
 
-
         <!-- Fonts -->
-
 
         <!-- Styles -->
         @livewireStyles
@@ -195,9 +193,7 @@
             #messenger-style-overrides .toast-error {background-color: #e3342f}
             #messenger-style-overrides .toast-succes {background-color: #fffff; color: #1f2937!important}
 
-
         </style>
-
 
     </head>
     <body class="font-sans antialiased" id="messenger-style-overrides">
@@ -222,6 +218,7 @@
                 {{ $slot }}
             </main>
         </div>
+
         <!-- Scripts -->
         <script src="{{ mix('js/echo.js') }}"></script>
         @livewireScripts

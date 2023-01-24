@@ -2,13 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Livewire\Component;
 use Mediconesystems\LivewireDatatables\Column;
-use Mediconesystems\LivewireDatatables\NumberColumn;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
+use Mediconesystems\LivewireDatatables\NumberColumn;
 
 class UserDatatables extends LivewireDatatable
 
@@ -29,6 +29,7 @@ class UserDatatables extends LivewireDatatable
             Column::name('email_verified_at')->label('verified at'),
             Column::name('locale'),
             Column::name('profile_photo_path')->excludeFromExport()->label('profile'),
+            // TODO: Add locations collumns
             DateColumn::name('created_at')->label('created'),
             DateColumn::name('deleted_at')->label('deleted'),
         ];

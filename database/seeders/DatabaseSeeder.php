@@ -24,12 +24,13 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Super-Admin',
                 'email' => 'admin@admin.com',
                 'locale' => 'en',
-                'password' => bcrypt('SecurePassword')  // Super-Admin password: 'SecurePassword'
+                'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
+                'city_id_1' => 305 // The Hague
             ]);
             $admin->assignRole('Super-Admin');
 
-            $this->command->info('Database was refreshed');
-            $this->call(LocationCountriesTableSeeder::class);
+        $this->command->info('Database was refreshed');
+        $this->call(LocationCountriesTableSeeder::class);
         $this->call(LocationCountriesLocalesTableSeeder::class);
         $this->call(LocationDivisionsTableSeeder::class);
         $this->call(LocationDivisionsLocalesTableSeeder::class);

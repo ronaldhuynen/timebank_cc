@@ -40,7 +40,6 @@ Route::get('/clear-cache', function () {
 });
 
 
-
 //----- Protected auth routes -----//
 Route::middleware([
     'auth:sanctum',

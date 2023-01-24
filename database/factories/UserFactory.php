@@ -4,10 +4,10 @@ namespace Database\Factories;
 
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
 use RTippin\Messenger\Models\Messenger;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {
@@ -33,6 +33,8 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'locale' => $this->faker->randomElement(['nl', 'en', 'fr']),
             'profile_photo_path' => $this->faker->imageUrl(128, 128),
+            'city_id_1' => 305, // The Hague
+            'district_id_1' => $this->faker->numberBetween(1, 25), // The Hague districts
         ];
     }
 

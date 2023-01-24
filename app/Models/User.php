@@ -37,6 +37,8 @@ class User extends Authenticatable implements MessengerProvider, Searchable
     protected $fillable = [
         'name',
         'email',
+        'city_id_1',
+        'district_id_1',
         'about',
         'motivation',
         'date_of_birth',

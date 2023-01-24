@@ -26,6 +26,21 @@ class SelectDropdown extends Component
         $this->reset(['district', 'districts']);
     }
 
+    public function countrySelected()
+    {
+        $this->emit('countryToParent', $this->country);
+    }
+
+    public function citySelected()
+    {
+        $this->emit('cityToParent', $this->city);
+    }
+
+    public function districtSelected()
+    {
+        $this->emit('districtToParent', $this->district);
+    }
+
     public function render()
     {
         if (!empty($this->country)) {
@@ -57,6 +72,8 @@ class SelectDropdown extends Component
                 ->get();
 
         }
+
+
 
         return view('livewire.locations.select-dropdown')
             ->withCountries(Country::with(['locales'])

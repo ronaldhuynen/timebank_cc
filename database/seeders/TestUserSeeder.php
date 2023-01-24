@@ -26,7 +26,8 @@ class TestUserSeeder extends Seeder
                     'name' => 'Ronald',
                     'email' => 'ronald@test.nl',
                     'profile_photo_path' => 'profile-photos/b1noabVz64Wj6yuejFcISJPeWFAb9v7Ju3FsFZn4.png',
-                    'password' => bcrypt('password')
+                    'password' => bcrypt('password'),
+                    'city_id_1' => 305 // The Hague
                     ]);
 
             $user2 = User::factory()->has(Account::factory()->state(['name' => 'Personal Account']))
@@ -34,7 +35,8 @@ class TestUserSeeder extends Seeder
                     'name' => 'Joeri',
                     'email' => 'joeri@test.nl',
                     'profile_photo_path' => 'profile-photos/lN2E99fso4ULml9wi7cHSsfT1BTAtJYEsTAql2Ly.png',
-                    'password' => bcrypt('password')
+                    'password' => bcrypt('password'),
+                    'city_id_1' => 305 // The Hague
                     ]);
 
             $user3 = User::factory()->has(Account::factory()->state(['name' => 'Personal Account']))
@@ -42,7 +44,8 @@ class TestUserSeeder extends Seeder
                     'name' => 'Sara',
                     'email' => 'sara@test.nl',
                     'profile_photo_path' => 'profile-photos/UJWh03bKULqtOAvQQh36cJJ4NwjZvTcBWPmL9vzm.png',
-                    'password' => bcrypt('password')
+                    'password' => bcrypt('password'),
+                    'city_id_1' => 305 // The Hague
                     ]);
 
             $org1 = Organisation::factory()

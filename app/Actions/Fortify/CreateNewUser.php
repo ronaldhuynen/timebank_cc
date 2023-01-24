@@ -38,8 +38,6 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            // 'city_id_1' => $city,
-            // 'district_id_1' => $district,
         ]);
 
 
@@ -47,7 +45,7 @@ class CreateNewUser implements CreatesNewUsers
         Messenger::getProviderMessenger($user);
 
 
-        // Always move this section to the final registration step.
+        // Always move this section to the final registration.
         Session([
             'activeProfileType' => User::class,
             'activeProfileId' => auth()->user()->id,

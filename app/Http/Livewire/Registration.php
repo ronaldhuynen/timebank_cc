@@ -60,37 +60,36 @@ class Registration extends Component
                 'name' => $valid['name'],
                 'email' => $valid['email'],
                 'password' => Hash::make($valid['password']),
+                'profile_photo_path' => 'app-images/new-profile.svg',
                 'city_id_1' => $valid['city'],
                 'district_id_1' => $this->district
             ]);
 
 
-            // Attach (Rtippin Messenger) Provider:
-            Messenger::getProviderMessenger($user);
+            // // Attach (Rtippin Messenger) Provider:
+            // Messenger::getProviderMessenger($user);
 
 
             // WireUI notification
             $this->notification()->success(
                 $title = __('Your registration is saved!'),
                 $description = __('Please check your email to verify your email address.')
-                );
+            );
             // $this->emit('resetForm');
 
             //TODO: Send new user registered email - example below
-                // $now = now();
-                // Mail::to($transfer->accountTo->accountable)->later(
+            // $now = now();
+            // Mail::to($transfer->accountTo->accountable)->later(
                 //     $now->addSeconds(1),
                 //     new TransferReceived($transfer)
-                // );
+            // );
 
             $this->reset();
 
             //TODO: NEXT: create new route to 1st login with: Verify email
             return redirect()->route('dashboard');
-
-
         } catch (Throwable $e) {
-             // WireUI notification
+            // WireUI notification
             $this->notification([
             'title' => __('Registration failed!'),
             'description' => __('Sorry, your registration could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),

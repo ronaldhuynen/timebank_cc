@@ -3,13 +3,16 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Laravel\Fortify\Fortify;
 use Livewire\Component;
 use RTippin\Messenger\Facades\Messenger;
 use Throwable;
 use WireUi\Traits\Actions;
 
-class Registration extends Component
+class Registration extends Component implements CreatesNewUsers
 {
     use Actions;
 
@@ -51,7 +54,7 @@ class Registration extends Component
         $this->validateOnly($field);
     }
 
-    public function save()
+    public function create($input = null)
     {
         $valid = $this->validate();
 
@@ -66,6 +69,7 @@ class Registration extends Component
             ]);
 
 
+            // TODO: Attach Messenger when profile has been further completed
             // // Attach (Rtippin Messenger) Provider:
             // Messenger::getProviderMessenger($user);
 
@@ -73,23 +77,19 @@ class Registration extends Component
             // WireUI notification
             $this->notification()->success(
                 $title = __('Your registration is saved!'),
-                $description = __('Please check your email to verify your email address.')
+                // $description = __('Please check your email to verify your email address.')
             );
-            // $this->emit('resetForm');
-
-            //TODO: Send new user registered email - example below
-            // $now = now();
-            // Mail::to($transfer->accountTo->accountable)->later(
-                //     $now->addSeconds(1),
-                //     new TransferReceived($transfer)
-            // );
 
             $this->reset();
+            auth()->login($user);
+            event(new Registered($user));
 
-            //TODO: NEXT: create new route to 1st login with: Verify email
-            return redirect()->route('dashboard');
+            return redirect()->route('verification.notice');
+
+
         } catch (Throwable $e) {
             // WireUI notification
+            // TODO: create event to send error notification to admin
             $this->notification([
             'title' => __('Registration failed!'),
             'description' => __('Sorry, your registration could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),

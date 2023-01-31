@@ -40,11 +40,11 @@ Route::get('/clear-cache', function () {
 });
 
 
-//----- Protected auth routes -----//
+//----- Protected auth verified routes -----//
 Route::middleware([
     'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
+    config('jetstream.auth_session')
+    ,'verified'
 ])->group(function () {
     Route::group(['middleware' => ['registration-complete']], function () {
         Route::get('/dashboard', function () {

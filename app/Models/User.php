@@ -18,7 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable implements MessengerProvider, Searchable
+class User extends Authenticatable implements MessengerProvider, Searchable, MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -37,6 +37,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable
     protected $fillable = [
         'name',
         'email',
+        'profile_photo_path',
         'city_id_1',
         'district_id_1',
         'about',

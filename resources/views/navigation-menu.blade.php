@@ -115,7 +115,9 @@
                         <x-slot name="content">
 
                             <!---- Switch Profile --->
-                            <livewire:select-organisation>
+                            @if  (App\Models\User::with('organisations')->find(Auth::user()->id)->organisations->count() > 0)
+                                <livewire:select-organisation>
+                            @endif
 
                             <!--- Messenger --->
                             <x-jet-dropdown-link href="{{ route('messenger.portal') }}">

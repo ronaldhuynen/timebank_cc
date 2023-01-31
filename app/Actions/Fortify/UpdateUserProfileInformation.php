@@ -27,6 +27,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
+        } else {
+            $user->forcefill(['profile_photo_path' => 'app-images/new-profile.svg'])->save();
         }
 
         if ($input['email'] !== $user->email &&

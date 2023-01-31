@@ -4,7 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="title" content="@yield('title', config('messenger-ui.site_name'))">
 
+        <title>@yield('title', config('messenger-ui.site_name'))</title>
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->

@@ -1,6 +1,6 @@
                 <div class="grid grid-cols-6 gap-6">
                    <div class="col-span-6 sm:col-span-4">
-                      <form wire:submit.prevent="save">
+                      <form wire:submit.prevent="create">
                         <input type="hidden" name="remember" value="true">
                             @csrf
 

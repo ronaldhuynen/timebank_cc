@@ -53,8 +53,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
      * @var array
      */
     protected $hidden = [
-        'email',
-        'date_of_birth',
         'password',
         'remember_token',
         'two_factor_recovery_codes',

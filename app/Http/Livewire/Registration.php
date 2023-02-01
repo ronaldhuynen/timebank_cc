@@ -2,11 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use Laravel\Fortify\Fortify;
 use Livewire\Component;
 use RTippin\Messenger\Facades\Messenger;
 use Throwable;
@@ -59,30 +60,43 @@ class Registration extends Component implements CreatesNewUsers
         $valid = $this->validate();
 
         try {
-            $user = User::create([
-                'name' => $valid['name'],
-                'email' => $valid['email'],
-                'password' => Hash::make($valid['password']),
-                'profile_photo_path' => 'app-images/new-profile.svg',
-                'city_id_1' => $valid['city'],
-                'district_id_1' => $this->district
-            ]);
+
+            // Use a transaction for creating the new user
+            DB::transaction(function () use ($valid): void {
+                $user = User::create([
+                    'name' => $valid['name'],
+                    'email' => $valid['email'],
+                    'password' => Hash::make($valid['password']),
+                    'profile_photo_path' => 'app-images/new-profile.svg',
+                    'city_id_1' => $valid['city'],
+                    'district_id_1' => $this->district
+                ]);
+
+                 $account = new Account();
+                 $account->name = __(config('timebank-cc.accounts.personal.name'));
+                 $account->limit_min = config('timebank-cc.accounts.personal.limit_min');
+                 $account->limit_max = config('timebank-cc.accounts.personal.limit_max');
+
+                 $user->accounts()->save($account);
 
 
-            // TODO: Attach Messenger when profile has been further completed
-            // // Attach (Rtippin Messenger) Provider:
-            // Messenger::getProviderMessenger($user);
+                 // TODO: Attach Messenger when profile has been further completed
+                 // TODO: Check if this is needed, and where this also is being done?
+                 // // Attach (Rtippin Messenger) Provider:
+                 // Messenger::getProviderMessenger($user);
 
 
-            // WireUI notification
-            $this->notification()->success(
-                $title = __('Your registration is saved!'),
-                // $description = __('Please check your email to verify your email address.')
-            );
+                 // WireUI notification
+                 $this->notification()->success(
+                     $title = __('Your registration is saved!'),
+                 );
 
-            $this->reset();
-            auth()->login($user);
-            event(new Registered($user));
+                 $this->reset();
+                 auth()->login($user);
+                 event(new Registered($user));
+
+            });
+            // End of transaction
 
             return redirect()->route('verification.notice');
 

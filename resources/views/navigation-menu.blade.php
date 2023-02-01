@@ -115,7 +115,7 @@
                         <x-slot name="content">
 
                             <!---- Switch Profile --->
-                            @if  (App\Models\User::with('organisations')->find(Auth::user()->id)->organisations->count() > 0)
+                            @if  (App\Models\User::with('organisations')->find(Auth::user()->id)->organisations->find(1) != null)
                                 <livewire:select-organisation>
                             @endif
 

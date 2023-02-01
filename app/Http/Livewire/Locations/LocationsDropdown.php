@@ -8,7 +8,7 @@ use App\Models\Locations\District;
 use Illuminate\Support\Facades\App;
 use Livewire\Component;
 
-class SelectDropdown extends Component
+class LocationsDropdown extends Component
 {
     public $country;
     public $cities = [];

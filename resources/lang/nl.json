@@ -13,8 +13,27 @@
     "Choose a district": "Selecteer een buurt",
     "District": "Buurt",
 
-    "Submit": "Verzenden",
+    "Settings": "Instellingen",
+    "Credentials": "Inloggegevens",
+    "Update Password": "Wachtwoord wijzigen",
+    "Current Password": "Huidige wachtwoord",
+    "Two Factor Authentication": "Twee-factor-authenticatie",
+    "Browser Sessions": "Browser sessies",
+    "Log Out Other Browser Sessions": "Log andere sessies uit",
+    "Delete Account and login": "Rekening en login verwijderen",
+    "Delete Account": "Verwijder Rekening",
 
     "Personal Account": "Privé-rekening",
-    "Organisation Account": "Organisatie-rekening"
+    "Organisation Account": "Organisatie-rekening",
+
+
+    "Submit": "Verzenden",
+    "Save": "Opslaan",
+    "Enable": "Inschakelen",
+    "Pay": "Betaal",
+    "Yes": "Ja",
+    "Nee": "Nee",
+    "Cancel": "Annuleren",
+    "Delete": "Verwijderen"
+
 }

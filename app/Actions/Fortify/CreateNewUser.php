@@ -42,7 +42,7 @@ class CreateNewUser implements CreatesNewUsers
 
 
         // Attach (Rtippin Messenger) Provider:
-        Messenger::getProviderMessenger($user);
+        // Messenger::getProviderMessenger($user);
 
 
         // Always move this section to the final registration.

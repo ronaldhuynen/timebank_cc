@@ -15,6 +15,10 @@
 
     "Settings": "Instellingen",
     "Credentials": "Inloggegevens",
+    "Profile Photo": "Profielfoto",
+    "Change Photo": "Wijzig foto",
+    "Delete Photo": "Verwijder foto",
+
     "Update Password": "Wachtwoord wijzigen",
     "Current Password": "Huidige wachtwoord",
     "Two Factor Authentication": "Twee-factor-authenticatie",
@@ -29,7 +33,9 @@
 
     "Submit": "Verzenden",
     "Save": "Opslaan",
+    "Saved.": "Opgeslagen.",
     "Enable": "Inschakelen",
+    "Enabled": "Ingeschakeld.",
     "Pay": "Betaal",
     "Yes": "Ja",
     "Nee": "Nee",

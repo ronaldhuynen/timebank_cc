@@ -20914,6 +20914,15 @@ select {
 .col-span-6 {
   grid-column: span 6 / span 6;
 }
+.col-span-3 {
+  grid-column: span 3 / span 3;
+}
+.col-span-4 {
+  grid-column: span 4 / span 4;
+}
+.col-span-2 {
+  grid-column: span 2 / span 2;
+}
 .float-right {
   float: right;
 }
@@ -22585,6 +22594,33 @@ select {
 }
 .pr-0 {
   padding-right: 0px;
+}
+.\!pl-\[6\.5rem\] {
+  padding-left: 6.5rem !important;
+}
+.\!pl-\[2\.5rem\] {
+  padding-left: 2.5rem !important;
+}
+.\!pl-\[4rem\] {
+  padding-left: 4rem !important;
+}
+.\!pl-\[6rem\] {
+  padding-left: 6rem !important;
+}
+.\!pl-\[2\] {
+  padding-left: 2 !important;
+}
+.\!pl-\[4\.5rem\] {
+  padding-left: 4.5rem !important;
+}
+.\!pl-\[4\.0rem\] {
+  padding-left: 4.0rem !important;
+}
+.\!pl-\[3\.9rem\] {
+  padding-left: 3.9rem !important;
+}
+.\!pl-\[3\.8rem\] {
+  padding-left: 3.8rem !important;
 }
 .text-left {
   text-align: left;
@@ -25270,6 +25306,10 @@ input[type="number"].appearance-number-none {
 
   .sm\:col-span-3 {
     grid-column: span 3 / span 3;
+  }
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
   }
 
   .sm\:mx-0 {

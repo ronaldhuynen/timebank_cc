@@ -1,6 +1,6 @@
 <x-jet-form-section submit="updateProfileInformation">
     <x-slot name="title">
-        {{ __('Credentials') }}
+        {{ __('BIO') }}
     </x-slot>
 
     <x-slot name="description">
@@ -8,7 +8,7 @@
     </x-slot>
 
     <x-slot name="form">
-        <!-- Avatator photo -->
+        <!-- Avator photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
         <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
             <!-- Photo File Input -->
@@ -48,18 +48,53 @@
         </div>
         @endif
 
-        <!-- Name -->
+        <!-- About Me -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="name" value="{{ __('Name') }}" />
-            <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name" />
-            <x-jet-input-error for="name" class="mt-2" />
+            {{-- <x-jet-label for="name" value="{{ __('About Me') }}" />
+            <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" /> --}}
+            <x-textarea wire:model.defer="about-me" label="About me" placeholder="{{__('Short intro or background info.')}}" />
+            <x-jet-input-error for="about-me" class="mt-2" />
         </div>
 
-        <!-- Email -->
+
+
+        <!-- Motivation -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="email" value="{{ __('Email') }}" />
-            <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="state.email" />
-            <x-jet-input-error for="email" class="mt-2" />
+            <x-textarea wire:model.defer="motivation" label="{{ __('Why I am a Timbanker') }}" placeholder="{{__('Explain why you are on Timebank.cc.')}}" />
+            <x-jet-input-error for="motivation" class="mt-2" />
+        </div>
+
+
+
+        <!-- Birth Date -->
+        <div class="col-span-4 sm:col-span-3">
+            <x-datetime-picker
+                label="{{__('Date of Birth')}}"
+                without-time
+                display-format="LL"
+                :min="now()->subYears(100)"
+                :max="now()->subYears(10)"
+                placeholder="{{__('Select a date.')}}"
+                wire:model.defer="birthdate"
+            />
+            <x-jet-input-error for="birthday" class="mt-2" />
+        </div>
+
+
+        <!-- Website -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="website" value="{{ __('My Website') }}" />
+            <x-input
+                class="!pl-[3.8rem]"
+                placeholder="your-website.com"
+                prefix="https://"
+                wire:model.defer="website"
+            />
+            <x-jet-input-error for="website" class="mt-2" />
+        </div>
+
+
+
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
                 <p class="text-sm mt-2">

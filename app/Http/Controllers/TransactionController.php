@@ -25,10 +25,7 @@ class TransactionController extends Controller
 
     public function transfer()
     {
-        // $userAccounts = $this->userAccounts();
-
         return view('transfer.show',
-            // compact('userAccounts')
         );
     }
 

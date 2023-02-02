@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\RegisterStep2Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
@@ -58,6 +59,8 @@ Route::middleware([
         Route::get('/statement/{transactionId}', 'App\Http\Controllers\TransactionController@statement')
             ->where(['transactionId' => '[0-9]+'])     // Add constraint: only numbers allowed
             ->name('transaction.show');
+
+        Route::get('/user/personal-profile', 'App\Http\Controllers\ProfileUserController@show')->name('profile-user.show');
 
         Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
     });

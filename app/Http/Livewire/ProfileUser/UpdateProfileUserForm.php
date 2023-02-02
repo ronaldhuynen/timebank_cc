@@ -7,31 +7,17 @@ use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-
 class UpdateProfileUserForm extends Component
 {
     use WithFileUploads;
 
-    /**
-     * The component's state.
-     *
-     * @var array
-     */
     public $state = [];
-
-    /**
-     * The new avatar for the user.
-     *
-     * @var mixed
-     */
     public $photo;
+    public $aboutMe;
+    public $motivation;
+    public $birthDate;
+    public $website;
 
-    /**
-     * Determine if the verification email was sent.
-     *
-     * @var bool
-     */
-    public $verificationLinkSent = false;
 
     /**
      * Prepare the component.
@@ -81,17 +67,7 @@ class UpdateProfileUserForm extends Component
         $this->emit('refresh-navigation-menu');
     }
 
-    /**
-     * Sent the email verification.
-     *
-     * @return void
-     */
-    public function sendEmailVerification()
-    {
-        Auth::user()->sendEmailVerificationNotification();
 
-        $this->verificationLinkSent = true;
-    }
 
     /**
      * Get the current user of the application.

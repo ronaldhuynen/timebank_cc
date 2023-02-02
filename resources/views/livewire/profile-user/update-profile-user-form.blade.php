@@ -13,13 +13,13 @@
         <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
             <!-- Photo File Input -->
             <input type="file" class="hidden" wix re:model="photo" x-ref="photo" x-on:change="
-                                    photoName = $refs.photo.files[0].name;
-                                    const reader = new FileReader();
-                                    reader.onload = (e) => {
-                                        photoPreview = e.target.result;
-                                    };
-                                    reader.readAsDataURL($refs.photo.files[0]);
-                            " />
+                photoName = $refs.photo.files[0].name;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    photoPreview = e.target.result;
+                };
+                reader.readAsDataURL($refs.photo.files[0]);
+            "/>
 
             <x-jet-label for="photo" value="{{ __('Profile Photo') }}" />
 
@@ -52,10 +52,9 @@
         <div class="col-span-6 sm:col-span-4">
             {{-- <x-jet-label for="name" value="{{ __('About Me') }}" />
             <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" /> --}}
-            <x-textarea wire:model.defer="about-me" label="About me" placeholder="{{__('Short intro or background info.')}}" />
-            <x-jet-input-error for="about-me" class="mt-2" />
+            <x-textarea wire:model.defer="aboutMe" label="About me" placeholder="{{__('Short intro or background info.')}}" />
+            <x-jet-input-error for="aboutMe" class="mt-2" />
         </div>
-
 
 
         <!-- Motivation -->
@@ -63,7 +62,6 @@
             <x-textarea wire:model.defer="motivation" label="{{ __('Why I am a Timbanker') }}" placeholder="{{__('Explain why you are on Timebank.cc.')}}" />
             <x-jet-input-error for="motivation" class="mt-2" />
         </div>
-
 
 
         <!-- Birth Date -->
@@ -75,9 +73,9 @@
                 :min="now()->subYears(100)"
                 :max="now()->subYears(10)"
                 placeholder="{{__('Select a date.')}}"
-                wire:model.defer="birthdate"
+                wire:model.defer="birthDate"
             />
-            <x-jet-input-error for="birthday" class="mt-2" />
+            <x-jet-input-error for="birthDate" class="mt-2" />
         </div>
 
 
@@ -86,7 +84,7 @@
             <x-jet-label for="website" value="{{ __('My Website') }}" />
             <x-input
                 class="!pl-[3.8rem]"
-                placeholder="your-website.com"
+                placeholder="your-website.org"`
                 prefix="https://"
                 wire:model.defer="website"
             />
@@ -94,22 +92,6 @@
         </div>
 
 
-
-
-            @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
-                <p class="text-sm mt-2">
-                    {{ __('Your email address is unverified.') }}
-                    <button type="button" class="underline text-sm text-gray-600 hover:text-gray-900" wire:click.prevent="sendEmailVerification">
-                        {{ __('Click here to re-send the verification email.') }}
-                    </button>
-                </p>
-
-                @if ($this->verificationLinkSent)
-                    <p v-show="verificationLinkSent" class="mt-2 font-medium text-sm text-green-600">
-                        {{ __('A new verification link has been sent to your email address.') }}
-                    </p>
-                @endif
-            @endif
         </div>
     </x-slot>
 

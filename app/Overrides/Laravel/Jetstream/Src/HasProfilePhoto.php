@@ -47,7 +47,7 @@ trait HasProfilePhoto
         }
 
         if ($this->profile_photo_path !== 'app-images/new-profile.svg') {
-            return Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
+            Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
 
             $this->forceFill([
                 'profile_photo_path' => 'app-images/new-profile.svg',

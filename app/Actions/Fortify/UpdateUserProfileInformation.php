@@ -23,6 +23,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => ['required', 'string', 'max:25', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'about' => ['nullable', 'string', 'max:25'],
+            'motivation'=>['nullable', 'string'],
+            'date_of_birth' => ['nullable', 'date']
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -39,6 +42,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'name' => $input['name'],
                 'locale' => $input['locale'],
                 'email' => $input['email'],
+                'about' => $input['about'],
+                'motivation' => $input['motivation'],
+                'date_of_birth' => $input['date_of_birth']
             ])->save();
 
             // Also update session with new name and profile_photo_path

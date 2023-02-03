@@ -30,12 +30,14 @@
     "Personal Account": "Privé-rekening",
     "Organisation Account": "Organisatie-rekening",
 
+    "Date of Birth": "Geboortedatum",
+    "(day / month / year)": "(dag / maand / jaar)",
 
     "Submit": "Verzenden",
     "Save": "Opslaan",
     "Saved": "Opgeslagen",
     "Enable": "Inschakelen",
-    "Enabled": "Ingeschakeld.",
+    "Enabled": "Ingeschakeld",
     "Pay": "Betaal",
     "Yes": "Ja",
     "Nee": "Nee",

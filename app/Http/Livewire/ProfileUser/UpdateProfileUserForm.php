@@ -13,7 +13,7 @@ class UpdateProfileUserForm extends Component
 
     public $state = [];
     public $photo;
-    public $aboutMe;
+    public $about;
     public $motivation;
     public $birthDate;
     public $website;
@@ -78,6 +78,7 @@ class UpdateProfileUserForm extends Component
     {
         return Auth::user();
     }
+
 
     public function render()
     {

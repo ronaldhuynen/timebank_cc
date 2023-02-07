@@ -67,6 +67,7 @@
 
 
         <!-- Birth Date -->
+        <!-- FIXME: use proper localized date picker without if's-->
         @if (Illuminate\Support\Facades\App::isLocale('nl'))
         <div class="col-span-4 sm:col-span-3">
             <x-datetime-picker

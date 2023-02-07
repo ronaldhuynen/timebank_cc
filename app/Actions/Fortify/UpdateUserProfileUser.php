@@ -19,6 +19,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update($user, array $input)
     {
+        // TODO NEXT: Hoe krijg ik country en city in $input array??
         Validator::make($input, [
             'name' => ['required', 'string', 'max:25', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
@@ -37,7 +38,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         } else {
             $user->forceFill([
                 'name' => $input['name'],
-                'locale' => $input['locale'],
+                // 'locale' => $input['locale'],
                 'email' => $input['email'],
             ])->save();
 

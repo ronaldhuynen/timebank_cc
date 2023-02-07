@@ -60,7 +60,6 @@ class Registration extends Component implements CreatesNewUsers
         $valid = $this->validate();
 
         try {
-
             // Use a transaction for creating the new user
             DB::transaction(function () use ($valid): void {
                 $user = User::create([
@@ -72,35 +71,32 @@ class Registration extends Component implements CreatesNewUsers
                     'district_id_1' => $this->district
                 ]);
 
-                 $account = new Account();
-                 $account->name = __(config('timebank-cc.accounts.personal.name'));
-                 $account->limit_min = config('timebank-cc.accounts.personal.limit_min');
-                 $account->limit_max = config('timebank-cc.accounts.personal.limit_max');
+                $account = new Account();
+                $account->name = __(config('timebank-cc.accounts.personal.name'));
+                $account->limit_min = config('timebank-cc.accounts.personal.limit_min');
+                $account->limit_max = config('timebank-cc.accounts.personal.limit_max');
 
-                 $user->accounts()->save($account);
-
-
-                 // TODO: Attach Messenger when profile has been further completed
-                 // TODO: Check if this is needed, and where this also is being done?
-                 // // Attach (Rtippin Messenger) Provider:
-                 // Messenger::getProviderMessenger($user);
+                $user->accounts()->save($account);
 
 
-                 // WireUI notification
-                 $this->notification()->success(
-                     $title = __('Your registration is saved!'),
-                 );
+                // TODO: Attach Messenger when profile has been further completed
+                // TODO: Check if this is needed, and where this also is being done?
+                // // Attach (Rtippin Messenger) Provider:
+                // Messenger::getProviderMessenger($user);
 
-                 $this->reset();
-                 auth()->login($user);
-                 event(new Registered($user));
 
+                // WireUI notification
+                $this->notification()->success(
+                    $title = __('Your registration is saved!'),
+                );
+
+                $this->reset();
+                auth()->login($user);
+                event(new Registered($user));
             });
             // End of transaction
 
             return redirect()->route('verification.notice');
-
-
         } catch (Throwable $e) {
             // WireUI notification
             // TODO: create event to send error notification to admin

@@ -44,7 +44,6 @@ class LocationsDropdown extends Component
     public function render()
     {
         if (!empty($this->country)) {
-
             $country = Country::find($this->country);
             $country_locale = strtolower($country->abbr);
 
@@ -62,7 +61,6 @@ class LocationsDropdown extends Component
         // Check fall-back methods! if user has russian query fails
 
         if (!empty($this->city)) {
-
             //TODO: Test met districts in meerdere talen!
             $this->districts = District::with(['locales'])
                 ->join('location_districts_locales', 'location_districts.id', '=', 'location_districts_locales.district_id')
@@ -70,12 +68,11 @@ class LocationsDropdown extends Component
                 ->orWhere([['city_id', $this->city], ['location_districts_locales.locale', $country_locale]])
                 ->orderBy('location_districts_locales.name', 'ASC')
                 ->get();
-
         }
 
 
 
-        return view('livewire.locations.select-dropdown')
+        return view('livewire.locations.locations-dropdown')
             ->withCountries(Country::with(['locales'])
                 ->join('location_countries_locales', 'location_countries.id', '=', 'location_countries_locales.country_id')
                 ->where('location_countries_locales.locale', App::getLocale())

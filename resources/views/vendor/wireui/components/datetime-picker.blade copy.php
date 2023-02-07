@@ -21,7 +21,6 @@
         weekDays:      @lang('wireui::messages.datePicker.days'),
         monthNames:    @lang('wireui::messages.datePicker.months'),
         withoutTime:   @boolean($withoutTime),
-        withoutTips:   @boolean($withoutTips),
     }"
     {{ $attributes
         ->only('wire:key')

@@ -7,7 +7,7 @@ use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class UpdateProfileUserForm extends Component
+class UpdateProfileProfessionalForm extends Component
 {
     use WithFileUploads;
 
@@ -82,6 +82,6 @@ class UpdateProfileUserForm extends Component
 
     public function render()
     {
-        return view('livewire.profile-user.update-profile-user-form');
+        return view('livewire.profile-user.update-profile-professional-form');
     }
 }

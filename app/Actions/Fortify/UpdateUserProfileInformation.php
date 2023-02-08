@@ -20,9 +20,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     public function update($user, array $input)
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:25', Rule::unique('users')->ignore($user->id)],
+            'name' => config('timebank-cc.rules.profile_user.name') , Rule::unique('users')->ignore($user->id),
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo' => config('timebank-cc.rules.profile_user.profile_photo'),
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {

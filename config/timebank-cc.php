@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Validation\Rule;
-
 return [
 
     /*
@@ -39,9 +37,9 @@ return [
 
     'rules' => [
         'profile_user' => [
-            'name' =>  'required|string|unique:users,name|min:3|max:25', ,
-        Rule::unique('users')->ignore($user->id),
-            'email' => 'required|email|unique:users,email|max:255',
+            'name' =>  'required|string|unique:users,name|min:3|max:40',
+            'email' => 'required|email|unique:users,email|max:40',
+            'password' => 'required|min:6|same:passwordConfirmation',
             'profile_photo' => 'nullable|mimes:jpg,jpeg,png,svg|max:1024',
             'about' => 'nullable|string|max:400',   //TODO: check max with legacy cyclos data
             'motivation' => 'nullable|string|max:200',  //TODO: check max with legacy cyclos data

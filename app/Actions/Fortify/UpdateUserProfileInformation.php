@@ -19,10 +19,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update($user, array $input)
     {
+        // Check config/timebank-cc for validation config as unique Rule (below) can not be fetched from config file
         Validator::make($input, [
-            'name' => config('timebank-cc.rules.profile_user.name') , Rule::unique('users')->ignore($user->id),
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'photo' => config('timebank-cc.rules.profile_user.profile_photo'),
+            'name' => ['required', 'string', 'min:3', 'max:40', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'email', 'max:40', Rule::unique('users')->ignore($user->id)],
+            'photo' => ['nullable', 'mimes:jpg,jpeg,png,svg', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {

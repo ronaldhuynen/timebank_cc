@@ -27,13 +27,16 @@ class Registration extends Component implements CreatesNewUsers
 
     protected $listeners = ['countryToParent', 'cityToParent', 'districtToParent'];
 
-    protected $rules = [
-        'name' => 'required|min:3|unique:users,name',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:6|same:passwordConfirmation',
+    public function rules()
+    {
+        return [
+        'name' => config('timebank-cc.rules.profile_user.name'),
+        'email' => config('timebank-cc.rules.profile_user.email'),
+        'password' => config('timebank-cc.rules.profile_user.password'),
         'country' => 'required',
         'city' => 'required'
-    ];
+        ];
+    }
 
     public function countryToParent($value)
     {

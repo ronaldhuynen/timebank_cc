@@ -46,12 +46,14 @@ trait HasProfilePhoto
             return;
         }
 
-        if ($this->profile_photo_path !== 'app-images/new-profile.svg') {
+        if ($this->profile_photo_path !==  config('timebank-cc.files.profile_user.photo_default')) {
             Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
 
             $this->forceFill([
-                'profile_photo_path' => 'app-images/new-profile.svg',
+                'profile_photo_path' =>  config('timebank-cc.files.profile_user.photo_default'),
             ])->save();
+
+            Session(['activeProfilePhoto'=> $this->profile_photo_path ]);
         }
     }
 
@@ -74,7 +76,7 @@ trait HasProfilePhoto
      */
     protected function defaultProfilePhotoUrl()
     {
-         return Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path);
+        return config('timebank-cc.files.profile_user.photo_default');
     }
 
     /**

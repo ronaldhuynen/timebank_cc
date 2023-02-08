@@ -28,7 +28,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
         } else {
-            $user->forcefill(['profile_photo_path' => 'app-images/new-profile.svg'])->save();
+            $user->forcefill(['profile_photo_path' => config('timebank-cc.files.profile_user.photo_default')])->save();
         }
 
         if ($input['email'] !== $user->email &&
@@ -46,6 +46,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'activeProfileName'=> Auth::user()->name,
                 'activeProfilePhoto'=> Auth::user()->profile_photo_path
             ]);
+
+            redirect()->route('profile.show');
         }
     }
 

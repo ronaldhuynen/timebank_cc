@@ -15,22 +15,31 @@ class UpdateProfilePersonalForm extends Component
 
 
     public $state = [];
+    public $user;
     public $photo;
 
     protected $listeners = ['countryToParent', 'cityToParent', 'districtToParent'];
 
-    protected $rules = [
-        'photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
-        'state.about' => 'nullable|string|max:400',
-        'state.motivation' => 'nullable|string|max:200',
-        'state.date_of_birth' => 'nullable|date',
-        // 'state.website' => 'nullable|string|url',
-    ];
 
-    protected $messages = [
-        'state.motivation' => 'Error',
-        'state.date_of_birth' => 'Your Birthday is not a valid date'
-    ];
+    public function rules()
+    {
+        return [
+            'photo' => config('timebank-cc.rules.profile_user.profile_photo'),
+            'state.about' => config('timebank-cc.rules.profile_user.about'),
+            'state.motivation' => config('timebank-cc.rules.profile_user.motivation'),
+            'state.date_of_birth' => config('timebank-cc.rules.profile_user.date_of_birth'),
+            // 'state.website' => config('timebank-cc.rules.profile_user.website'),
+        ];
+    }
+
+
+    public function messages()
+    {
+        return [
+            'state.motivation' => config('timebank-cc.messages.profile_user.motivation'),
+            // 'state.date_of_birth' => config('timebank-cc.messages.profile_user.date_of_birth'),
+        ];
+    }
 
     // public function countryToParent($value)
     // {
@@ -55,6 +64,8 @@ class UpdateProfilePersonalForm extends Component
     public function mount()
     {
         $this->state = Auth::user()->withoutRelations()->toArray();
+        $this->user = Auth::user();
+
     }
 
     public function updated($field)
@@ -69,49 +80,37 @@ class UpdateProfilePersonalForm extends Component
     */
     public function updateProfilePersonalForm()
     {
-        $this->validate();  // 2nd validation, just before save method
-        $this->resetErrorBag();
-
-        $user = Auth::user();
-
         if (isset($this->photo)) {
-            $user->updateProfilePhoto($this->photo);
-        } else {
-            $user->forcefill(['profile_photo_path' => 'app-images/new-profile.svg'])->save();
+            $this->user->updateProfilePhoto($this->photo);
         }
-        $user->about = $this->state['about'];
-        $user->motivation = $this->state['motivation'];
-        $user->date_of_birth = $this->state['date_of_birth'];
-        // $user->website = $this->state['website'];
-        $user->save();
+
+        $this->validate();  // 2nd validation, just before save method
+
+        $this->user->about = $this->state['about'];
+        $this->user->motivation = $this->state['motivation'];
+        $this->user->date_of_birth = $this->state['date_of_birth'];
+        // $this->user->website = $this->state['website'];
+
+        $this->user->save();
         $this->emit('saved');
-        $this->emit('refresh-navigation-menu');
-
-
-        // Update session with new profile_photo_path
-        Session([
-            'activeProfilePhoto'=> Auth::user()->profile_photo_path
-        ]);
-
+        Session(['activeProfilePhoto'=> $this->user->profile_photo_path ]);
+        // $this->emit('refresh-navigation-menu');
+        redirect()->route('profile-user.show');
     }
-
 
     /**
      * Delete user's profile photo.
      *
      * @return void
      */
-    public function deleteProfilePhoto()
+    public function deleteProfilePhoto(UpdatesUserProfileInformation $updater)
     {
-        Auth::user()->profile_photo_path = 'app-images/new-profile.svg';
-        // $this->photo = null;
-        Session([
-            'activeProfilePhoto'=> Auth::user()->profile_photo_path
-        ]);
-        $this->emit('refresh-navigation-menu');
+        Auth::user()->deleteProfilePhoto();
+
+        $this->emit('saved');
+
+        return redirect()->route('profile-user.show');
     }
-
-
 
     /**
      * Get the current user of the application.

@@ -1,6 +1,8 @@
 <x-jet-form-section submit="updateProfilePersonalForm">
     <x-slot name="title">
         {{ __('Personal') }}
+            {{ info(config('timebank-cc.rules.profile_user.profile_photo')) }}
+
     </x-slot>
 
     <x-slot name="description">
@@ -43,7 +45,7 @@
                 </x-jet-secondary-button>
 
                 @if ($this->user->profile_photo_path)
-                    <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
+                    <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto" x-on:click.prevent="">
                         {{ __('Delete Photo') }}
                     </x-jet-secondary-button>
                 @endif

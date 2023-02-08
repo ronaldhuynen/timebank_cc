@@ -45,8 +45,6 @@ class SelectOrganisation extends Component
     Public function notifySwitchProfile($activeProfile)
     {
         $this->notifySwitchProfile = true;
-        info('notifySwitchProfile!');
-        info($activeProfile);
 
         Session([
                     'activeProfileType' => $activeProfile['type'],

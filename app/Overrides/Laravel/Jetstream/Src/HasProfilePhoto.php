@@ -25,8 +25,9 @@ trait HasProfilePhoto
                 ),
             ])->save();
 
-            if ($previous) {
-                // Storage::disk($this->profilePhotoDisk())->delete($previous);
+            // Only delete a previous profile-photo, and not a previous default-photo in 'app-images/'
+            if (str_starts_with($previous, 'profile-photos/')) {
+                Storage::disk($this->profilePhotoDisk())->delete($previous);
             }
         });
     }

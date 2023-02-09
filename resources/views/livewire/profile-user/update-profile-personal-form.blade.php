@@ -56,7 +56,7 @@
 
         <!-- About Me -->
         <div class="col-span-6 sm:col-span-4">
-            <x-textarea wire:model.debounce.500ms="state.about" label="About me" placeholder="{{__('Short intro or background info')}}" />
+            <x-textarea wire:model.debounce.500ms="state.about" label="{{ __('About me')}}" placeholder="{{ __('Short intro or background info') }}" />
             <x-jet-input-error for="about" class="mt-2" />
         </div>
 
@@ -82,60 +82,17 @@
 
         <!-- Birth Date -->
         <div class="col-span-6 sm:col-span-4">
-        <!-- FIXME not urgent: use proper localized date picker without if's-->
-        @if (Illuminate\Support\Facades\App::isLocale('nl'))
-        <div class="col-span-2 sm:col-span-1">
-            <x-datetime-picker
-                label="{{__('Date of Birth') . ' ' . __('(day / month / year)') }}"
-                without-time
-                without-tips
-                display-format="DD-MM-YYYY"
-                placeholder="{{__('Select a date')}}"
-                wire:model.defer="state.date_of_birth"
-            />
-            <x-jet-input-error for="date_of_birth" class="mt-2" />
-        </div>
-        @elseif(Illuminate\Support\Facades\App::isLocale('be'))
-        <div class="col-span-4 sm:col-span-3">
-            <x-datetime-picker
-                label="{{__('Date of Birth') . ' ' . __('(day / month / year)') }}"
-                without-time
-                display-format="DD.MM.YYYY"
-                :min="now()->subYears(100)"
-                :max="now()->subYears(10)"
-                placeholder="{{__('Select a date')}}"
-                wire:model.defer="state.date_of_birth"
-            />
-            <x-jet-input-error for="date_of_birth" class="mt-2" />
-        </div>
-        @elseif(Illuminate\Support\Facades\App::isLocale('de'))
-        <div class="col-span-4 sm:col-span-3">
-            <x-datetime-picker
-                label="{{__('Date of Birth') . ' ' . __('(day / month / year)') }}"
-                without-time
-                display-format="DD.MM.YYYY"
-                :min="now()->subYears(100)"
-                :max="now()->subYears(10)"
-                placeholder="{{__('Select a date')}}"
-                wire:model.defer="state.date_of_birth"
-            />
-            <x-jet-input-error for="date_of_birth" class="mt-2" />
-        </div>
-        @else
-        {{-- Presume en is the locale --}}
-        <div class="col-span-4 sm:col-span-3">
-            <x-datetime-picker
-                label="{{__('Date of Birth') . ' ' . __('(day / month / year)') }}"
-                without-time
-                display-format="DD/MM/YYYY"
-                :min="now()->subYears(100)"
-                :max="now()->subYears(10)"
-                placeholder="{{__('Select a date')}}"
-                wire:model.defer="state.date_of_birth"
-            />
-            <x-jet-input-error for="date_of_birth" class="mt-2" />
-        </div>
-        @endif
+              <div class="col-span-2 sm:col-span-1">
+                <x-datetime-picker
+                    label="{{__('Date of Birth') . ' ' . __('(DD-MM-YYYY)') }}"
+                    without-time
+                    without-tips
+                    display-format="DD-MM-YYYY"
+                    placeholder="{{__('Select a date')}}"
+                    wire:model.defer="state.date_of_birth"
+                />
+                <x-jet-input-error for="date_of_birth" class="mt-2" />
+            </div>
         </div>
 
 

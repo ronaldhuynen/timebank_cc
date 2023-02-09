@@ -35,8 +35,11 @@
     "Personal Account": "Privé-rekening",
     "Organisation Account": "Organisatie-rekening",
 
+    "About me": "Over mij",
+    "Why I am a Timbanker": "Waarom ik een Timebanker ben",
     "Date of Birth": "Geboortedatum",
-    "(day / month / year)": "(dag / maand / jaar)",
+    "(DD-MM-YYYY)": "(DD-MM-JJJJ)",
+    "My Website": "Mijn website",
 
     "Submit": "Verzenden",
     "Save": "Opslaan",

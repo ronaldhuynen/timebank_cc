@@ -15,12 +15,12 @@ return [
         'personal' => [
             'name' =>  'Personal Account',
             'limit_min' => 0,
-            'limit_max' => 12000,
+            'limit_max' => 6000,
         ],
         'organisation' => [
             'name' => 'Organisation Account',
             'limit_min' => 0,
-            'limit_max' => 24000,
+            'limit_max' => 6000,
         ],
     ],
 

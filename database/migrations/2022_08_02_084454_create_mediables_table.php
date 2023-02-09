@@ -14,12 +14,13 @@ class CreateMediablesTable extends Migration
     public function up()
     {
         Schema::create('mediables', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('medium_id');
-            $table->string('username_on_medium');
             $table->string('mediumable_type');
             $table->unsignedBigInteger('mediumable_id');
+            $table->string('user_on_medium');
+            $table->string('server_of_medium');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

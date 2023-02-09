@@ -1,7 +1,6 @@
 <x-jet-form-section submit="updateProfileInformation">
     <x-slot name="title">
         {{ __('Credentials') }}
-        {{ config('timebank-cc.rules.profile_user.name') }}
     </x-slot>
 
     <x-slot name="description">

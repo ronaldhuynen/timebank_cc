@@ -2787,6 +2787,54 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
+            346 => 
+            array (
+                'id' => 347,
+                'city_id' => 345,
+                'name' => 'Brussel',
+                'alias' => NULL,
+                'locale' => 'nl',
+            ),
+            347 => 
+            array (
+                'id' => 348,
+                'city_id' => 345,
+                'name' => 'Bruxelles',
+                'alias' => NULL,
+                'locale' => 'fr',
+            ),
+            348 => 
+            array (
+                'id' => 349,
+                'city_id' => 345,
+                'name' => 'Brussels',
+                'alias' => NULL,
+                'locale' => 'en',
+            ),
+            349 => 
+            array (
+                'id' => 350,
+                'city_id' => 346,
+                'name' => 'Antwerpen',
+                'alias' => NULL,
+                'locale' => 'nl',
+            ),
+            350 => 
+            array (
+                'id' => 351,
+                'city_id' => 346,
+                'name' => 'Anvers',
+                'alias' => NULL,
+                'locale' => 'fr',
+            ),
+            351 => 
+            array (
+                'id' => 352,
+                'city_id' => 346,
+                'name' => 'Antwerp',
+                'alias' => NULL,
+                'locale' => 'en',
+            ),
         ));
         
         

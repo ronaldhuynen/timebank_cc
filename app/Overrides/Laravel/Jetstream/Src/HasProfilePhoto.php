@@ -47,7 +47,9 @@ trait HasProfilePhoto
             return;
         }
 
-        if ($this->profile_photo_path !==  config('timebank-cc.files.profile_user.photo_default')) {
+
+         // Only delete a profile-photo, and not a efault-photo in 'app-images/'
+        if (str_starts_with($this->profile_photo_path, 'profile-photos/')) {
             Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
 
             $this->forceFill([

@@ -2083,6 +2083,18 @@ class LocationCitiesTableSeeder extends Seeder
                 'country_id' => 1,
                 'division_id' => 12,
             ),
+            344 => 
+            array (
+                'id' => 345,
+                'country_id' => 2,
+                'division_id' => 14,
+            ),
+            345 => 
+            array (
+                'id' => 346,
+                'country_id' => 2,
+                'division_id' => 13,
+            ),
         ));
         
         

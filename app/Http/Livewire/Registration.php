@@ -69,7 +69,7 @@ class Registration extends Component implements CreatesNewUsers
                     'name' => $valid['name'],
                     'email' => $valid['email'],
                     'password' => Hash::make($valid['password']),
-                    'profile_photo_path' => 'app-images/new-profile.svg',
+                    'profile_photo_path' => config('timebank-cc.files.profile_user.photo_new'),
                     'city_id_1' => $valid['city'],
                     'district_id_1' => $this->district
                 ]);

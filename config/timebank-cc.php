@@ -53,6 +53,7 @@ return [
             'photo_new' => 'app-images/profile-user-new.svg',
             'photo_default' => 'app-images/profile-user-default.svg',
         ],
+
     ],
 
     /*
@@ -63,21 +64,71 @@ return [
     | verify data that will be submitted in forms.
     */
     'messages' => [
-            'profile_user' => [
-                // 'name' =>  '',
-                // 'email' => '',
-                // 'about' => '',
-                // 'motivation' => 'error!',
-                // 'date_of_birth' => '',
-            ],
-            'file' => [
-                // 'profile_photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
-                // 'profile_photo_default' => 'app-images/new-profile.svg',
-            ]
-        ]
+        'profile_user' => [
+            // 'name' =>  '',
+            // 'email' => '',
+            // 'about' => '',
+            // 'motivation' => 'error!',
+            // 'date_of_birth' => '',
+        ],
+        'file' => [
+            // 'profile_photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
+            // 'profile_photo_default' => 'app-images/new-profile.svg',
+        ],
+    ],
 
+        /*
+    |--------------------------------------------------------------------------
+    | Available languages
+    |--------------------------------------------------------------------------
+    | List all the languages that will be available to users to select from.
+    | This array should be alphabetically sorted.
+    */
+    'languages' => [
+        'Arabic' => [
+            'lang_code' => 'ar',
+            'flag' => '',
+        ],
+        'Dutch' => [
+            'lang_code' => 'nl',
+            'flag' => '🇳🇱',
+        ],
+        'English' => [
+            'lang_code' => 'en',
+            'flag' => '🇬🇧',
+        ],
+        'French' => [
+            'lang_code' => 'fr',
+            'flag' => '🇫🇷',
+        ],
+        'German'=> [
+            'lang_code' => 'de',
+            'flag' => '🇩🇪',
+        ],
+        'Italian' => [
+            'lang_code' => 'it',
+            'flag' => '🇮🇹',
+        ],
+        'Polish' => [
+            'lang_code' => 'pl',
+            'flag' => '🇵🇱',
+        ],
+        'Russian' => [
+            'lang_code' => 'ru',
+            'flag' => '🇷🇺',
+        ],
+        'Spanish' => [
+            'lang_code' => 'es',
+            'flag' => '🇪🇸',
+        ],
+        'Ukrainian' => [
+            'lang_code' => 'uk',
+            'flag' => '🇺🇦',
+        ],
 
-];
+    ]
+
+]
 
 
 

@@ -65,7 +65,6 @@ class UpdateProfilePersonalForm extends Component
     {
         $this->state = Auth::user()->withoutRelations()->toArray();
         $this->user = Auth::user();
-
     }
 
     public function updated($field)

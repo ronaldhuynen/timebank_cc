@@ -12,7 +12,6 @@
 
         <div class="flex-auto my-6 z-50">
             <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model="toDate" :without-time="true" display-format="DD-MM-YYYY" />
-
         </div>
     </div>
 

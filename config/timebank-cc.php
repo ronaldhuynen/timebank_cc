@@ -82,422 +82,155 @@ return [
     | Available languages
     |--------------------------------------------------------------------------
     | List all the languages that will be available to users to select from.
-    | This array should be alphabetically sorted.
+    | By ydefault this language array will be presented in the order as listed below.
     */
     'languages' => [
-        'Arabic' => [
-            'lang_code' => 'ar',
-            'flag' => '',
-        ],
-        'Dutch' => [
+
+        'Dutch ☆☆☆' => [
             'lang_code' => 'nl',
             'flag' => '🇳🇱',
         ],
-        'English' => [
+        'Dutch ☆☆' => [
+        'lang_code' => 'nl',
+         'flag' => '🇳🇱',
+        ],
+        'Dutch ☆' => [
+        'lang_code' => 'nl',
+         'flag' => '🇳🇱',
+        ],
+        'English ☆☆☆' => [
             'lang_code' => 'en',
             'flag' => '🇬🇧',
         ],
-        'French' => [
+        'English ☆☆' => [
+            'lang_code' => 'en',
+            'flag' => '🇬🇧',
+        ],
+       'English ☆' => [
+            'lang_code' => 'en',
+            'flag' => '🇬🇧',
+        ],
+        'French ☆☆☆' => [
             'lang_code' => 'fr',
             'flag' => '🇫🇷',
         ],
-        'German'=> [
+        'French ☆☆' => [
+            'lang_code' => 'fr',
+            'flag' => '🇫🇷',
+        ],
+        'French ☆☆' => [
+            'lang_code' => 'fr',
+            'flag' => '🇫🇷',
+        ],
+        'German ☆☆☆'=> [
             'lang_code' => 'de',
             'flag' => '🇩🇪',
         ],
-        'Italian' => [
+        'German ☆☆'=> [
+            'lang_code' => 'de',
+            'flag' => '🇩🇪',
+        ],
+        'German ☆'=> [
+            'lang_code' => 'de',
+            'flag' => '🇩🇪',
+        ],
+        'Irish ☆☆☆' => [
+            'lang_code' => 'ga',
+            'flag' => '🇮🇪',
+        ],
+        'Irish ☆☆' => [
+            'lang_code' => 'ga',
+            'flag' => '🇮🇪',
+        ],
+        'Irish ☆' => [
+            'lang_code' => 'ga',
+            'flag' => '🇮🇪',
+        ],
+        'Italian ☆☆☆' => [
             'lang_code' => 'it',
             'flag' => '🇮🇹',
         ],
-        'Polish' => [
+        'Italian ☆☆' => [
+            'lang_code' => 'it',
+            'flag' => '🇮🇹',
+        ],
+        'Italian ☆' => [
+            'lang_code' => 'it',
+            'flag' => '🇮🇹',
+        ],
+        'Polish ☆☆☆' => [
             'lang_code' => 'pl',
             'flag' => '🇵🇱',
         ],
-        'Russian' => [
+        'Polish ☆☆' => [
+            'lang_code' => 'pl',
+            'flag' => '🇵🇱',
+        ],
+        'Polish ☆' => [
+            'lang_code' => 'pl',
+            'flag' => '🇵🇱',
+        ],
+        'Russian ☆☆☆' => [
             'lang_code' => 'ru',
             'flag' => '🇷🇺',
         ],
-        'Spanish' => [
+        'Russian ☆☆' => [
+            'lang_code' => 'ru',
+            'flag' => '🇷🇺',
+        ],
+        'Russian ☆' => [
+            'lang_code' => 'ru',
+            'flag' => '🇷🇺',
+        ],
+        'Spanish ☆☆☆' => [
             'lang_code' => 'es',
             'flag' => '🇪🇸',
         ],
-        'Ukrainian' => [
+        'Spanish ☆☆' => [
+            'lang_code' => 'es',
+            'flag' => '🇪🇸',
+        ],
+        'Spanish ☆' => [
+            'lang_code' => 'es',
+            'flag' => '🇪🇸',
+        ],
+        'Turkish ☆☆☆' => [
+            'lang_code' => 'tr',
+            'flag' => '🇹🇷',
+        ],
+        'Turkish ☆☆' => [
+            'lang_code' => 'tr',
+            'flag' => '🇹🇷',
+        ],
+        'Turkish ☆' => [
+            'lang_code' => 'tr',
+            'flag' => '🇹🇷',
+        ],
+        'Ukrainian ☆☆☆' => [
             'lang_code' => 'uk',
             'flag' => '🇺🇦',
+        ],
+        'Ukrainian ☆☆' => [
+            'lang_code' => 'uk',
+            'flag' => '🇺🇦',
+        ],
+        'Ukrainian ☆' => [
+            'lang_code' => 'uk',
+            'flag' => '🇺🇦',
+        ],
+        'Arabic ☆☆☆' => [
+            'lang_code' => 'ar',
+            'flag' => '',
+        ],
+        'Arabic ☆☆' => [
+            'lang_code' => 'ar',
+            'flag' => '',
+        ],
+        'Arabic ☆' => [
+            'lang_code' => 'ar',
+            'flag' => '',
         ],
 
     ]
 
-]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+];

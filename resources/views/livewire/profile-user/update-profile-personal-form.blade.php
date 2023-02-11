@@ -67,6 +67,15 @@
             <x-jet-input-error for="motivation" class="mt-2" />
         </div>
 
+        <!--- Languages -->
+        <div class="col-span-6 sm:col-span-4">
+        <!-- TODO: Explanantion for location dropdowns -->
+            @livewire('languages-dropdown')
+            @error('country')
+            <p class="text-sm text-red-500">{{$message}}</p>
+            @enderror
+        </div>
+
 
         {{-- <!--- Location -->
         <div class="col-span-6 sm:col-span-4">

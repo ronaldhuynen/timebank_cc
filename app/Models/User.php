@@ -91,6 +91,14 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
         return $this->morphMany(Account::class, 'accountable');
     }
 
+    /**
+     * Get all of the languages for the user.
+     */
+    public function languages()
+    {
+        return $this->morphToMany(Language::class, 'languagable');
+    }
+
 
     // Rtippin Messenger:
     // Implement the MessengerProvider interface for each provider registered

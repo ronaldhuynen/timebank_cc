@@ -30,6 +30,7 @@
                 @livewire('profile.logout-other-browser-sessions-form')
             </div>
 
+            {{-- TODO: Delete User form or request option --}}
             {{-- @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
                 <x-jet-section-border />
                 <div class="mt-10 sm:mt-0">

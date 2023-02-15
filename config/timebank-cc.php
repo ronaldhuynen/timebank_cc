@@ -85,12 +85,11 @@ return [
     | By ydefault this language array will be presented in the order as listed below.
     */
     'languages' => [
-
-        'Dutch ☆☆☆' => [
+        'Dutch' => [
             'lang_code' => 'nl',
             'flag' => '🇳🇱',
         ],
-        'Dutch ☆☆' => [
+        'Dutch (beginner)' => [
         'lang_code' => 'nl',
          'flag' => '🇳🇱',
         ],

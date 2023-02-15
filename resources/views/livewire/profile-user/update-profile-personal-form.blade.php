@@ -71,9 +71,10 @@
         <div class="col-span-6 sm:col-span-4">
         <!-- TODO: Explanantion for location dropdowns -->
             @livewire('languages-dropdown')
-            @error('country')
+            @error('languages')
             <p class="text-sm text-red-500">{{$message}}</p>
             @enderror
+            {{-- {{ dump(json_encode($languages)) }} --}}
         </div>
 
 

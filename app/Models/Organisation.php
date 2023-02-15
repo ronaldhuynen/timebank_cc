@@ -43,6 +43,14 @@ class Organisation extends Model implements MessengerProvider, Searchable
         return $this->belongsToMany(User::class);
     }
 
+    /**
+     * Get all of the languages for the organisation.
+     */
+    public function languages()
+    {
+        return $this->morphToMany(Language::class, 'languagable');
+    }
+
 
     // Rtippin Messenger:
     // Implement the MessengerProvider interface for each provider registered

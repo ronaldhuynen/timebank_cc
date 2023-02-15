@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\ProfileUser;
 
+use App\Models\Language;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -17,8 +18,9 @@ class UpdateProfilePersonalForm extends Component
     public $state = [];
     public $user;
     public $photo;
+    public $languages;
 
-    protected $listeners = ['countryToParent', 'cityToParent', 'districtToParent'];
+    protected $listeners = ['languagesToParent', 'countryToParent', 'cityToParent', 'districtToParent'];
 
 
     public function rules()
@@ -56,6 +58,11 @@ class UpdateProfilePersonalForm extends Component
     //     $this->district = $value;
     // }
 
+    public function languagesToParent($value)
+    {
+        $this->languages = $value;
+    }
+
     /**
      * Prepare the component.
      *
@@ -89,6 +96,21 @@ class UpdateProfilePersonalForm extends Component
         $this->user->motivation = $this->state['motivation'];
         $this->user->date_of_birth = $this->state['date_of_birth'];
         // $this->user->website = $this->state['website'];
+
+        foreach ($this->languages as $lang) {
+            // zoiets van
+            // koppelen aan $user
+            $user = $this->user;
+            // $userLang = new Language();
+            $userLang['user_id'] = $user->id;
+            $userLang['name'] = $lang;
+            $userLang['lang_code'] = config('timebank-cc.languages')[$lang]['lang_code'];
+            $userLang['flag'] = config('timebank-cc.languages')[$lang]['flag'];
+
+            // dump(($userLang));
+            $user = $user->languages()->firstOrCreate($userLang);
+        }
+
 
         $this->user->save();
         $this->emit('saved');

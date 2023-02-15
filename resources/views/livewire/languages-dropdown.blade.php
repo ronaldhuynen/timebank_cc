@@ -6,5 +6,6 @@
     :options="$languages"
     wire:model.lazy="langSelected"
 />
-{{-- {{ dump(json_encode($langSelected)) }} --}}
+{{ dump(json_encode($langSelected)) }}
 </div>
+()

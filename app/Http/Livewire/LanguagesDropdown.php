@@ -25,6 +25,10 @@ class LanguagesDropdown extends Component
         $this->label = __('What language(s) do you speak?');
     }
 
+    public function updated()
+    {
+        $this->emit('languagesToParent', $this->langSelected);
+    }
 
 
     public function render()

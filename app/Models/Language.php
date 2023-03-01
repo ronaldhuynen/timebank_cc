@@ -29,7 +29,7 @@ protected $fillable = [
      */
     public function organisations()
     {
-        return $this->morphedByMany(Organisation::class, 'languagable');
+        return $this->morphedByMany(Organisation::class, 'id');
     }
 
 }

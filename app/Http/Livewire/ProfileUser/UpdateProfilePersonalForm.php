@@ -18,7 +18,7 @@ class UpdateProfilePersonalForm extends Component
     public $state = [];
     public $user;
     public $photo;
-    public $languages;
+    // public $languages;
 
     protected $listeners = ['languagesToParent', 'countryToParent', 'cityToParent', 'districtToParent'];
 

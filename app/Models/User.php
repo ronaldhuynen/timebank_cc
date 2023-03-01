@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Account;
+use App\Models\Language;
 use App\Models\Organisation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -96,8 +97,10 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
      */
     public function languages()
     {
-        return $this->morphToMany(Language::class, 'languagable');
+        return $this->morphToMany(Language::class, 'languagable')->withPivot('competence');
     }
+
+
 
 
     // Rtippin Messenger:

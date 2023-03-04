@@ -11,10 +11,9 @@ use Livewire\Component;
 class LanguagesDropdown extends Component
 {
     public $state = [];
-    // public $languages = [];
     public $langOptions = [];
     public $langSelected = [];
-    public $label;
+    public $langSelectedOptions = [];
 
 
     /**
@@ -39,7 +38,6 @@ class LanguagesDropdown extends Component
                 'name' => $language[0]->name . ' - ' . $language[1]->name,
             ];
         });
-
         // dump($this->langOptions);
 
         // Create an array of the (pre)selected language options
@@ -54,11 +52,22 @@ class LanguagesDropdown extends Component
         });
         $this->langSelected = $this->langSelected->flatten();
         // dump($this->langSelected);
+
+
+        // Create a selected language collection that holds the selected languages with their selected competences
+        $this->langSelectedOptions = collect($this->langOptions)->whereIn('id', $this->langSelected);
+        // dump($this->langSelectedOptions);
     }
 
     public function updated()
     {
-        $this->emit('languagesToParent', $this->langSelected);
+
+        // Create a selected language collection that holds the selected languages with their selected competences
+        $this->langSelectedOptions = collect($this->langOptions)->whereIn('id', $this->langSelected);
+        // dump($this->langSelectedOptions);
+
+        $this->emit('languagesToParent', $this->langSelectedOptions);
+        // dump($this->langSelectedOptions);
     }
 
 

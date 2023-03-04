@@ -21787,6 +21787,9 @@ select {
 .border-t-0 {
   border-top-width: 0px;
 }
+.border-r {
+  border-right-width: 1px;
+}
 .border-solid {
   border-style: solid;
 }

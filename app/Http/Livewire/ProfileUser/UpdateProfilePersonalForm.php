@@ -3,7 +3,9 @@
 namespace App\Http\Livewire\ProfileUser;
 
 use App\Models\Language;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Laravel\Jetstream\HasProfilePhoto;
 use Livewire\Component;
@@ -18,7 +20,7 @@ class UpdateProfilePersonalForm extends Component
     public $state = [];
     public $user;
     public $photo;
-    // public $languages;
+    public $languages;
 
     protected $listeners = ['languagesToParent', 'countryToParent', 'cityToParent', 'districtToParent'];
 
@@ -58,9 +60,10 @@ class UpdateProfilePersonalForm extends Component
     //     $this->district = $value;
     // }
 
-    public function languagesToParent($value)
+    public function languagesToParent($values)
     {
-        $this->languages = $value;
+        $this->languages = $values;
+        // dump($this->languages);
     }
 
     /**
@@ -97,20 +100,20 @@ class UpdateProfilePersonalForm extends Component
         $this->user->date_of_birth = $this->state['date_of_birth'];
         // $this->user->website = $this->state['website'];
 
-        foreach ($this->languages as $lang) {
-            // zoiets van
-            // koppelen aan $user
-            $user = $this->user;
-            // $userLang = new Language();
-            $userLang['user_id'] = $user->id;
-            $userLang['name'] = $lang;
-            $userLang['lang_code'] = config('timebank-cc.languages')[$lang]['lang_code'];
-            $userLang['flag'] = config('timebank-cc.languages')[$lang]['flag'];
+        if (isset($this->languages)) {
 
-            // dump(($userLang));
-            $user = $user->languages()->firstOrCreate($userLang);
+            $languages = collect($this->languages)->Map(function ($lang, $key) {
+                return [
+                    'language_id' => $lang['langId'],
+                    'competence' => $lang['compId'],
+                    'languagable_type' => User::class,
+                    'languagable_id' => $this->user->id,
+                ];
+            })->toArray();
+
+            $this->user->languages()->detach(); // Remove all languages of this user before inserting the new ones
+            DB::table('languagables')->insert($languages);
         }
-
 
         $this->user->save();
         $this->emit('saved');

@@ -35,28 +35,23 @@ class LanguagesDropdown extends Component
                 'id' => $key,   // index key is needed to select values in dropdown (option-value)
                 'langId' => $language[0]->id,
                 'compId' => $language[1]->id,
-                'name' => $language[0]->name . ' - ' . $language[1]->name,
+                'name' => trans($language[0]->name) . ' - ' . trans($language[1]->name),
             ];
         });
-        // dump($this->langOptions);
 
         // Create an array of the (pre)selected language options
         $this->langSelected = User::find($this->state['id'])->languages;
         $this->langSelected = $this->langSelected->map(function ($language, $key) {
             $competence = DB::table('language_competences')->find($language->pivot->competence);
-            $langSelected = collect($this->langOptions)->where('name', $language->name . ' - ' . $competence->name);
-            // dump($langSelected->keys());
+            $langSelected = collect($this->langOptions)->where('name', trans($language->name) . ' - ' . trans($competence->name));
             return [
                 $langSelected->keys()
             ];
         });
         $this->langSelected = $this->langSelected->flatten();
-        // dump($this->langSelected);
-
 
         // Create a selected language collection that holds the selected languages with their selected competences
         $this->langSelectedOptions = collect($this->langOptions)->whereIn('id', $this->langSelected);
-        // dump($this->langSelectedOptions);
     }
 
     public function updated()
@@ -64,10 +59,7 @@ class LanguagesDropdown extends Component
 
         // Create a selected language collection that holds the selected languages with their selected competences
         $this->langSelectedOptions = collect($this->langOptions)->whereIn('id', $this->langSelected);
-        // dump($this->langSelectedOptions);
-
         $this->emit('languagesToParent', $this->langSelectedOptions);
-        // dump($this->langSelectedOptions);
     }
 
 

@@ -54,10 +54,13 @@ class LanguagesDropdown extends Component
         $this->langSelectedOptions = collect($this->langOptions)->whereIn('id', $this->langSelected);
     }
 
+    /**
+     * When component is updated, create a selected language collection that holds the selected languages with their selected competences
+     *
+     * @return void
+     */
     public function updated()
     {
-
-        // Create a selected language collection that holds the selected languages with their selected competences
         $this->langSelectedOptions = collect($this->langOptions)->whereIn('id', $this->langSelected);
         $this->emit('languagesToParent', $this->langSelectedOptions);
     }

@@ -70,30 +70,39 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
         'email_verified_at' => 'datetime',
     ];
 
-    // Get the user's profile
-    // One-to-one
+
+    /**
+     * Get the user's profile
+     * One-to-one
+     */
     public function profile()
     {
         return $this->hasOne(Profile::class);
     }
 
-    // Get the user's organisation(s)
-    // Many-to-many
+
+    /**
+     * Get the user's organisation(s)
+     * Many-to-many
+     */
     public function organisations()
     {
         return $this->belongsToMany(Organisation::class);
     }
 
 
-    // Get all of the users's accounts
-    // One-to-many polymorphic
+    /**
+     * Get all of the users's accounts
+     * One-to-many polymorphic
+     */
     public function accounts()
     {
         return $this->morphMany(Account::class, 'accountable');
     }
 
     /**
-     * Get all of the languages for the user.
+     * Get all of the languages for the user
+     * Many-to-many polymorphic
      */
     public function languages()
     {
@@ -101,10 +110,11 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
 
-
-
-    // Rtippin Messenger:
-    // Implement the MessengerProvider interface for each provider registered
+    /**
+     * Needed for Rtippin Messenger
+     * Implement the MessengerProvider interface for each provider registered
+     * @return array
+     */
     public static function getProviderSettings(): array
     {
         return [
@@ -120,8 +130,12 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
 
-    // Rtippin Messenger:
-    // Searchable
+    /**
+     * Needed for Rtippin Messenger
+     * Searchable
+     *
+     * @return void
+     */
     public static function getProviderSearchableBuilder(
         Builder $query,
         string $search,
@@ -136,18 +150,22 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
 
-    // Rtippin Messenger:
-    // messenger avator / profile photo location
+    /**
+     * Needed for Rtippin Messenger
+     * messenger avator / profile photo location
+     *
+     * @return string
+     */
     public function getProviderAvatarColumn(): string
     {
         return 'profile_photo_path';
     }
 
 
-    // Rtippin Messenger:
     /**
+     * Needed for Rtippin Messenger
      * Get the route of the avatar for your provider. We will call this
-     * from our resource classes using sm/md/lg .
+     * from our resource classes using sm/md/lg
      *
      * @param  string  $size
      * @return string|null
@@ -159,7 +177,11 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
 
-    // Spatie Laravel-Searchable
+    /**
+     * Spatie Laravel-Searchable
+     *
+     * @return SearchResult
+     */
     public function getSearchResult(): SearchResult
     {
         return new \Spatie\Searchable\SearchResult(

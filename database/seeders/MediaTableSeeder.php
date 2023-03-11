@@ -129,6 +129,16 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
+            11 => 
+            array (
+                'id' => 12,
+                'name' => 'Telegram',
+                'icon' => 'app-images/telegram.svg',
+                'url_structure' => 'https://t.me/',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+                'deleted_at' => NULL,
+            ),
         ));
         
         

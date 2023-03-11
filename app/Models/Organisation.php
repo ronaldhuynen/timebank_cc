@@ -29,15 +29,22 @@ class Organisation extends Model implements MessengerProvider, Searchable
     ];
 
 
-    // Get all of the organisation's accounts
-    // One-to-many polymorphic
+    /**
+     * Get all of the organisation's accounts.
+     * One-to-many polymorphic.
+     *
+     * @return void
+     */
     public function accounts()
     {
         return $this->morphMany(Account::class, 'accountable');
     }
 
-    // Get the organisation's user(s)
-    // Many-to-many
+
+    /**
+     * Get the organisation's user(s).
+     * Many-to-many.
+     */
     public function users()
     {
         return $this->belongsToMany(User::class);
@@ -45,6 +52,7 @@ class Organisation extends Model implements MessengerProvider, Searchable
 
     /**
      * Get all of the languages for the organisation.
+     * Many-to-many polymorphic.
      */
     public function languages()
     {
@@ -52,8 +60,22 @@ class Organisation extends Model implements MessengerProvider, Searchable
     }
 
 
-    // Rtippin Messenger:
-    // Implement the MessengerProvider interface for each provider registered
+    /**
+     * Get all of the media for the organisation.
+     * Many-to-many polymorphic.
+     */
+    public function media()
+    {
+        return $this->morphToMany(Medium::class, 'mediable');
+    }
+
+
+    /**
+     * Rtippin Messenger:
+     * Implement the MessengerProvider interface for each provider registered.
+     *
+     * @return array
+     */
     public static function getProviderSettings(): array
     {
         return [
@@ -69,8 +91,12 @@ class Organisation extends Model implements MessengerProvider, Searchable
     }
 
 
-    // Rtippin Messenger:
-    // Searchable
+    /**
+     * Rtippin Messenger:
+     * Searchable.
+     *
+     * @return void
+     */
     public static function getProviderSearchableBuilder(
         Builder $query,
         string $search,
@@ -86,29 +112,37 @@ class Organisation extends Model implements MessengerProvider, Searchable
     }
 
 
-    // Rtippin Messenger:
-    // messenger avator / profile photo location
+    /**
+     * Rtippin Messenger:
+     * Nessenger avator / profile photo location.
+     *
+     * @return string
+     */
     public function getProviderAvatarColumn(): string
     {
         return 'profile_photo_path';
     }
 
-    // Rtippin Messenger:
+
     /**
+     * Rtippin Messenger:
      * Get the route of the avatar for your provider. We will call this
-     * from our resource classes using sm/md/lg .
+     * from our resource classes using sm/md/lg.
      *
      * @param  string  $size
      * @return string|null
      */
     public function getProviderAvatarRoute(string $size = 'sm'): ?string
     {
-        // dd($this);
         return '/storage/' . $this->profile_photo_path;
     }
 
 
-    // Spatie Laravel-Searchable
+    /**
+     * Spatie Laravel-Searchable.
+     *
+     * @return SearchResult
+     */
     public function getSearchResult(): SearchResult
     {
          return new \Spatie\Searchable\SearchResult(

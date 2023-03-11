@@ -69,9 +69,16 @@
 
         <!--- Languages -->
         <div class="col-span-6 sm:col-span-4">
-        <!-- TODO: Explanantion for location dropdowns -->
             @livewire('languages-dropdown')
             @error('languages')
+            <p class="text-sm text-red-500">{{$message}}</p>
+            @enderror
+        </div>
+
+        <!--- Media -->
+        <div class="col-span-6 sm:col-span-4">
+            @livewire('media-form')
+            @error('media')
             <p class="text-sm text-red-500">{{$message}}</p>
             @enderror
         </div>

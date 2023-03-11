@@ -72,7 +72,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Get the user's profile
+     * Get the user's profile.
      * One-to-one
      */
     public function profile()
@@ -82,8 +82,8 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Get the user's organisation(s)
-     * Many-to-many
+     * Get the user's organisation(s).
+     * Many-to-many.
      */
     public function organisations()
     {
@@ -92,8 +92,8 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Get all of the users's accounts
-     * One-to-many polymorphic
+     * Get all of the users's accounts.
+     * One-to-many polymorphic.
      */
     public function accounts()
     {
@@ -101,18 +101,28 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
     /**
-     * Get all of the languages for the user
-     * Many-to-many polymorphic
+     * Get all of the languages of the user.
+     * Many-to-many polymorphic.
      */
     public function languages()
     {
         return $this->morphToMany(Language::class, 'languagable')->withPivot('competence');
     }
 
+    /**
+     * Get all of the media of the user.
+     * Many-to-many polymorphic.
+     */
+    public function media()
+    {
+        return $this->morphToMany(Medium::class, 'mediable')->withPivot('id', 'user_on_medium', 'server_of_medium');
+    }
+
 
     /**
-     * Needed for Rtippin Messenger
-     * Implement the MessengerProvider interface for each provider registered
+     * Needed for Rtippin Messenger.
+     * Implement the MessengerProvider interface for each provider registered.
+     *
      * @return array
      */
     public static function getProviderSettings(): array
@@ -131,8 +141,8 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Needed for Rtippin Messenger
-     * Searchable
+     * Needed for Rtippin Messenger.
+     * Searchable.
      *
      * @return void
      */
@@ -151,8 +161,8 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Needed for Rtippin Messenger
-     * messenger avator / profile photo location
+     * Needed for Rtippin Messenger.
+     * Messenger avator / profile photo location.
      *
      * @return string
      */
@@ -163,9 +173,9 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Needed for Rtippin Messenger
+     * Needed for Rtippin Messenger.
      * Get the route of the avatar for your provider. We will call this
-     * from our resource classes using sm/md/lg
+     * from our resource classes using sm/md/lg.
      *
      * @param  string  $size
      * @return string|null
@@ -178,7 +188,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Spatie Laravel-Searchable
+     * Spatie Laravel-Searchable.
      *
      * @return SearchResult
      */

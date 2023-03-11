@@ -16,10 +16,10 @@ class CreateMediablesTable extends Migration
         Schema::create('mediables', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('medium_id');
-            $table->string('mediumable_type');
-            $table->unsignedBigInteger('mediumable_id');
+            $table->string('mediable_type');
+            $table->unsignedBigInteger('mediable_id');
             $table->string('user_on_medium');
-            $table->string('server_of_medium');
+            $table->string('server_of_medium')->nullable();
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@
     :disabled="$disabled"
     :readonly="$readonly"
     :option="$option"
+    :src="$src"
 >
     <div class="flex items-center gap-x-3">
         <img src="{{ data_get($option, 'src', $src) }}" class="shrink-0 h-6 w-6 object-cover rounded-full">

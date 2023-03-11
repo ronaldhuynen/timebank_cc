@@ -77,9 +77,16 @@ class UpdateProfilePersonalForm extends Component
         $this->user = Auth::user();
     }
 
+    /**
+     * Validate a single field when updated.
+     * This is the 1st validation method on this form.
+     *
+     * @param  mixed $field
+     * @return void
+     */
     public function updated($field)
     {
-        $this->validateOnly($field);    // 1st velidation, in real-time
+        $this->validateOnly($field);
     }
 
     /**

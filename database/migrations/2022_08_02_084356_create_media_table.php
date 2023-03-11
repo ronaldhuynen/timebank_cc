@@ -17,7 +17,7 @@ class CreateMediaTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('icon');
-            $table->string('url-structure');
+            $table->string('url_structure');
             $table->timestamps();
             $table->softDeletes();
         });

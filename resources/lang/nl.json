@@ -53,12 +53,17 @@
     "Submit": "Verzenden",
     "Save": "Opslaan",
     "Saved": "Opgeslagen",
+    "Update": "Bijwerken",
+    "Updated": "Bijgewerkt",
+    "Add": "Toevoegen",
+    "Added": "Toegevoegd",
     "Enable": "Inschakelen",
     "Enabled": "Ingeschakeld",
     "Pay": "Betaal",
     "Yes": "Ja",
     "Nee": "Nee",
     "Cancel": "Annuleren",
-    "Delete": "Verwijderen"
+    "Delete": "Verwijderen",
+    "Deleted": "Verwijderd"
 
 }

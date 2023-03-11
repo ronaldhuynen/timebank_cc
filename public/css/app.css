@@ -21132,6 +21132,9 @@ select {
 .ml-5 {
   margin-left: 1.25rem;
 }
+.-mb-2 {
+  margin-bottom: -0.5rem;
+}
 .block {
   display: block;
 }
@@ -21484,6 +21487,9 @@ select {
 .grid-cols-7 {
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .grid-cols-8 {
   grid-template-columns: repeat(8, minmax(0, 1fr));
 }
@@ -21542,13 +21548,13 @@ select {
   -moz-column-gap: 0.5rem;
        column-gap: 0.5rem;
 }
-.gap-x-1 {
-  -moz-column-gap: 0.25rem;
-       column-gap: 0.25rem;
-}
 .gap-x-3 {
   -moz-column-gap: 0.75rem;
        column-gap: 0.75rem;
+}
+.gap-x-1 {
+  -moz-column-gap: 0.25rem;
+       column-gap: 0.25rem;
 }
 .gap-y-2 {
   row-gap: 0.5rem;
@@ -22517,11 +22523,26 @@ select {
 .pb-1 {
   padding-bottom: 0.25rem;
 }
-.pl-2\.5 {
-  padding-left: 0.625rem;
+.pl-3\.5 {
+  padding-left: 0.875rem;
+}
+.pr-14 {
+  padding-right: 3.5rem;
 }
 .pl-2 {
   padding-left: 0.5rem;
+}
+.pr-0\.5 {
+  padding-right: 0.125rem;
+}
+.pr-0 {
+  padding-right: 0px;
+}
+.pr-2 {
+  padding-right: 0.5rem;
+}
+.pl-2\.5 {
+  padding-left: 0.625rem;
 }
 .pl-1 {
   padding-left: 0.25rem;
@@ -22529,23 +22550,8 @@ select {
 .pr-2\.5 {
   padding-right: 0.625rem;
 }
-.pr-2 {
-  padding-right: 0.5rem;
-}
 .pr-1 {
   padding-right: 0.25rem;
-}
-.pl-3\.5 {
-  padding-left: 0.875rem;
-}
-.pr-14 {
-  padding-right: 3.5rem;
-}
-.pr-0\.5 {
-  padding-right: 0.125rem;
-}
-.pr-0 {
-  padding-right: 0px;
 }
 .pr-9 {
   padding-right: 2.25rem;
@@ -22770,24 +22776,24 @@ select {
   --tw-text-opacity: 1;
   color: rgb(34 197 94 / var(--tw-text-opacity));
 }
-.text-negative-500 {
+.text-secondary-700 {
   --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity));
+  color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 .text-secondary-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
+.\!text-transparent {
+  color: transparent !important;
+}
 .text-secondary-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
 }
-.text-secondary-700 {
+.text-negative-500 {
   --tw-text-opacity: 1;
-  color: rgb(55 65 81 / var(--tw-text-opacity));
-}
-.\!text-transparent {
-  color: transparent !important;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 .text-negative-400 {
   --tw-text-opacity: 1;
@@ -23604,6 +23610,10 @@ input[type="number"].appearance-number-none {
   --tw-bg-opacity: 1;
   background-color: rgb(252 165 165 / var(--tw-bg-opacity));
 }
+.hover\:bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
 .hover\:bg-secondary-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -23615,10 +23625,6 @@ input[type="number"].appearance-number-none {
 .hover\:bg-indigo-500:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(99 102 241 / var(--tw-bg-opacity));
-}
-.hover\:bg-gray-200:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 .hover\:bg-blue-200:hover {
   --tw-bg-opacity: 1;
@@ -23983,6 +23989,10 @@ input[type="number"].appearance-number-none {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+.hover\:text-gray-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
 .hover\:text-primary-500:hover {
   --tw-text-opacity: 1;
   color: rgb(153 155 156 / var(--tw-text-opacity));
@@ -24002,10 +24012,6 @@ input[type="number"].appearance-number-none {
 .hover\:text-red-600:hover {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
-}
-.hover\:text-gray-600:hover {
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 .hover\:text-blue-400:hover {
   --tw-text-opacity: 1;
@@ -24153,6 +24159,9 @@ input[type="number"].appearance-number-none {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+}
+.focus\:rounded-sm:focus {
+  border-radius: 0.125rem;
 }
 .focus\:border:focus {
   border-width: 1px;
@@ -24338,6 +24347,10 @@ input[type="number"].appearance-number-none {
 .focus\:ring-primary-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(153 155 156 / var(--tw-ring-opacity));
+}
+.focus\:ring-gray-200:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(229 231 235 / var(--tw-ring-opacity));
 }
 .focus\:ring-primary-600:focus {
   --tw-ring-opacity: 1;
@@ -24711,11 +24724,11 @@ input[type="number"].appearance-number-none {
 .dark .dark\:bg-opacity-60 {
   --tw-bg-opacity: 0.6;
 }
-.dark .dark\:text-secondary-400 {
+.dark .dark\:text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
-.dark .dark\:text-gray-400 {
+.dark .dark\:text-secondary-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }

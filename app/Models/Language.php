@@ -16,7 +16,7 @@ protected $fillable = [
     ];
 
     /**
-     * Get all users that are assigned this language.
+     * Get all users that are assigned to this language.
      */
     public function users()
     {
@@ -25,11 +25,11 @@ protected $fillable = [
 
 
     /**
-     * Get all organisations that are assigned this language.
+     * Get all organisations that are assigned to this language.
      */
     public function organisations()
     {
-        return $this->morphedByMany(Organisation::class, 'id');
+        return $this->morphedByMany(Organisation::class, 'languagable');
     }
 
 }

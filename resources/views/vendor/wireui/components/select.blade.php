@@ -81,7 +81,7 @@
                                 />
                             @endif
 
-                            <span
+                            <span id="selected-focus"
                                 class="truncate text-secondary-700 dark:text-secondary-400 text-sm"
                                 x-show="!isEmpty()"
                                 x-html="getSelectedDisplayText()">

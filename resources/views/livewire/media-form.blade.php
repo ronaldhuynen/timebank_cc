@@ -18,12 +18,14 @@
                     </td>
                         <td>
                         <a class="text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition"
-                            href="{{ str_replace('#', $value->pivot->server_of_medium, $value->url_structure)  . $value->pivot->user_on_medium }}"
+                            href="{{ (str_starts_with($value->pivot->user_on_medium, 'https://') ? $value->pivot->user_on_medium :
+                                str_replace('#', $value->pivot->server_of_medium, $value->url_structure)  . $value->pivot->user_on_medium )}}"
                             target="_blank">
                             @if($value->pivot->server_of_medium)
                                {{ Str::of('@ '. $value->pivot->user_on_medium . '@ '. $value->pivot->server_of_medium)->limit(43) }}
                             @else
-                                {{ Str::of('@ '. $value->pivot->user_on_medium)->limit(43) }}
+                                {{ (str_starts_with($value->pivot->user_on_medium, 'https://') ? Str::of($value->pivot->user_on_medium)->limit(43) :
+                                    Str::of('@ '. $value->pivot->user_on_medium)->limit(43) ) }}
                             @endif
                         </a>
                         </td>

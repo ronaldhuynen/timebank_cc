@@ -1,8 +1,8 @@
 <form>
     <div class="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2">
         <x-select id="create"
-            label="Add a social media profile"
-            placeholder="Select a social medium"
+            label="{{ __('Add social media profiles') }}"
+            placeholder="{{ __('Select a social medium') }}"
             wire:model="mediaOptionSelected">
             @foreach ($mediaOptions as $option)
                 <x-select.user-option src="{{ Storage::url($option->icon) }}" label="{{ $option->name}}" value="{{ $option->id }}" />
@@ -11,7 +11,7 @@
     </div>
 
     <div class="grid grid-cols-1 gap-6 mt-3 mb-3 md:grid-cols-2">
-        <x-input wire:model="userOnMedium" label="Username on medium" placeholder="AccountName" prefix="@ " />
+        <x-input wire:model="userOnMedium" label="Your username on medium" placeholder="AccountName or URL addres" prefix="@ " />
         @if(App\Models\Medium::find($mediaOptionSelected))
             @if(Str::contains(App\Models\Medium::find($mediaOptionSelected)->url_structure, '#'))
             <x-input wire:model="serverOfMedium" label="Server of medium" placeholder="Server name" prefix="@ " />

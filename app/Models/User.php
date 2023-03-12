@@ -44,6 +44,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
         'about',
         'motivation',
         'date_of_birth',
+        'website',
         'locale',
         'password',
     ];

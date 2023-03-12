@@ -21502,6 +21502,9 @@ select {
 .flex-nowrap {
   flex-wrap: nowrap;
 }
+.place-items-end {
+  place-items: end;
+}
 .items-start {
   align-items: flex-start;
 }
@@ -22597,6 +22600,9 @@ select {
 }
 .text-right {
   text-align: right;
+}
+.text-end {
+  text-align: end;
 }
 .align-top {
   vertical-align: top;

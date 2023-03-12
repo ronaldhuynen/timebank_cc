@@ -1,0 +1,36 @@
+<x-jet-form-section submit="updateProfileInformation">
+    <x-slot name="title">
+        {{ __('Location') }}
+    </x-slot>
+
+    <x-slot name="description">
+        {{ __('Where are you mostly located? And what is a good place for Timebank.cc exchanges?') }}
+    </x-slot>
+
+    <x-slot name="form">
+
+        <!--- Location -->
+        <div class="col-span-6 sm:col-span-4">
+        <!-- TODO: Explanantion for location dropdowns -->
+            @livewire('locations.locations-dropdown')
+            @error('country')
+                <p class="text-sm text-red-500">{{$message}}</p>
+            @enderror
+            @error('city')
+                <p class="text-sm text-red-500">{{$message}}</p>
+            @enderror
+        </div>
+
+    </x-slot>
+
+    <x-slot name="actions">
+        <x-jet-action-message class="mr-3" on="saved">
+            {{ __('Saved') }}
+        </x-jet-action-message>
+
+        <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+            {{ __('Save') }}
+        </x-jet-button>
+    </x-slot>
+</x-jet-form-section>
+

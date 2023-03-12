@@ -10,7 +10,7 @@
                                 <x-jet-input wire:model.lazy="name" name="name" type="text" required autofocus autocomplete="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"/>
                             </div>
                             @error('name')
-                            <p class="text-sm text-red-500">{{$message}}</p>
+                                <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
 
                             <div class="mt-4">
@@ -18,7 +18,7 @@
                                 <x-jet-input wire:model.lazy="email" name="email" type="email" required class="block mt-1 w-full" :value="old('email')"/>
                             </div>
                             @error('email')
-                            <p class="text-sm text-red-500">{{$message}}</p>
+                                <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
 
                             <div class="mt-4">
@@ -31,16 +31,16 @@
                                 <x-jet-input wire:model.lazy="passwordConfirmation" name="passwordConfirmation" type="password" required class="block mt-1 w-full"/>
                             </div>
                             @error('password')
-                            <p class="text-sm text-red-500">{{$message}}</p>
+                                <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
-                             <div class="mt-4">
+                            <div class="mt-4">
                                 <!-- TODO: Explanantion for location dropdowns -->
                                 @livewire('locations.locations-dropdown')
                             @error('country')
-                            <p class="text-sm text-red-500">{{$message}}</p>
+                                <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
                             @error('city')
-                            <p class="text-sm text-red-500">{{$message}}</p>
+                                <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
                             </div>
 

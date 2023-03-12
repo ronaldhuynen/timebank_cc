@@ -22,7 +22,7 @@ class UpdateProfilePersonalForm extends Component
     public $photo;
     public $languages;
 
-    protected $listeners = ['languagesToParent', 'countryToParent', 'cityToParent', 'districtToParent'];
+    protected $listeners = ['languagesToParent'];
 
 
     public function rules()
@@ -45,20 +45,6 @@ class UpdateProfilePersonalForm extends Component
         ];
     }
 
-    // public function countryToParent($value)
-    // {
-    //     $this->country = $value;
-    // }
-
-    // public function cityToParent($value)
-    // {
-    //     $this->city = $value;
-    // }
-
-    // public function districtToParent($value)
-    // {
-    //     $this->district = $value;
-    // }
 
     public function languagesToParent($values)
     {
@@ -105,7 +91,8 @@ class UpdateProfilePersonalForm extends Component
         $this->user->about = $this->state['about'];
         $this->user->motivation = $this->state['motivation'];
         $this->user->date_of_birth = $this->state['date_of_birth'];
-        // $this->user->website = $this->state['website'];
+        $this->user->website =  str_replace(['http://', 'https://', ], '', $this->state['website']);
+
 
         if (isset($this->languages)) {
 

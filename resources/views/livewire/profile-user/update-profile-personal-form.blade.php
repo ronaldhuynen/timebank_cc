@@ -84,18 +84,6 @@
         </div>
 
 
-        {{-- <!--- Location -->
-        <div class="col-span-6 sm:col-span-4">
-        <!-- TODO: Explanantion for location dropdowns -->
-            @livewire('locations.locations-dropdown')
-            @error('country')
-            <p class="text-sm text-red-500">{{$message}}</p>
-            @enderror
-            @error('city')
-            <p class="text-sm text-red-500">{{$message}}</p>
-            @enderror
-        </div> --}}
-
         <!-- Birth Date -->
         <div class="col-span-6 sm:col-span-4">
               <div class="col-span-2 sm:col-span-1">
@@ -117,7 +105,7 @@
             <x-jet-label for="state.website" value="{{ __('My Website') }}" />
             <x-input
                 class="!pl-[3.8rem]"
-                placeholder="your-website.org"
+                placeholder="website.org"
                 prefix="https://"
                 wire:model.lazy="state.website"
             />

@@ -32,7 +32,7 @@ class UpdateProfilePersonalForm extends Component
             'state.about' => config('timebank-cc.rules.profile_user.about'),
             'state.motivation' => config('timebank-cc.rules.profile_user.motivation'),
             'state.date_of_birth' => config('timebank-cc.rules.profile_user.date_of_birth'),
-            // 'state.website' => config('timebank-cc.rules.profile_user.website'),
+            'state.website' => config('timebank-cc.rules.profile_user.website'),
         ];
     }
 

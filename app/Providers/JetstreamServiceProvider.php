@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
 use App\Http\Livewire\ProfileUser\UpdateProfilePersonalForm;
+use App\Http\Livewire\ProfileUser\UpdateProfilePhoneForm;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
@@ -32,7 +33,8 @@ class JetstreamServiceProvider extends ServiceProvider
         $this->configurePermissions();
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
-        Livewire::component('profile-user.update-profile-persnoal-form', UpdateProfilePersonalForm::class);
+        Livewire::component('profile-user.update-profile-personal-form', UpdateProfilePersonalForm::class);
+        Livewire::component('profile-user.update-profile-phone-form', UpdateProfilePhoneForm::class);
 
     }
 

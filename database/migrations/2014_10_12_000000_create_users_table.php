@@ -30,7 +30,8 @@ return new class extends Migration
             $table->text('about')->nullable();
             $table->text('motivation')->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->string('website');
+            $tabel->string('phone', 20)->nullable();
+            $table->string('website')->nullable();
 
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();

@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
-    /**
+        /**
      * Validate and update the given user's profile information.
      *
      * @param  mixed  $user
@@ -19,6 +20,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update($user, array $input)
     {
+        dump($input);
+        // dump($phone);
         // Check config/timebank-cc for validation config as unique Rule (below) can not be fetched from config file
         Validator::make($input, [
             'name' => ['required', 'string', 'min:3', 'max:40', Rule::unique('users')->ignore($user->id)],

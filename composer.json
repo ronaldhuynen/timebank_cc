@@ -17,6 +17,7 @@
         "maatwebsite/excel": "^3.1",
         "mediconesystems/livewire-datatables": "^0.8.0",
         "orangehill/iseed": "^3.0",
+        "propaganistas/laravel-phone": "^5.0",
         "psr/simple-cache": "^2.0",
         "pusher/pusher-php-server": "7.0.2",
         "rtippin/messenger": "^1.21",

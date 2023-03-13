@@ -11,7 +11,7 @@
 
         <!-- Phone -->
         <div class="col-span-6  -mb-6">
-        <x-jet-label for="phone" value="{{ __('Mobile phone') . ' ' . __('(only public for friends)') }}" /> {{$phonecode . ' ' . $state['phone']}}
+        <x-jet-label for="phone" value="{{ __('Mobile phone') . ' ' . __('(only public for friends)') }}" />
         </div>
             <div class="col-span-1">
                 <x-native-select
@@ -29,7 +29,7 @@
                     wire:model.lazy="state.phone" />
             </div>
             @error('phone')
-            <p class="col-span-6 -mt-6 text-sm text-red-500">{{$message}}</p>
+                <p class="col-span-6 -mt-6 text-sm text-red-500">{{$message}}</p>
             @enderror
     </x-slot>
 

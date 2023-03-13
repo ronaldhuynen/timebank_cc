@@ -4,7 +4,6 @@ namespace App\Http\Livewire\ProfileUser;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Livewire\Component;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -14,11 +13,11 @@ class UpdateProfilePhoneForm extends Component
     public $phonecode;
     public $state = [];
 
+
     protected $rules = [
         'state.phone' => 'phone:phonecode,mobile',
         'phonecode'  => 'required_with:state.phone',
     ];
-
 
 
     /**
@@ -40,8 +39,7 @@ class UpdateProfilePhoneForm extends Component
         });
         $this->phoneCodeOptions->toArray();
 
-        // HIERZO: check wanneer geen tel nummer en cast phone field naar juiset weergave zonder landcode
-        if (isset($this->state['phone'])) {
+        if ($this->state['phone'] != '') {
             $country = new PhoneNumber($this->state['phone']);
             $this->phonecode = $country->getCountry();
             $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
@@ -53,42 +51,48 @@ class UpdateProfilePhoneForm extends Component
     }
 
 
-    // public function updatedPhonecode()
-    // {
-    //     $this->state['phone'] = '';
-    // }
+    public function updatedPhonecode()
+    {
+        $this->state['phone'] = null;
+    }
 
     /**
-     * Validate a single field when updated.
+     * Validate phone field when updated.
      * This is the 1st validation method on this form.
      *
      * @param  mixed $field
      * @return void
      */
-    public function updated($propertyPhone)
-    {
-        if (isset($this->state['phone'])) {
+    public function updatedPhone() {
+        $this->validateOnly($this->state['phone']);
+
+        if  ($this->state['phone'] != '') {
             $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
             $phone->formatNational();
             $this->state['phone'] = $phone->formatNational();
         }
-        $this->validateOnly($propertyPhone);
     }
 
 
     /**
-     * Update the user's profile contact information.
+     * Update the user's profile phone information.
      *
      * @return void
      */
     public function updateProfilePhone()
     {
-        $this->validate();  // 2nd validation, just before save method
-        $this->resetErrorBag();
         $user = Auth::user();
 
-        $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
-        $user->phone = $phone;
+        if ($this->state['phone'] != null) {
+            $this->validate();  // 2nd validation, just before save method
+            $this->resetErrorBag();
+            $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
+            $user->phone = $phone;
+        } else {
+            $this->resetErrorBag();
+            $user->phone = null;
+        }
+
         $user->save();
         $this->emit('saved');
         $this->emit('refresh-navigation-menu');

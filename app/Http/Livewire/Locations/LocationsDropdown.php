@@ -45,7 +45,7 @@ class LocationsDropdown extends Component
     {
         if (!empty($this->country)) {
             $country = Country::find($this->country);
-            $country_locale = strtolower($country->abbr);
+            $country_locale = strtolower($country->code);
 
             // OPLOSSING: In City model moest juiste foreign key genoemd worden vanwege onconventionele tafelnaam. ->with voor eager loading, ->join voor orderBy, gebruik CityLocale:: ipv City::
             $this->cities = City::with(['locales'])

@@ -14,27 +14,27 @@ class LocationCountriesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('location_countries')->delete();
-        
+
         \DB::table('location_countries')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
-                'abbr' => 'NL',
+                'code' => 'NL',
                 'flag' => NULL,
-                'callingcode' => '31',
+                'phonecode' => '31',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
-                'abbr' => 'BE',
+                'code' => 'BE',
                 'flag' => NULL,
-                'callingcode' => '32',
+                'phonecode' => '32',
             ),
         ));
-        
-        
+
+
     }
 }

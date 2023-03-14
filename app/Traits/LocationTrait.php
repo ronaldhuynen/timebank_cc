@@ -132,7 +132,7 @@ trait LocationTrait
             return $this->name;
         }
         $localized = $this->getLocalized();
-        return !is_null($localized) ? $localized->abbr : $this->name;
+        return !is_null($localized) ? $localized->code : $this->name;
     }
 
 }

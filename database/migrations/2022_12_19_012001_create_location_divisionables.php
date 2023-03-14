@@ -1,5 +1,3 @@
-
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -15,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_countries', function (Blueprint $table) {
+        Schema::create('location_divisionables', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 16)->nullable()->unique();
-            $table->string('flag', 16)->nullable();
-            $table->string('phonecode', 8)->nullable();
+            $table->integer('division_id');
+            $table->string('divisionable_type');
+            $table->unsignedBigInteger('divisionable_id');
+            $table->timestamps();
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_countries');
+        Schema::dropIfExists('location_divisionables');
     }
 };

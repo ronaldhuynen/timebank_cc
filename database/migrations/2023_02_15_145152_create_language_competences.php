@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('language_competences', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->timestamps();
         });
     }
 

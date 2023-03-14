@@ -20,9 +20,7 @@ class CreateLanguagesTable extends Migration
             $table->string('name');
             $table->string('lang_code');
             $table->string('flag', 16)->comment('Country Emoji');
-            $table->timestamps();
-            // $table->unique(['user_id', 'name']);
-        });
+       });
     }
 
     /**

@@ -14,27 +14,23 @@ class LanguageCompetencesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('language_competences')->delete();
-        
+
         \DB::table('language_competences')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'name' => 'Good',
-                'created_at' => NULL,
-                'updated_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'name' => 'Beginner',
-                'created_at' => NULL,
-                'updated_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

@@ -44,8 +44,7 @@ return [
             'about' => 'nullable|string|max:400',   //TODO: check max with legacy cyclos data
             'motivation' => 'nullable|string|max:200',  //TODO: check max with legacy cyclos data
             'date_of_birth' => 'nullable|date',
-            'phone' => 'phone:INTERNATIONAL',
-            'website' => 'nullable|url',
+            'website' => 'nullable',
         ],
     ],
 

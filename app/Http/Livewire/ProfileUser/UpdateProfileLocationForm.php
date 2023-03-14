@@ -52,6 +52,7 @@ class UpdateProfileLocationForm extends Component
     public function mount()
     {
         $this->state = Auth::user()->withoutRelations()->toArray();
+        dump($this->state['city_id_1']);
     }
 
     /**

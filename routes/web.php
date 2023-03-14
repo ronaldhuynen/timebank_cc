@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\RegisterStep2Controller;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,10 @@ Route::get('/test/broadcast', function () {
     Auth::login($user);
     return view('test.broadcast', compact(['user' , 'toUserId']));
 });
+
+// IpLocation test
+Route::get('/test/ip-location', [UserController::class, 'index']);
+
 
 
 

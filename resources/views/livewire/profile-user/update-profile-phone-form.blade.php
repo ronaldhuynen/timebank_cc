@@ -4,14 +4,15 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Only friends will be able to see your phone number. Moreover your mobile phone can function as an alternative mode of authorizing access to your Timebank.cc account. ') }}
+       <p> {{ __('Only approved Timebank.cc friends will be able to see your phone number.') }} </p>
+       <p>{{ __('Your mobile phone can also be used as an alternative mode of authorizing access to your Timebank.cc account. ') }}
     </x-slot>
 
     <x-slot name="form">
 
         <!-- Phone -->
         <div class="col-span-6  -mb-6">
-        <x-jet-label for="phone" value="{{ __('Mobile phone') . ' ' . __('(only public for friends)') }}" />
+        <x-jet-label for="phone" value="{{ __('Mobile phone') . ' ' . __('(visible for friends)') }}" />
         </div>
             <div class="col-span-1">
                 <x-native-select

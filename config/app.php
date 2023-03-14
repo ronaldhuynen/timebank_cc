@@ -165,6 +165,8 @@ return [
         /*
          * Package Service Providers...
          */
+        Stevebauman\Location\LocationServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -212,6 +214,7 @@ return [
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
         'Http' => Illuminate\Support\Facades\Http::class,
+        'IpLocation' => Stevebauman\Location\Facades\Location::class,
         'Js' => Illuminate\Support\Js::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,

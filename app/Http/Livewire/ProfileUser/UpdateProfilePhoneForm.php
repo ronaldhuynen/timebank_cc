@@ -2,15 +2,21 @@
 
 namespace App\Http\Livewire\ProfileUser;
 
+use Illuminate\Config\Repository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use Stevebauman\Location\Location as IpLocation;
+
+
 
 class UpdateProfilePhoneForm extends Component
 {
     public $phoneCodeOptions;
     public $phonecode;
+    public $ipLocation;
     public $state = [];
 
 
@@ -25,7 +31,7 @@ class UpdateProfilePhoneForm extends Component
      *
      * @return void
      */
-    public function mount()
+    public function mount(Request $request, Repository $config)
     {
         $this->state = Auth::user()->withoutRelations()->toArray();
 
@@ -37,8 +43,9 @@ class UpdateProfilePhoneForm extends Component
                 'label' => $options->flag . ' +' . $options->phone_code,
             ];
         });
-        $this->phoneCodeOptions->toArray();
 
+        // Pre-fill country code dropdown
+        $this->phoneCodeOptions->toArray();
         if ($this->state['phone'] != '') {
             $country = new PhoneNumber($this->state['phone']);
             $this->phonecode = $country->getCountry();
@@ -46,7 +53,20 @@ class UpdateProfilePhoneForm extends Component
             $phone->formatNational();
             $this->state['phone'] = $phone->formatNational();
         } else {
+            // When phone field is empty, look up country using ip location service
+            //TODO: Switch comments to Dynamic IP for production!
+            //  $ip = $request->ip(); // Dynamic IP address of remote user
+            // $ip = '145.103.110.142'; // Static IP address for testing: NL The Hague 2518
+            $ip = '103.75.231.205'; // Static IP address for testing: BE Brussels Capital 1000
+            $ipLocation = (new IpLocation($config))->get($ip);
+            $ipCountry = $ipLocation->countryCode;
+            $countries = ($phoneCodeOptions->pluck('country_code')->toArray());
+            // dd($ipCountry);
+            if (in_array($ipCountry, $countries)) {
+                $this->phonecode = $ipCountry;
+            } else {
             $this->phonecode =  $this->phoneCodeOptions[0]['code'];
+            }
         }
     }
 

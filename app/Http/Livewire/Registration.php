@@ -3,8 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Account;
+use App\Models\Locations\City;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -70,15 +72,30 @@ class Registration extends Component implements CreatesNewUsers
                     'email' => $valid['email'],
                     'password' => Hash::make($valid['password']),
                     'profile_photo_path' => config('timebank-cc.files.profile_user.photo_new'),
-                    'city_id_1' => $valid['city'],
-                    'district_id_1' => $this->district
                 ]);
+
+                //HIERZO: SLA ENKEL KLEINSTE LOCATIE OP. MAAK VERVOLGENS METHODES DIE HIERARGISCH OP KUNNEN ZOEKEN
+
+                $city = ([
+                    'city_id' => $valid['city'],
+                    'cityable_type' => User::class,
+                    'cityable_id' => $user->id,
+                    'created_at' => Carbon::now(),
+                ]);
+                DB::table('location_cityables')->insert($city);
+
+                $district = ([
+                    'district_id' => $this->district,
+                    'districtable_type' => User::class,
+                    'districtable_id' => $user->id,
+                    'created_at' => Carbon::now(),
+                ]);
+                DB::table('location_districtables')->insert($district);
 
                 $account = new Account();
                 $account->name = __(config('timebank-cc.accounts.personal.name'));
                 $account->limit_min = config('timebank-cc.accounts.personal.limit_min');
                 $account->limit_max = config('timebank-cc.accounts.personal.limit_max');
-
                 $user->accounts()->save($account);
 
 

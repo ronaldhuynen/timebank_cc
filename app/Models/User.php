@@ -4,6 +4,10 @@ namespace App\Models;
 
 use App\Models\Account;
 use App\Models\Language;
+use App\Models\Locations\City;
+use App\Models\Locations\Country;
+use App\Models\Locations\District;
+use App\Models\Locations\Division;
 use App\Models\Organisation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -118,6 +122,47 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     {
         return $this->morphToMany(Medium::class, 'mediable')->withPivot('id', 'user_on_medium', 'server_of_medium');
     }
+
+
+    /**
+     * Get all of the countries of the user.
+     * Many-to-many polymorphic.
+     */
+    public function countries()
+    {
+        return $this->morphToMany(Country::class, 'countryable', 'location_countryables');
+    }
+
+
+    /**
+     * Get all of the location divisions of the user.
+     * Many-to-many polymorphic.
+     */
+    public function divisions()
+    {
+        return $this->morphToMany(Division::class, 'divisionable', 'location_divisionables');
+    }
+
+
+        /**
+     * Get all of the cities of the user.
+     * Many-to-many polymorphic.
+     */
+    public function cities()
+    {
+        return $this->morphToMany(City::class, 'cityable', 'location_cityables');
+    }
+
+
+    /**
+     * Get all of the districts of the user.
+     * Many-to-many polymorphic.
+     */
+    public function districts()
+    {
+        return $this->morphToMany(District::class, 'districtable', 'location_districtables');
+    }
+
 
 
     /**

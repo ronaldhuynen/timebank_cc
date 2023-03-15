@@ -34,6 +34,25 @@ class Country extends Model
 
     // Always eager load this model with:
     // protected $with = ['locales'];
+    public function locales()
+    {
+        return $this->hasMany(CountryLocale::class, 'country_id');
+       // 'country_id' as foreign key is needed as column name is not conventional for prefixed table name
+    }
+
+
+    /**
+     * Get all of the users of the countries.
+     * Many-to-many polymorphic.
+     * @return void
+     */
+    public function users()
+    {
+        return $this->morphedByMany(Users::class, 'countryable', 'location_countryables');
+        // countryable refers to pivot columns and location_countryables refers to pivot table
+    }
+
+
 
 
     public function divisions()
@@ -60,13 +79,6 @@ class Country extends Model
         return $this->cities;
     }
 
-
-    public function locales()
-    {
-        return $this->hasMany(CountryLocale::class, 'country_id');
-       // 'country_id' as foreign key is needed as table name is not conventional
-
-    }
 
     /**
      * Get country by name

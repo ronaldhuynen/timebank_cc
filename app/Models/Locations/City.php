@@ -34,6 +34,23 @@ class City extends Model
 
     // Always eager load this model with:
     // protected $with = ['locales'];
+    public function locales()
+    {
+        return $this->hasMany(CityLocale::class, 'city_id');
+       // 'city_id' as foreign key is needed as table name is not conventional
+    }
+
+
+    /**
+     * Get all of the users of the cities.
+     * Many-to-many polymorphic.
+     * @return void
+     */
+    public function users()
+    {
+        return $this->morphedByMany(Users::class, 'cityable', 'location_cityables');
+        // cityable refers to pivot columns and location_cityables refers to pivot table
+    }
 
 
     public function districts()
@@ -69,11 +86,6 @@ class City extends Model
         return $this->division;
     }
 
-    public function locales()
-    {
-        return $this->hasMany(CityLocale::class, 'city_id');
-       // 'city_id' as foreign key is needed as table name is not conventional
-    }
 
     /**
      * Get City by name.

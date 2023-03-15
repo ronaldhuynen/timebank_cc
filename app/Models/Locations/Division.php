@@ -31,6 +31,27 @@ class Division extends Model
      */
     protected $appends = ['local_name','local_full_name','local_alias', 'local_abbr'];
 
+
+    public function locales()
+    {
+        return $this->hasMany(DivisionLocale::class, 'division_id');
+       // 'division_id' as foreign key is needed as table name is not conventional
+    }
+
+
+    /**
+     * Get all of the users of the divisions.
+     * Many-to-many polymorphic.
+     * @return void
+     */
+    public function users()
+    {
+        return $this->morphedByMany(Users::class, 'divisionable', 'location_divisionables');
+        // divisionable refers to pivot columns and location_divisionables refers to pivot table
+    }
+
+
+
     public function country()
     {
         return $this->belongsTo(Country::class);
@@ -51,11 +72,7 @@ class Division extends Model
         return $this->country;
     }
 
-    public function locales()
-    {
-        return $this->hasMany(DivisionLocale::class, 'division_id');
-       // 'division_id' as foreign key is needed as table name is not conventional
-    }
+
     /**
      * Get Division by name
      *

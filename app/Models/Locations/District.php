@@ -24,6 +24,28 @@ use LocationTrait;
      */
     protected $table = 'location_districts';
 
+
+
+    public function locales()
+    {
+        return $this->hasMany(DistrictLocale::class, 'district_id');
+       // 'distruct_id' as foreign key is needed as table name is not conventional
+    }
+
+
+    /**
+     * Get all of the users of the districts.
+     * Many-to-many polymorphic.
+     * @return void
+     */
+    public function users()
+    {
+        return $this->morphedByMany(Users::class, 'districtable', 'location_districtables');
+        // districtable refers to pivot columns and location_districtables refers to pivot table
+    }
+
+
+
     public function city()
     {
         return $this->belongsTo(City::class);
@@ -52,11 +74,6 @@ use LocationTrait;
         return $this->city;
     }
 
-    public function locales()
-    {
-        return $this->hasMany(DistrictLocale::class, 'district_id');
-       // 'distruct_id' as foreign key is needed as table name is not conventional
-    }
 
     /**
      * Get District by name.

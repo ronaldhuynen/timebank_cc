@@ -39,8 +39,8 @@ class UpdateProfilePhoneForm extends Component
         $this->phoneCodeOptions = $phoneCodeOptions->Map(function ($options, $key) {
             return [
                 'id' => $options->id,
-                'code' => $options->country_code,
-                'label' => $options->flag . ' +' . $options->phone_code,
+                'code' => $options->phonecode,
+                'label' => $options->flag . ' +' . $options->phonecode,
             ];
         });
 

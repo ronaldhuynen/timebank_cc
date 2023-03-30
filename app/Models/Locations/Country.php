@@ -5,7 +5,6 @@ namespace App\Models\Locations;
 use App\Models\User;
 use App\Traits\LocationTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -13,8 +12,6 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 class Country extends Model
 {
     use HasRelationships;
-
-    //  use LocationTrait;
 
     /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
@@ -29,20 +26,6 @@ class Country extends Model
      * @var string
      */
     protected $table = 'location_countries';
-
-
-    /**
-     * append names
-     *
-     * @var array
-     */
-    // protected $appends = ['local_name','local_full_name','local_alias', 'local_abbr'];
-
-
-
-    // Always eager load this model with:
-    // protected $with = ['locales'];
-
 
 
     /**
@@ -89,7 +72,6 @@ class Country extends Model
     }
 
 
-
     /**
      * Get all the divisions of the countries.
      * Using the preferred locale $this->languages().
@@ -114,7 +96,6 @@ class Country extends Model
             ->whereIn('locale', $this->languages())
             ->orderBy('name', 'ASC');
     }
-
 
 
     /**

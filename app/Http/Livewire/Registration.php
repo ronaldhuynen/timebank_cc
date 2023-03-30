@@ -74,7 +74,7 @@ class Registration extends Component implements CreatesNewUsers
                     'profile_photo_path' => config('timebank-cc.files.profile_user.photo_new'),
                 ]);
 
-                //HIERZO: SLA ENKEL KLEINSTE LOCATIE OP. MAAK VERVOLGENS METHODES DIE HIERARGISCH OP KUNNEN ZOEKEN
+                //HIERZO: SLA ENKEL KLEINSTE LOCATIE OP. MAAK VERVOLGENS METHODES DIE JE HIERARGISCH OP KUNNEN ZOEKEN
 
                 $city = ([
                     'city_id' => $valid['city'],

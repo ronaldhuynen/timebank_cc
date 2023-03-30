@@ -23,14 +23,14 @@ class LocationCountriesTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'code' => 'NL',
-                'flag' => NULL,
+                'flag' => '🇳🇱',
                 'phonecode' => '31',
             ),
             1 =>
             array (
                 'id' => 2,
                 'code' => 'BE',
-                'flag' => NULL,
+                'flag' => '🇧🇪',
                 'phonecode' => '32',
             ),
         ));

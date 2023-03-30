@@ -40,11 +40,11 @@
     </div>
 
 
-<script type="text/javascript">
-  window.addEventListener('contentChanged', e => {
-        $("#selected-focus").attr('class', 'text-gray-500 uppercase');
-  })
-</script>
+    <script type="text/javascript">
+    window.addEventListener('contentChanged', e => {
+            $("#selected-focus").attr('class', 'text-gray-500 uppercase');
+    })
+    </script>
 
 
 

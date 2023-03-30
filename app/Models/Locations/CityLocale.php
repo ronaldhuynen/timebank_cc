@@ -13,12 +13,14 @@ class Citylocale extends Model
      */
     public $timestamps = false;
 
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'location_cities_locales';
+
 
     /**
      * return belonged City
@@ -27,6 +29,6 @@ class Citylocale extends Model
      */
     public function city()
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class, 'city_id');
     }
 }

@@ -67,6 +67,14 @@ class LocationCountriesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
+            6 => 
+            array (
+                'id' => 7,
+                'country_id' => 2,
+                'name' => 'Belgien',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
         ));
         
         

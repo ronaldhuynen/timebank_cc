@@ -2,9 +2,11 @@
 
 namespace App\Models\Locations;
 
-use App\Model\Locations\DivisionLocale;
+use App\Models\Locations\DivisionLocale;
 use App\Traits\LocationTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class Division extends Model
 {
@@ -29,13 +31,13 @@ class Division extends Model
      *
      * @var array
      */
-    protected $appends = ['local_name','local_full_name','local_alias', 'local_abbr'];
+    // protected $appends = ['local_name','local_full_name','local_alias', 'local_abbr'];
 
 
     public function locales()
     {
         return $this->hasMany(DivisionLocale::class, 'division_id');
-       // 'division_id' as foreign key is needed as table name is not conventional
+        // 'division_id' as foreign key is needed as table name is not conventional
     }
 
 
@@ -54,22 +56,47 @@ class Division extends Model
 
     public function country()
     {
-        return $this->belongsTo(Country::class);
+        $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
+        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
+        if (in_array(App::getLocale(), $languages)) {
+            $languages = [App::getLocale()];
+        } else {
+            $languages = [App::getFallbackLocale()];       // Use fallback locale (en) for country names instead of country languages
+        }
+        return CountryLocale::where('country_id', $country)
+        ->whereIn('locale', $languages)
+        ->orderBy('name', 'ASC');
     }
 
+    /**
+     * Get all the cities of the divisions.
+     * Including their local names and if possible the users application locale.
+     * @return void
+     */
     public function cities()
     {
-        return $this->hasMany(City::class);
+        $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
+        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
+        if (in_array(App::getLocale(), $languages)) {
+            $languages = [App::getLocale()];
+        }
+        array_push($languages, App::getLocale());
+        // dump($languages);
+        return $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
+            ->whereIn('locale', $languages)
+            ->orderBy('name', 'ASC');
     }
+
 
     public function children()
     {
-        return $this->cities;
+        return $this->cities();
     }
+
 
     public function parent()
     {
-        return $this->country;
+        return $this->country();
     }
 
 

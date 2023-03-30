@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'de',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,6 +91,8 @@ return [
     | is not available. You may change the value to correspond to any of
     | the language folders that are provided through your application.
     |
+    | IMPORTANT: location names (locales tables) without the fallback_locale
+    | will not be  used.
     */
 
     'fallback_locale' => 'en',

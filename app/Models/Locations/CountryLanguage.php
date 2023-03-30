@@ -2,10 +2,13 @@
 
 namespace App\Models\Locations;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DivisionLocale extends Model
+class CountryLanguage extends Model
 {
+    use HasFactory;
+
     /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
      *
@@ -18,10 +21,5 @@ class DivisionLocale extends Model
      *
      * @var string
      */
-    protected $table = 'location_divisions_locales';
-
-    public function division()
-    {
-        return $this->belongsTo(Division::class, 'division_id');
-    }
+    protected $table = 'location_countries_languages';
 }

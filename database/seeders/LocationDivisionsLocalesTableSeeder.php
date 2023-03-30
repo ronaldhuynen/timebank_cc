@@ -303,7 +303,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
             array (
                 'id' => 36,
                 'division_id' => 13,
-                'name' => 'Antwerpen',
+                'name' => 'Antwerp',
                 'alias' => NULL,
                 'locale' => 'en',
             ),
@@ -562,6 +562,102 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'name' => 'Brabant wallon',
                 'alias' => NULL,
                 'locale' => 'fr',
+            ),
+            68 => 
+            array (
+                'id' => 69,
+                'division_id' => 14,
+                'name' => 'Bruxelles',
+                'alias' => NULL,
+                'locale' => 'fr',
+            ),
+            69 => 
+            array (
+                'id' => 70,
+                'division_id' => 13,
+                'name' => 'Antwerpen',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            70 => 
+            array (
+                'id' => 71,
+                'division_id' => 14,
+                'name' => 'Brüssel',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            71 => 
+            array (
+                'id' => 72,
+                'division_id' => 15,
+                'name' => 'Ostflandern',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            72 => 
+            array (
+                'id' => 73,
+                'division_id' => 16,
+                'name' => 'Flämisch-Brabant',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            73 => 
+            array (
+                'id' => 74,
+                'division_id' => 17,
+                'name' => 'Hennegau',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            74 => 
+            array (
+                'id' => 75,
+                'division_id' => 18,
+                'name' => 'Lüttich',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            75 => 
+            array (
+                'id' => 76,
+                'division_id' => 19,
+                'name' => 'Limburg',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            76 => 
+            array (
+                'id' => 77,
+                'division_id' => 20,
+                'name' => 'Luxemburg',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            77 => 
+            array (
+                'id' => 78,
+                'division_id' => 21,
+                'name' => 'Namur',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            78 => 
+            array (
+                'id' => 79,
+                'division_id' => 22,
+                'name' => 'Wallonisch-Brabant',
+                'alias' => NULL,
+                'locale' => 'de',
+            ),
+            79 => 
+            array (
+                'id' => 80,
+                'division_id' => 23,
+                'name' => 'Westflandern',
+                'alias' => NULL,
+                'locale' => 'de',
             ),
         ));
         

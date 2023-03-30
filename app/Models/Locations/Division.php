@@ -46,10 +46,27 @@ class Division extends Model
     }
 
 
+    /**
+     * Return all available locales.
+     *
+     * @return void
+     */
     public function locales()
     {
         return $this->hasMany(DivisionLocale::class, 'division_id');
-        // 'division_id' as foreign key is needed as table name is not conventional
+    }
+
+
+    /**
+     * Get all the local division names.
+     * Using the preferred locale $this->languages().
+     * @return void
+     */
+    public function name()
+    {
+        return $this->hasMany(DivisionLocale::class, 'division_id')
+            ->whereIn('locale', $this->languages())
+            ->orderBy('name', 'ASC');
     }
 
 
@@ -61,7 +78,6 @@ class Division extends Model
     public function users()
     {
         return $this->morphedByMany(Users::class, 'divisionable', 'location_divisionables');
-        // divisionable refers to pivot columns and location_divisionables refers to pivot table
     }
 
 

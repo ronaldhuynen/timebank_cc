@@ -47,6 +47,17 @@ class Country extends Model
 
 
     /**
+     * Return all available locales.
+     *
+     * @return void
+     */
+    public function locales()
+    {
+        return $this->hasMany(CountryLocale::class, 'country_id');
+    }
+
+
+    /**
      * Get all the local country names.
      * Using the preferred locale $this->languages().
      * @return void
@@ -54,7 +65,6 @@ class Country extends Model
     public function name()
     {
         return $this->hasMany(CountryLocale::class, 'country_id')
-        // 'country_id' as foreign key is needed as column name is not conventional for prefixed table name
             ->whereIn('locale', $this->languages())
             ->orderBy('name', 'ASC');
     }
@@ -68,7 +78,6 @@ class Country extends Model
     public function users()
     {
         return $this->morphedByMany(User::class, 'countryable', 'location_countryables');
-        // countryable refers to pivot columns and location_countryables refers to pivot table
     }
 
 

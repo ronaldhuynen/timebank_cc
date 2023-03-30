@@ -32,20 +32,53 @@ class City extends Model
      */
     protected $table = 'location_cities';
 
+
+    // HIERZO: REFACTOR DIT MODEL
     /**
-     * append names.
-     *
-     * @var array
+     * Get an array of the preferred locales.
+     * @return void
      */
-    // protected $appends = ['local_name', 'local_alias', 'local_full_name'];
+    public function languages()
+    {
+        $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
+        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
+        if (in_array(App::getLocale(), $languages)) {
+            $languages = [App::getLocale()];
+        } else {
+            $languages = [App::getFallbackLocale()];
+        }
+        array_push($languages, App::getLocale());
+        return $languages;
+    }
 
 
-    // Always eager load this model with:
-    // protected $with = ['locales'];
+    public function scope($query)
+    {
+        return $query->whereDate('created_at', \Carbon\Carbon::today());
+    }
+
+
+    /**
+     * Return all available locales.
+     *
+     * @return void
+     */
     public function locales()
     {
         return $this->hasMany(CityLocale::class, 'city_id');
-       // 'city_id' as foreign key is needed as table name is not conventional
+    }
+
+
+        /**
+     * Get all the local division names.
+     * Using the preferred locale $this->languages().
+     * @return void
+     */
+    public function name()
+    {
+        return $this->hasMany(CityLocale::class, 'city_id')
+            ->whereIn('locale', $this->languages())
+            ->orderBy('name', 'ASC');
     }
 
 
@@ -68,14 +101,8 @@ class City extends Model
      */
     public function districts()
     {
-        $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
-        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
-        if (in_array(App::getLocale(), $languages)) {
-            $languages = [App::getLocale()];
-        }
-        array_push($languages, App::getLocale());
         return $this->hasManyThrough(DistrictLocale::class, District::class, 'city_id', 'district_id')
-            ->whereIn('locale', $languages)
+            ->whereIn('locale', $this->languages())
             ->orderBy('name', 'ASC');
     }
 
@@ -83,28 +110,16 @@ class City extends Model
     public function country()
     {
         $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
-        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
-        if (in_array(App::getLocale(), $languages)) {
-            $languages = [App::getLocale()];
-        } else {
-            $languages = [App::getFallbackLocale()];       // Use fallback locale (en) for country names instead of country languages
-        }
         return CountryLocale::where('country_id', $country)
-        ->whereIn('locale', $languages)
+        ->whereIn('locale', $this->languages())
         ->orderBy('name', 'ASC');
     }
 
     public function division()
     {
         $division = $this->belongsTo(Division::class, 'division_id')->pluck('id');
-        $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
-        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
-        if (in_array(App::getLocale(), $languages)) {
-            $languages = [App::getLocale()];
-        }
-        array_push($languages, App::getLocale());
         return DivisionLocale::where('division_id', $division)
-        ->whereIn('locale', $languages)
+        ->whereIn('locale', $this->languages())
         ->orderBy('name', 'ASC');
     }
 
@@ -118,6 +133,12 @@ class City extends Model
          return $this->districts();
     }
 
+
+    /**
+     * Get prvious level
+     *
+     * @return void
+     */
     public function parent()
     {
         if ($this->division() === null) {

@@ -65,8 +65,7 @@ class Country extends Model
     public function name()
     {
         return $this->hasMany(CountryLocale::class, 'country_id')
-            ->whereIn('locale', $this->languages())
-            ->orderBy('name', 'ASC');
+            ->whereIn('locale', $this->languages());
     }
 
 

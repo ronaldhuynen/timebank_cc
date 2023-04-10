@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Traits\LocationTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
 
 class District extends Model
 {
@@ -28,13 +27,26 @@ class District extends Model
     protected $table = 'location_districts';
 
 
-
     public function locales()
     {
         return $this->hasMany(DistrictLocale::class, 'district_id');
-       // 'distruct_id' as foreign key is needed as table name is not conventional
     }
 
+    /**
+    * Get all the local district names.
+    * Using the preferred locale $this->languages().
+    * @return void
+    */
+    public function name()
+    {
+        $result = $this->hasMany(DistrictLocale::class, 'district_id')
+            ->whereIn('locale', [App::getLocale()]);
+        if ($result->count() === 0) {
+            $result = $this->hasMany(DistrictLocale::class, 'district_id')
+                ->whereIn('locale',  [App::getFallbackLocale()]);
+        }
+        return $result;
+    }
 
     /**
      * Get all of the users of the districts.
@@ -44,51 +56,49 @@ class District extends Model
     public function users()
     {
         return $this->morphedByMany(User::class, 'districtable', 'location_districtables');
-        // districtable refers to pivot columns and location_districtables refers to pivot table
     }
-
 
 
     public function city()
     {
         $city = $this->belongsTo(City::class, 'city_id')->pluck('id');
-        $country = $this->belongsTo(City::class, 'city_id')->pluck('country_id');
-        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
-        if (in_array(App::getLocale(), $languages)) {
-            $languages = [App::getLocale()];
-        }
-        array_push($languages, App::getLocale());
-        return CityLocale::where('city_id', $city)
-            ->whereIn('locale', $languages)
+        $result = CityLocale::where('city_id', $city)
+            ->whereIn('locale', [App::getLocale()])
             ->orderBy('name', 'ASC');
+        if ($result->count() === 0) {
+            $result = CityLocale::where('city_id', $city)
+                ->whereIn('locale', [App::getFallbackLocale()])
+                ->orderBy('name', 'ASC');
+        }
+        return $result;
     }
 
     public function country()
     {
         $country = $this->belongsTo(City::class, 'city_id')->pluck('country_id');
-        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
-        if (in_array(App::getLocale(), $languages)) {
-            $languages = [App::getLocale()];
-        } else {
-            $languages = [App::getFallbackLocale()];       // Use fallback locale (en) for country names instead of country languages
+        $result = CountryLocale::where('country_id', $country)
+            ->whereIn('locale', [App::getLocale()])
+            ->orderBy('name', 'ASC');
+        if ($result->count() === 0) {
+            $result = CountryLocale::where('country_id', $country)
+                ->whereIn('locale', [App::getFallbackLocale()])
+                ->orderBy('name', 'ASC');
         }
-        return CountryLocale::where('country_id', $country)
-        ->whereIn('locale', $languages)
-        ->orderBy('name', 'ASC');
+        return $result;
     }
 
     public function division()
     {
         $division = $this->belongsTo(City::class, 'city_id')->pluck('division_id');
-        $country = $this->belongsTo(City::class, 'city_id')->pluck('country_id');
-        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
-        if (in_array(App::getLocale(), $languages)) {
-            $languages = [App::getLocale()];
-        }
-        array_push($languages, App::getLocale());
-        return DivisionLocale::where('division_id', $division)
-            ->whereIn('locale', $languages)
+        $result = DivisionLocale::where('division_id', $division)
+            ->whereIn('locale', [App::getLocale()])
             ->orderBy('name', 'ASC');
+        if ($result->count() === 0) {
+            $result = DivisionLocale::where('division_id', $division)
+                ->whereIn('locale', [App::getFallbackLocale()])
+                ->orderBy('name', 'ASC');
+        }
+        return $result;
     }
 
     public function parent()

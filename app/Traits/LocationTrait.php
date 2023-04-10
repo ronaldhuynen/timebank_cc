@@ -8,7 +8,7 @@ trait LocationTrait
 {
 
     // default locale should be English
-    // The countries, devisions, cities, districts tables shoudl have their local name
+    // The countries, devisions, cities, districts tables should have their local name
 
 
     /**
@@ -63,7 +63,8 @@ trait LocationTrait
      */
     public function getLocale()
     {
-        return $this->locale;
+        // return $this->locale;
+        return 'test!';
     }
 
     /**

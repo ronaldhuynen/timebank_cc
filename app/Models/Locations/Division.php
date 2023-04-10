@@ -6,11 +6,10 @@ use App\Models\Locations\DivisionLocale;
 use App\Traits\LocationTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
 
 class Division extends Model
 {
-    use LocationTrait;
+    // use LocationTrait;
 
     /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
@@ -25,25 +24,6 @@ class Division extends Model
      * @var string
      */
     protected $table = 'location_divisions';
-
-
-
-    /**
-     * Get an array of the preferred locales.
-     * @return void
-     */
-    public function languages()
-    {
-        $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
-        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
-        if (in_array(App::getLocale(), $languages)) {
-            $languages = [App::getLocale()];
-        } else {
-            $languages = [App::getFallbackLocale()];
-        }
-        array_push($languages, App::getLocale());
-        return $languages;
-    }
 
 
     /**
@@ -64,9 +44,13 @@ class Division extends Model
      */
     public function name()
     {
-        return $this->hasMany(DivisionLocale::class, 'division_id')
-            ->whereIn('locale', $this->languages())
-            ->orderBy('name', 'ASC');
+        $result = $this->hasMany(DivisionLocale::class, 'division_id')
+            ->whereIn('locale', [App::getLocale()]);
+        if ($result->count() === 0) {
+            $result = $this->hasMany(DivisionLocale::class, 'division_id')
+                ->whereIn('locale', [App::getFallbackLocale()]);
+        }
+        return $result;
     }
 
 
@@ -90,10 +74,17 @@ class Division extends Model
     public function country()
     {
         $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
-        return CountryLocale::where('country_id', $country)
-        ->whereIn('locale', $this->languages())
-        ->orderBy('name', 'ASC');
+        $result = CountryLocale::where('country_id', $country)
+            ->whereIn('locale', [App::getLocale()])
+            ->orderBy('name', 'ASC');
+        if ($result->count() === 0) {
+            $result = CountryLocale::where('country_id', $country)
+                ->whereIn('locale', [App::getFallbackLocale()])
+                ->orderBy('name', 'ASC');
+        }
+        return $result;
     }
+
 
     /**
      * Get all the cities of the divisions.
@@ -101,9 +92,40 @@ class Division extends Model
      */
     public function cities()
     {
-        return $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
-            ->whereIn('locale', $this->languages())
-            ->orderBy('name', 'ASC');
+        $result = $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id');
+
+        return $result;
+    }
+
+
+    /**
+     * Get the cities of the divisions in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     * The optional paramameter will filter the localized city names.
+     * @param  mixed $search
+     * @return void
+     */
+    public function citiesLocale($search = '')
+    {
+        $locale = collect(
+                    $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
+                    ->where('locale', App::getLocale())
+                    ->get()
+                    )->keyBy('city_id');
+
+                    $fallback = collect(
+                    $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
+                    ->where('locale', App::getFallbackLocale())
+                    ->get()
+                    )->keyBy('city_id');
+
+                    $result = $locale
+                    ->union($fallback)
+                    ->filter(function ($item) use ($search){
+                        return false !== stripos($item->name, $search);
+                    })
+                    ->sortBy('name');
+
+        return $result;
     }
 
 

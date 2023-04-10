@@ -3,6 +3,8 @@
 namespace App\Models\Locations;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\App;
 
 class Citylocale extends Model
 {
@@ -31,4 +33,6 @@ class Citylocale extends Model
     {
         return $this->belongsTo(City::class, 'city_id');
     }
+
+
 }

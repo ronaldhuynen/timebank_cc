@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'es',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -92,7 +92,8 @@ return [
     | the language folders that are provided through your application.
     |
     | IMPORTANT: location names (locales tables) without the fallback_locale
-    | will not be  used.
+    | will not be ignored. Make sure that all location names have at least
+    | their local (country) locale and this fallback_locale.
     */
 
     'fallback_locale' => 'en',

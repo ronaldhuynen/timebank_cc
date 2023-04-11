@@ -5,7 +5,6 @@ namespace App\Models\Locations;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Country extends Model
@@ -19,30 +18,13 @@ class Country extends Model
      */
     public $timestamps = false;
 
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'location_countries';
-
-
-    /**
-     * Get an array of the preferred locales.
-     * @return void
-     */
-    public function languages()
-    {
-        $country = $this->id;
-        $languages = DB::table('location_countries_languages')->where('country_id', $country)->pluck('code')->toArray();
-        if (in_array(App::getLocale(), $languages)) {
-            $languages = [App::getLocale()];
-        } else {
-            $languages = [App::getFallbackLocale()];
-        }
-        array_push($languages, App::getLocale());
-        return $languages;
-    }
 
 
     /**
@@ -57,14 +39,19 @@ class Country extends Model
 
 
     /**
-     * Get all the local country names.
-     * Using the preferred locale $this->languages().
+     * Get the local country name.
+     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
      * @return void
      */
     public function name()
     {
-        return $this->hasMany(CountryLocale::class, 'country_id')
-            ->whereIn('locale', $this->languages());
+        $result = $this->hasMany(CountryLocale::class, 'country_id')
+                    ->where('locale', App::getLocale());
+        if ($result->count() === 0) {
+            $result = $this->hasMany(CountryLocale::class, 'country_id')
+                ->where('locale', App::getFallbackLocale());
+        }
+        return $result;
     }
 
 
@@ -80,28 +67,97 @@ class Country extends Model
 
 
     /**
-     * Get all the divisions of the countries.
-     * Using the preferred locale $this->languages().
+     * Get all the related divisions of the country.
      * @return void
      */
-    public function divisions()
+    public function divisionsRelation()
     {
-        return $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
-            ->whereIn('locale', $this->languages())
-            ->orderBy('name', 'ASC');
+        return $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id');
     }
 
 
     /**
-     * Get all the cities of the countries.
-     * Using the preferred locale $this->languages().
+     * Get the divisions of the country in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     * The optional paramameter will filter the localized division names.
+     * @param string $search
      * @return void
      */
-    public function cities()
+    public function divisions(string $search = '')
     {
-        return $this->hasManyThrough(CityLocale::class, City::class, 'country_id')
-            ->whereIn('locale', $this->languages())
-            ->orderBy('name', 'ASC');
+        $locale = collect(
+            $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
+                ->where('locale', App::getLocale())
+                ->get()
+        )->keyBy('division_id');
+
+        $fallback = collect(
+            $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
+                ->where('locale', App::getFallbackLocale())
+                ->get()
+        )->keyBy('division_id');
+
+        $result = $locale
+            ->union($fallback)
+            ->filter(function ($item) use ($search) {
+                return false !== stripos($item->name, $search);
+            })
+            ->sortBy('name');
+
+        return $result;
+
+    }
+
+
+    /**
+    * Get all the related cities of the country.
+    * @return void
+    */
+    public function citiesRelation()
+    {
+        return $this->hasManyThrough(CityLocale::class, City::class, 'country_id');
+    }
+
+
+    /**
+     * Get the related cities of the country in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     * The optional paramameter will filter the localized city names.
+     * @return void
+     */
+    public function cities(string $search = '')
+    {
+        $locale = collect(
+            $this->hasManyThrough(CityLocale::class, City::class, 'country_id')
+                ->where('locale', App::getLocale())
+                ->get()
+        )->keyBy('city_id');
+
+        $fallback = collect(
+            $this->hasManyThrough(CityLocale::class, City::class, 'country_id')
+                ->where('locale', App::getFallbackLocale())
+                ->get()
+        )->keyBy('city_id');
+
+        $result = $locale
+            ->union($fallback)
+            ->filter(function ($item) use ($search) {
+                return false !== stripos($item->name, $search);
+            })
+            ->sortBy('name');
+
+        return $result;
+
+    }
+
+
+
+    /**
+    * Get all the related districts of the country.
+    *
+    * @return void
+    */
+    public function districtsRelation()
+    {
+        return $this->hasManyDeep(DistrictLocale::class, [City::class, District::class], ['country_id', 'city_id', 'district_id'], ['id', 'id', 'id']);
     }
 
 
@@ -111,54 +167,42 @@ class Country extends Model
      *
      * @return void
      */
-    public function districts()
+    public function districts(string $search = '')
     {
-        return  $this->hasManyDeep(DistrictLocale::class, [City::class, District::class], ['country_id', 'city_id', 'district_id'], ['id', 'id', 'id'])
-            ->whereIn('locale', $this->languages())
-            ->orderBy('name', 'ASC');
+        $locale = collect(
+            $this->hasManyDeep(DistrictLocale::class, [City::class, District::class], ['country_id', 'city_id', 'district_id'], ['id', 'id', 'id'])
+                ->where('locale', App::getLocale())
+                ->get()
+        )->keyBy('district_id');
+
+        $fallback = collect(
+            $this->hasManyDeep(DistrictLocale::class, [City::class, District::class], ['country_id', 'city_id', 'district_id'], ['id', 'id', 'id'])
+                ->where('locale', App::getFallbackLocale())
+                ->get()
+        )->keyBy('district_id');
+
+        $result = $locale
+            ->union($fallback)
+            ->filter(function ($item) use ($search) {
+                return false !== stripos($item->name, $search);
+            })
+            ->sortBy('name');
+
+        return $result;
     }
 
 
      /**
-     * Get next level
+     * Get the related children of this model.
      *
      * @return collection
      */
-    public function children()
+    public function children(string $search = '')
     {
-        if ($this->division() == true) {
-            return $this->divisions();
+        if ($this->divisions() == true) {
+            return $this->divisions($search);
         }
-        return $this->cities();
+        return $this->cities($search);
     }
 
-
-    /**
-     * Get country by name
-     *
-     * @param string $name
-     * @return collection
-     */
-    public static function getByName($name)
-    {
-        $localized = CountryLocale::where('name', $name)->first();
-        if (is_null($localized)) {
-            return $localized;
-        }
-        return $localized->country;
-    }
-
-    /**
-     * Search country by name
-     *
-     * @param string $name
-     * @return collection
-     */
-    public static function searchByName($name)
-    {
-        return CountryLocale::where('name', 'like', "%" . $name . "%")
-            ->get()->map(function ($item) {
-                return $item->country;
-            });
-    }
 }

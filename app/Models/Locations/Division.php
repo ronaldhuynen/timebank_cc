@@ -106,7 +106,7 @@ class Division extends Model
 
 
     /**
-     * Get the cities of the divisions in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     * Get the cities of the division in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
      * The optional paramameter will filter the localized city names.
      * @param string $search
      * @return void

@@ -82,7 +82,7 @@ class City extends Model
 
     /**
      * Get the districst of the city in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-     * The optional paramameter will filter the localized city names.
+     * The optional paramameter will filter the localized district names.
      * @param string $search
      * @return void
      */

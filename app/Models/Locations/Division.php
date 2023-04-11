@@ -28,7 +28,7 @@ class Division extends Model
 
 
     /**
-     * Return all available locales.
+     * Return all available locales of the division.
      *
      * @return void
      */
@@ -56,7 +56,7 @@ class Division extends Model
 
 
     /**
-     * Get all of the users of the divisions.
+     * Get all of the users of the division.
      * Many-to-many polymorphic.
      * @return void
      */
@@ -108,7 +108,7 @@ class Division extends Model
     /**
      * Get the cities of the divisions in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
      * The optional paramameter will filter the localized city names.
-     * @param  string $search
+     * @param string $search
      * @return void
      */
     public function cities(string $search = '')
@@ -149,7 +149,7 @@ class Division extends Model
 
 
     /**
-     * Get the rrelated parent of this model.
+     * Get the related parent of this model.
      *
      * @return void
      */

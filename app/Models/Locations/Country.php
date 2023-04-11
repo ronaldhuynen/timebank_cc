@@ -3,7 +3,6 @@
 namespace App\Models\Locations;
 
 use App\Models\User;
-use App\Traits\LocationTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;

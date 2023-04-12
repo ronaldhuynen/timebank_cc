@@ -11,21 +11,21 @@
     <h1>Location test page - (location is not correct for localhost) </h1>
     <div class="card">
         <div class="card-body">
-            @if($currentUserInfo)
-                <h4>IP: {{ $currentUserInfo->ip }}</h4>
-                <h4>Country Name: {{ $currentUserInfo->countryName }}</h4>
-                <h4>Country Code: {{ $currentUserInfo->countryCode }}</h4>
-                <h4>Region Code: {{ $currentUserInfo->regionCode }}</h4>
-                <h4>Region Name: {{ $currentUserInfo->regionName }}</h4>
-                <h4>City Name: {{ $currentUserInfo->cityName }}</h4>
-                <h4>Zip Code: {{ $currentUserInfo->zipCode }}</h4>
-                <h4>iso Code: {{ $currentUserInfo->isoCode }}</h4>
-                <h4>Postal Code: {{ $currentUserInfo->postalCode }}</h4>
-                <h4>Latitude: {{ $currentUserInfo->latitude }}</h4>
-                <h4>Longitude: {{ $currentUserInfo->longitude }}</h4>
-                <h4>MetroCode: {{ $currentUserInfo->metroCode }}</h4>
-                <h4>Area Code {{ $currentUserInfo->areaCode }}</h4>
-                <h4>Driver: {{ $currentUserInfo->driver }}</h4>
+            @if($IpLocationInfo)
+                <h4>IP: {{ $IpLocationInfo->ip }}</h4>
+                <h4>Country Name: {{ $IpLocationInfo->countryName }}</h4>
+                <h4>Country Code: {{ $IpLocationInfo->countryCode }}</h4>
+                <h4>Region Code: {{ $IpLocationInfo->regionCode }}</h4>
+                <h4>Region Name: {{ $IpLocationInfo->regionName }}</h4>
+                <h4>City Name: {{ $IpLocationInfo->cityName }}</h4>
+                <h4>Zip Code: {{ $IpLocationInfo->zipCode }}</h4>
+                <h4>iso Code: {{ $IpLocationInfo->isoCode }}</h4>
+                <h4>Postal Code: {{ $IpLocationInfo->postalCode }}</h4>
+                <h4>Latitude: {{ $IpLocationInfo->latitude }}</h4>
+                <h4>Longitude: {{ $IpLocationInfo->longitude }}</h4>
+                <h4>MetroCode: {{ $IpLocationInfo->metroCode }}</h4>
+                <h4>Area Code {{ $IpLocationInfo->areaCode }}</h4>
+                <h4>Driver: {{ $IpLocationInfo->driver }}</h4>
             @endif
         </div>
     </div>

@@ -46,11 +46,12 @@ class Country extends Model
     public function name()
     {
         $result = $this->hasMany(CountryLocale::class, 'country_id')
-                    ->where('locale', App::getLocale());
+                    ->where('locale', App::getLocale())->orderBy('name');
         if ($result->count() === 0) {
             $result = $this->hasMany(CountryLocale::class, 'country_id')
                 ->where('locale', App::getFallbackLocale());
         }
+        // dump($result);
         return $result;
     }
 

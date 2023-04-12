@@ -6,7 +6,9 @@ use App\Models\Locations\City;
 use App\Models\Locations\Country;
 use App\Models\Locations\District;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Request;
 use Livewire\Component;
+use Stevebauman\Location\Facades\Location as IpLocation;
 
 class LocationsDropdown extends Component
 {
@@ -16,30 +18,53 @@ class LocationsDropdown extends Component
     public $districts = [];
     public $district;
 
+
+    public function mount(Request $request)
+    {
+        if (App::environment(['local', 'staging'])) {
+            // $ip = '103.75.231.255'; // Static IP address Brussels for testing
+            $ip = '31.20.250.12'; // Statis IP address The Hague for testing
+            // $ip = '102.129.156.0'; // Statis IP address Berlin for testing
+        } else {
+            $ip = $request->ip(); // Dynamic IP address
+        }
+        $IpLocationInfo = IpLocation::get($ip);
+        $country = Country::select('id')->where('code', $IpLocationInfo->countryCode)->first();
+        if ($country) {
+            $this->country = $country->id;
+        };
+    }
+
+
     public function updatedCountry()
     {
         $this->reset(['district', 'districts', 'city', 'cities']);
     }
+
 
     public function updatedCity()
     {
         $this->reset(['district', 'districts']);
     }
 
+
     public function countrySelected()
     {
         $this->emit('countryToParent', $this->country);
     }
+
 
     public function citySelected()
     {
         $this->emit('cityToParent', $this->city);
     }
 
+
     public function districtSelected()
     {
         $this->emit('districtToParent', $this->district);
     }
+
 
     public function render()
     {
@@ -70,13 +95,8 @@ class LocationsDropdown extends Component
                 ->get();
         }
 
+        $countries = Country::with(['name'])->get()->sortByDesc('name');
 
-
-        return view('livewire.locations.locations-dropdown')
-            ->withCountries(Country::with(['locales'])
-                ->join('location_countries_locales', 'location_countries.id', '=', 'location_countries_locales.country_id')
-                ->where('location_countries_locales.locale', App::getLocale())
-                ->orderBy('location_countries_locales.name', 'ASC')
-                ->get());
+        return view('livewire.locations.locations-dropdown', compact(['countries']));
     }
 }

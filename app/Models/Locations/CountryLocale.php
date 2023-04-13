@@ -3,6 +3,7 @@
 namespace App\Models\Locations;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 class CountryLocale extends Model
 {
@@ -22,8 +23,14 @@ class CountryLocale extends Model
     protected $table = 'location_countries_locales';
 
 
+    protected static function booted()
+    {
+        static::addGlobalScope(fn ($query) => $query->orderBy('name'));
+    }
+
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');
     }
+
 }

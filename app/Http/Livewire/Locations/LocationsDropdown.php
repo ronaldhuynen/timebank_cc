@@ -73,12 +73,14 @@ class LocationsDropdown extends Component
             $country_locale = strtolower($country->code);
 
             // OPLOSSING: In City model moest juiste foreign key genoemd worden vanwege onconventionele tafelnaam. ->with voor eager loading, ->join voor orderBy, gebruik CityLocale:: ipv City::
-            $this->cities = City::with(['locales'])
-                ->join('location_cities_locales', 'location_cities.id', '=', 'location_cities_locales.city_id')
-                ->where([['country_id', $this->country],['location_cities_locales.locale', App::getLocale()]])
-                ->orWhere([['country_id', $this->country], ['location_cities_locales.locale', $country_locale]])
-                ->orderBy('location_cities_locales.name', 'ASC')
-                ->get();
+            // $this->cities = City::with(['locales'])
+            //     ->join('location_cities_locales', 'location_cities.id', '=', 'location_cities_locales.city_id')
+            //     ->where([['country_id', $this->country],['location_cities_locales.locale', App::getLocale()]])
+            //     ->orWhere([['country_id', $this->country], ['location_cities_locales.locale', $country_locale]])
+            //     ->orderBy('location_cities_locales.name', 'ASC')
+            //     ->get();
+
+            $this->cities = City::with(['name'])->where('country_id', $this->country)->get();
         }
 
         // Refactor into model method!
@@ -95,7 +97,7 @@ class LocationsDropdown extends Component
                 ->get();
         }
 
-        $countries = Country::with(['name'])->get()->sortByDesc('name');
+        $countries = Country::with(['nameLocale'])->get();
 
         return view('livewire.locations.locations-dropdown', compact(['countries']));
     }

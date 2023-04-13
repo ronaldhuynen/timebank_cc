@@ -39,20 +39,19 @@ class Country extends Model
 
 
     /**
-     * Get the local country name.
+     * Get the country name.
      * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
      * @return void
      */
-    public function name()
+    public function nameLocale()
     {
-        $result = $this->hasMany(CountryLocale::class, 'country_id')
-                    ->where('locale', App::getLocale())->orderBy('name');
-        if ($result->count() === 0) {
-            $result = $this->hasMany(CountryLocale::class, 'country_id')
-                ->where('locale', App::getFallbackLocale());
-        }
-        // dump($result);
-        return $result;
+        // Groot leermoment: relaties altijd zonder ->get() ->first() etc zodat deze geschakeld kunnen worden!
+        // Groot leermoment: gebruik bij CounutryLocale een hasOne relatie ondanks dat er hasMany vertalingen zijn.
+        // Want zo kun je binair kiezen tussen App::getLocale en indien niet aanwezig de App::getFallbackLocal !!
+        // Sorten op 'name' wordt als laatste gedaan op de collectie in de blade view !
+        return $this->hasOne(CountryLocale::class, 'country_id')
+        ->where('locale', App::getLocale())
+        ->orWhere('locale', App::getFallbackLocale());
     }
 
 

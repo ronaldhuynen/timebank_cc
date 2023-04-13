@@ -6,6 +6,7 @@ use App\Models\Locations\City;
 use App\Models\Locations\Country;
 use App\Models\Locations\District;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 use Stevebauman\Location\Facades\Location as IpLocation;
@@ -22,16 +23,22 @@ class LocationsDropdown extends Component
     public function mount(Request $request)
     {
         if (App::environment(['local', 'staging'])) {
-            // $ip = '103.75.231.255'; // Static IP address Brussels for testing
-            $ip = '31.20.250.12'; // Statis IP address The Hague for testing
+            $ip = '103.75.231.255'; // Static IP address Brussels for testing
+            // $ip = '31.20.250.12'; // Statis IP address The Hague for testing
             // $ip = '102.129.156.0'; // Statis IP address Berlin for testing
         } else {
             $ip = $request->ip(); // Dynamic IP address
         }
         $IpLocationInfo = IpLocation::get($ip);
+
         $country = Country::select('id')->where('code', $IpLocationInfo->countryCode)->first();
         if ($country) {
             $this->country = $country->id;
+        }
+
+        $city = DB::table('location_cities_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', 'en')->first();
+        if ($city) {
+            $this->city = $city->city_id;
         };
     }
 

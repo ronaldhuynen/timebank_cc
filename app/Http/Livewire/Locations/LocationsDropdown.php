@@ -23,23 +23,25 @@ class LocationsDropdown extends Component
     public function mount(Request $request)
     {
         if (App::environment(['local', 'staging'])) {
-            $ip = '103.75.231.255'; // Static IP address Brussels for testing
-            // $ip = '31.20.250.12'; // Statis IP address The Hague for testing
+            // $ip = '103.75.231.255'; // Static IP address Brussels for testing
+            $ip = '31.20.250.12'; // Statis IP address The Hague for testing
             // $ip = '102.129.156.0'; // Statis IP address Berlin for testing
         } else {
             $ip = $request->ip(); // Dynamic IP address
         }
         $IpLocationInfo = IpLocation::get($ip);
+        if ($IpLocationInfo) {
 
-        $country = Country::select('id')->where('code', $IpLocationInfo->countryCode)->first();
-        if ($country) {
-            $this->country = $country->id;
+            $country = Country::select('id')->where('code', $IpLocationInfo->countryCode)->first();
+            if ($country) {
+                $this->country = $country->id;
+            }
+
+            $city = DB::table('location_cities_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', 'en')->first();
+            if ($city) {
+                $this->city = $city->city_id;
+            };
         }
-
-        $city = DB::table('location_cities_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', 'en')->first();
-        if ($city) {
-            $this->city = $city->city_id;
-        };
     }
 
 
@@ -87,7 +89,7 @@ class LocationsDropdown extends Component
             //     ->orderBy('location_cities_locales.name', 'ASC')
             //     ->get();
 
-            $this->cities = City::with(['name'])->where('country_id', $this->country)->get();
+            $this->cities = City::with(['locale'])->where('country_id', $this->country)->get();
         }
 
         // Refactor into model method!
@@ -104,7 +106,7 @@ class LocationsDropdown extends Component
                 ->get();
         }
 
-        $countries = Country::with(['nameLocale'])->get();
+        $countries = Country::with(['locale'])->get();
 
         return view('livewire.locations.locations-dropdown', compact(['countries']));
     }

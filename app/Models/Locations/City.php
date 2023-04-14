@@ -41,19 +41,23 @@ class City extends Model
 
 
     /**
-    * Get the local division name.
+    * Get the city locale.
     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
     * @return void
     */
-    public function name()
+    public function locale()
     {
-        $result = $this->hasMany(CityLocale::class, 'city_id')
-            ->where('locale', App::getLocale());
-        if ($result->count() === 0) {
-        $result = $this->hasMany(CityLocale::class, 'city_id')
-        ->where('locale', App::getFallbackLocale());
-        }
-        return $result;
+        // $result = $this->hasMany(CityLocale::class, 'city_id')
+        //     ->where('locale', App::getLocale());
+        // if ($result->count() === 0) {
+        // $result = $this->hasMany(CityLocale::class, 'city_id')
+        // ->where('locale', App::getFallbackLocale());
+        // }
+        // return $result;
+
+        return $this->hasOne(CityLocale::class, 'city_id')
+        ->where('locale', App::getLocale())
+        ->orWhere('locale', App::getFallbackLocale());
     }
 
 

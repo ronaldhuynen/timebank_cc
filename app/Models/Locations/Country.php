@@ -27,6 +27,7 @@ class Country extends Model
     protected $table = 'location_countries';
 
 
+
     /**
      * Return all available locales.
      *
@@ -38,20 +39,29 @@ class Country extends Model
     }
 
 
+    public function localeExists()
+    {
+        return $this->hasOne(CountryLocale::class, 'country_id')->where('locale', App::getLocale())->exists();
+    }
+
     /**
-     * Get the country name.
-     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     * Get the country locale.
+     * In the App::getLocale language, or if not exists, in the App::getFallbackLocale language.
      * @return void
      */
-    public function nameLocale()
+    public function locale()
     {
         // Groot leermoment: relaties altijd zonder ->get() ->first() etc zodat deze geschakeld kunnen worden!
-        // Groot leermoment: gebruik bij CounutryLocale een hasOne relatie ondanks dat er hasMany vertalingen zijn.
+        // Groot leermoment: gebruik bij CountryLocale een hasOne relatie ondanks dat er meerdere hasMany vertalingen zijn.
         // Want zo kun je binair kiezen tussen App::getLocale en indien niet aanwezig de App::getFallbackLocal !!
+        // Groot leermoment: prioriteit tussen de FallbackLocale en de Locale wordt met de orderByRaw query bepaald.
         // Sorten op 'name' wordt als laatste gedaan op de collectie in de blade view !
         return $this->hasOne(CountryLocale::class, 'country_id')
         ->where('locale', App::getLocale())
-        ->orWhere('locale', App::getFallbackLocale());
+        ->orWhere('locale', App::getFallbackLocale())
+        // ALWAYS use placeholder in raw queries to prevent SQL injections!
+        // The placeholder ? holds the second parameter of the orderByRaw query. Which is App::getFallbackLocale().
+        ->orderByRaw("CASE WHEN `locale` = ? THEN 2 ELSE 1 END ASC", App::getFallbackLocale());
     }
 
 
@@ -112,18 +122,18 @@ class Country extends Model
     * Get all the related cities of the country.
     * @return void
     */
-    public function citiesRelation()
+    public function cities()
     {
         return $this->hasManyThrough(CityLocale::class, City::class, 'country_id');
     }
 
 
     /**
-     * Get the related cities of the country in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     * Get the related cities locale of the country in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
      * The optional paramameter will filter the localized city names.
      * @return void
      */
-    public function cities(string $search = '')
+    public function citiesLocale(string $search = '')
     {
         $locale = collect(
             $this->hasManyThrough(CityLocale::class, City::class, 'country_id')
@@ -145,7 +155,6 @@ class Country extends Model
             ->sortBy('name');
 
         return $result;
-
     }
 
 

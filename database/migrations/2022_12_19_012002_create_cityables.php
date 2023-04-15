@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_divisionables', function (Blueprint $table) {
-            $table->id();
-            $table->integer('division_id');
-            $table->string('divisionable_type');
-            $table->unsignedBigInteger('divisionable_id');
-            $table->timestamps();
+        Schema::create('cityables', function (Blueprint $table) {
+            $table->integer('city_id');
+            $table->string('cityable_type');
+            $table->unsignedBigInteger('cityable_id');
+            $table->timestamps();;
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_divisionables');
+        Schema::dropIfExists('cityables');
     }
 };

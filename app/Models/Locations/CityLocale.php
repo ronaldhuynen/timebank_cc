@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\App;
 
-class Citylocale extends Model
+class CityLocale extends Model
 {
     /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
@@ -14,14 +14,6 @@ class Citylocale extends Model
      * @var bool
      */
     public $timestamps = false;
-
-
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'location_cities_locales';
 
 
     /**

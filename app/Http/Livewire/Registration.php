@@ -61,7 +61,7 @@ class Registration extends Component implements CreatesNewUsers
 
             }
 
-            $city = DB::table('location_cities_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', 'en')->first();
+            $city = DB::table('city_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', 'en')->first();
             if ($city) {
                 $this->city = $city->city_id;
 
@@ -117,7 +117,7 @@ class Registration extends Component implements CreatesNewUsers
                     'cityable_id' => $user->id,
                     'created_at' => Carbon::now(),
                 ]);
-                DB::table('location_cityables')->insert($city);
+                DB::table('cityables')->insert($city);
 
                 $account = new Account();
                 $account->name = __(config('timebank-cc.accounts.personal.name'));

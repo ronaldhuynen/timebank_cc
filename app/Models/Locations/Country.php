@@ -20,15 +20,6 @@ class Country extends Model
 
 
     /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'location_countries';
-
-
-
-    /**
      * Return all available locales.
      *
      * @return void
@@ -72,7 +63,7 @@ class Country extends Model
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'countryable', 'location_countryables');
+        return $this->morphedByMany(User::class, 'countryable', 'countryables');
     }
 
 

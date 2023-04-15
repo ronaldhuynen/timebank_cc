@@ -129,7 +129,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
      */
     public function countries()
     {
-        return $this->morphToMany(Country::class, 'countryable', 'location_countryables');
+        return $this->morphToMany(Country::class, 'countryable', 'countryables');
     }
 
 
@@ -139,7 +139,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
      */
     public function cities()
     {
-        return $this->morphToMany(City::class, 'cityable', 'location_cityables');
+        return $this->morphToMany(City::class, 'cityable', 'cityables');
     }
 
 
@@ -149,7 +149,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
      */
     public function districts()
     {
-        return $this->morphToMany(District::class, 'districtable', 'location_districtables');
+        return $this->morphToMany(District::class, 'districtable', 'districtables');
     }
 
 

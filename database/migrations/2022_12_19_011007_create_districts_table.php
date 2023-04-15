@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_districtables', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->id();
-            $table->integer('district_id');
-            $table->string('districtable_type');
-            $table->unsignedBigInteger('districtable_id');
-            $table->timestamps();
+            $table->unsignedBigInteger('city_id')->index();
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_districtables');
+        Schema::dropIfExists('districts');
     }
 };

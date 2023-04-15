@@ -13,12 +13,6 @@ class DistrictLocale extends Model
      */
     public $timestamps = false;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'location_districts_locales';
 
     public function district()
     {

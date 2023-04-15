@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_countries_languages', function (Blueprint $table) {
-            $table->id();
-            $table->integer('country_id');
-            $table->string('code', 16);
-            $table->unique(array('country_id','code'));
+        Schema::create('districtables', function (Blueprint $table) {
+            $table->integer('district_id');
+            $table->string('districtable_type');
+            $table->unsignedBigInteger('districtable_id');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_countries_languages');
+        Schema::dropIfExists('districtables');
     }
 };

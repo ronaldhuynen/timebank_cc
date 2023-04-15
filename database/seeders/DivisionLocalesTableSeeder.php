@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class LocationDivisionsLocalesTableSeeder extends Seeder
+class DivisionLocalesTableSeeder extends Seeder
 {
 
     /**
@@ -14,12 +14,12 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('location_divisions_locales')->delete();
-        
-        \DB::table('location_divisions_locales')->insert(array (
-            0 => 
+
+        \DB::table('division_locales')->delete();
+
+        \DB::table('division_locales')->insert(array (
+            0 =>
             array (
                 'id' => 1,
                 'division_id' => 1,
@@ -27,7 +27,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'division_id' => 2,
@@ -35,7 +35,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'division_id' => 3,
@@ -43,7 +43,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'division_id' => 4,
@@ -51,7 +51,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'division_id' => 5,
@@ -59,7 +59,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'division_id' => 6,
@@ -67,7 +67,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'division_id' => 7,
@@ -75,7 +75,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
                 'division_id' => 8,
@@ -83,7 +83,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 9,
                 'division_id' => 9,
@@ -91,7 +91,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 10,
                 'division_id' => 10,
@@ -99,7 +99,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 11,
                 'division_id' => 11,
@@ -107,7 +107,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 12,
                 'division_id' => 12,
@@ -115,7 +115,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 13,
                 'division_id' => 13,
@@ -123,7 +123,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 14,
                 'division_id' => 14,
@@ -131,7 +131,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 15,
                 'division_id' => 17,
@@ -139,7 +139,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 16,
                 'division_id' => 19,
@@ -147,7 +147,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 17,
                 'division_id' => 18,
@@ -155,7 +155,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            17 => 
+            17 =>
             array (
                 'id' => 18,
                 'division_id' => 20,
@@ -163,7 +163,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            18 => 
+            18 =>
             array (
                 'id' => 19,
                 'division_id' => 21,
@@ -171,7 +171,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            19 => 
+            19 =>
             array (
                 'id' => 20,
                 'division_id' => 15,
@@ -179,7 +179,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            20 => 
+            20 =>
             array (
                 'id' => 21,
                 'division_id' => 16,
@@ -187,7 +187,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            21 => 
+            21 =>
             array (
                 'id' => 22,
                 'division_id' => 22,
@@ -195,7 +195,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            22 => 
+            22 =>
             array (
                 'id' => 23,
                 'division_id' => 23,
@@ -203,7 +203,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            23 => 
+            23 =>
             array (
                 'id' => 24,
                 'division_id' => 1,
@@ -211,7 +211,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            24 => 
+            24 =>
             array (
                 'id' => 25,
                 'division_id' => 2,
@@ -219,7 +219,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            25 => 
+            25 =>
             array (
                 'id' => 26,
                 'division_id' => 3,
@@ -227,7 +227,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            26 => 
+            26 =>
             array (
                 'id' => 27,
                 'division_id' => 4,
@@ -235,7 +235,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            27 => 
+            27 =>
             array (
                 'id' => 28,
                 'division_id' => 5,
@@ -243,7 +243,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            28 => 
+            28 =>
             array (
                 'id' => 29,
                 'division_id' => 6,
@@ -251,7 +251,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            29 => 
+            29 =>
             array (
                 'id' => 30,
                 'division_id' => 7,
@@ -259,7 +259,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            30 => 
+            30 =>
             array (
                 'id' => 31,
                 'division_id' => 8,
@@ -267,7 +267,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            31 => 
+            31 =>
             array (
                 'id' => 32,
                 'division_id' => 9,
@@ -275,7 +275,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            32 => 
+            32 =>
             array (
                 'id' => 33,
                 'division_id' => 10,
@@ -283,7 +283,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            33 => 
+            33 =>
             array (
                 'id' => 34,
                 'division_id' => 11,
@@ -291,7 +291,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            34 => 
+            34 =>
             array (
                 'id' => 35,
                 'division_id' => 12,
@@ -299,7 +299,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            35 => 
+            35 =>
             array (
                 'id' => 36,
                 'division_id' => 13,
@@ -307,7 +307,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            36 => 
+            36 =>
             array (
                 'id' => 37,
                 'division_id' => 14,
@@ -315,7 +315,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            37 => 
+            37 =>
             array (
                 'id' => 38,
                 'division_id' => 17,
@@ -323,7 +323,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            38 => 
+            38 =>
             array (
                 'id' => 39,
                 'division_id' => 19,
@@ -331,7 +331,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            39 => 
+            39 =>
             array (
                 'id' => 40,
                 'division_id' => 18,
@@ -339,7 +339,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            40 => 
+            40 =>
             array (
                 'id' => 41,
                 'division_id' => 20,
@@ -347,7 +347,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            41 => 
+            41 =>
             array (
                 'id' => 42,
                 'division_id' => 21,
@@ -355,7 +355,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            42 => 
+            42 =>
             array (
                 'id' => 43,
                 'division_id' => 15,
@@ -363,7 +363,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            43 => 
+            43 =>
             array (
                 'id' => 44,
                 'division_id' => 16,
@@ -371,7 +371,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            44 => 
+            44 =>
             array (
                 'id' => 45,
                 'division_id' => 22,
@@ -379,7 +379,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            45 => 
+            45 =>
             array (
                 'id' => 46,
                 'division_id' => 23,
@@ -387,7 +387,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            46 => 
+            46 =>
             array (
                 'id' => 47,
                 'division_id' => 1,
@@ -395,7 +395,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            47 => 
+            47 =>
             array (
                 'id' => 48,
                 'division_id' => 2,
@@ -403,7 +403,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            48 => 
+            48 =>
             array (
                 'id' => 49,
                 'division_id' => 3,
@@ -411,7 +411,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            49 => 
+            49 =>
             array (
                 'id' => 50,
                 'division_id' => 4,
@@ -419,7 +419,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            50 => 
+            50 =>
             array (
                 'id' => 51,
                 'division_id' => 5,
@@ -427,7 +427,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            51 => 
+            51 =>
             array (
                 'id' => 52,
                 'division_id' => 6,
@@ -435,7 +435,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            52 => 
+            52 =>
             array (
                 'id' => 53,
                 'division_id' => 7,
@@ -443,7 +443,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            53 => 
+            53 =>
             array (
                 'id' => 54,
                 'division_id' => 8,
@@ -451,7 +451,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            54 => 
+            54 =>
             array (
                 'id' => 55,
                 'division_id' => 9,
@@ -459,7 +459,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            55 => 
+            55 =>
             array (
                 'id' => 56,
                 'division_id' => 10,
@@ -467,7 +467,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            56 => 
+            56 =>
             array (
                 'id' => 57,
                 'division_id' => 11,
@@ -475,7 +475,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            57 => 
+            57 =>
             array (
                 'id' => 58,
                 'division_id' => 12,
@@ -483,7 +483,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            58 => 
+            58 =>
             array (
                 'id' => 59,
                 'division_id' => 13,
@@ -491,7 +491,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            59 => 
+            59 =>
             array (
                 'id' => 60,
                 'division_id' => 23,
@@ -499,7 +499,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            60 => 
+            60 =>
             array (
                 'id' => 61,
                 'division_id' => 15,
@@ -507,7 +507,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            61 => 
+            61 =>
             array (
                 'id' => 62,
                 'division_id' => 17,
@@ -515,7 +515,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            62 => 
+            62 =>
             array (
                 'id' => 63,
                 'division_id' => 18,
@@ -523,7 +523,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            63 => 
+            63 =>
             array (
                 'id' => 64,
                 'division_id' => 19,
@@ -531,7 +531,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            64 => 
+            64 =>
             array (
                 'id' => 65,
                 'division_id' => 20,
@@ -539,7 +539,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            65 => 
+            65 =>
             array (
                 'id' => 66,
                 'division_id' => 21,
@@ -547,7 +547,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            66 => 
+            66 =>
             array (
                 'id' => 67,
                 'division_id' => 16,
@@ -555,7 +555,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            67 => 
+            67 =>
             array (
                 'id' => 68,
                 'division_id' => 22,
@@ -563,7 +563,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            68 => 
+            68 =>
             array (
                 'id' => 69,
                 'division_id' => 14,
@@ -571,7 +571,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            69 => 
+            69 =>
             array (
                 'id' => 70,
                 'division_id' => 13,
@@ -579,7 +579,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            70 => 
+            70 =>
             array (
                 'id' => 71,
                 'division_id' => 14,
@@ -587,7 +587,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            71 => 
+            71 =>
             array (
                 'id' => 72,
                 'division_id' => 15,
@@ -595,7 +595,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            72 => 
+            72 =>
             array (
                 'id' => 73,
                 'division_id' => 16,
@@ -603,7 +603,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            73 => 
+            73 =>
             array (
                 'id' => 74,
                 'division_id' => 17,
@@ -611,7 +611,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            74 => 
+            74 =>
             array (
                 'id' => 75,
                 'division_id' => 18,
@@ -619,7 +619,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            75 => 
+            75 =>
             array (
                 'id' => 76,
                 'division_id' => 19,
@@ -627,7 +627,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            76 => 
+            76 =>
             array (
                 'id' => 77,
                 'division_id' => 20,
@@ -635,7 +635,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            77 => 
+            77 =>
             array (
                 'id' => 78,
                 'division_id' => 21,
@@ -643,7 +643,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            78 => 
+            78 =>
             array (
                 'id' => 79,
                 'division_id' => 22,
@@ -651,7 +651,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            79 => 
+            79 =>
             array (
                 'id' => 80,
                 'division_id' => 23,
@@ -660,7 +660,7 @@ class LocationDivisionsLocalesTableSeeder extends Seeder
                 'locale' => 'de',
             ),
         ));
-        
-        
+
+
     }
 }

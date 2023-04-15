@@ -18,14 +18,6 @@ class Division extends Model
      */
     public $timestamps = false;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'location_divisions';
-
-
 
     /**
      * Return all available locales of the division.
@@ -62,7 +54,7 @@ class Division extends Model
      */
     public function users()
     {
-        return $this->morphedByMany(Users::class, 'divisionable', 'location_divisionables');
+        return $this->morphedByMany(Users::class, 'divisionable', 'divisionables');
     }
 
 

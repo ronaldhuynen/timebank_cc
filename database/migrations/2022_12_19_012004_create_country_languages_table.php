@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_countryables', function (Blueprint $table) {
+        Schema::create('country_languages', function (Blueprint $table) {
             $table->id();
             $table->integer('country_id');
-            $table->string('countryable_type');
-            $table->unsignedBigInteger('countryable_id');
-            $table->timestamps();
+            $table->string('code', 16);
+            $table->unique(array('country_id','code'));
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_countryables');
+        Schema::dropIfExists('country_languages');
     }
 };

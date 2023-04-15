@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_divisions', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('country_id')->unsigned()->nullable()->index();
-            $table->foreign('country_id')->references('id')->on('location_countries')->onDelete('cascade');
+        Schema::create('divisionables', function (Blueprint $table) {
+            $table->integer('division_id');
+            $table->string('divisionable_type');
+            $table->unsignedBigInteger('divisionable_id');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_divisions');
+        Schema::dropIfExists('divisionables');
     }
 };

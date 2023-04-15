@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         if ($this->command->confirm('Do you want to refresh the database? This removes all existing data stored in the current database!'))
         {
+            $this->command->call('db:wipe');
             $this->command->call('migrate:refresh');
             $this->call([PermissionRoleSeeder::class]);
 
@@ -30,18 +31,18 @@ class DatabaseSeeder extends Seeder
             $admin->assignRole('Super-Admin');
 
         $this->command->info('Database was refreshed');
-        $this->call(LocationCountriesTableSeeder::class);
-        $this->call(LocationCountriesLocalesTableSeeder::class);
-        $this->call(LocationDivisionsTableSeeder::class);
-        $this->call(LocationDivisionsLocalesTableSeeder::class);
-        $this->call(LocationCitiesTableSeeder::class);
-        $this->call(LocationCitiesLocalesTableSeeder::class);
-        $this->call(LocationDistrictsTableSeeder::class);
-        $this->call(LocationDistrictsLocalesTableSeeder::class);
+        $this->call(CountriesTableSeeder::class);
+        $this->call(CountryLocalesTableSeeder::class);
+        $this->call(DivisionsTableSeeder::class);
+        $this->call(DivisionLocalesTableSeeder::class);
+        $this->call(CitiesTableSeeder::class);
+        $this->call(CityLocalesTableSeeder::class);
+        $this->call(DistrictsTableSeeder::class);
+        $this->call(DistrictLocalesTableSeeder::class);
         $this->call(LanguagesTableSeeder::class);
         $this->call(LanguageCompetencesTableSeeder::class);
         $this->call(MediaTableSeeder::class);
-        $this->call(LocationCountriesLanguagesTableSeeder::class);
+        $this->call(CountryLanguagesTableSeeder::class);
     }
 
         $this->call([

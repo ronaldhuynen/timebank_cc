@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class LocationCitiesLocalesTableSeeder extends Seeder
+class CityLocalesTableSeeder extends Seeder
 {
 
     /**
@@ -14,12 +14,12 @@ class LocationCitiesLocalesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('location_cities_locales')->delete();
-        
-        \DB::table('location_cities_locales')->insert(array (
-            0 => 
+
+        \DB::table('city_locales')->delete();
+
+        \DB::table('city_locales')->insert(array (
+            0 =>
             array (
                 'id' => 1,
                 'city_id' => 1,
@@ -27,7 +27,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'city_id' => 2,
@@ -35,7 +35,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'city_id' => 3,
@@ -43,7 +43,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'city_id' => 4,
@@ -51,7 +51,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'city_id' => 5,
@@ -59,7 +59,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'city_id' => 6,
@@ -67,7 +67,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'city_id' => 7,
@@ -75,7 +75,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
                 'city_id' => 8,
@@ -83,7 +83,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 9,
                 'city_id' => 9,
@@ -91,7 +91,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 10,
                 'city_id' => 10,
@@ -99,7 +99,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 11,
                 'city_id' => 11,
@@ -107,7 +107,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 12,
                 'city_id' => 12,
@@ -115,7 +115,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 13,
                 'city_id' => 13,
@@ -123,7 +123,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 14,
                 'city_id' => 14,
@@ -131,7 +131,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 15,
                 'city_id' => 15,
@@ -139,7 +139,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 16,
                 'city_id' => 16,
@@ -147,7 +147,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 17,
                 'city_id' => 17,
@@ -155,7 +155,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            17 => 
+            17 =>
             array (
                 'id' => 18,
                 'city_id' => 18,
@@ -163,7 +163,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            18 => 
+            18 =>
             array (
                 'id' => 19,
                 'city_id' => 19,
@@ -171,7 +171,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            19 => 
+            19 =>
             array (
                 'id' => 20,
                 'city_id' => 20,
@@ -179,7 +179,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            20 => 
+            20 =>
             array (
                 'id' => 21,
                 'city_id' => 21,
@@ -187,7 +187,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            21 => 
+            21 =>
             array (
                 'id' => 22,
                 'city_id' => 22,
@@ -195,7 +195,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            22 => 
+            22 =>
             array (
                 'id' => 23,
                 'city_id' => 23,
@@ -203,7 +203,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            23 => 
+            23 =>
             array (
                 'id' => 24,
                 'city_id' => 24,
@@ -211,7 +211,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            24 => 
+            24 =>
             array (
                 'id' => 25,
                 'city_id' => 25,
@@ -219,7 +219,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            25 => 
+            25 =>
             array (
                 'id' => 26,
                 'city_id' => 26,
@@ -227,7 +227,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            26 => 
+            26 =>
             array (
                 'id' => 27,
                 'city_id' => 27,
@@ -235,7 +235,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            27 => 
+            27 =>
             array (
                 'id' => 28,
                 'city_id' => 28,
@@ -243,7 +243,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            28 => 
+            28 =>
             array (
                 'id' => 29,
                 'city_id' => 29,
@@ -251,7 +251,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            29 => 
+            29 =>
             array (
                 'id' => 30,
                 'city_id' => 30,
@@ -259,7 +259,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            30 => 
+            30 =>
             array (
                 'id' => 31,
                 'city_id' => 31,
@@ -267,7 +267,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            31 => 
+            31 =>
             array (
                 'id' => 32,
                 'city_id' => 32,
@@ -275,7 +275,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            32 => 
+            32 =>
             array (
                 'id' => 33,
                 'city_id' => 33,
@@ -283,7 +283,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            33 => 
+            33 =>
             array (
                 'id' => 34,
                 'city_id' => 34,
@@ -291,7 +291,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            34 => 
+            34 =>
             array (
                 'id' => 35,
                 'city_id' => 35,
@@ -299,7 +299,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            35 => 
+            35 =>
             array (
                 'id' => 36,
                 'city_id' => 36,
@@ -307,7 +307,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            36 => 
+            36 =>
             array (
                 'id' => 37,
                 'city_id' => 37,
@@ -315,7 +315,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            37 => 
+            37 =>
             array (
                 'id' => 38,
                 'city_id' => 38,
@@ -323,7 +323,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            38 => 
+            38 =>
             array (
                 'id' => 39,
                 'city_id' => 39,
@@ -331,7 +331,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            39 => 
+            39 =>
             array (
                 'id' => 40,
                 'city_id' => 40,
@@ -339,7 +339,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            40 => 
+            40 =>
             array (
                 'id' => 41,
                 'city_id' => 41,
@@ -347,7 +347,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            41 => 
+            41 =>
             array (
                 'id' => 42,
                 'city_id' => 42,
@@ -355,7 +355,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            42 => 
+            42 =>
             array (
                 'id' => 43,
                 'city_id' => 43,
@@ -363,7 +363,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            43 => 
+            43 =>
             array (
                 'id' => 44,
                 'city_id' => 44,
@@ -371,7 +371,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            44 => 
+            44 =>
             array (
                 'id' => 45,
                 'city_id' => 45,
@@ -379,7 +379,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            45 => 
+            45 =>
             array (
                 'id' => 46,
                 'city_id' => 46,
@@ -387,7 +387,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            46 => 
+            46 =>
             array (
                 'id' => 47,
                 'city_id' => 47,
@@ -395,7 +395,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            47 => 
+            47 =>
             array (
                 'id' => 48,
                 'city_id' => 48,
@@ -403,7 +403,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            48 => 
+            48 =>
             array (
                 'id' => 49,
                 'city_id' => 49,
@@ -411,7 +411,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            49 => 
+            49 =>
             array (
                 'id' => 50,
                 'city_id' => 50,
@@ -419,7 +419,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            50 => 
+            50 =>
             array (
                 'id' => 51,
                 'city_id' => 51,
@@ -427,7 +427,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            51 => 
+            51 =>
             array (
                 'id' => 52,
                 'city_id' => 52,
@@ -435,7 +435,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            52 => 
+            52 =>
             array (
                 'id' => 53,
                 'city_id' => 53,
@@ -443,7 +443,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            53 => 
+            53 =>
             array (
                 'id' => 54,
                 'city_id' => 54,
@@ -451,7 +451,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            54 => 
+            54 =>
             array (
                 'id' => 55,
                 'city_id' => 55,
@@ -459,7 +459,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            55 => 
+            55 =>
             array (
                 'id' => 56,
                 'city_id' => 56,
@@ -467,7 +467,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            56 => 
+            56 =>
             array (
                 'id' => 57,
                 'city_id' => 57,
@@ -475,7 +475,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            57 => 
+            57 =>
             array (
                 'id' => 58,
                 'city_id' => 58,
@@ -483,7 +483,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            58 => 
+            58 =>
             array (
                 'id' => 59,
                 'city_id' => 59,
@@ -491,7 +491,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            59 => 
+            59 =>
             array (
                 'id' => 60,
                 'city_id' => 60,
@@ -499,7 +499,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            60 => 
+            60 =>
             array (
                 'id' => 61,
                 'city_id' => 61,
@@ -507,7 +507,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            61 => 
+            61 =>
             array (
                 'id' => 62,
                 'city_id' => 62,
@@ -515,7 +515,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            62 => 
+            62 =>
             array (
                 'id' => 63,
                 'city_id' => 63,
@@ -523,7 +523,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            63 => 
+            63 =>
             array (
                 'id' => 64,
                 'city_id' => 64,
@@ -531,7 +531,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            64 => 
+            64 =>
             array (
                 'id' => 65,
                 'city_id' => 65,
@@ -539,7 +539,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            65 => 
+            65 =>
             array (
                 'id' => 66,
                 'city_id' => 66,
@@ -547,7 +547,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            66 => 
+            66 =>
             array (
                 'id' => 67,
                 'city_id' => 67,
@@ -555,7 +555,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            67 => 
+            67 =>
             array (
                 'id' => 68,
                 'city_id' => 68,
@@ -563,7 +563,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            68 => 
+            68 =>
             array (
                 'id' => 69,
                 'city_id' => 69,
@@ -571,7 +571,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            69 => 
+            69 =>
             array (
                 'id' => 70,
                 'city_id' => 70,
@@ -579,7 +579,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            70 => 
+            70 =>
             array (
                 'id' => 71,
                 'city_id' => 71,
@@ -587,7 +587,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            71 => 
+            71 =>
             array (
                 'id' => 72,
                 'city_id' => 72,
@@ -595,7 +595,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            72 => 
+            72 =>
             array (
                 'id' => 73,
                 'city_id' => 73,
@@ -603,7 +603,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            73 => 
+            73 =>
             array (
                 'id' => 74,
                 'city_id' => 74,
@@ -611,7 +611,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            74 => 
+            74 =>
             array (
                 'id' => 75,
                 'city_id' => 75,
@@ -619,7 +619,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            75 => 
+            75 =>
             array (
                 'id' => 76,
                 'city_id' => 76,
@@ -627,7 +627,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            76 => 
+            76 =>
             array (
                 'id' => 77,
                 'city_id' => 77,
@@ -635,7 +635,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            77 => 
+            77 =>
             array (
                 'id' => 78,
                 'city_id' => 78,
@@ -643,7 +643,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            78 => 
+            78 =>
             array (
                 'id' => 79,
                 'city_id' => 79,
@@ -651,7 +651,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            79 => 
+            79 =>
             array (
                 'id' => 80,
                 'city_id' => 80,
@@ -659,7 +659,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            80 => 
+            80 =>
             array (
                 'id' => 81,
                 'city_id' => 81,
@@ -667,7 +667,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            81 => 
+            81 =>
             array (
                 'id' => 82,
                 'city_id' => 82,
@@ -675,7 +675,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            82 => 
+            82 =>
             array (
                 'id' => 83,
                 'city_id' => 83,
@@ -683,7 +683,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            83 => 
+            83 =>
             array (
                 'id' => 84,
                 'city_id' => 84,
@@ -691,7 +691,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            84 => 
+            84 =>
             array (
                 'id' => 85,
                 'city_id' => 85,
@@ -699,7 +699,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            85 => 
+            85 =>
             array (
                 'id' => 86,
                 'city_id' => 86,
@@ -707,7 +707,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            86 => 
+            86 =>
             array (
                 'id' => 87,
                 'city_id' => 87,
@@ -715,7 +715,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            87 => 
+            87 =>
             array (
                 'id' => 88,
                 'city_id' => 88,
@@ -723,7 +723,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            88 => 
+            88 =>
             array (
                 'id' => 89,
                 'city_id' => 89,
@@ -731,7 +731,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            89 => 
+            89 =>
             array (
                 'id' => 90,
                 'city_id' => 90,
@@ -739,7 +739,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            90 => 
+            90 =>
             array (
                 'id' => 91,
                 'city_id' => 91,
@@ -747,7 +747,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            91 => 
+            91 =>
             array (
                 'id' => 92,
                 'city_id' => 92,
@@ -755,7 +755,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            92 => 
+            92 =>
             array (
                 'id' => 93,
                 'city_id' => 93,
@@ -763,7 +763,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            93 => 
+            93 =>
             array (
                 'id' => 94,
                 'city_id' => 94,
@@ -771,7 +771,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            94 => 
+            94 =>
             array (
                 'id' => 95,
                 'city_id' => 95,
@@ -779,7 +779,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            95 => 
+            95 =>
             array (
                 'id' => 96,
                 'city_id' => 96,
@@ -787,7 +787,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            96 => 
+            96 =>
             array (
                 'id' => 97,
                 'city_id' => 97,
@@ -795,7 +795,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            97 => 
+            97 =>
             array (
                 'id' => 98,
                 'city_id' => 98,
@@ -803,7 +803,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            98 => 
+            98 =>
             array (
                 'id' => 99,
                 'city_id' => 99,
@@ -811,7 +811,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            99 => 
+            99 =>
             array (
                 'id' => 100,
                 'city_id' => 100,
@@ -819,7 +819,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            100 => 
+            100 =>
             array (
                 'id' => 101,
                 'city_id' => 101,
@@ -827,7 +827,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            101 => 
+            101 =>
             array (
                 'id' => 102,
                 'city_id' => 102,
@@ -835,7 +835,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            102 => 
+            102 =>
             array (
                 'id' => 103,
                 'city_id' => 103,
@@ -843,7 +843,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            103 => 
+            103 =>
             array (
                 'id' => 104,
                 'city_id' => 104,
@@ -851,7 +851,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            104 => 
+            104 =>
             array (
                 'id' => 105,
                 'city_id' => 105,
@@ -859,7 +859,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            105 => 
+            105 =>
             array (
                 'id' => 106,
                 'city_id' => 106,
@@ -867,7 +867,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            106 => 
+            106 =>
             array (
                 'id' => 107,
                 'city_id' => 107,
@@ -875,7 +875,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            107 => 
+            107 =>
             array (
                 'id' => 108,
                 'city_id' => 108,
@@ -883,7 +883,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            108 => 
+            108 =>
             array (
                 'id' => 109,
                 'city_id' => 109,
@@ -891,7 +891,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            109 => 
+            109 =>
             array (
                 'id' => 110,
                 'city_id' => 110,
@@ -899,7 +899,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            110 => 
+            110 =>
             array (
                 'id' => 111,
                 'city_id' => 111,
@@ -907,7 +907,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            111 => 
+            111 =>
             array (
                 'id' => 112,
                 'city_id' => 112,
@@ -915,7 +915,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            112 => 
+            112 =>
             array (
                 'id' => 113,
                 'city_id' => 113,
@@ -923,7 +923,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            113 => 
+            113 =>
             array (
                 'id' => 114,
                 'city_id' => 114,
@@ -931,7 +931,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            114 => 
+            114 =>
             array (
                 'id' => 115,
                 'city_id' => 115,
@@ -939,7 +939,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            115 => 
+            115 =>
             array (
                 'id' => 116,
                 'city_id' => 116,
@@ -947,7 +947,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            116 => 
+            116 =>
             array (
                 'id' => 117,
                 'city_id' => 117,
@@ -955,7 +955,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            117 => 
+            117 =>
             array (
                 'id' => 118,
                 'city_id' => 118,
@@ -963,7 +963,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            118 => 
+            118 =>
             array (
                 'id' => 119,
                 'city_id' => 119,
@@ -971,7 +971,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            119 => 
+            119 =>
             array (
                 'id' => 120,
                 'city_id' => 120,
@@ -979,7 +979,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            120 => 
+            120 =>
             array (
                 'id' => 121,
                 'city_id' => 121,
@@ -987,7 +987,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            121 => 
+            121 =>
             array (
                 'id' => 122,
                 'city_id' => 122,
@@ -995,7 +995,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            122 => 
+            122 =>
             array (
                 'id' => 123,
                 'city_id' => 123,
@@ -1003,7 +1003,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            123 => 
+            123 =>
             array (
                 'id' => 124,
                 'city_id' => 124,
@@ -1011,7 +1011,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            124 => 
+            124 =>
             array (
                 'id' => 125,
                 'city_id' => 125,
@@ -1019,7 +1019,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            125 => 
+            125 =>
             array (
                 'id' => 126,
                 'city_id' => 126,
@@ -1027,7 +1027,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            126 => 
+            126 =>
             array (
                 'id' => 127,
                 'city_id' => 127,
@@ -1035,7 +1035,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            127 => 
+            127 =>
             array (
                 'id' => 128,
                 'city_id' => 128,
@@ -1043,7 +1043,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            128 => 
+            128 =>
             array (
                 'id' => 129,
                 'city_id' => 129,
@@ -1051,7 +1051,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            129 => 
+            129 =>
             array (
                 'id' => 130,
                 'city_id' => 130,
@@ -1059,7 +1059,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            130 => 
+            130 =>
             array (
                 'id' => 131,
                 'city_id' => 131,
@@ -1067,7 +1067,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            131 => 
+            131 =>
             array (
                 'id' => 132,
                 'city_id' => 132,
@@ -1075,7 +1075,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            132 => 
+            132 =>
             array (
                 'id' => 133,
                 'city_id' => 133,
@@ -1083,7 +1083,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            133 => 
+            133 =>
             array (
                 'id' => 134,
                 'city_id' => 134,
@@ -1091,7 +1091,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            134 => 
+            134 =>
             array (
                 'id' => 135,
                 'city_id' => 135,
@@ -1099,7 +1099,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            135 => 
+            135 =>
             array (
                 'id' => 136,
                 'city_id' => 136,
@@ -1107,7 +1107,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            136 => 
+            136 =>
             array (
                 'id' => 137,
                 'city_id' => 137,
@@ -1115,7 +1115,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            137 => 
+            137 =>
             array (
                 'id' => 138,
                 'city_id' => 138,
@@ -1123,7 +1123,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            138 => 
+            138 =>
             array (
                 'id' => 139,
                 'city_id' => 139,
@@ -1131,7 +1131,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            139 => 
+            139 =>
             array (
                 'id' => 140,
                 'city_id' => 140,
@@ -1139,7 +1139,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            140 => 
+            140 =>
             array (
                 'id' => 141,
                 'city_id' => 141,
@@ -1147,7 +1147,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            141 => 
+            141 =>
             array (
                 'id' => 142,
                 'city_id' => 142,
@@ -1155,7 +1155,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            142 => 
+            142 =>
             array (
                 'id' => 143,
                 'city_id' => 143,
@@ -1163,7 +1163,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            143 => 
+            143 =>
             array (
                 'id' => 144,
                 'city_id' => 144,
@@ -1171,7 +1171,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            144 => 
+            144 =>
             array (
                 'id' => 145,
                 'city_id' => 145,
@@ -1179,7 +1179,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            145 => 
+            145 =>
             array (
                 'id' => 146,
                 'city_id' => 146,
@@ -1187,7 +1187,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            146 => 
+            146 =>
             array (
                 'id' => 147,
                 'city_id' => 147,
@@ -1195,7 +1195,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            147 => 
+            147 =>
             array (
                 'id' => 148,
                 'city_id' => 148,
@@ -1203,7 +1203,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            148 => 
+            148 =>
             array (
                 'id' => 149,
                 'city_id' => 149,
@@ -1211,7 +1211,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            149 => 
+            149 =>
             array (
                 'id' => 150,
                 'city_id' => 150,
@@ -1219,7 +1219,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            150 => 
+            150 =>
             array (
                 'id' => 151,
                 'city_id' => 151,
@@ -1227,7 +1227,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            151 => 
+            151 =>
             array (
                 'id' => 152,
                 'city_id' => 152,
@@ -1235,7 +1235,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            152 => 
+            152 =>
             array (
                 'id' => 153,
                 'city_id' => 153,
@@ -1243,7 +1243,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            153 => 
+            153 =>
             array (
                 'id' => 154,
                 'city_id' => 154,
@@ -1251,7 +1251,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            154 => 
+            154 =>
             array (
                 'id' => 155,
                 'city_id' => 155,
@@ -1259,7 +1259,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            155 => 
+            155 =>
             array (
                 'id' => 156,
                 'city_id' => 156,
@@ -1267,7 +1267,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            156 => 
+            156 =>
             array (
                 'id' => 157,
                 'city_id' => 157,
@@ -1275,7 +1275,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            157 => 
+            157 =>
             array (
                 'id' => 158,
                 'city_id' => 158,
@@ -1283,7 +1283,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            158 => 
+            158 =>
             array (
                 'id' => 159,
                 'city_id' => 159,
@@ -1291,7 +1291,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            159 => 
+            159 =>
             array (
                 'id' => 160,
                 'city_id' => 160,
@@ -1299,7 +1299,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            160 => 
+            160 =>
             array (
                 'id' => 161,
                 'city_id' => 161,
@@ -1307,7 +1307,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            161 => 
+            161 =>
             array (
                 'id' => 162,
                 'city_id' => 162,
@@ -1315,7 +1315,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            162 => 
+            162 =>
             array (
                 'id' => 163,
                 'city_id' => 163,
@@ -1323,7 +1323,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            163 => 
+            163 =>
             array (
                 'id' => 164,
                 'city_id' => 164,
@@ -1331,7 +1331,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            164 => 
+            164 =>
             array (
                 'id' => 165,
                 'city_id' => 165,
@@ -1339,7 +1339,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            165 => 
+            165 =>
             array (
                 'id' => 166,
                 'city_id' => 166,
@@ -1347,7 +1347,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            166 => 
+            166 =>
             array (
                 'id' => 167,
                 'city_id' => 167,
@@ -1355,7 +1355,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            167 => 
+            167 =>
             array (
                 'id' => 168,
                 'city_id' => 168,
@@ -1363,7 +1363,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            168 => 
+            168 =>
             array (
                 'id' => 169,
                 'city_id' => 169,
@@ -1371,7 +1371,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            169 => 
+            169 =>
             array (
                 'id' => 170,
                 'city_id' => 170,
@@ -1379,7 +1379,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            170 => 
+            170 =>
             array (
                 'id' => 171,
                 'city_id' => 171,
@@ -1387,7 +1387,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            171 => 
+            171 =>
             array (
                 'id' => 172,
                 'city_id' => 172,
@@ -1395,7 +1395,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            172 => 
+            172 =>
             array (
                 'id' => 173,
                 'city_id' => 173,
@@ -1403,7 +1403,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            173 => 
+            173 =>
             array (
                 'id' => 174,
                 'city_id' => 174,
@@ -1411,7 +1411,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            174 => 
+            174 =>
             array (
                 'id' => 175,
                 'city_id' => 175,
@@ -1419,7 +1419,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            175 => 
+            175 =>
             array (
                 'id' => 176,
                 'city_id' => 176,
@@ -1427,7 +1427,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            176 => 
+            176 =>
             array (
                 'id' => 177,
                 'city_id' => 177,
@@ -1435,7 +1435,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            177 => 
+            177 =>
             array (
                 'id' => 178,
                 'city_id' => 178,
@@ -1443,7 +1443,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            178 => 
+            178 =>
             array (
                 'id' => 179,
                 'city_id' => 179,
@@ -1451,7 +1451,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            179 => 
+            179 =>
             array (
                 'id' => 180,
                 'city_id' => 180,
@@ -1459,7 +1459,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            180 => 
+            180 =>
             array (
                 'id' => 181,
                 'city_id' => 181,
@@ -1467,7 +1467,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            181 => 
+            181 =>
             array (
                 'id' => 182,
                 'city_id' => 182,
@@ -1475,7 +1475,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            182 => 
+            182 =>
             array (
                 'id' => 183,
                 'city_id' => 183,
@@ -1483,7 +1483,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            183 => 
+            183 =>
             array (
                 'id' => 184,
                 'city_id' => 184,
@@ -1491,7 +1491,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            184 => 
+            184 =>
             array (
                 'id' => 185,
                 'city_id' => 185,
@@ -1499,7 +1499,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            185 => 
+            185 =>
             array (
                 'id' => 186,
                 'city_id' => 186,
@@ -1507,7 +1507,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            186 => 
+            186 =>
             array (
                 'id' => 187,
                 'city_id' => 187,
@@ -1515,7 +1515,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            187 => 
+            187 =>
             array (
                 'id' => 188,
                 'city_id' => 188,
@@ -1523,7 +1523,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            188 => 
+            188 =>
             array (
                 'id' => 189,
                 'city_id' => 189,
@@ -1531,7 +1531,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            189 => 
+            189 =>
             array (
                 'id' => 190,
                 'city_id' => 190,
@@ -1539,7 +1539,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            190 => 
+            190 =>
             array (
                 'id' => 191,
                 'city_id' => 191,
@@ -1547,7 +1547,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            191 => 
+            191 =>
             array (
                 'id' => 192,
                 'city_id' => 192,
@@ -1555,7 +1555,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            192 => 
+            192 =>
             array (
                 'id' => 193,
                 'city_id' => 193,
@@ -1563,7 +1563,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            193 => 
+            193 =>
             array (
                 'id' => 194,
                 'city_id' => 194,
@@ -1571,7 +1571,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            194 => 
+            194 =>
             array (
                 'id' => 195,
                 'city_id' => 195,
@@ -1579,7 +1579,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            195 => 
+            195 =>
             array (
                 'id' => 196,
                 'city_id' => 196,
@@ -1587,7 +1587,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            196 => 
+            196 =>
             array (
                 'id' => 197,
                 'city_id' => 197,
@@ -1595,7 +1595,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            197 => 
+            197 =>
             array (
                 'id' => 198,
                 'city_id' => 198,
@@ -1603,7 +1603,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            198 => 
+            198 =>
             array (
                 'id' => 199,
                 'city_id' => 199,
@@ -1611,7 +1611,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            199 => 
+            199 =>
             array (
                 'id' => 200,
                 'city_id' => 200,
@@ -1619,7 +1619,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            200 => 
+            200 =>
             array (
                 'id' => 201,
                 'city_id' => 201,
@@ -1627,7 +1627,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            201 => 
+            201 =>
             array (
                 'id' => 202,
                 'city_id' => 202,
@@ -1635,7 +1635,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            202 => 
+            202 =>
             array (
                 'id' => 203,
                 'city_id' => 203,
@@ -1643,7 +1643,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            203 => 
+            203 =>
             array (
                 'id' => 204,
                 'city_id' => 204,
@@ -1651,7 +1651,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            204 => 
+            204 =>
             array (
                 'id' => 205,
                 'city_id' => 205,
@@ -1659,7 +1659,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            205 => 
+            205 =>
             array (
                 'id' => 206,
                 'city_id' => 206,
@@ -1667,7 +1667,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            206 => 
+            206 =>
             array (
                 'id' => 207,
                 'city_id' => 207,
@@ -1675,7 +1675,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            207 => 
+            207 =>
             array (
                 'id' => 208,
                 'city_id' => 208,
@@ -1683,7 +1683,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            208 => 
+            208 =>
             array (
                 'id' => 209,
                 'city_id' => 209,
@@ -1691,7 +1691,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            209 => 
+            209 =>
             array (
                 'id' => 210,
                 'city_id' => 210,
@@ -1699,7 +1699,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            210 => 
+            210 =>
             array (
                 'id' => 211,
                 'city_id' => 211,
@@ -1707,7 +1707,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            211 => 
+            211 =>
             array (
                 'id' => 212,
                 'city_id' => 212,
@@ -1715,7 +1715,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            212 => 
+            212 =>
             array (
                 'id' => 213,
                 'city_id' => 213,
@@ -1723,7 +1723,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            213 => 
+            213 =>
             array (
                 'id' => 214,
                 'city_id' => 214,
@@ -1731,7 +1731,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            214 => 
+            214 =>
             array (
                 'id' => 215,
                 'city_id' => 215,
@@ -1739,7 +1739,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            215 => 
+            215 =>
             array (
                 'id' => 216,
                 'city_id' => 216,
@@ -1747,7 +1747,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            216 => 
+            216 =>
             array (
                 'id' => 217,
                 'city_id' => 217,
@@ -1755,7 +1755,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            217 => 
+            217 =>
             array (
                 'id' => 218,
                 'city_id' => 218,
@@ -1763,7 +1763,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            218 => 
+            218 =>
             array (
                 'id' => 219,
                 'city_id' => 219,
@@ -1771,7 +1771,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            219 => 
+            219 =>
             array (
                 'id' => 220,
                 'city_id' => 220,
@@ -1779,7 +1779,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            220 => 
+            220 =>
             array (
                 'id' => 221,
                 'city_id' => 221,
@@ -1787,7 +1787,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            221 => 
+            221 =>
             array (
                 'id' => 222,
                 'city_id' => 222,
@@ -1795,7 +1795,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            222 => 
+            222 =>
             array (
                 'id' => 223,
                 'city_id' => 223,
@@ -1803,7 +1803,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            223 => 
+            223 =>
             array (
                 'id' => 224,
                 'city_id' => 224,
@@ -1811,7 +1811,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            224 => 
+            224 =>
             array (
                 'id' => 225,
                 'city_id' => 225,
@@ -1819,7 +1819,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            225 => 
+            225 =>
             array (
                 'id' => 226,
                 'city_id' => 226,
@@ -1827,7 +1827,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            226 => 
+            226 =>
             array (
                 'id' => 227,
                 'city_id' => 227,
@@ -1835,7 +1835,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            227 => 
+            227 =>
             array (
                 'id' => 228,
                 'city_id' => 228,
@@ -1843,7 +1843,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            228 => 
+            228 =>
             array (
                 'id' => 229,
                 'city_id' => 229,
@@ -1851,7 +1851,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            229 => 
+            229 =>
             array (
                 'id' => 230,
                 'city_id' => 230,
@@ -1859,7 +1859,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            230 => 
+            230 =>
             array (
                 'id' => 231,
                 'city_id' => 231,
@@ -1867,7 +1867,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            231 => 
+            231 =>
             array (
                 'id' => 232,
                 'city_id' => 232,
@@ -1875,7 +1875,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            232 => 
+            232 =>
             array (
                 'id' => 233,
                 'city_id' => 233,
@@ -1883,7 +1883,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            233 => 
+            233 =>
             array (
                 'id' => 234,
                 'city_id' => 234,
@@ -1891,7 +1891,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            234 => 
+            234 =>
             array (
                 'id' => 235,
                 'city_id' => 235,
@@ -1899,7 +1899,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            235 => 
+            235 =>
             array (
                 'id' => 236,
                 'city_id' => 236,
@@ -1907,7 +1907,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            236 => 
+            236 =>
             array (
                 'id' => 237,
                 'city_id' => 237,
@@ -1915,7 +1915,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            237 => 
+            237 =>
             array (
                 'id' => 238,
                 'city_id' => 238,
@@ -1923,7 +1923,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            238 => 
+            238 =>
             array (
                 'id' => 239,
                 'city_id' => 239,
@@ -1931,7 +1931,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            239 => 
+            239 =>
             array (
                 'id' => 240,
                 'city_id' => 240,
@@ -1939,7 +1939,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            240 => 
+            240 =>
             array (
                 'id' => 241,
                 'city_id' => 241,
@@ -1947,7 +1947,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            241 => 
+            241 =>
             array (
                 'id' => 242,
                 'city_id' => 242,
@@ -1955,7 +1955,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            242 => 
+            242 =>
             array (
                 'id' => 243,
                 'city_id' => 243,
@@ -1963,7 +1963,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            243 => 
+            243 =>
             array (
                 'id' => 244,
                 'city_id' => 244,
@@ -1971,7 +1971,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            244 => 
+            244 =>
             array (
                 'id' => 245,
                 'city_id' => 245,
@@ -1979,7 +1979,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            245 => 
+            245 =>
             array (
                 'id' => 246,
                 'city_id' => 246,
@@ -1987,7 +1987,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            246 => 
+            246 =>
             array (
                 'id' => 247,
                 'city_id' => 247,
@@ -1995,7 +1995,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            247 => 
+            247 =>
             array (
                 'id' => 248,
                 'city_id' => 248,
@@ -2003,7 +2003,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            248 => 
+            248 =>
             array (
                 'id' => 249,
                 'city_id' => 249,
@@ -2011,7 +2011,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            249 => 
+            249 =>
             array (
                 'id' => 250,
                 'city_id' => 250,
@@ -2019,7 +2019,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            250 => 
+            250 =>
             array (
                 'id' => 251,
                 'city_id' => 251,
@@ -2027,7 +2027,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            251 => 
+            251 =>
             array (
                 'id' => 252,
                 'city_id' => 252,
@@ -2035,7 +2035,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            252 => 
+            252 =>
             array (
                 'id' => 253,
                 'city_id' => 253,
@@ -2043,7 +2043,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            253 => 
+            253 =>
             array (
                 'id' => 254,
                 'city_id' => 254,
@@ -2051,7 +2051,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            254 => 
+            254 =>
             array (
                 'id' => 255,
                 'city_id' => 255,
@@ -2059,7 +2059,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            255 => 
+            255 =>
             array (
                 'id' => 256,
                 'city_id' => 256,
@@ -2067,7 +2067,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            256 => 
+            256 =>
             array (
                 'id' => 257,
                 'city_id' => 257,
@@ -2075,7 +2075,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            257 => 
+            257 =>
             array (
                 'id' => 258,
                 'city_id' => 258,
@@ -2083,7 +2083,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            258 => 
+            258 =>
             array (
                 'id' => 259,
                 'city_id' => 259,
@@ -2091,7 +2091,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            259 => 
+            259 =>
             array (
                 'id' => 260,
                 'city_id' => 260,
@@ -2099,7 +2099,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            260 => 
+            260 =>
             array (
                 'id' => 261,
                 'city_id' => 261,
@@ -2107,7 +2107,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            261 => 
+            261 =>
             array (
                 'id' => 262,
                 'city_id' => 262,
@@ -2115,7 +2115,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            262 => 
+            262 =>
             array (
                 'id' => 263,
                 'city_id' => 263,
@@ -2123,7 +2123,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            263 => 
+            263 =>
             array (
                 'id' => 264,
                 'city_id' => 264,
@@ -2131,7 +2131,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            264 => 
+            264 =>
             array (
                 'id' => 265,
                 'city_id' => 265,
@@ -2139,7 +2139,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            265 => 
+            265 =>
             array (
                 'id' => 266,
                 'city_id' => 266,
@@ -2147,7 +2147,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            266 => 
+            266 =>
             array (
                 'id' => 267,
                 'city_id' => 267,
@@ -2155,7 +2155,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            267 => 
+            267 =>
             array (
                 'id' => 268,
                 'city_id' => 268,
@@ -2163,7 +2163,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            268 => 
+            268 =>
             array (
                 'id' => 269,
                 'city_id' => 269,
@@ -2171,7 +2171,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            269 => 
+            269 =>
             array (
                 'id' => 270,
                 'city_id' => 270,
@@ -2179,7 +2179,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            270 => 
+            270 =>
             array (
                 'id' => 271,
                 'city_id' => 271,
@@ -2187,7 +2187,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            271 => 
+            271 =>
             array (
                 'id' => 272,
                 'city_id' => 272,
@@ -2195,7 +2195,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            272 => 
+            272 =>
             array (
                 'id' => 273,
                 'city_id' => 273,
@@ -2203,7 +2203,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            273 => 
+            273 =>
             array (
                 'id' => 274,
                 'city_id' => 274,
@@ -2211,7 +2211,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            274 => 
+            274 =>
             array (
                 'id' => 275,
                 'city_id' => 275,
@@ -2219,7 +2219,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            275 => 
+            275 =>
             array (
                 'id' => 276,
                 'city_id' => 276,
@@ -2227,7 +2227,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            276 => 
+            276 =>
             array (
                 'id' => 277,
                 'city_id' => 277,
@@ -2235,7 +2235,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            277 => 
+            277 =>
             array (
                 'id' => 278,
                 'city_id' => 278,
@@ -2243,7 +2243,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            278 => 
+            278 =>
             array (
                 'id' => 279,
                 'city_id' => 279,
@@ -2251,7 +2251,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            279 => 
+            279 =>
             array (
                 'id' => 280,
                 'city_id' => 280,
@@ -2259,7 +2259,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            280 => 
+            280 =>
             array (
                 'id' => 281,
                 'city_id' => 281,
@@ -2267,7 +2267,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            281 => 
+            281 =>
             array (
                 'id' => 282,
                 'city_id' => 282,
@@ -2275,7 +2275,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            282 => 
+            282 =>
             array (
                 'id' => 283,
                 'city_id' => 283,
@@ -2283,7 +2283,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            283 => 
+            283 =>
             array (
                 'id' => 284,
                 'city_id' => 284,
@@ -2291,7 +2291,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            284 => 
+            284 =>
             array (
                 'id' => 285,
                 'city_id' => 285,
@@ -2299,7 +2299,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            285 => 
+            285 =>
             array (
                 'id' => 286,
                 'city_id' => 286,
@@ -2307,7 +2307,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            286 => 
+            286 =>
             array (
                 'id' => 287,
                 'city_id' => 287,
@@ -2315,7 +2315,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            287 => 
+            287 =>
             array (
                 'id' => 288,
                 'city_id' => 288,
@@ -2323,7 +2323,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            288 => 
+            288 =>
             array (
                 'id' => 289,
                 'city_id' => 289,
@@ -2331,7 +2331,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            289 => 
+            289 =>
             array (
                 'id' => 290,
                 'city_id' => 290,
@@ -2339,7 +2339,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            290 => 
+            290 =>
             array (
                 'id' => 291,
                 'city_id' => 291,
@@ -2347,7 +2347,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            291 => 
+            291 =>
             array (
                 'id' => 292,
                 'city_id' => 292,
@@ -2355,7 +2355,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            292 => 
+            292 =>
             array (
                 'id' => 293,
                 'city_id' => 293,
@@ -2363,7 +2363,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            293 => 
+            293 =>
             array (
                 'id' => 294,
                 'city_id' => 294,
@@ -2371,7 +2371,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            294 => 
+            294 =>
             array (
                 'id' => 295,
                 'city_id' => 295,
@@ -2379,7 +2379,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            295 => 
+            295 =>
             array (
                 'id' => 296,
                 'city_id' => 296,
@@ -2387,7 +2387,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            296 => 
+            296 =>
             array (
                 'id' => 297,
                 'city_id' => 297,
@@ -2395,7 +2395,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            297 => 
+            297 =>
             array (
                 'id' => 298,
                 'city_id' => 298,
@@ -2403,7 +2403,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            298 => 
+            298 =>
             array (
                 'id' => 299,
                 'city_id' => 299,
@@ -2411,7 +2411,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            299 => 
+            299 =>
             array (
                 'id' => 300,
                 'city_id' => 300,
@@ -2419,7 +2419,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            300 => 
+            300 =>
             array (
                 'id' => 301,
                 'city_id' => 301,
@@ -2427,7 +2427,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            301 => 
+            301 =>
             array (
                 'id' => 302,
                 'city_id' => 302,
@@ -2435,7 +2435,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            302 => 
+            302 =>
             array (
                 'id' => 303,
                 'city_id' => 303,
@@ -2443,7 +2443,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            303 => 
+            303 =>
             array (
                 'id' => 304,
                 'city_id' => 304,
@@ -2451,7 +2451,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            304 => 
+            304 =>
             array (
                 'id' => 305,
                 'city_id' => 305,
@@ -2459,7 +2459,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            305 => 
+            305 =>
             array (
                 'id' => 306,
                 'city_id' => 305,
@@ -2467,7 +2467,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            306 => 
+            306 =>
             array (
                 'id' => 307,
                 'city_id' => 305,
@@ -2475,7 +2475,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            307 => 
+            307 =>
             array (
                 'id' => 308,
                 'city_id' => 306,
@@ -2483,7 +2483,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            308 => 
+            308 =>
             array (
                 'id' => 309,
                 'city_id' => 307,
@@ -2491,7 +2491,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            309 => 
+            309 =>
             array (
                 'id' => 310,
                 'city_id' => 308,
@@ -2499,7 +2499,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            310 => 
+            310 =>
             array (
                 'id' => 311,
                 'city_id' => 309,
@@ -2507,7 +2507,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            311 => 
+            311 =>
             array (
                 'id' => 312,
                 'city_id' => 310,
@@ -2515,7 +2515,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            312 => 
+            312 =>
             array (
                 'id' => 313,
                 'city_id' => 311,
@@ -2523,7 +2523,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            313 => 
+            313 =>
             array (
                 'id' => 314,
                 'city_id' => 312,
@@ -2531,7 +2531,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            314 => 
+            314 =>
             array (
                 'id' => 315,
                 'city_id' => 313,
@@ -2539,7 +2539,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            315 => 
+            315 =>
             array (
                 'id' => 316,
                 'city_id' => 314,
@@ -2547,7 +2547,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            316 => 
+            316 =>
             array (
                 'id' => 317,
                 'city_id' => 315,
@@ -2555,7 +2555,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            317 => 
+            317 =>
             array (
                 'id' => 318,
                 'city_id' => 316,
@@ -2563,7 +2563,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            318 => 
+            318 =>
             array (
                 'id' => 319,
                 'city_id' => 317,
@@ -2571,7 +2571,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            319 => 
+            319 =>
             array (
                 'id' => 320,
                 'city_id' => 318,
@@ -2579,7 +2579,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            320 => 
+            320 =>
             array (
                 'id' => 321,
                 'city_id' => 319,
@@ -2587,7 +2587,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            321 => 
+            321 =>
             array (
                 'id' => 322,
                 'city_id' => 320,
@@ -2595,7 +2595,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            322 => 
+            322 =>
             array (
                 'id' => 323,
                 'city_id' => 321,
@@ -2603,7 +2603,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            323 => 
+            323 =>
             array (
                 'id' => 324,
                 'city_id' => 322,
@@ -2611,7 +2611,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            324 => 
+            324 =>
             array (
                 'id' => 325,
                 'city_id' => 323,
@@ -2619,7 +2619,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            325 => 
+            325 =>
             array (
                 'id' => 326,
                 'city_id' => 324,
@@ -2627,7 +2627,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            326 => 
+            326 =>
             array (
                 'id' => 327,
                 'city_id' => 325,
@@ -2635,7 +2635,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            327 => 
+            327 =>
             array (
                 'id' => 328,
                 'city_id' => 326,
@@ -2643,7 +2643,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            328 => 
+            328 =>
             array (
                 'id' => 329,
                 'city_id' => 327,
@@ -2651,7 +2651,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            329 => 
+            329 =>
             array (
                 'id' => 330,
                 'city_id' => 328,
@@ -2659,7 +2659,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            330 => 
+            330 =>
             array (
                 'id' => 331,
                 'city_id' => 329,
@@ -2667,7 +2667,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            331 => 
+            331 =>
             array (
                 'id' => 332,
                 'city_id' => 330,
@@ -2675,7 +2675,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            332 => 
+            332 =>
             array (
                 'id' => 333,
                 'city_id' => 331,
@@ -2683,7 +2683,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            333 => 
+            333 =>
             array (
                 'id' => 334,
                 'city_id' => 332,
@@ -2691,7 +2691,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            334 => 
+            334 =>
             array (
                 'id' => 335,
                 'city_id' => 333,
@@ -2699,7 +2699,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            335 => 
+            335 =>
             array (
                 'id' => 336,
                 'city_id' => 334,
@@ -2707,7 +2707,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            336 => 
+            336 =>
             array (
                 'id' => 337,
                 'city_id' => 335,
@@ -2715,7 +2715,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            337 => 
+            337 =>
             array (
                 'id' => 338,
                 'city_id' => 336,
@@ -2723,7 +2723,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            338 => 
+            338 =>
             array (
                 'id' => 339,
                 'city_id' => 337,
@@ -2731,7 +2731,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            339 => 
+            339 =>
             array (
                 'id' => 340,
                 'city_id' => 338,
@@ -2739,7 +2739,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            340 => 
+            340 =>
             array (
                 'id' => 341,
                 'city_id' => 339,
@@ -2747,7 +2747,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            341 => 
+            341 =>
             array (
                 'id' => 342,
                 'city_id' => 340,
@@ -2755,7 +2755,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            342 => 
+            342 =>
             array (
                 'id' => 343,
                 'city_id' => 341,
@@ -2763,7 +2763,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            343 => 
+            343 =>
             array (
                 'id' => 344,
                 'city_id' => 342,
@@ -2771,7 +2771,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            344 => 
+            344 =>
             array (
                 'id' => 345,
                 'city_id' => 343,
@@ -2779,7 +2779,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            345 => 
+            345 =>
             array (
                 'id' => 346,
                 'city_id' => 344,
@@ -2787,7 +2787,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            346 => 
+            346 =>
             array (
                 'id' => 347,
                 'city_id' => 345,
@@ -2795,7 +2795,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            347 => 
+            347 =>
             array (
                 'id' => 348,
                 'city_id' => 345,
@@ -2803,7 +2803,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            348 => 
+            348 =>
             array (
                 'id' => 349,
                 'city_id' => 345,
@@ -2811,7 +2811,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            349 => 
+            349 =>
             array (
                 'id' => 350,
                 'city_id' => 346,
@@ -2819,7 +2819,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            350 => 
+            350 =>
             array (
                 'id' => 351,
                 'city_id' => 346,
@@ -2827,7 +2827,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            351 => 
+            351 =>
             array (
                 'id' => 352,
                 'city_id' => 346,
@@ -2835,7 +2835,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            352 => 
+            352 =>
             array (
                 'id' => 353,
                 'city_id' => 345,
@@ -2843,7 +2843,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            353 => 
+            353 =>
             array (
                 'id' => 354,
                 'city_id' => 346,
@@ -2851,7 +2851,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            354 => 
+            354 =>
             array (
                 'id' => 355,
                 'city_id' => 1,
@@ -2859,7 +2859,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            355 => 
+            355 =>
             array (
                 'id' => 356,
                 'city_id' => 2,
@@ -2867,7 +2867,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            356 => 
+            356 =>
             array (
                 'id' => 357,
                 'city_id' => 3,
@@ -2875,7 +2875,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            357 => 
+            357 =>
             array (
                 'id' => 358,
                 'city_id' => 4,
@@ -2883,7 +2883,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            358 => 
+            358 =>
             array (
                 'id' => 359,
                 'city_id' => 5,
@@ -2891,7 +2891,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            359 => 
+            359 =>
             array (
                 'id' => 360,
                 'city_id' => 6,
@@ -2899,7 +2899,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            360 => 
+            360 =>
             array (
                 'id' => 361,
                 'city_id' => 7,
@@ -2907,7 +2907,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            361 => 
+            361 =>
             array (
                 'id' => 362,
                 'city_id' => 8,
@@ -2915,7 +2915,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            362 => 
+            362 =>
             array (
                 'id' => 363,
                 'city_id' => 9,
@@ -2923,7 +2923,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            363 => 
+            363 =>
             array (
                 'id' => 364,
                 'city_id' => 10,
@@ -2931,7 +2931,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            364 => 
+            364 =>
             array (
                 'id' => 365,
                 'city_id' => 11,
@@ -2939,7 +2939,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            365 => 
+            365 =>
             array (
                 'id' => 366,
                 'city_id' => 12,
@@ -2947,7 +2947,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            366 => 
+            366 =>
             array (
                 'id' => 367,
                 'city_id' => 13,
@@ -2955,7 +2955,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            367 => 
+            367 =>
             array (
                 'id' => 368,
                 'city_id' => 14,
@@ -2963,7 +2963,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            368 => 
+            368 =>
             array (
                 'id' => 369,
                 'city_id' => 15,
@@ -2971,7 +2971,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            369 => 
+            369 =>
             array (
                 'id' => 370,
                 'city_id' => 16,
@@ -2979,7 +2979,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            370 => 
+            370 =>
             array (
                 'id' => 371,
                 'city_id' => 17,
@@ -2987,7 +2987,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            371 => 
+            371 =>
             array (
                 'id' => 372,
                 'city_id' => 18,
@@ -2995,7 +2995,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            372 => 
+            372 =>
             array (
                 'id' => 373,
                 'city_id' => 19,
@@ -3003,7 +3003,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            373 => 
+            373 =>
             array (
                 'id' => 374,
                 'city_id' => 20,
@@ -3011,7 +3011,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            374 => 
+            374 =>
             array (
                 'id' => 375,
                 'city_id' => 21,
@@ -3019,7 +3019,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            375 => 
+            375 =>
             array (
                 'id' => 376,
                 'city_id' => 22,
@@ -3027,7 +3027,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            376 => 
+            376 =>
             array (
                 'id' => 377,
                 'city_id' => 23,
@@ -3035,7 +3035,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            377 => 
+            377 =>
             array (
                 'id' => 378,
                 'city_id' => 24,
@@ -3043,7 +3043,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            378 => 
+            378 =>
             array (
                 'id' => 379,
                 'city_id' => 25,
@@ -3051,7 +3051,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            379 => 
+            379 =>
             array (
                 'id' => 380,
                 'city_id' => 26,
@@ -3059,7 +3059,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            380 => 
+            380 =>
             array (
                 'id' => 381,
                 'city_id' => 27,
@@ -3067,7 +3067,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            381 => 
+            381 =>
             array (
                 'id' => 382,
                 'city_id' => 28,
@@ -3075,7 +3075,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            382 => 
+            382 =>
             array (
                 'id' => 383,
                 'city_id' => 29,
@@ -3083,7 +3083,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            383 => 
+            383 =>
             array (
                 'id' => 384,
                 'city_id' => 30,
@@ -3091,7 +3091,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            384 => 
+            384 =>
             array (
                 'id' => 385,
                 'city_id' => 31,
@@ -3099,7 +3099,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            385 => 
+            385 =>
             array (
                 'id' => 386,
                 'city_id' => 32,
@@ -3107,7 +3107,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            386 => 
+            386 =>
             array (
                 'id' => 387,
                 'city_id' => 33,
@@ -3115,7 +3115,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            387 => 
+            387 =>
             array (
                 'id' => 388,
                 'city_id' => 34,
@@ -3123,7 +3123,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            388 => 
+            388 =>
             array (
                 'id' => 389,
                 'city_id' => 35,
@@ -3131,7 +3131,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            389 => 
+            389 =>
             array (
                 'id' => 390,
                 'city_id' => 36,
@@ -3139,7 +3139,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            390 => 
+            390 =>
             array (
                 'id' => 391,
                 'city_id' => 37,
@@ -3147,7 +3147,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            391 => 
+            391 =>
             array (
                 'id' => 392,
                 'city_id' => 38,
@@ -3155,7 +3155,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            392 => 
+            392 =>
             array (
                 'id' => 393,
                 'city_id' => 39,
@@ -3163,7 +3163,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            393 => 
+            393 =>
             array (
                 'id' => 394,
                 'city_id' => 40,
@@ -3171,7 +3171,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            394 => 
+            394 =>
             array (
                 'id' => 395,
                 'city_id' => 41,
@@ -3179,7 +3179,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            395 => 
+            395 =>
             array (
                 'id' => 396,
                 'city_id' => 42,
@@ -3187,7 +3187,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            396 => 
+            396 =>
             array (
                 'id' => 397,
                 'city_id' => 43,
@@ -3195,7 +3195,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            397 => 
+            397 =>
             array (
                 'id' => 398,
                 'city_id' => 44,
@@ -3203,7 +3203,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            398 => 
+            398 =>
             array (
                 'id' => 399,
                 'city_id' => 45,
@@ -3211,7 +3211,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            399 => 
+            399 =>
             array (
                 'id' => 400,
                 'city_id' => 46,
@@ -3219,7 +3219,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            400 => 
+            400 =>
             array (
                 'id' => 401,
                 'city_id' => 47,
@@ -3227,7 +3227,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            401 => 
+            401 =>
             array (
                 'id' => 402,
                 'city_id' => 48,
@@ -3235,7 +3235,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            402 => 
+            402 =>
             array (
                 'id' => 403,
                 'city_id' => 49,
@@ -3243,7 +3243,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            403 => 
+            403 =>
             array (
                 'id' => 404,
                 'city_id' => 50,
@@ -3251,7 +3251,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            404 => 
+            404 =>
             array (
                 'id' => 405,
                 'city_id' => 51,
@@ -3259,7 +3259,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            405 => 
+            405 =>
             array (
                 'id' => 406,
                 'city_id' => 52,
@@ -3267,7 +3267,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            406 => 
+            406 =>
             array (
                 'id' => 407,
                 'city_id' => 53,
@@ -3275,7 +3275,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            407 => 
+            407 =>
             array (
                 'id' => 408,
                 'city_id' => 54,
@@ -3283,7 +3283,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            408 => 
+            408 =>
             array (
                 'id' => 409,
                 'city_id' => 55,
@@ -3291,7 +3291,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            409 => 
+            409 =>
             array (
                 'id' => 410,
                 'city_id' => 56,
@@ -3299,7 +3299,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            410 => 
+            410 =>
             array (
                 'id' => 411,
                 'city_id' => 57,
@@ -3307,7 +3307,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            411 => 
+            411 =>
             array (
                 'id' => 412,
                 'city_id' => 58,
@@ -3315,7 +3315,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            412 => 
+            412 =>
             array (
                 'id' => 413,
                 'city_id' => 59,
@@ -3323,7 +3323,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            413 => 
+            413 =>
             array (
                 'id' => 414,
                 'city_id' => 60,
@@ -3331,7 +3331,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            414 => 
+            414 =>
             array (
                 'id' => 415,
                 'city_id' => 61,
@@ -3339,7 +3339,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            415 => 
+            415 =>
             array (
                 'id' => 416,
                 'city_id' => 62,
@@ -3347,7 +3347,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            416 => 
+            416 =>
             array (
                 'id' => 417,
                 'city_id' => 63,
@@ -3355,7 +3355,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            417 => 
+            417 =>
             array (
                 'id' => 418,
                 'city_id' => 64,
@@ -3363,7 +3363,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            418 => 
+            418 =>
             array (
                 'id' => 419,
                 'city_id' => 65,
@@ -3371,7 +3371,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            419 => 
+            419 =>
             array (
                 'id' => 420,
                 'city_id' => 66,
@@ -3379,7 +3379,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            420 => 
+            420 =>
             array (
                 'id' => 421,
                 'city_id' => 67,
@@ -3387,7 +3387,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            421 => 
+            421 =>
             array (
                 'id' => 422,
                 'city_id' => 68,
@@ -3395,7 +3395,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            422 => 
+            422 =>
             array (
                 'id' => 423,
                 'city_id' => 69,
@@ -3403,7 +3403,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            423 => 
+            423 =>
             array (
                 'id' => 424,
                 'city_id' => 70,
@@ -3411,7 +3411,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            424 => 
+            424 =>
             array (
                 'id' => 425,
                 'city_id' => 71,
@@ -3419,7 +3419,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            425 => 
+            425 =>
             array (
                 'id' => 426,
                 'city_id' => 72,
@@ -3427,7 +3427,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            426 => 
+            426 =>
             array (
                 'id' => 427,
                 'city_id' => 73,
@@ -3435,7 +3435,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            427 => 
+            427 =>
             array (
                 'id' => 428,
                 'city_id' => 74,
@@ -3443,7 +3443,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            428 => 
+            428 =>
             array (
                 'id' => 429,
                 'city_id' => 75,
@@ -3451,7 +3451,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            429 => 
+            429 =>
             array (
                 'id' => 430,
                 'city_id' => 76,
@@ -3459,7 +3459,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            430 => 
+            430 =>
             array (
                 'id' => 431,
                 'city_id' => 77,
@@ -3467,7 +3467,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            431 => 
+            431 =>
             array (
                 'id' => 432,
                 'city_id' => 78,
@@ -3475,7 +3475,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            432 => 
+            432 =>
             array (
                 'id' => 433,
                 'city_id' => 79,
@@ -3483,7 +3483,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            433 => 
+            433 =>
             array (
                 'id' => 434,
                 'city_id' => 80,
@@ -3491,7 +3491,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            434 => 
+            434 =>
             array (
                 'id' => 435,
                 'city_id' => 81,
@@ -3499,7 +3499,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            435 => 
+            435 =>
             array (
                 'id' => 436,
                 'city_id' => 82,
@@ -3507,7 +3507,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            436 => 
+            436 =>
             array (
                 'id' => 437,
                 'city_id' => 83,
@@ -3515,7 +3515,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            437 => 
+            437 =>
             array (
                 'id' => 438,
                 'city_id' => 84,
@@ -3523,7 +3523,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            438 => 
+            438 =>
             array (
                 'id' => 439,
                 'city_id' => 85,
@@ -3531,7 +3531,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            439 => 
+            439 =>
             array (
                 'id' => 440,
                 'city_id' => 86,
@@ -3539,7 +3539,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            440 => 
+            440 =>
             array (
                 'id' => 441,
                 'city_id' => 87,
@@ -3547,7 +3547,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            441 => 
+            441 =>
             array (
                 'id' => 442,
                 'city_id' => 88,
@@ -3555,7 +3555,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            442 => 
+            442 =>
             array (
                 'id' => 443,
                 'city_id' => 89,
@@ -3563,7 +3563,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            443 => 
+            443 =>
             array (
                 'id' => 444,
                 'city_id' => 90,
@@ -3571,7 +3571,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            444 => 
+            444 =>
             array (
                 'id' => 445,
                 'city_id' => 91,
@@ -3579,7 +3579,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            445 => 
+            445 =>
             array (
                 'id' => 446,
                 'city_id' => 92,
@@ -3587,7 +3587,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            446 => 
+            446 =>
             array (
                 'id' => 447,
                 'city_id' => 93,
@@ -3595,7 +3595,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            447 => 
+            447 =>
             array (
                 'id' => 448,
                 'city_id' => 94,
@@ -3603,7 +3603,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            448 => 
+            448 =>
             array (
                 'id' => 449,
                 'city_id' => 95,
@@ -3611,7 +3611,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            449 => 
+            449 =>
             array (
                 'id' => 450,
                 'city_id' => 96,
@@ -3619,7 +3619,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            450 => 
+            450 =>
             array (
                 'id' => 451,
                 'city_id' => 97,
@@ -3627,7 +3627,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            451 => 
+            451 =>
             array (
                 'id' => 452,
                 'city_id' => 98,
@@ -3635,7 +3635,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            452 => 
+            452 =>
             array (
                 'id' => 453,
                 'city_id' => 99,
@@ -3643,7 +3643,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            453 => 
+            453 =>
             array (
                 'id' => 454,
                 'city_id' => 100,
@@ -3651,7 +3651,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            454 => 
+            454 =>
             array (
                 'id' => 455,
                 'city_id' => 101,
@@ -3659,7 +3659,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            455 => 
+            455 =>
             array (
                 'id' => 456,
                 'city_id' => 102,
@@ -3667,7 +3667,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            456 => 
+            456 =>
             array (
                 'id' => 457,
                 'city_id' => 103,
@@ -3675,7 +3675,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            457 => 
+            457 =>
             array (
                 'id' => 458,
                 'city_id' => 104,
@@ -3683,7 +3683,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            458 => 
+            458 =>
             array (
                 'id' => 459,
                 'city_id' => 105,
@@ -3691,7 +3691,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            459 => 
+            459 =>
             array (
                 'id' => 460,
                 'city_id' => 106,
@@ -3699,7 +3699,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            460 => 
+            460 =>
             array (
                 'id' => 461,
                 'city_id' => 107,
@@ -3707,7 +3707,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            461 => 
+            461 =>
             array (
                 'id' => 462,
                 'city_id' => 108,
@@ -3715,7 +3715,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            462 => 
+            462 =>
             array (
                 'id' => 463,
                 'city_id' => 109,
@@ -3723,7 +3723,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            463 => 
+            463 =>
             array (
                 'id' => 464,
                 'city_id' => 110,
@@ -3731,7 +3731,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            464 => 
+            464 =>
             array (
                 'id' => 465,
                 'city_id' => 111,
@@ -3739,7 +3739,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            465 => 
+            465 =>
             array (
                 'id' => 466,
                 'city_id' => 112,
@@ -3747,7 +3747,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            466 => 
+            466 =>
             array (
                 'id' => 467,
                 'city_id' => 113,
@@ -3755,7 +3755,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            467 => 
+            467 =>
             array (
                 'id' => 468,
                 'city_id' => 114,
@@ -3763,7 +3763,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            468 => 
+            468 =>
             array (
                 'id' => 469,
                 'city_id' => 115,
@@ -3771,7 +3771,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            469 => 
+            469 =>
             array (
                 'id' => 470,
                 'city_id' => 116,
@@ -3779,7 +3779,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            470 => 
+            470 =>
             array (
                 'id' => 471,
                 'city_id' => 117,
@@ -3787,7 +3787,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            471 => 
+            471 =>
             array (
                 'id' => 472,
                 'city_id' => 118,
@@ -3795,7 +3795,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            472 => 
+            472 =>
             array (
                 'id' => 473,
                 'city_id' => 119,
@@ -3803,7 +3803,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            473 => 
+            473 =>
             array (
                 'id' => 474,
                 'city_id' => 120,
@@ -3811,7 +3811,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            474 => 
+            474 =>
             array (
                 'id' => 475,
                 'city_id' => 121,
@@ -3819,7 +3819,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            475 => 
+            475 =>
             array (
                 'id' => 476,
                 'city_id' => 122,
@@ -3827,7 +3827,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            476 => 
+            476 =>
             array (
                 'id' => 477,
                 'city_id' => 123,
@@ -3835,7 +3835,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            477 => 
+            477 =>
             array (
                 'id' => 478,
                 'city_id' => 124,
@@ -3843,7 +3843,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            478 => 
+            478 =>
             array (
                 'id' => 479,
                 'city_id' => 125,
@@ -3851,7 +3851,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            479 => 
+            479 =>
             array (
                 'id' => 480,
                 'city_id' => 126,
@@ -3859,7 +3859,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            480 => 
+            480 =>
             array (
                 'id' => 481,
                 'city_id' => 127,
@@ -3867,7 +3867,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            481 => 
+            481 =>
             array (
                 'id' => 482,
                 'city_id' => 128,
@@ -3875,7 +3875,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            482 => 
+            482 =>
             array (
                 'id' => 483,
                 'city_id' => 129,
@@ -3883,7 +3883,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            483 => 
+            483 =>
             array (
                 'id' => 484,
                 'city_id' => 130,
@@ -3891,7 +3891,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            484 => 
+            484 =>
             array (
                 'id' => 485,
                 'city_id' => 131,
@@ -3899,7 +3899,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            485 => 
+            485 =>
             array (
                 'id' => 486,
                 'city_id' => 132,
@@ -3907,7 +3907,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            486 => 
+            486 =>
             array (
                 'id' => 487,
                 'city_id' => 133,
@@ -3915,7 +3915,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            487 => 
+            487 =>
             array (
                 'id' => 488,
                 'city_id' => 134,
@@ -3923,7 +3923,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            488 => 
+            488 =>
             array (
                 'id' => 489,
                 'city_id' => 135,
@@ -3931,7 +3931,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            489 => 
+            489 =>
             array (
                 'id' => 490,
                 'city_id' => 136,
@@ -3939,7 +3939,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            490 => 
+            490 =>
             array (
                 'id' => 491,
                 'city_id' => 137,
@@ -3947,7 +3947,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            491 => 
+            491 =>
             array (
                 'id' => 492,
                 'city_id' => 138,
@@ -3955,7 +3955,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            492 => 
+            492 =>
             array (
                 'id' => 493,
                 'city_id' => 139,
@@ -3963,7 +3963,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            493 => 
+            493 =>
             array (
                 'id' => 494,
                 'city_id' => 140,
@@ -3971,7 +3971,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            494 => 
+            494 =>
             array (
                 'id' => 495,
                 'city_id' => 141,
@@ -3979,7 +3979,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            495 => 
+            495 =>
             array (
                 'id' => 496,
                 'city_id' => 142,
@@ -3987,7 +3987,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            496 => 
+            496 =>
             array (
                 'id' => 497,
                 'city_id' => 143,
@@ -3995,7 +3995,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            497 => 
+            497 =>
             array (
                 'id' => 498,
                 'city_id' => 144,
@@ -4003,7 +4003,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            498 => 
+            498 =>
             array (
                 'id' => 499,
                 'city_id' => 145,
@@ -4011,7 +4011,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            499 => 
+            499 =>
             array (
                 'id' => 500,
                 'city_id' => 146,
@@ -4020,8 +4020,8 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'locale' => 'en',
             ),
         ));
-        \DB::table('location_cities_locales')->insert(array (
-            0 => 
+        \DB::table('city_locales')->insert(array (
+            0 =>
             array (
                 'id' => 501,
                 'city_id' => 147,
@@ -4029,7 +4029,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 502,
                 'city_id' => 148,
@@ -4037,7 +4037,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 503,
                 'city_id' => 149,
@@ -4045,7 +4045,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 504,
                 'city_id' => 150,
@@ -4053,7 +4053,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 505,
                 'city_id' => 151,
@@ -4061,7 +4061,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 506,
                 'city_id' => 152,
@@ -4069,7 +4069,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 507,
                 'city_id' => 153,
@@ -4077,7 +4077,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 508,
                 'city_id' => 154,
@@ -4085,7 +4085,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 509,
                 'city_id' => 155,
@@ -4093,7 +4093,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 510,
                 'city_id' => 156,
@@ -4101,7 +4101,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 511,
                 'city_id' => 157,
@@ -4109,7 +4109,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 512,
                 'city_id' => 158,
@@ -4117,7 +4117,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 513,
                 'city_id' => 159,
@@ -4125,7 +4125,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 514,
                 'city_id' => 160,
@@ -4133,7 +4133,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 515,
                 'city_id' => 161,
@@ -4141,7 +4141,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 516,
                 'city_id' => 162,
@@ -4149,7 +4149,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 517,
                 'city_id' => 163,
@@ -4157,7 +4157,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            17 => 
+            17 =>
             array (
                 'id' => 518,
                 'city_id' => 164,
@@ -4165,7 +4165,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            18 => 
+            18 =>
             array (
                 'id' => 519,
                 'city_id' => 165,
@@ -4173,7 +4173,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            19 => 
+            19 =>
             array (
                 'id' => 520,
                 'city_id' => 166,
@@ -4181,7 +4181,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            20 => 
+            20 =>
             array (
                 'id' => 521,
                 'city_id' => 167,
@@ -4189,7 +4189,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            21 => 
+            21 =>
             array (
                 'id' => 522,
                 'city_id' => 168,
@@ -4197,7 +4197,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            22 => 
+            22 =>
             array (
                 'id' => 523,
                 'city_id' => 169,
@@ -4205,7 +4205,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            23 => 
+            23 =>
             array (
                 'id' => 524,
                 'city_id' => 170,
@@ -4213,7 +4213,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            24 => 
+            24 =>
             array (
                 'id' => 525,
                 'city_id' => 171,
@@ -4221,7 +4221,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            25 => 
+            25 =>
             array (
                 'id' => 526,
                 'city_id' => 172,
@@ -4229,7 +4229,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            26 => 
+            26 =>
             array (
                 'id' => 527,
                 'city_id' => 173,
@@ -4237,7 +4237,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            27 => 
+            27 =>
             array (
                 'id' => 528,
                 'city_id' => 174,
@@ -4245,7 +4245,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            28 => 
+            28 =>
             array (
                 'id' => 529,
                 'city_id' => 175,
@@ -4253,7 +4253,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            29 => 
+            29 =>
             array (
                 'id' => 530,
                 'city_id' => 176,
@@ -4261,7 +4261,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            30 => 
+            30 =>
             array (
                 'id' => 531,
                 'city_id' => 177,
@@ -4269,7 +4269,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            31 => 
+            31 =>
             array (
                 'id' => 532,
                 'city_id' => 178,
@@ -4277,7 +4277,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            32 => 
+            32 =>
             array (
                 'id' => 533,
                 'city_id' => 179,
@@ -4285,7 +4285,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            33 => 
+            33 =>
             array (
                 'id' => 534,
                 'city_id' => 180,
@@ -4293,7 +4293,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            34 => 
+            34 =>
             array (
                 'id' => 535,
                 'city_id' => 181,
@@ -4301,7 +4301,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            35 => 
+            35 =>
             array (
                 'id' => 536,
                 'city_id' => 182,
@@ -4309,7 +4309,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            36 => 
+            36 =>
             array (
                 'id' => 537,
                 'city_id' => 183,
@@ -4317,7 +4317,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            37 => 
+            37 =>
             array (
                 'id' => 538,
                 'city_id' => 184,
@@ -4325,7 +4325,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            38 => 
+            38 =>
             array (
                 'id' => 539,
                 'city_id' => 185,
@@ -4333,7 +4333,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            39 => 
+            39 =>
             array (
                 'id' => 540,
                 'city_id' => 186,
@@ -4341,7 +4341,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            40 => 
+            40 =>
             array (
                 'id' => 541,
                 'city_id' => 187,
@@ -4349,7 +4349,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            41 => 
+            41 =>
             array (
                 'id' => 542,
                 'city_id' => 188,
@@ -4357,7 +4357,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            42 => 
+            42 =>
             array (
                 'id' => 543,
                 'city_id' => 189,
@@ -4365,7 +4365,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            43 => 
+            43 =>
             array (
                 'id' => 544,
                 'city_id' => 190,
@@ -4373,7 +4373,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            44 => 
+            44 =>
             array (
                 'id' => 545,
                 'city_id' => 191,
@@ -4381,7 +4381,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            45 => 
+            45 =>
             array (
                 'id' => 546,
                 'city_id' => 192,
@@ -4389,7 +4389,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            46 => 
+            46 =>
             array (
                 'id' => 547,
                 'city_id' => 193,
@@ -4397,7 +4397,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            47 => 
+            47 =>
             array (
                 'id' => 548,
                 'city_id' => 194,
@@ -4405,7 +4405,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            48 => 
+            48 =>
             array (
                 'id' => 549,
                 'city_id' => 195,
@@ -4413,7 +4413,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            49 => 
+            49 =>
             array (
                 'id' => 550,
                 'city_id' => 196,
@@ -4421,7 +4421,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            50 => 
+            50 =>
             array (
                 'id' => 551,
                 'city_id' => 197,
@@ -4429,7 +4429,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            51 => 
+            51 =>
             array (
                 'id' => 552,
                 'city_id' => 198,
@@ -4437,7 +4437,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            52 => 
+            52 =>
             array (
                 'id' => 553,
                 'city_id' => 199,
@@ -4445,7 +4445,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            53 => 
+            53 =>
             array (
                 'id' => 554,
                 'city_id' => 200,
@@ -4453,7 +4453,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            54 => 
+            54 =>
             array (
                 'id' => 555,
                 'city_id' => 201,
@@ -4461,7 +4461,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            55 => 
+            55 =>
             array (
                 'id' => 556,
                 'city_id' => 202,
@@ -4469,7 +4469,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            56 => 
+            56 =>
             array (
                 'id' => 557,
                 'city_id' => 203,
@@ -4477,7 +4477,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            57 => 
+            57 =>
             array (
                 'id' => 558,
                 'city_id' => 204,
@@ -4485,7 +4485,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            58 => 
+            58 =>
             array (
                 'id' => 559,
                 'city_id' => 205,
@@ -4493,7 +4493,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            59 => 
+            59 =>
             array (
                 'id' => 560,
                 'city_id' => 206,
@@ -4501,7 +4501,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            60 => 
+            60 =>
             array (
                 'id' => 561,
                 'city_id' => 207,
@@ -4509,7 +4509,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            61 => 
+            61 =>
             array (
                 'id' => 562,
                 'city_id' => 208,
@@ -4517,7 +4517,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            62 => 
+            62 =>
             array (
                 'id' => 563,
                 'city_id' => 209,
@@ -4525,7 +4525,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            63 => 
+            63 =>
             array (
                 'id' => 564,
                 'city_id' => 210,
@@ -4533,7 +4533,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            64 => 
+            64 =>
             array (
                 'id' => 565,
                 'city_id' => 211,
@@ -4541,7 +4541,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            65 => 
+            65 =>
             array (
                 'id' => 566,
                 'city_id' => 212,
@@ -4549,7 +4549,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            66 => 
+            66 =>
             array (
                 'id' => 567,
                 'city_id' => 213,
@@ -4557,7 +4557,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            67 => 
+            67 =>
             array (
                 'id' => 568,
                 'city_id' => 214,
@@ -4565,7 +4565,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            68 => 
+            68 =>
             array (
                 'id' => 569,
                 'city_id' => 215,
@@ -4573,7 +4573,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            69 => 
+            69 =>
             array (
                 'id' => 570,
                 'city_id' => 216,
@@ -4581,7 +4581,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            70 => 
+            70 =>
             array (
                 'id' => 571,
                 'city_id' => 217,
@@ -4589,7 +4589,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            71 => 
+            71 =>
             array (
                 'id' => 572,
                 'city_id' => 218,
@@ -4597,7 +4597,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            72 => 
+            72 =>
             array (
                 'id' => 573,
                 'city_id' => 219,
@@ -4605,7 +4605,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            73 => 
+            73 =>
             array (
                 'id' => 574,
                 'city_id' => 220,
@@ -4613,7 +4613,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            74 => 
+            74 =>
             array (
                 'id' => 575,
                 'city_id' => 221,
@@ -4621,7 +4621,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            75 => 
+            75 =>
             array (
                 'id' => 576,
                 'city_id' => 222,
@@ -4629,7 +4629,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            76 => 
+            76 =>
             array (
                 'id' => 577,
                 'city_id' => 223,
@@ -4637,7 +4637,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            77 => 
+            77 =>
             array (
                 'id' => 578,
                 'city_id' => 224,
@@ -4645,7 +4645,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            78 => 
+            78 =>
             array (
                 'id' => 579,
                 'city_id' => 225,
@@ -4653,7 +4653,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            79 => 
+            79 =>
             array (
                 'id' => 580,
                 'city_id' => 226,
@@ -4661,7 +4661,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            80 => 
+            80 =>
             array (
                 'id' => 581,
                 'city_id' => 227,
@@ -4669,7 +4669,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            81 => 
+            81 =>
             array (
                 'id' => 582,
                 'city_id' => 228,
@@ -4677,7 +4677,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            82 => 
+            82 =>
             array (
                 'id' => 583,
                 'city_id' => 229,
@@ -4685,7 +4685,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            83 => 
+            83 =>
             array (
                 'id' => 584,
                 'city_id' => 230,
@@ -4693,7 +4693,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            84 => 
+            84 =>
             array (
                 'id' => 585,
                 'city_id' => 231,
@@ -4701,7 +4701,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            85 => 
+            85 =>
             array (
                 'id' => 586,
                 'city_id' => 232,
@@ -4709,7 +4709,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            86 => 
+            86 =>
             array (
                 'id' => 587,
                 'city_id' => 233,
@@ -4717,7 +4717,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            87 => 
+            87 =>
             array (
                 'id' => 588,
                 'city_id' => 234,
@@ -4725,7 +4725,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            88 => 
+            88 =>
             array (
                 'id' => 589,
                 'city_id' => 235,
@@ -4733,7 +4733,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            89 => 
+            89 =>
             array (
                 'id' => 590,
                 'city_id' => 236,
@@ -4741,7 +4741,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            90 => 
+            90 =>
             array (
                 'id' => 591,
                 'city_id' => 237,
@@ -4749,7 +4749,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            91 => 
+            91 =>
             array (
                 'id' => 592,
                 'city_id' => 238,
@@ -4757,7 +4757,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            92 => 
+            92 =>
             array (
                 'id' => 593,
                 'city_id' => 239,
@@ -4765,7 +4765,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            93 => 
+            93 =>
             array (
                 'id' => 594,
                 'city_id' => 240,
@@ -4773,7 +4773,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            94 => 
+            94 =>
             array (
                 'id' => 595,
                 'city_id' => 241,
@@ -4781,7 +4781,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            95 => 
+            95 =>
             array (
                 'id' => 596,
                 'city_id' => 242,
@@ -4789,7 +4789,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            96 => 
+            96 =>
             array (
                 'id' => 597,
                 'city_id' => 243,
@@ -4797,7 +4797,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            97 => 
+            97 =>
             array (
                 'id' => 598,
                 'city_id' => 244,
@@ -4805,7 +4805,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            98 => 
+            98 =>
             array (
                 'id' => 599,
                 'city_id' => 245,
@@ -4813,7 +4813,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            99 => 
+            99 =>
             array (
                 'id' => 600,
                 'city_id' => 246,
@@ -4821,7 +4821,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            100 => 
+            100 =>
             array (
                 'id' => 601,
                 'city_id' => 247,
@@ -4829,7 +4829,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            101 => 
+            101 =>
             array (
                 'id' => 602,
                 'city_id' => 248,
@@ -4837,7 +4837,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            102 => 
+            102 =>
             array (
                 'id' => 603,
                 'city_id' => 249,
@@ -4845,7 +4845,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            103 => 
+            103 =>
             array (
                 'id' => 604,
                 'city_id' => 250,
@@ -4853,7 +4853,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            104 => 
+            104 =>
             array (
                 'id' => 605,
                 'city_id' => 251,
@@ -4861,7 +4861,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            105 => 
+            105 =>
             array (
                 'id' => 606,
                 'city_id' => 252,
@@ -4869,7 +4869,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            106 => 
+            106 =>
             array (
                 'id' => 607,
                 'city_id' => 253,
@@ -4877,7 +4877,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            107 => 
+            107 =>
             array (
                 'id' => 608,
                 'city_id' => 254,
@@ -4885,7 +4885,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            108 => 
+            108 =>
             array (
                 'id' => 609,
                 'city_id' => 255,
@@ -4893,7 +4893,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            109 => 
+            109 =>
             array (
                 'id' => 610,
                 'city_id' => 256,
@@ -4901,7 +4901,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            110 => 
+            110 =>
             array (
                 'id' => 611,
                 'city_id' => 257,
@@ -4909,7 +4909,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            111 => 
+            111 =>
             array (
                 'id' => 612,
                 'city_id' => 258,
@@ -4917,7 +4917,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            112 => 
+            112 =>
             array (
                 'id' => 613,
                 'city_id' => 259,
@@ -4925,7 +4925,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            113 => 
+            113 =>
             array (
                 'id' => 614,
                 'city_id' => 260,
@@ -4933,7 +4933,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            114 => 
+            114 =>
             array (
                 'id' => 615,
                 'city_id' => 261,
@@ -4941,7 +4941,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            115 => 
+            115 =>
             array (
                 'id' => 616,
                 'city_id' => 262,
@@ -4949,7 +4949,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            116 => 
+            116 =>
             array (
                 'id' => 617,
                 'city_id' => 263,
@@ -4957,7 +4957,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            117 => 
+            117 =>
             array (
                 'id' => 618,
                 'city_id' => 264,
@@ -4965,7 +4965,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            118 => 
+            118 =>
             array (
                 'id' => 619,
                 'city_id' => 265,
@@ -4973,7 +4973,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            119 => 
+            119 =>
             array (
                 'id' => 620,
                 'city_id' => 266,
@@ -4981,7 +4981,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            120 => 
+            120 =>
             array (
                 'id' => 621,
                 'city_id' => 267,
@@ -4989,7 +4989,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            121 => 
+            121 =>
             array (
                 'id' => 622,
                 'city_id' => 268,
@@ -4997,7 +4997,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            122 => 
+            122 =>
             array (
                 'id' => 623,
                 'city_id' => 269,
@@ -5005,7 +5005,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            123 => 
+            123 =>
             array (
                 'id' => 624,
                 'city_id' => 270,
@@ -5013,7 +5013,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            124 => 
+            124 =>
             array (
                 'id' => 625,
                 'city_id' => 271,
@@ -5021,7 +5021,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            125 => 
+            125 =>
             array (
                 'id' => 626,
                 'city_id' => 272,
@@ -5029,7 +5029,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            126 => 
+            126 =>
             array (
                 'id' => 627,
                 'city_id' => 273,
@@ -5037,7 +5037,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            127 => 
+            127 =>
             array (
                 'id' => 628,
                 'city_id' => 274,
@@ -5045,7 +5045,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            128 => 
+            128 =>
             array (
                 'id' => 629,
                 'city_id' => 275,
@@ -5053,7 +5053,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            129 => 
+            129 =>
             array (
                 'id' => 630,
                 'city_id' => 276,
@@ -5061,7 +5061,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            130 => 
+            130 =>
             array (
                 'id' => 631,
                 'city_id' => 277,
@@ -5069,7 +5069,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            131 => 
+            131 =>
             array (
                 'id' => 632,
                 'city_id' => 278,
@@ -5077,7 +5077,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            132 => 
+            132 =>
             array (
                 'id' => 633,
                 'city_id' => 279,
@@ -5085,7 +5085,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            133 => 
+            133 =>
             array (
                 'id' => 634,
                 'city_id' => 280,
@@ -5093,7 +5093,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            134 => 
+            134 =>
             array (
                 'id' => 635,
                 'city_id' => 281,
@@ -5101,7 +5101,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            135 => 
+            135 =>
             array (
                 'id' => 636,
                 'city_id' => 282,
@@ -5109,7 +5109,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            136 => 
+            136 =>
             array (
                 'id' => 637,
                 'city_id' => 283,
@@ -5117,7 +5117,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            137 => 
+            137 =>
             array (
                 'id' => 638,
                 'city_id' => 284,
@@ -5125,7 +5125,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            138 => 
+            138 =>
             array (
                 'id' => 639,
                 'city_id' => 285,
@@ -5133,7 +5133,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            139 => 
+            139 =>
             array (
                 'id' => 640,
                 'city_id' => 286,
@@ -5141,7 +5141,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            140 => 
+            140 =>
             array (
                 'id' => 641,
                 'city_id' => 287,
@@ -5149,7 +5149,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            141 => 
+            141 =>
             array (
                 'id' => 642,
                 'city_id' => 288,
@@ -5157,7 +5157,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            142 => 
+            142 =>
             array (
                 'id' => 643,
                 'city_id' => 289,
@@ -5165,7 +5165,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            143 => 
+            143 =>
             array (
                 'id' => 644,
                 'city_id' => 290,
@@ -5173,7 +5173,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            144 => 
+            144 =>
             array (
                 'id' => 645,
                 'city_id' => 291,
@@ -5181,7 +5181,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            145 => 
+            145 =>
             array (
                 'id' => 646,
                 'city_id' => 292,
@@ -5189,7 +5189,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            146 => 
+            146 =>
             array (
                 'id' => 647,
                 'city_id' => 293,
@@ -5197,7 +5197,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            147 => 
+            147 =>
             array (
                 'id' => 648,
                 'city_id' => 294,
@@ -5205,7 +5205,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            148 => 
+            148 =>
             array (
                 'id' => 649,
                 'city_id' => 295,
@@ -5213,7 +5213,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            149 => 
+            149 =>
             array (
                 'id' => 650,
                 'city_id' => 296,
@@ -5221,7 +5221,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            150 => 
+            150 =>
             array (
                 'id' => 651,
                 'city_id' => 297,
@@ -5229,7 +5229,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            151 => 
+            151 =>
             array (
                 'id' => 652,
                 'city_id' => 298,
@@ -5237,7 +5237,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            152 => 
+            152 =>
             array (
                 'id' => 653,
                 'city_id' => 299,
@@ -5245,7 +5245,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            153 => 
+            153 =>
             array (
                 'id' => 654,
                 'city_id' => 300,
@@ -5253,7 +5253,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            154 => 
+            154 =>
             array (
                 'id' => 655,
                 'city_id' => 301,
@@ -5261,7 +5261,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            155 => 
+            155 =>
             array (
                 'id' => 656,
                 'city_id' => 302,
@@ -5269,7 +5269,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            156 => 
+            156 =>
             array (
                 'id' => 657,
                 'city_id' => 303,
@@ -5277,7 +5277,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            157 => 
+            157 =>
             array (
                 'id' => 658,
                 'city_id' => 304,
@@ -5285,7 +5285,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            158 => 
+            158 =>
             array (
                 'id' => 659,
                 'city_id' => 306,
@@ -5293,7 +5293,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            159 => 
+            159 =>
             array (
                 'id' => 660,
                 'city_id' => 307,
@@ -5301,7 +5301,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            160 => 
+            160 =>
             array (
                 'id' => 661,
                 'city_id' => 308,
@@ -5309,7 +5309,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            161 => 
+            161 =>
             array (
                 'id' => 662,
                 'city_id' => 309,
@@ -5317,7 +5317,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            162 => 
+            162 =>
             array (
                 'id' => 663,
                 'city_id' => 310,
@@ -5325,7 +5325,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            163 => 
+            163 =>
             array (
                 'id' => 664,
                 'city_id' => 311,
@@ -5333,7 +5333,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            164 => 
+            164 =>
             array (
                 'id' => 665,
                 'city_id' => 312,
@@ -5341,7 +5341,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            165 => 
+            165 =>
             array (
                 'id' => 666,
                 'city_id' => 313,
@@ -5349,7 +5349,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            166 => 
+            166 =>
             array (
                 'id' => 667,
                 'city_id' => 314,
@@ -5357,7 +5357,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            167 => 
+            167 =>
             array (
                 'id' => 668,
                 'city_id' => 315,
@@ -5365,7 +5365,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            168 => 
+            168 =>
             array (
                 'id' => 669,
                 'city_id' => 316,
@@ -5373,7 +5373,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            169 => 
+            169 =>
             array (
                 'id' => 670,
                 'city_id' => 317,
@@ -5381,7 +5381,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            170 => 
+            170 =>
             array (
                 'id' => 671,
                 'city_id' => 318,
@@ -5389,7 +5389,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            171 => 
+            171 =>
             array (
                 'id' => 672,
                 'city_id' => 319,
@@ -5397,7 +5397,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            172 => 
+            172 =>
             array (
                 'id' => 673,
                 'city_id' => 320,
@@ -5405,7 +5405,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            173 => 
+            173 =>
             array (
                 'id' => 674,
                 'city_id' => 321,
@@ -5413,7 +5413,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            174 => 
+            174 =>
             array (
                 'id' => 675,
                 'city_id' => 322,
@@ -5421,7 +5421,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            175 => 
+            175 =>
             array (
                 'id' => 676,
                 'city_id' => 323,
@@ -5429,7 +5429,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            176 => 
+            176 =>
             array (
                 'id' => 677,
                 'city_id' => 324,
@@ -5437,7 +5437,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            177 => 
+            177 =>
             array (
                 'id' => 678,
                 'city_id' => 325,
@@ -5445,7 +5445,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            178 => 
+            178 =>
             array (
                 'id' => 679,
                 'city_id' => 326,
@@ -5453,7 +5453,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            179 => 
+            179 =>
             array (
                 'id' => 680,
                 'city_id' => 327,
@@ -5461,7 +5461,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            180 => 
+            180 =>
             array (
                 'id' => 681,
                 'city_id' => 328,
@@ -5469,7 +5469,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            181 => 
+            181 =>
             array (
                 'id' => 682,
                 'city_id' => 329,
@@ -5477,7 +5477,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            182 => 
+            182 =>
             array (
                 'id' => 683,
                 'city_id' => 330,
@@ -5485,7 +5485,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            183 => 
+            183 =>
             array (
                 'id' => 684,
                 'city_id' => 331,
@@ -5493,7 +5493,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            184 => 
+            184 =>
             array (
                 'id' => 685,
                 'city_id' => 332,
@@ -5501,7 +5501,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            185 => 
+            185 =>
             array (
                 'id' => 686,
                 'city_id' => 333,
@@ -5509,7 +5509,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            186 => 
+            186 =>
             array (
                 'id' => 687,
                 'city_id' => 334,
@@ -5517,7 +5517,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            187 => 
+            187 =>
             array (
                 'id' => 688,
                 'city_id' => 335,
@@ -5525,7 +5525,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            188 => 
+            188 =>
             array (
                 'id' => 689,
                 'city_id' => 336,
@@ -5533,7 +5533,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            189 => 
+            189 =>
             array (
                 'id' => 690,
                 'city_id' => 337,
@@ -5541,7 +5541,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            190 => 
+            190 =>
             array (
                 'id' => 691,
                 'city_id' => 338,
@@ -5549,7 +5549,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            191 => 
+            191 =>
             array (
                 'id' => 692,
                 'city_id' => 339,
@@ -5557,7 +5557,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            192 => 
+            192 =>
             array (
                 'id' => 693,
                 'city_id' => 340,
@@ -5565,7 +5565,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            193 => 
+            193 =>
             array (
                 'id' => 694,
                 'city_id' => 341,
@@ -5573,7 +5573,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            194 => 
+            194 =>
             array (
                 'id' => 695,
                 'city_id' => 342,
@@ -5581,7 +5581,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            195 => 
+            195 =>
             array (
                 'id' => 696,
                 'city_id' => 343,
@@ -5589,7 +5589,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            196 => 
+            196 =>
             array (
                 'id' => 697,
                 'city_id' => 344,
@@ -5598,7 +5598,7 @@ class LocationCitiesLocalesTableSeeder extends Seeder
                 'locale' => 'en',
             ),
         ));
-        
-        
+
+
     }
 }

@@ -1,3 +1,5 @@
+
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -13,10 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_districts', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('city_id')->index();
-            $table->foreign('city_id')->references('id')->on('location_cities')->onDelete('cascade');
+            $table->string('code', 16)->unique();
+            $table->string('flag', 16);
+            $table->string('phonecode', 8)->unique();
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_districts');
+        Schema::dropIfExists('countries');
     }
 };

@@ -18,14 +18,6 @@ class District extends Model
 
 
     /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'location_districts';
-
-
-    /**
     * Return all available locales of the district.
     *
     * @return void
@@ -60,7 +52,7 @@ class District extends Model
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'districtable', 'location_districtables');
+        return $this->morphedByMany(User::class, 'districtable', 'districtables');
     }
 
 

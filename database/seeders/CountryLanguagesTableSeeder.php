@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class LocationCountriesLanguagesTableSeeder extends Seeder
+class CountryLanguagesTableSeeder extends Seeder
 {
 
     /**
@@ -14,37 +14,37 @@ class LocationCountriesLanguagesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('location_countries_languages')->delete();
-        
-        \DB::table('location_countries_languages')->insert(array (
-            0 => 
+
+        \DB::table('country_languages')->delete();
+
+        \DB::table('country_languages')->insert(array (
+            0 =>
             array (
-                'id' => 1,
+                'id' =>1,
                 'country_id' => 1,
                 'code' => 'nl',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 4,
                 'country_id' => 2,
                 'code' => 'de',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'country_id' => 2,
                 'code' => 'fr',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 2,
                 'country_id' => 2,
                 'code' => 'nl',
             ),
         ));
-        
-        
+
+
     }
 }

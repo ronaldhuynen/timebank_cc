@@ -22,13 +22,6 @@ class City extends Model
      */
     public $timestamps = false;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'location_cities';
-
 
     /**
     * Return all available locales of the city.
@@ -48,7 +41,7 @@ class City extends Model
     */
     public function locale()
     {
-        return $this->hasOne(CityLocale::class, 'city_id')
+        return $this->hasOne(CityLocale::class)
         ->where('locale', App::getLocale())
         ->orWhere('locale', App::getFallbackLocale())
         ->orderByRaw("CASE WHEN `locale` = ? THEN 2 ELSE 1 END ASC", App::getFallbackLocale());
@@ -62,8 +55,8 @@ class City extends Model
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'cityable', 'location_cityables');
-        // cityable refers to pivot columns and location_cityables refers to pivot table
+        return $this->morphedByMany(User::class, 'cityable', 'cityables');
+        // cityable refers to pivot columns and cityables refers to pivot table
     }
 
 
@@ -75,8 +68,8 @@ class City extends Model
      */
     public function organisations()
     {
-        return $this->morphedByMany(Organisation::class, 'cityable', 'location_cityables');
-        // cityable refers to pivot columns and location_cityables refers to pivot table
+        return $this->morphedByMany(Organisation::class, 'cityable', 'cityables');
+        // cityable refers to pivot columns and cityables refers to pivot table
     }
 
 

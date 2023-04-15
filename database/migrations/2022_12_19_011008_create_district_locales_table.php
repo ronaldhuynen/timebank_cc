@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('location_cities_locales', function (Blueprint $table) {
+        Schema::create('district_locales', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('city_id')->index();
-            $table->foreign('city_id')->references('id')->on('location_cities')->onDelete('cascade');
+            $table->unsignedBigInteger('district_id')->index();
+            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
             $table->string('name', 255);
             $table->string('alias', 255)->nullable();
             $table->string('locale', 6)->index();
-            $table->unique(['city_id','locale'], 'uniq_city_id_locale');
+            $table->unique(['district_id','locale'], 'uniq_district_id_locale');
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_cities_locales');
+        Schema::dropIfExists('district_locales');
     }
 };

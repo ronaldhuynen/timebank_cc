@@ -51,8 +51,10 @@ class UpdateProfileLocationForm extends Component
      */
     public function mount()
     {
+        // HIERZO: Locatie ipv stad/land/ed moet worden opgeslagen. Locatie_id 1 heeft vervolgens een land/stad/buurt
         $this->state = Auth::user()->withoutRelations()->toArray();
-        dump($this->state['city_id_1']);
+        // $this->state = Auth::user()->countries()->first()->toArray();
+        dump(User::find(Auth::user()->id)->countries());
     }
 
     /**

@@ -33,7 +33,7 @@
                             @error('password')
                                 <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
-                            <div class="mt-4">
+                            <div class="mt-4" wire:init="emitLocationToChildren">
                                 <!-- TODO: Explanantion for location dropdowns -->
                                 @livewire('locations.locations-dropdown')
                             @error('country')

@@ -7,7 +7,6 @@ use App\Models\Language;
 use App\Models\Locations\City;
 use App\Models\Locations\Country;
 use App\Models\Locations\District;
-use App\Models\Locations\Division;
 use App\Models\Organisation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -131,16 +130,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     public function countries()
     {
         return $this->morphToMany(Country::class, 'countryable', 'location_countryables');
-    }
-
-
-    /**
-     * Get all of the location divisions of the user.
-     * Many-to-many polymorphic.
-     */
-    public function divisions()
-    {
-        return $this->morphToMany(Division::class, 'divisionable', 'location_divisionables');
     }
 
 

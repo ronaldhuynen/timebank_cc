@@ -3,17 +3,21 @@
 namespace App\Http\Livewire;
 
 use App\Models\Account;
-use App\Models\Locations\City;
+use App\Models\Locations\Country;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Component;
 use RTippin\Messenger\Facades\Messenger;
+use Stevebauman\Location\Facades\Location as IpLocation;
 use Throwable;
 use WireUi\Traits\Actions;
+
 
 class Registration extends Component implements CreatesNewUsers
 {
@@ -25,9 +29,8 @@ class Registration extends Component implements CreatesNewUsers
     public $passwordConfirmation;
     public $country;
     public $city;
-    public $district;
 
-    protected $listeners = ['countryToParent', 'cityToParent', 'districtToParent'];
+    protected $listeners = ['countryToParent', 'cityToParent'];
 
     public function rules()
     {
@@ -40,30 +43,64 @@ class Registration extends Component implements CreatesNewUsers
         ];
     }
 
+    public function mount(Request $request)
+    {
+        if (App::environment(['local', 'staging'])) {
+            // $ip = '103.75.231.255'; // Static IP address Brussels for testing
+            $ip = '31.20.250.12'; // Statis IP address The Hague for testing
+            // $ip = '102.129.156.0'; // Statis IP address Berlin for testing
+        } else {
+            $ip = $request->ip(); // Dynamic IP address
+        }
+        $IpLocationInfo = IpLocation::get($ip);
+        if ($IpLocationInfo) {
+
+            $country = Country::select('id')->where('code', $IpLocationInfo->countryCode)->first();
+            if ($country) {
+                $this->country = $country->id;
+
+            }
+
+            $city = DB::table('location_cities_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', 'en')->first();
+            if ($city) {
+                $this->city = $city->city_id;
+
+            };
+        }
+    }
+
+
+    public function emitLocationToChildren()
+    {
+        $this->emit('countryToChildren', $this->country);
+        $this->emit('cityToChildren', $this->city);
+    }
+
+
     public function countryToParent($value)
     {
         $this->country = $value;
     }
+
 
     public function cityToParent($value)
     {
         $this->city = $value;
     }
 
-    public function districtToParent($value)
-    {
-        $this->district = $value;
-    }
 
     public function updated($field)
     {
         $this->validateOnly($field);
     }
 
+
     public function create($input = null)
     {
         $valid = $this->validate();
 
+        info($this->country);
+        info($this->city);
         try {
             // Use a transaction for creating the new user
             DB::transaction(function () use ($valid): void {
@@ -74,8 +111,6 @@ class Registration extends Component implements CreatesNewUsers
                     'profile_photo_path' => config('timebank-cc.files.profile_user.photo_new'),
                 ]);
 
-                //HIERZO: SLA ENKEL KLEINSTE LOCATIE OP. MAAK VERVOLGENS METHODES DIE JE HIERARGISCH OP KUNNEN ZOEKEN
-
                 $city = ([
                     'city_id' => $valid['city'],
                     'cityable_type' => User::class,
@@ -84,20 +119,11 @@ class Registration extends Component implements CreatesNewUsers
                 ]);
                 DB::table('location_cityables')->insert($city);
 
-                $district = ([
-                    'district_id' => $this->district,
-                    'districtable_type' => User::class,
-                    'districtable_id' => $user->id,
-                    'created_at' => Carbon::now(),
-                ]);
-                DB::table('location_districtables')->insert($district);
-
                 $account = new Account();
                 $account->name = __(config('timebank-cc.accounts.personal.name'));
                 $account->limit_min = config('timebank-cc.accounts.personal.limit_min');
                 $account->limit_max = config('timebank-cc.accounts.personal.limit_max');
                 $user->accounts()->save($account);
-
 
                 // TODO: Attach Messenger when profile has been further completed
                 // TODO: Check if this is needed, and where this also is being done?
@@ -117,6 +143,7 @@ class Registration extends Component implements CreatesNewUsers
             // End of transaction
 
             return redirect()->route('verification.notice');
+
         } catch (Throwable $e) {
             // WireUI notification
             // TODO: create event to send error notification to admin

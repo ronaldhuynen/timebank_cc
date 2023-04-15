@@ -5,6 +5,7 @@ namespace App\Models\Locations;
 
 use App\Models\Locations\CityLocale;
 use App\Models\Locations\DistrictLocale;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -47,17 +48,10 @@ class City extends Model
     */
     public function locale()
     {
-        // $result = $this->hasMany(CityLocale::class, 'city_id')
-        //     ->where('locale', App::getLocale());
-        // if ($result->count() === 0) {
-        // $result = $this->hasMany(CityLocale::class, 'city_id')
-        // ->where('locale', App::getFallbackLocale());
-        // }
-        // return $result;
-
         return $this->hasOne(CityLocale::class, 'city_id')
         ->where('locale', App::getLocale())
-        ->orWhere('locale', App::getFallbackLocale());
+        ->orWhere('locale', App::getFallbackLocale())
+        ->orderByRaw("CASE WHEN `locale` = ? THEN 2 ELSE 1 END ASC", App::getFallbackLocale());
     }
 
 
@@ -68,7 +62,20 @@ class City extends Model
      */
     public function users()
     {
-        return $this->morphedByMany(Users::class, 'cityable', 'location_cityables');
+        return $this->morphedByMany(User::class, 'cityable', 'location_cityables');
+        // cityable refers to pivot columns and location_cityables refers to pivot table
+    }
+
+
+
+    /**
+     * Get all of the organisations of the cities.
+     * Many-to-many polymorph
+     * @return void
+     */
+    public function organisations()
+    {
+        return $this->morphedByMany(Organisation::class, 'cityable', 'location_cityables');
         // cityable refers to pivot columns and location_cityables refers to pivot table
     }
 

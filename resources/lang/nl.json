@@ -71,6 +71,8 @@
     "Cancel": "Annuleren",
     "Delete": "Verwijderen",
     "Deleted": "Verwijderd",
-    "Not available": "Niet beschikbaar"
+    "Not available": "Niet beschikbaar",
+
+    "Sorry, your data could not be saved!": "Sorry, je gegevens konden niet worden opgeslagen!"
 
 }

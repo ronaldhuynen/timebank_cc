@@ -5,8 +5,6 @@ namespace Database\Seeders;
 use App\Models\Account;
 use App\Models\Organisation;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -27,7 +25,6 @@ class TestUserSeeder extends Seeder
                     'email' => 'ronald@test.nl',
                     'profile_photo_path' => 'profile-photos/b1noabVz64Wj6yuejFcISJPeWFAb9v7Ju3FsFZn4.png',
                     'password' => bcrypt('password'),
-                    'city_id_1' => 305 // The Hague
                     ]);
 
             $user2 = User::factory()->has(Account::factory()->state(['name' => 'Personal Account']))
@@ -36,7 +33,6 @@ class TestUserSeeder extends Seeder
                     'email' => 'joeri@test.nl',
                     'profile_photo_path' => 'profile-photos/lN2E99fso4ULml9wi7cHSsfT1BTAtJYEsTAql2Ly.png',
                     'password' => bcrypt('password'),
-                    'city_id_1' => 305 // The Hague
                     ]);
 
             $user3 = User::factory()->has(Account::factory()->state(['name' => 'Personal Account']))
@@ -45,7 +41,6 @@ class TestUserSeeder extends Seeder
                     'email' => 'sara@test.nl',
                     'profile_photo_path' => 'profile-photos/UJWh03bKULqtOAvQQh36cJJ4NwjZvTcBWPmL9vzm.png',
                     'password' => bcrypt('password'),
-                    'city_id_1' => 305 // The Hague
                     ]);
 
             $org1 = Organisation::factory()
@@ -58,7 +53,6 @@ class TestUserSeeder extends Seeder
                 ->create([
                     'name' => 'Timebank.cc Den Haag',
                     'email' => 'tb-den-haag@test.nl',
-                    'website' => 'timebank.cc/den-haag',
                     'profile_photo_path' => 'profile-photos/RMawhGXxED1wNNJDEJ7pVbBdg07LGKPAyhGL3npH.png',
                     ]);
 
@@ -76,7 +70,6 @@ class TestUserSeeder extends Seeder
                 ->create([
                     'name' => 'Lekkernassuh',
                     'email' => 'lekkernassuh@test.nl',
-                    'website' => 'lekkernassuh.org',
                     'profile_photo_path' => 'profile-photos/hWcYqfdquJW7QiPnyuUtdFsrldykLFZPbR6H4qwF.jpg',
                     ]);
 

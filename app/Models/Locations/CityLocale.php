@@ -3,7 +3,6 @@
 namespace App\Models\Locations;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\App;
 
 class CityLocale extends Model

@@ -7,6 +7,7 @@ use App\Models\Language;
 use App\Models\Locations\City;
 use App\Models\Locations\Country;
 use App\Models\Locations\District;
+use App\Models\Locations\Location;
 use App\Models\Organisation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -96,7 +97,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Get all of the users's accounts.
+     * Get all related accounts of the user.
      * One-to-many polymorphic.
      */
     public function accounts()
@@ -105,7 +106,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
     /**
-     * Get all of the languages of the user.
+     * Get all related languages of the user.
      * Many-to-many polymorphic.
      */
     public function languages()
@@ -114,7 +115,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
     /**
-     * Get all of the media of the user.
+     * Get all related media of the user.
      * Many-to-many polymorphic.
      */
     public function media()
@@ -124,7 +125,17 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Get all of the countries of the user.
+     * Get all related the locations of the user.
+     * Many-to-many polymorphic.
+     */
+    public function locations()
+    {
+        return $this->morphToMany(Location::class, 'locationable');
+    }
+
+
+    /**
+     * Get all related countries of the user.
      * Many-to-many polymorphic.
      */
     public function countries()
@@ -133,8 +144,8 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
 
-        /**
-     * Get all of the cities of the user.
+    /**
+     * Get all related cities of the user.
      * Many-to-many polymorphic.
      */
     public function cities()
@@ -151,7 +162,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     {
         return $this->morphToMany(District::class, 'districtable', 'districtables');
     }
-
 
 
     /**

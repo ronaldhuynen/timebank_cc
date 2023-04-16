@@ -19,8 +19,20 @@ class Country extends Model
     public $timestamps = false;
 
 
+
     /**
-     * Return all available locales.
+     * Return all related locations.
+     *
+     * @return void
+     */
+    public function locations()
+    {
+        return $this->morphedByMany(Location::class, 'countryable');
+    }
+
+
+    /**
+     * Return all related locales.
      *
      * @return void
      */

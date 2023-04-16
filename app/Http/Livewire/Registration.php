@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Account;
 use App\Models\Locations\Country;
+use App\Models\Locations\City;
+use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -55,16 +57,16 @@ class Registration extends Component implements CreatesNewUsers
         $IpLocationInfo = IpLocation::get($ip);
         if ($IpLocationInfo) {
 
+            //HIERZO: VERGELIJK OPGEZOCHTE LOCATIE MET AANWEZIGE LOCATIES IN DB !
+
             $country = Country::select('id')->where('code', $IpLocationInfo->countryCode)->first();
             if ($country) {
                 $this->country = $country->id;
-
             }
 
             $city = DB::table('city_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', 'en')->first();
             if ($city) {
                 $this->city = $city->city_id;
-
             };
         }
     }
@@ -99,8 +101,6 @@ class Registration extends Component implements CreatesNewUsers
     {
         $valid = $this->validate();
 
-        info($this->country);
-        info($this->city);
         try {
             // Use a transaction for creating the new user
             DB::transaction(function () use ($valid): void {
@@ -111,13 +111,17 @@ class Registration extends Component implements CreatesNewUsers
                     'profile_photo_path' => config('timebank-cc.files.profile_user.photo_new'),
                 ]);
 
-                $city = ([
-                    'city_id' => $valid['city'],
-                    'cityable_type' => User::class,
-                    'cityable_id' => $user->id,
-                    'created_at' => Carbon::now(),
-                ]);
-                DB::table('cityables')->insert($city);
+                $location = new Location();
+                $location->name = 'Default location';
+                $user->locations()->save($location); // create the new location
+
+                $country = new Country();
+                $country->id = $valid['country'];
+                $location->countries()->attach($country->id);
+
+                $city = new City();
+                $city->id = $valid['city'];
+                $location->cities()->attach($city->id);
 
                 $account = new Account();
                 $account->name = __(config('timebank-cc.accounts.personal.name'));
@@ -149,7 +153,7 @@ class Registration extends Component implements CreatesNewUsers
             // TODO: create event to send error notification to admin
             $this->notification([
             'title' => __('Registration failed!'),
-            'description' => __('Sorry, your registration could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
+            'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
             'icon' => 'error',
             'timeout'=> 100000
             ]);

@@ -24,9 +24,8 @@ class DatabaseSeeder extends Seeder
             $admin = User::factory()->create([
                 'name' => 'Super-Admin',
                 'email' => 'admin@admin.com',
-                'locale' => 'en',
+                'locale_website' => 'en',
                 'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
-                'city_id_1' => 305 // The Hague
             ]);
             $admin->assignRole('Super-Admin');
 

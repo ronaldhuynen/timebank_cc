@@ -17,11 +17,15 @@ class CreateOrganisationsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email', 191)->unique();
-            $table->string('website')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('locale_website', 3)->default('en'); // 3 characters
             $table->string('profile_photo_path', 2048)->nullable();
-            $table->text('content');   // Is not allowed to be null
-            $table->string('locale', 3)->default('en'); // 3 characters
+
+            $table->text('about')->nullable();
+            $table->text('motivation')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('phone', 20)->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

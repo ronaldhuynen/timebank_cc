@@ -3,27 +3,67 @@
 namespace App\Models\Locations;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Locations\Country;
+use App\Models\Locations\Division;
+use App\Models\Locations\City;
+use App\Models\Locations\District;
 
 
-class LocationController extends Model
+class Location extends Model
 {
-    public static function Districts()
+    /**
+    * Return all related countries.
+    * Many-to-many polymorphic.
+    * @return void
+    */
+    public function countries()
     {
-        return District::orderBy('name', 'asc')->get();
+        return $this->morphToMany(Country::class, 'countryable');
     }
 
-    public static function Cities()
+
+    /**
+    * Return all related divisions.
+    * Many-to-many polymorphic.
+    * @return void
+    */
+    public function divisions()
     {
-        return City::orderBy('name', 'asc')->get();
+        return $this->morphToMany(Division::class, 'divisionable');
     }
 
-    public static function Divisions()
+
+    /**
+    * Return all related cities.
+    * Many-to-many polymorphic.
+    * @return void
+    */
+    public function cities()
     {
-        return Division::orderBy('name', 'asc')->get();
+        return $this->morphToMany(City::class, 'cityable');
     }
 
-    public static function Countries()
+
+    /**
+    * Return all related districts.
+    * Many-to-many polymorphic.
+    * @return void
+    */
+    public function districts()
     {
-        return Country::orderBy('name', 'asc')->get();
+        return $this->morphToMany(District::class, 'districtable');
     }
+
+
+        /**
+    * Return all related countries.
+    * Many-to-many polymorphic.
+    * @return void
+    */
+    public function users()
+    {
+        return $this->morphedByMany(User::class, 'locationable');
+    }
+
 }

@@ -10,7 +10,7 @@
     <x-slot name="form">
 
         <!--- Location -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-4"  wire:init="emitLocationToChildren">
         <!-- TODO: Explanantion for location dropdowns -->
             @livewire('locations.locations-dropdown')
             @error('country')

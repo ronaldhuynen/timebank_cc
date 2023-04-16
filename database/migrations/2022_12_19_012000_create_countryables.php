@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *
@@ -15,9 +14,7 @@ return new class extends Migration
     {
         Schema::create('countryables', function (Blueprint $table) {
             $table->integer('country_id');
-            $table->string('countryable_type');
-            $table->unsignedBigInteger('countryable_id');
-            $table->timestamps();
+            $table->morphs('countryable');
         });
     }
 

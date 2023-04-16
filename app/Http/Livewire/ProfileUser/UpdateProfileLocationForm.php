@@ -5,18 +5,26 @@ namespace App\Http\Livewire\ProfileUser;
 
 use App\Models\Account;
 use App\Models\User;
+use App\Models\Locations\Location;
+use App\Models\Locations\Country;
+use App\Models\Locations\City;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Livewire\Component;
+use WireUi\Traits\Actions;
+
 
 class UpdateProfileLocationForm extends Component
 {
+    use Actions;
+
     public $state = [];
     public $country;
     public $city;
     public $district;
 
-    protected $listeners = ['countryToParent', 'cityToParent', 'districtToParent'];
+    protected $listeners = ['countryToParent', 'cityToParent'];
 
     public function rules()
     {
@@ -25,7 +33,6 @@ class UpdateProfileLocationForm extends Component
         'city' => 'required'
         ];
     }
-
 
     public function countryToParent($value)
     {
@@ -39,11 +46,6 @@ class UpdateProfileLocationForm extends Component
     }
 
 
-    public function districtToParent($value)
-    {
-        $this->district = $value;
-    }
-
     /**
      * Prepare the component.
      *
@@ -51,11 +53,18 @@ class UpdateProfileLocationForm extends Component
      */
     public function mount()
     {
-        // HIERZO: Locatie ipv stad/land/ed moet worden opgeslagen. Locatie_id 1 heeft vervolgens een land/stad/buurt
-        $this->state = Auth::user()->withoutRelations()->toArray();
-        // $this->state = Auth::user()->countries()->first()->toArray();
-        dump(User::find(Auth::user()->id)->countries());
+        $this->state = Auth::user()->withoutRelations()->load(['locations', 'locations.countries', 'locations.cities'])->toArray();
+        $this->country = $this->state['locations'][0]['countries'][0]['id'];
+        $this->city = $this->state['locations'][0]['cities'][0]['id'];
     }
+
+
+    public function emitLocationToChildren()
+    {
+        $this->emit('countryToChildren', $this->country);
+        $this->emit('cityToChildren', $this->city);
+    }
+
 
     /**
      * Update the user's profile location information.
@@ -65,18 +74,42 @@ class UpdateProfileLocationForm extends Component
      */
     public function updateProfileInformation(UpdatesUserProfileInformation $updater)
     {
-        $this->resetErrorBag();
 
-        $updater->update(
-            Auth::user(),
-            $this->photo
-                ? array_merge($this->state, ['photo' => $this->photo])
-                : $this->state
-        );
+        $valid = $this->validate();
+        // $this->resetErrorBag();
 
 
-        $this->emit('saved');
+        try {
+            // Use a transaction for creating the new user
+            DB::transaction(function () use ($valid): void {
 
+                // For now we only use a single location. In the future this can become an array of locations.
+                $location = Location::find($this->state['locations'][0]['id']);
+
+                $country = new Country();
+                $country = $valid['country'];
+                $location->countries()->sync($country);
+
+                $city = new City();
+                $city = $valid['city'];
+                $location->cities()->sync($city);
+
+                $this->emit('saved');
+            });
+            // End of transaction
+
+        } catch (Throwable $e) {
+            // WireUI notification
+            // TODO: create event to send error notification to admin
+            $this->notification([
+            'title' => __('Registration failed!'),
+            'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
+            'icon' => 'error',
+            'timeout'=> 100000
+            ]);
+
+            return back();
+        }
         $this->emit('refresh-navigation-menu');
     }
 

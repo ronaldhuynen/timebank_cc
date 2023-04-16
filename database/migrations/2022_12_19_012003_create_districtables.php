@@ -15,9 +15,7 @@ return new class extends Migration
     {
         Schema::create('districtables', function (Blueprint $table) {
             $table->integer('district_id');
-            $table->string('districtable_type');
-            $table->unsignedBigInteger('districtable_id');
-            $table->timestamps();
+            $table->morphs('districtable');
         });
     }
 

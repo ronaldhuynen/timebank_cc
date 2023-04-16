@@ -1,6 +1,6 @@
 <x-jet-form-section submit="updateProfileInformation">
     <x-slot name="title">
-        {{ __('Location') }}
+        {{ __('Locations') }}
     </x-slot>
 
     <x-slot name="description">

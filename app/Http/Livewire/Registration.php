@@ -3,13 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\Account;
-use App\Models\Locations\Country;
 use App\Models\Locations\City;
+use App\Models\Locations\Country;
 use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +18,6 @@ use RTippin\Messenger\Facades\Messenger;
 use Stevebauman\Location\Facades\Location as IpLocation;
 use Throwable;
 use WireUi\Traits\Actions;
-
 
 class Registration extends Component implements CreatesNewUsers
 {
@@ -50,7 +48,7 @@ class Registration extends Component implements CreatesNewUsers
         if (App::environment(['local', 'staging'])) {
             // $ip = '103.75.231.255'; // Static IP address Brussels for testing
             $ip = '31.20.250.12'; // Statis IP address The Hague for testing
-            // $ip = '102.129.156.0'; // Statis IP address Berlin for testing
+        // $ip = '102.129.156.0'; // Statis IP address Berlin for testing
         } else {
             $ip = $request->ip(); // Dynamic IP address
         }
@@ -113,15 +111,15 @@ class Registration extends Component implements CreatesNewUsers
 
                 $location = new Location();
                 $location->name = 'Default location';
-                $user->locations()->save($location); // create the new location
+                $user->locations()->save($location); // create a new location
 
                 $country = new Country();
                 $country->id = $valid['country'];
-                $location->countries()->attach($country->id);
+                $location->countries()->attach($country->id); // attach country to location
 
                 $city = new City();
                 $city->id = $valid['city'];
-                $location->cities()->attach($city->id);
+                $location->cities()->attach($city->id); // attach country to location
 
                 $account = new Account();
                 $account->name = __(config('timebank-cc.accounts.personal.name'));

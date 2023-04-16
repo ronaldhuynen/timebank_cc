@@ -21,13 +21,24 @@ class Country extends Model
 
 
     /**
-     * Return all related locations.
+     * Return all related countryables.
+     *
+     * @return void
+     */
+    public function countryables()
+    {
+        return $this->morphedByMany(Location::class, 'countryable');
+    }
+
+
+    /**
+     * Return all related countryables.
      *
      * @return void
      */
     public function locations()
     {
-        return $this->morphedByMany(Location::class, 'countryable');
+        return $this->morphedByMany(Location::class, 'countryable')->where('countryable_type', Location::class);
     }
 
 

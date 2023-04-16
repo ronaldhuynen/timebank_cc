@@ -10,8 +10,6 @@ use Livewire\Component;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Stevebauman\Location\Location as IpLocation;
 
-
-
 class UpdateProfilePhoneForm extends Component
 {
     public $phoneCodeOptions;
@@ -35,7 +33,7 @@ class UpdateProfilePhoneForm extends Component
     {
         $this->state = Auth::user()->withoutRelations()->toArray();
 
-        $phoneCodeOptions = DB::table('location_countries')->get();
+        $phoneCodeOptions = DB::table('countries')->get();
         $this->phoneCodeOptions = $phoneCodeOptions->Map(function ($options, $key) {
             return [
                 'id' => $options->id,
@@ -65,8 +63,9 @@ class UpdateProfilePhoneForm extends Component
             if (in_array($ipCountry, $countries)) {
                 $this->phonecode = $ipCountry;
             } else {
-            $this->phonecode =  $this->phoneCodeOptions[0]['code'];
+                $this->phonecode =  $this->phoneCodeOptions[0]['code'];
             }
+
         }
     }
 
@@ -83,7 +82,8 @@ class UpdateProfilePhoneForm extends Component
      * @param  mixed $field
      * @return void
      */
-    public function updatedPhone() {
+    public function updatedPhone()
+    {
         $this->validateOnly($this->state['phone']);
 
         if  ($this->state['phone'] != '') {

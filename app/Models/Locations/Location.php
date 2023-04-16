@@ -2,13 +2,12 @@
 
 namespace App\Models\Locations;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Locations\Country;
-use App\Models\Locations\Division;
 use App\Models\Locations\City;
+use App\Models\Locations\Country;
 use App\Models\Locations\District;
-
+use App\Models\Locations\Division;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {

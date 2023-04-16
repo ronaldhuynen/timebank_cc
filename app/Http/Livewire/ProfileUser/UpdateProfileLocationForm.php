@@ -4,12 +4,12 @@ namespace App\Http\Livewire\ProfileUser;
 
 
 use App\Models\Account;
-use App\Models\User;
-use App\Models\Locations\Location;
-use App\Models\Locations\Country;
 use App\Models\Locations\City;
-use Illuminate\Support\Facades\DB;
+use App\Models\Locations\Country;
+use App\Models\Locations\Location;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -54,8 +54,14 @@ class UpdateProfileLocationForm extends Component
     public function mount()
     {
         $this->state = Auth::user()->withoutRelations()->load(['locations', 'locations.countries', 'locations.cities'])->toArray();
-        $this->country = $this->state['locations'][0]['countries'][0]['id'];
-        $this->city = $this->state['locations'][0]['cities'][0]['id'];
+
+        // For now we only use a single location. In the future this can become an array of locations.
+        if (isset($this->state['locations'][0]['countries'])) {
+            $this->country = $this->state['locations'][0]['countries'][0]['id'];
+        }
+        if (isset($this->state['locations'][0]['cities'])) {
+            $this->city = $this->state['locations'][0]['cities'][0]['id'];
+        }
     }
 
 
@@ -74,25 +80,28 @@ class UpdateProfileLocationForm extends Component
      */
     public function updateProfileInformation(UpdatesUserProfileInformation $updater)
     {
-
         $valid = $this->validate();
         // $this->resetErrorBag();
-
 
         try {
             // Use a transaction for creating the new user
             DB::transaction(function () use ($valid): void {
 
                 // For now we only use a single location. In the future this can become an array of locations.
-                $location = Location::find($this->state['locations'][0]['id']);
-
+                if (isset($this->state['locations'][0])) {
+                    $location = Location::find($this->state['locations'][0]['id']);
+                } else {
+                    $location = new Location();
+                    $location->name = 'Default location';
+                    User::find(Auth::user()->id)->locations()->save($location); // create a new location
+                }
                 $country = new Country();
                 $country = $valid['country'];
-                $location->countries()->sync($country);
+                $location->countries()->sync($country); // attach country to location
 
                 $city = new City();
                 $city = $valid['city'];
-                $location->cities()->sync($city);
+                $location->cities()->sync($city);  // attach country to location
 
                 $this->emit('saved');
             });

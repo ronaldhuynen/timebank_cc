@@ -46,12 +46,9 @@ class LocationsDropdown extends Component
 
     public function render()
     {
-        // $this->citySelected();
-        // $this->emit('countryToParent', $this->country);
 
         if (!empty($this->country)) {
             $country = Country::find($this->country);
-            // $country_locale = strtolower($country->code);
             $this->cities = City::with(['locale'])->where('country_id', $this->country)->get();
         }
 

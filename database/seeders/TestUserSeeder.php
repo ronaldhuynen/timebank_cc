@@ -3,12 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Account;
+use App\Models\Locations\Location;
 use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\Locations\Location;
-
 
 class TestUserSeeder extends Seeder
 {
@@ -70,9 +69,11 @@ class TestUserSeeder extends Seeder
                 ->has(Account::factory()->state(['name' => 'General Account'])->state(
                     ['name' => 'Currency Creation',
                     'limit_min' => -12000
-                    ]))
+                    ]
+                ))
                 ->has(Account::factory()->state(
-                    ['name' => 'General']))
+                    ['name' => 'General']
+                ))
                 ->create([
                     'name' => 'Timebank.cc Den Haag',
                     'email' => 'tb-den-haag@test.nl',
@@ -81,40 +82,45 @@ class TestUserSeeder extends Seeder
 
             $org2 = Organisation::factory()
                 ->has(Account::factory()->state(
-                    ['name' => 'Algemeen']))
+                    ['name' => 'Algemeen']
+                ))
                 ->has(Account::factory()->state(
-                    ['name' => 'Gymzaal']))
+                    ['name' => 'Gymzaal']
+                ))
                 ->has(Account::factory()->state(
-                    ['name' => 'Wonnebald']))
+                    ['name' => 'Wonnebald']
+                ))
                 ->has(Account::factory()->state(
-                    ['name' => 'Spinozahof']))
+                    ['name' => 'Spinozahof']
+                ))
                 ->has(Account::factory()->state(
-                    ['name' => 'Mozartlaan']))
+                    ['name' => 'Mozartlaan']
+                ))
                 ->create([
                     'name' => 'Lekkernassuh',
                     'email' => 'lekkernassuh@test.nl',
                     'profile_photo_path' => 'profile-photos/hWcYqfdquJW7QiPnyuUtdFsrldykLFZPbR6H4qwF.jpg',
                     ]);
 
-                DB::table('organisation_user')->insert([
-                    'organisation_id' => $org1->id,
-                    'user_id' => $user1->id]);
+            DB::table('organisation_user')->insert([
+                'organisation_id' => $org1->id,
+                'user_id' => $user1->id]);
 
-                DB::table('organisation_user')->insert([
-                    'organisation_id' => $org1->id,
-                    'user_id' => $user2->id]);
+            DB::table('organisation_user')->insert([
+                'organisation_id' => $org1->id,
+                'user_id' => $user2->id]);
 
-                DB::table('organisation_user')->insert([
-                    'organisation_id' => $org2->id,
-                    'user_id' => $user1->id]);
+            DB::table('organisation_user')->insert([
+                'organisation_id' => $org2->id,
+                'user_id' => $user1->id]);
 
-                DB::table('organisation_user')->insert([
-                    'organisation_id' => $org2->id,
-                    'user_id' => $user2->id]);
+            DB::table('organisation_user')->insert([
+                'organisation_id' => $org2->id,
+                'user_id' => $user2->id]);
 
-                DB::table('organisation_user')->insert([
-                    'organisation_id' => $org2->id,
-                    'user_id' => $user3->id]);
+            DB::table('organisation_user')->insert([
+                'organisation_id' => $org2->id,
+                'user_id' => $user3->id]);
 
             $this->command->info('The test users and organisations are seeded');
         }

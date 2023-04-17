@@ -25,6 +25,7 @@ return new class () extends Migration {
             $table->text('motivation')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('phone', 20)->nullable();
+            $table->boolean('phone_public_for_friends')->default(0);
 
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();

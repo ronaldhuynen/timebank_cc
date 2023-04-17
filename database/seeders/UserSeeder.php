@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Account;
 use App\Models\Locations\Location;
-use App\Models\Locations\City;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -35,12 +34,13 @@ class UserSeeder extends Seeder
             ->has(Location::factory())
             ->has(Account::factory()->state(['name' => 'Personal Account']))
             ->create()
-            ->each(function ($user) use ($cities) {
-            DB::table('cityables')->insert([
-                    'city_id' => collect($cities)->random(),
-                    'cityable_type' => Location::class,
-                    'cityable_id' => $user->locations()->first()->id]);
-            }
-        );
+            ->each(
+                function ($user) use ($cities) {
+                    DB::table('cityables')->insert([
+                            'city_id' => collect($cities)->random(),
+                            'cityable_type' => Location::class,
+                            'cityable_id' => $user->locations()->first()->id]);
+                }
+            );
     }
 }

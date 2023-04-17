@@ -2,25 +2,25 @@
 
 namespace App\Http\Livewire\ProfileUser;
 
+use App\Models\User;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Propaganistas\LaravelPhone\PhoneNumber;
-use Stevebauman\Location\Location as IpLocation;
 
 class UpdateProfilePhoneForm extends Component
 {
     public $phoneCodeOptions;
     public $phonecode;
-    public $ipLocation;
     public $state = [];
 
 
     protected $rules = [
         'state.phone' => 'phone:phonecode,mobile',
         'phonecode'  => 'required_with:state.phone',
+        'state.phone_public_for_friends' =>'boolean',
     ];
 
 
@@ -33,16 +33,19 @@ class UpdateProfilePhoneForm extends Component
     {
         $this->state = Auth::user()->withoutRelations()->toArray();
 
-        $phoneCodeOptions = DB::table('countries')->get();
+        $phoneCodeOptions = DB::table('countries')->get()->sortBy('code');
         $this->phoneCodeOptions = $phoneCodeOptions->Map(function ($options, $key) {
             return [
                 'id' => $options->id,
-                'code' => $options->phonecode,
+                'code' => $options->code,
                 'label' => $options->flag . ' +' . $options->phonecode,
             ];
         });
+    }
 
-        // Pre-fill country code dropdown
+    public function phonecodeInit()
+    {
+        // Fill country code dropdown
         $this->phoneCodeOptions->toArray();
         if ($this->state['phone'] != '') {
             $country = new PhoneNumber($this->state['phone']);
@@ -51,29 +54,19 @@ class UpdateProfilePhoneForm extends Component
             $phone->formatNational();
             $this->state['phone'] = $phone->formatNational();
         } else {
-            // When phone field is empty, look up country using ip location service
-            //TODO: Switch comments to Dynamic IP for production!
-            //  $ip = $request->ip(); // Dynamic IP address of remote user
-            // $ip = '145.103.110.142'; // Static IP address for testing: NL The Hague 2518
-            $ip = '103.75.231.205'; // Static IP address for testing: BE Brussels Capital 1000
-            $ipLocation = (new IpLocation($config))->get($ip);
-            $ipCountry = $ipLocation->countryCode;
-            $countries = ($phoneCodeOptions->pluck('country_code')->toArray());
-            // dd($ipCountry);
-            if (in_array($ipCountry, $countries)) {
-                $this->phonecode = $ipCountry;
+            $country = User::find($this->state['id'])->locations()->with('cities')->first()->cities[0]['country_id'];
+            $countries = ($this->phoneCodeOptions)->pluck('id')->toArray();
+
+            if (in_array($country, $countries)) {
+                $this->phonecode = DB::table('countries')->select('code')->where('id', $country)->pluck('code')->first();
+
             } else {
                 $this->phonecode =  $this->phoneCodeOptions[0]['code'];
             }
-
         }
+
     }
 
-
-    public function updatedPhonecode()
-    {
-        $this->state['phone'] = null;
-    }
 
     /**
      * Validate phone field when updated.
@@ -84,6 +77,7 @@ class UpdateProfilePhoneForm extends Component
      */
     public function updatedPhone()
     {
+        info($this->state['phone']);
         $this->validateOnly($this->state['phone']);
 
         if  ($this->state['phone'] != '') {
@@ -108,6 +102,7 @@ class UpdateProfilePhoneForm extends Component
             $this->resetErrorBag();
             $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
             $user->phone = $phone;
+            $user->phone_public_for_friends = $this->state['phone_public_for_friends'];
         } else {
             $this->resetErrorBag();
             $user->phone = null;

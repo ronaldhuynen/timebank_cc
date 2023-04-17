@@ -11,8 +11,8 @@
     <x-slot name="form">
 
         <!-- Phone -->
-        <div class="col-span-6  -mb-6">
-        <x-jet-label for="phone" value="{{ __('Mobile phone') . ' ' . __('(visible for friends)') }}" />
+        <div class="col-span-6  -mb-6" wire:init="phonecodeInit">
+        <x-jet-label for="phone" value="{{ __('Mobile phone') }}" />
         </div>
             <div class="col-span-1">
                 <x-native-select
@@ -32,6 +32,10 @@
             @error('phone')
                 <p class="col-span-6 -mt-6 text-sm text-red-500">{{$message}}</p>
             @enderror
+
+        <div class="col-span-6 -mt-3">
+            <x-checkbox id="right-label" label="Visible for my Timebank.cc friends" wire:model.defer="state.phone_public_for_friends" />
+        </div>
     </x-slot>
 
 

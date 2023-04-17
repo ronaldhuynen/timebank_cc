@@ -54,13 +54,16 @@ class UpdateProfileLocationForm extends Component
     public function mount()
     {
         $this->state = Auth::user()->withoutRelations()->load(['locations', 'locations.countries', 'locations.cities'])->toArray();
-
-        // For now we only use a single location. In the future this can become an array of locations.
-        if (isset($this->state['locations'][0]['countries'])) {
+        // In case no location is attached.
+        if (isset($this->state['locations'][0]['countries'][0])) {
+            // For now we only use a single location. In the future this can become an array of locations.
             $this->country = $this->state['locations'][0]['countries'][0]['id'];
         }
-        if (isset($this->state['locations'][0]['cities'])) {
+        // In case no city is attached.
+        if (isset($this->state['locations'][0]['cities'][0])) {
+            // For now we only use a single location. In the future this can become an array of locations.
             $this->city = $this->state['locations'][0]['cities'][0]['id'];
+            $this->country = City::find($this->city)->country_id;
         }
     }
 
@@ -84,7 +87,7 @@ class UpdateProfileLocationForm extends Component
         // $this->resetErrorBag();
 
         try {
-            // Use a transaction for creating the new user
+            // Use a transaction for creating the new user.
             DB::transaction(function () use ($valid): void {
 
                 // For now we only use a single location. In the future this can become an array of locations.

@@ -7,6 +7,8 @@ use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Locations\Location;
+
 
 class TestUserSeeder extends Seeder
 {
@@ -19,7 +21,9 @@ class TestUserSeeder extends Seeder
     {
         if ($this->command->confirm('Do you want to seed the test users and organisations?')) {
 
-            $user1 = User::factory()->has(Account::factory()->state(['name' => 'Personal Account']))
+            $user1 = User::factory()
+                ->has(Account::factory()->state(['name' => 'Personal Account']))
+                ->has(Location::factory())
                 ->create([
                     'name' => 'Ronald',
                     'email' => 'ronald@test.nl',
@@ -27,7 +31,14 @@ class TestUserSeeder extends Seeder
                     'password' => bcrypt('password'),
                     ]);
 
-            $user2 = User::factory()->has(Account::factory()->state(['name' => 'Personal Account']))
+            DB::table('cityables')->insert([
+                    'city_id' => 305,
+                    'cityable_type' => Location::class,
+                    'cityable_id' => $user1->locations()->first()->id]);
+
+            $user2 = User::factory()
+                ->has(Account::factory()->state(['name' => 'Personal Account']))
+                ->has(Location::factory())
                 ->create([
                     'name' => 'Joeri',
                     'email' => 'joeri@test.nl',
@@ -35,13 +46,25 @@ class TestUserSeeder extends Seeder
                     'password' => bcrypt('password'),
                     ]);
 
-            $user3 = User::factory()->has(Account::factory()->state(['name' => 'Personal Account']))
+            DB::table('cityables')->insert([
+                    'city_id' => 345,
+                    'cityable_type' => Location::class,
+                    'cityable_id' => $user2->locations()->first()->id]);
+
+            $user3 = User::factory()
+                ->has(Account::factory()->state(['name' => 'Personal Account']))
+                ->has(Location::factory())
                 ->create([
                     'name' => 'Sara',
                     'email' => 'sara@test.nl',
                     'profile_photo_path' => 'profile-photos/UJWh03bKULqtOAvQQh36cJJ4NwjZvTcBWPmL9vzm.png',
                     'password' => bcrypt('password'),
                     ]);
+
+            DB::table('cityables')->insert([
+                    'city_id' => 305,
+                    'cityable_type' => Location::class,
+                    'cityable_id' => $user3->locations()->first()->id]);
 
             $org1 = Organisation::factory()
                 ->has(Account::factory()->state(['name' => 'General Account'])->state(

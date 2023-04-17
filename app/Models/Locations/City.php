@@ -4,16 +4,19 @@ namespace App\Models\Locations;
 
 
 use App\Models\Locations\CityLocale;
+use App\Models\Locations\Location;
 use App\Models\Locations\DistrictLocale;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 
 class City extends Model
 {
     use HasRelationships;
+    use HasFactory;
 
     /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
@@ -55,7 +58,18 @@ class City extends Model
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'cityable', 'cityables');
+        return $this->morphedByMany(User::class, 'cityable');
+        // cityable refers to pivot columns and cityables refers to pivot table
+    }
+
+        /**
+     * Get all of the cityables of the cities.
+     * Many-to-many polymorph
+     * @return void
+     */
+    public function cityables()
+    {
+        return $this->morphedByMany(Location::class, 'cityable');
         // cityable refers to pivot columns and cityables refers to pivot table
     }
 
@@ -68,7 +82,7 @@ class City extends Model
      */
     public function organisations()
     {
-        return $this->morphedByMany(Organisation::class, 'cityable', 'cityables');
+        return $this->morphedByMany(Organisation::class, 'cityable');
         // cityable refers to pivot columns and cityables refers to pivot table
     }
 

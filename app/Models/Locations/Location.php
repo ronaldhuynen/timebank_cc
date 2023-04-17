@@ -7,10 +7,13 @@ use App\Models\Locations\Country;
 use App\Models\Locations\District;
 use App\Models\Locations\Division;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
+    use HasFactory;
+
     /**
     * Return all related countries.
     * Many-to-many polymorphic.
@@ -56,7 +59,7 @@ class Location extends Model
 
 
         /**
-    * Return all related countries.
+    * Return all related locationables.
     * Many-to-many polymorphic.
     * @return void
     */

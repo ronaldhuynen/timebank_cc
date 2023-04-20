@@ -24,6 +24,10 @@ return new class () extends Migration {
             $table->text('about')->nullable();
             $table->text('motivation')->nullable();
             $table->date('date_of_birth')->nullable();
+            $table->string('website')->nullable();
+
+
+
             $table->string('phone', 20)->nullable();
             $table->boolean('phone_public_for_friends')->default(0);
 

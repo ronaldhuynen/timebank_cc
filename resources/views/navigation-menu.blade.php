@@ -85,19 +85,28 @@
                     </div>
                 @endif
 
+                <!-- Language selector ---->
+                <div class="block space-x-2 px-8 py-0 text-xs text-gray-900  hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition">
+                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        <a class="text-gray-900  hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition"
+                        rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                        {{-- {{ $properties['native'] }} --}}
+                        {{ strtoupper($localeCode) }}
+                        </a>
+                    @endforeach
+                </div>
                 <!-- Settings / Profile Dropdown -->
-                <div class="block px-1 py-0 text-s text-grey-500">
+                <div class="bloc  ml-3 py-0 text-s text-grey-500">
                     {{ Session('activeProfileName') }}
                 </div>
 
-                <div class="ml-3 relative">
+                <div class="ml-2 relative">
                     <x-jet-dropdown align="right" width="48">
                         <x-slot name="trigger">
 
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-sm border-1 border-white border-2 shadow-sm rounded-full hover:border-grey-900 focus:border-grey-900 focus:border-gray-300 transition">
                                     <img class="h-9 w-9 rounded-full object-cover" src="{{ Storage::url(Session('activeProfilePhoto')) }}" alt="{{ Session('activeProfileName') }}" />
-
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
@@ -170,6 +179,7 @@
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Settings') }}
                             </x-jet-dropdown-link>
+
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">

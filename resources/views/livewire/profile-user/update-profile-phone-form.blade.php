@@ -4,8 +4,8 @@
     </x-slot>
 
     <x-slot name="description">
-       <p> {{ __('Only approved Timebank.cc friends will be able to see your phone number.') }} </p>
-       <p>{{ __('Your mobile phone can also be used as an alternative mode of authorizing access to your Timebank.cc account. ') }}
+        <p>{{ __('Your mobile phone can be used to authorize access to your Timebank.cc account.') }}
+        <p> {{ __('Choose if approved Timebank.cc friends will be able to see your phone number. Otherwise your number will be kept private') }} </p>
     </x-slot>
 
     <x-slot name="form">

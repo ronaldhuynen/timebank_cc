@@ -74,6 +74,10 @@
     "Deleted": "Verwijderd",
     "Not available": "Niet beschikbaar",
 
-    "Sorry, your data could not be saved!": "Sorry, je gegevens konden niet worden opgeslagen!"
+    "Sorry, your data could not be saved!": "Sorry, je gegevens konden niet worden opgeslagen!",
+
+    "Transfer": "Betalen",
+    "Transactions": "Transacties",
+    "Your Profile": "Jouw profiel"
 
 }

@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 
 /*
@@ -39,16 +38,12 @@ Route::get('/clear-cache', function () {
 
 
 
-
-
-
-
 Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function () {
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
 
-Route::get('/', function () {
-    return view('welcome');
-});
+    Route::get('/', function () {
+        return view('welcome');
+    });
 
     //----- Protected auth verified routes -----//
     Route::middleware([
@@ -85,4 +80,3 @@ Route::get('/', function () {
     });
 
 });
-

@@ -86,12 +86,15 @@
                 @endif
 
                 <!-- Language selector ---->
-                <div class="block space-x-2 px-8 py-0 text-xs text-gray-900  hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition">
+                <div class="block space-x-2 px-8 py-0 text-xs hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition">
                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                         <a class="text-gray-900  hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition"
                         rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                        {{-- {{ $properties['native'] }} --}}
-                        {{ strtoupper($localeCode) }}
+                        @if($localeCode == app()->getLocale())
+                        <span class="text-gray-900 font-weight-900">{{ strtoupper($localeCode) }}</span>
+                        @else
+                        <span class="text-gray-500"> {{ strtoupper($localeCode) }}
+                        @endif
                         </a>
                     @endforeach
                 </div>

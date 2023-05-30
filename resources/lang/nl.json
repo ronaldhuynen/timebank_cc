@@ -78,6 +78,9 @@
 
     "Transfer": "Betalen",
     "Transactions": "Transacties",
-    "Your Profile": "Jouw profiel"
+    "Your Profile": "Jouw profiel",
+
+    "Dashboard": "Dashboard",
+    "Last login": "Laatste login"
 
 }

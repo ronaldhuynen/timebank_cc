@@ -18,15 +18,12 @@ return new class () extends Migration {
             $table->string('email', 191)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('locale_website', 3)->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
 
             $table->text('about')->nullable();
             $table->text('motivation')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('website')->nullable();
-
-
 
             $table->string('phone', 20)->nullable();
             $table->boolean('phone_public_for_friends')->default(0);

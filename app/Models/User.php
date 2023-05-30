@@ -43,14 +43,13 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
         'name',
         'email',
         'profile_photo_path',
-        'city_id_1',
-        'district_id_1',
         'about',
         'motivation',
         'date_of_birth',
         'website',
-        'locale',
         'password',
+        'last_login_at',
+        'last_login_ip',
     ];
 
     /**

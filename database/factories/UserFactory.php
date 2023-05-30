@@ -34,7 +34,6 @@ class UserFactory extends Factory
             'profile_photo_path' => $this->faker->imageUrl(128, 128),
             'about' => $this->faker->text(mt_rand(50, 300)),
             'motivation' => $this->faker->text(mt_rand(50, 150)),
-            'locale_website' => $this->faker->randomElement(['nl', 'en', 'fr']),
         ];
     }
 

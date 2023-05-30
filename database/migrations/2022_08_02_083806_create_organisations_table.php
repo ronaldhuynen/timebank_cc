@@ -18,7 +18,6 @@ class CreateOrganisationsTable extends Migration
             $table->string('name');
             $table->string('email', 191)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('locale_website', 3)->default('en'); // 3 characters
             $table->string('profile_photo_path', 2048)->nullable();
 
             $table->text('about')->nullable();

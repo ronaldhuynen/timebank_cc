@@ -4,16 +4,21 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Spatie\Activitylog\Models\Activity;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
 
-    public $login;
-
     public function mount()
     {
-        $this->login = Carbon::createFromTimeStamp(strtotime(User::find(auth()->id())->last_login_at))->diffForHumans();
+        $activityLog =
+        Activity::where('subject_id', auth()->user()->id)
+        ->where('subject_type','App\Models\User')
+        ->whereNotNull('properties->attributes->last_login_at')
+        ->get('properties')->last();
+        $lastLoginAt = json_decode($activityLog, true)['properties']['old']['last_login_at'];
+        $this->lastLoginAt = Carbon::createFromTimeStamp(strtotime($lastLoginAt))->diffForHumans();
     }
 
 

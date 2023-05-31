@@ -22,6 +22,9 @@ use RTippin\Messenger\Traits\Messageable;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 
 class User extends Authenticatable implements MessengerProvider, Searchable, MustVerifyEmail
 {
@@ -33,6 +36,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     use HasProfilePhoto;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use HasRoles; // Spatie Permissions
+    use LogsActivity; // Spatie Activity Log
 
     /**
      * The attributes that are mass assignable.
@@ -47,6 +51,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
         'motivation',
         'date_of_birth',
         'website',
+        'phone',
         'password',
         'last_login_at',
         'last_login_ip',
@@ -242,5 +247,20 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
             $this,
             $this->name,
         );
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly([
+            'name',
+            'email',
+            'phone',
+            'last_login_at',
+            'last_login_ip',
+            ])
+        ->logOnlyDirty()   // Only log attributes that have been changed
+        ->dontSubmitEmptyLogs()
+        ->useLogName('user');
     }
 }

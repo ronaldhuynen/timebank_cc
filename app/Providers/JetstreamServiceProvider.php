@@ -43,8 +43,7 @@ class JetstreamServiceProvider extends ServiceProvider
         //Save user's last login time and ip
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
-            if ($user &&
-                Hash::check($request->password, $user->password)) {
+            if ($user && Hash::check($request->password, $user->password)) {
                 $user->update([
                     'last_login_at' => Carbon::now()->toDateTimeString(),
                     'last_login_ip' => $request->getClientIp()

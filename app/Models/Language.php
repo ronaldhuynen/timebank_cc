@@ -32,4 +32,13 @@ protected $fillable = [
         return $this->morphedByMany(Organisation::class, 'languagable');
     }
 
+
+    /**
+     * Get all posts that are assigned to this language.
+     */
+    public function posts()
+    {
+        return $this->morphedByMany(Post::class, 'languagable');
+    }
+
 }

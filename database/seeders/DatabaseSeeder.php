@@ -41,6 +41,8 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguageCompetencesTableSeeder::class);
         $this->call(MediaTableSeeder::class);
         $this->call(CountryLanguagesTableSeeder::class);
+        $this->call(PostsTableSeeder::class);
+        $this->call(PostTranslationsTableSeeder::class);
     }
 
         $this->call([

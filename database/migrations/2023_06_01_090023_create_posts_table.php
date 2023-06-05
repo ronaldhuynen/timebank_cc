@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('locationables', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->integer('location_id');
-            $table->morphs('locationable');
+            $table->integer('postable_id'); // Make author polymorph: user / organisation / other
+            $table->string('postable_type'); // Make author polymorph: user / organisation / other
+            $table->integer('category_id')->nullable();
+            $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locationables');
+        Schema::dropIfExists('posts');
     }
 };

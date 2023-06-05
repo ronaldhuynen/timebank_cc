@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\ProfileUser;
 
 
-use App\Models\Account;
 use App\Models\Locations\City;
 use App\Models\Locations\Country;
 use App\Models\Locations\Location;
@@ -104,7 +103,7 @@ class UpdateProfileLocationForm extends Component
 
                 $city = new City();
                 $city = $valid['city'];
-                $location->cities()->sync($city);  // attach country to location
+                $location->cities()->sync($city);  // attach city to location
 
                 $this->emit('saved');
             });

@@ -19,11 +19,11 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 
 
 class User extends Authenticatable implements MessengerProvider, Searchable, MustVerifyEmail

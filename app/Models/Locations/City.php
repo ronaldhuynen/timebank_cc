@@ -4,12 +4,12 @@ namespace App\Models\Locations;
 
 
 use App\Models\Locations\CityLocale;
-use App\Models\Locations\Location;
 use App\Models\Locations\DistrictLocale;
+use App\Models\Locations\Location;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 
@@ -58,7 +58,7 @@ class City extends Model
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'cityable');
+        return $this->morphedByMany(User::class, 'cityable', 'cityables');
         // cityable refers to pivot columns and cityables refers to pivot table
     }
 
@@ -69,7 +69,7 @@ class City extends Model
      */
     public function cityables()
     {
-        return $this->morphedByMany(Location::class, 'cityable');
+        return $this->morphedByMany(City::class, 'cityable', 'cityables');
         // cityable refers to pivot columns and cityables refers to pivot table
     }
 

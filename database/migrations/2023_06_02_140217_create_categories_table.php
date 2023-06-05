@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('locationables', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->integer('location_id');
-            $table->morphs('locationable');
+            $table->string('name');
+            $table->integer('country_id')->nullable();
+            $table->integer('division_id')->nullable();
+            $table->integer('city_id')->nullable();
+            $table->integer('region_id')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locationables');
+        Schema::dropIfExists('categories');
     }
 };

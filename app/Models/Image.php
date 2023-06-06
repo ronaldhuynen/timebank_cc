@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Image extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['imageable_id', 'imageable_type'];
+    protected $fillable = ['path','position','caption'];
 
 
     /**
@@ -18,7 +19,7 @@ class Image extends Model
      *
      * @return void
      */
-    public function posts()
+    public function posts(): MorphToMany
     {
     return $this->morphedByMany(Post:: class, 'imageable');
     }

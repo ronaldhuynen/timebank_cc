@@ -2,25 +2,31 @@
 @if($post != null)
 
     <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
-    <div class="grid grid-cols-2 space-x-12">
-        <div class="">
-        <div class="p-2 text-xs font-semibold text-white bg-black">
-            {{ $post['category']}}
-        </div>
-        <h1 class=" text-white bg-black p-2 font-bold text-2xl my-2">{{ $post['title']}}</h1>
-        <p class="text-gray-600 mb-2 md:mb-6 text-base"> {{ $post['excerpt']}}</p>
-        <div class="flex justify-between mb-2 mt-6">
-            <span class="font-thin text-sm text-gray-500">{{ $post['published_at'] . ' ' . __('by')}} {{ $author['name']}}</span>
-            <span class="sm:block hidden mb-2 text-gray-900 font-bold">{{ __('Read more') }}...</span>
-        </div>
-        </div>
-
-        <div class="grid grid-cols-1 place-items-end">
-        {{-- <img class="bg-cover min-w-max " src="{{$images}}" alt="" />--}}
-                    <div class="w-full h-full bg-cover" style="background-image: url(https://images.unsplash.com/photo-1508394522741-82ac9c15ba69?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=748&q=80)">
-                <div class="w-full h-full bg-black opacity-25"></div>
+        <div class="grid grid-cols-2 space-x-12">
+            <div class="">
+            <div class="px-2 py-1 text-xs font-semibold text-white bg-black">
+                {{ $post['category']}}
             </div>
-        </div>
+            <h1 class=" text-white bg-black px-2 py-1 font-bold text-2xl my-2">{{ $post['title']}}</h1>
+            <p class="text-gray-600 mb-2 md:mb-6 text-base"> {{ $post['excerpt']}}</p>
+                <div class="flex justify-between mb-2 mt-6">
+                    <span class="font-thin text-sm text-gray-500">{{ $post['published_at'] . ' ' . __('by')}} {{ $author['name']}}</span>
+                    <div class="flex justify-end">
+                        <span class="sm:block hidden mb-2 text-gray-900 font-bold">{{ __('Read more') }}</span>
+                    <div class="ml-1 mt-1">
+                                <svg viewBox="0 0 20 20" class="w-4 h-4"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            @if($images != null)
+            <div class="grid grid-cols-1 place-items-end">
+                <div class="w-full h-full bg-cover" style="background-image: url({{$images['path']}})">
+                    <div class="w-full h-full bg-black opacity-25 text-white text-3xs pr-1 text-right">{{ $images['caption'] }}</div>
+                </div>
+            </div>
+            @endif
 
         </div>
     </div>

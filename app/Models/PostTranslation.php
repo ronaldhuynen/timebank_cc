@@ -13,7 +13,7 @@ class PostTranslation extends Model
 
 
     /**
-     * Get related post for this post translation
+     * Get related post for this translation
      *
      * @return void
      */

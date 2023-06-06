@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CategoryTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +21,16 @@ class Category extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Get the related translations of this category
+     *
+     * @return void
+     */
+    public function translations()
+    {
+        return $this->hasMany(CategoryTranslation::class);
     }
 
 }

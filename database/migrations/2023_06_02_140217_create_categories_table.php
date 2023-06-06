@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('type');
             $table->integer('country_id')->nullable();
             $table->integer('division_id')->nullable();
             $table->integer('city_id')->nullable();
-            $table->integer('region_id')->nullable();
+            $table->integer('district_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -48,7 +48,6 @@ class UpdateProfilePersonalForm extends Component
     public function languagesToParent($values)
     {
         $this->languages = $values;
-        // dump($this->languages);
     }
 
     /**

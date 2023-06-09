@@ -23,7 +23,6 @@ class LanguagesDropdown extends Component
      */
     public function mount()
     {
-        // Joeri: het probleem was domweg dat we niet User::find(2)->languages(), maar User::find(2)->languages als methode moesten formuleren...
         $this->state = Auth::user()->withoutRelations()->toArray();
 
         // Create a language options collection that combines all language and competence options

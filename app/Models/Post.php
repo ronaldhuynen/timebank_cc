@@ -7,10 +7,11 @@ use App\Models\Image;
 use App\Models\PostTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Znck\Eloquent\Traits\BelongsToThrough;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToThrough;
 
     protected $fillable = ['postable_id', 'postable_type'];
 
@@ -46,6 +47,7 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
 
 
     /**

@@ -12,14 +12,18 @@ class Posts extends Component
 {
     use WithPagination;
 
+    public $language;
+    public $category;
     public $showModal = false;
     public $postId;
     public $translationId;
-    public $post =[];
+    public $post;
     public $start;   // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
     public $stop;     // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
 
     protected $paginationTheme = 'tailwind';
+
+    protected $listeners = ['languageToParent', 'categoryToParent'];
 
     protected $rules = [
         'post.title' => 'required|string|unique:users,name|min:3|max:150',
@@ -31,18 +35,16 @@ class Posts extends Component
 
     public function render()
     {
-        //TODO: code categories!
-        $type = 'News';
-        $city_id = 305;
         $post = Post::with([
             'postable' => function ($query) {
                 $query->select(['id', 'name', 'email']);
             },
-            'category' => function ($query) use ($type, $city_id) {
-                $query->where('type', $type)->orWhere('city_id', $city_id);
+            'category' => function ($query) {
+                $query->with(['translations' => function($query) {
+                    $query->where('locale', App::getLocale());
+                }]);
             },
             'translations' => function ($query) {
-                $query->where('locale', App::getLocale());
             },
             'images' => function ($query) {
                 $query->select('images.id', 'caption', 'path');
@@ -54,14 +56,27 @@ class Posts extends Component
         ]);
     }
 
+    public function languageToParent($value)
+    {
+        $this->language = $value;
+    }
 
-    public function edit($postId)
+
+    public function categoryToParent($value)
+    {
+        $this->category = $value;
+    }
+
+
+    public function edit($translationId)
     {
         $this->showModal = true;
-        $this->postId = $postId;
-        $post = Post::with(['category','translations' => function ($query) {
-            $query->where('locale', App::getLocale());
-        }])->find($postId)->toArray();
+        $this->postId = PostTranslation::find($translationId)->post_id;
+
+        $post = Post::with(['category','translations' => function ($query) use ($translationId) {
+            $query->where('id', $translationId);
+        }])->find($this->postId)->toArray();
+
         $this->post = [
             'translation_id' => $post['translations'][0]['id'],
             'title' => $post['translations'][0]['title'],
@@ -88,13 +103,15 @@ class Posts extends Component
 
         if (!is_null($this->postId)) {
             $post = Post::find($this->postId);
-            $update = [
+            $postTranslation = [
                 'title' => $this->post['title'],
                 'content' => $this->post['content'],
                 'start' => $this->start,
                 'stop' => $this->stop,
                 ];
-            $post->translations()->where('id', $this->post['translation_id'])->update($update);
+            $post->translations()->where('id', $this->post['translation_id'])->update($postTranslation);
+            $post->category_id = $this->category;
+            $post->save();
 
         } else {
             Post::create($this->post);

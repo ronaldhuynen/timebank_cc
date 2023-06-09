@@ -22,9 +22,9 @@ return new class extends Migration
             $table->text('excerpt');
             $table->text('content');
             $table->integer('status')->unsigned()->default(1);
-            $table->dateTime('published_at')->nullable();
+            $table->dateTime('start')->nullable();
+            $table->dateTime('stop')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

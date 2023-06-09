@@ -10,7 +10,7 @@
             <h1 class=" text-white bg-black px-2 py-1 font-bold text-2xl my-2">{{ $post['title']}}</h1>
             <p class="text-gray-600 mb-2 md:mb-6 text-base"> {{ $post['excerpt']}}</p>
                 <div class="flex justify-between mb-2 mt-6">
-                    <span class="font-thin text-sm text-gray-500">{{ $post['published_at'] . ' ' . __('by')}} {{ $author['name']}}</span>
+                    <span class="font-thin text-sm text-gray-500">{{ $post['start'] . ' ' . __('by')}} {{ $author['name']}}</span>
                     <div class="flex justify-end">
                         <span class="sm:block hidden mb-2 text-gray-900 font-bold">{{ __('Read more') }}</span>
                     <div class="ml-1 mt-1">

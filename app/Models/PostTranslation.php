@@ -9,12 +9,12 @@ class PostTranslation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id', 'locale', 'title', 'content'];
+    protected $fillable = ['post_id', 'locale', 'title', 'excerpt', 'content', 'start', 'stop'];
 
 
     /**
      * Get related post for this translation
-     *
+     * Ont-to-many relationship
      * @return void
      */
     public function post()

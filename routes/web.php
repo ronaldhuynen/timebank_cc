@@ -58,11 +58,15 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
 
             Route::get('/transfer', 'App\Http\Controllers\TransactionController@transfer')->name('transfer');
             Route::post('/transfer', 'App\Http\Controllers\TransactionController@saveTransfer')->name('saveTransfer');
+
             Route::get('/transactions', 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
 
             Route::get('/statement/{transactionId}', 'App\Http\Controllers\TransactionController@statement')
                 ->where(['transactionId' => '[0-9]+'])     // Add constraint: only numbers allowed
                 ->name('transaction.show');
+
+
+            Route::get('/posts', 'App\Http\Controllers\PostController@index')->name('posts.index');
 
             Route::get('/user/personal-profile', 'App\Http\Controllers\ProfileUserController@show')->name('profile-user.show');
 

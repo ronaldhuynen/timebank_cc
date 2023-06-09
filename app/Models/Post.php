@@ -28,7 +28,7 @@ class Post extends Model
 
     /**
      * Get the related translations of the post
-     *
+     * One-to-many relationship
      * @return void
      */
     public function translations()
@@ -55,6 +55,6 @@ class Post extends Model
      */
     public function images()
     {
-    return $this->morphToMany(Image::class, 'imageable');
+        return $this->morphToMany(Image::class, 'imageable');
     }
 }

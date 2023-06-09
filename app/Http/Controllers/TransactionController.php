@@ -2,13 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Livewire\TransactionsTable;
 use App\Models\Transaction;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Request;
 
 class TransactionController extends Controller
 {
@@ -25,9 +19,11 @@ class TransactionController extends Controller
 
     public function transfer()
     {
-        return view('transfer.show',
+        return view(
+            'transfer.show',
         );
     }
+
 
     public function transactions()
     {
@@ -39,23 +35,21 @@ class TransactionController extends Controller
 
     public function statement($transactionId)
     {
-        info($transactionId);
-
         $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
             ->where('id', $transactionId)
             ->whereHas('accountTo', function ($query) {
                 $query->where('accountable_type', Session('activeProfileType'))
-                ->where('accountable_id',  Session('activeProfileId'));
+                ->where('accountable_id', Session('activeProfileId'));
             })
             ->orWhereHas('accountFrom.accountable', function ($query) {
-                 $query->where('accountable_type', Session('activeProfileType'))
+                $query->where('accountable_type', Session('activeProfileType'))
                 ->where('accountable_id', Session('activeProfileId'));
             })
             ->find($transactionId);
 
-            //TODO: add permission check
-            //TODO: if 403, but has permission, redirect with message to switch profile
-            //TODO: replace 403 with custom redirect page incl explanation
+        //TODO: add permission check
+        //TODO: if 403, but has permission, redirect with message to switch profile
+        //TODO: replace 403 with custom redirect page incl explanation
         return ($results != null ? view('transactions.statement', compact(['transactionId'])) : abort(403));
     }
 
@@ -88,7 +82,7 @@ class TransactionController extends Controller
                 $balance -= $t->amount;
             }
         }
-        //TODO store  current balance in cache until it it is updated?
+        //TODO store current balance in cache until it it is updated?
         return $balance;
     }
 }

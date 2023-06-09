@@ -46,6 +46,13 @@ return [
             'date_of_birth' => 'nullable|date',
             'website' => 'nullable',
         ],
+        // TODO: move validation rules in Livewire Posts to this config
+        // 'posts' => [
+        //     'title' =>  'required|string|unique:users,name|min:3|max:40',
+        //     'intro' => 'required|string|max:300',
+        //     'content' => 'required|string',
+        //     'locale' => 'string|unique:post_translations,locale'
+        // ],
     ],
 
     'files' => [

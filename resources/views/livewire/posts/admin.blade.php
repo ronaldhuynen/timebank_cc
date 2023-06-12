@@ -14,13 +14,14 @@
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Start date') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('End date') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
         </tr>
         </thead>
         <tbody >
                 {{-- {{ dd($posts)}} --}}
         @forelse ($posts as $post)
         <tr>
-            <td colspan="7" class="border-t-2 border-gray-900">
+            <td colspan="8" class="border-t-2 border-gray-900">
                     @foreach($post->translations as $key => $translation)
                         {{-- {{ dump($translation)}} --}}
                         <tr>
@@ -28,7 +29,7 @@
                                 {{ $post->id }}
                             </td>
                             <td class="px-6 py-3 whitespace-no-wrap border-b border-white text-sm leading-5">
-                                @if ($post->category->translations->first())
+                                @if (($post->category))
                                      {{ $post->category->translations->first()->name }}
                                 @endif
                             </td>
@@ -48,15 +49,21 @@
                                     {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->stop))->isoFormat('LL'); }}
                                 @endif
                             </td>
-                            <td class="px-6 py-2 whitespace-no-wrap border-b border-white text-sm leading-5">
+                            <td class="py-2.5 whitespace-no-wrap border-b border-white text-sm leading-5">
+                            @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
+                                @if ($translation->stop > \Carbon\Carbon::now() || $translation->stop === null)
+                                    <button
+                                        class="inline-flex items-center px-4 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150"
+                                        wire:click.prevent="stop({{ $translation->id }})"
+                                        onclick="confirm('Do you want to end the publication of this post?') || event.stopImmediatePropagation()"> {{ __('Stop') }}
+                                    </button>
+                                @endif
+                            @endif
+                            </td>
+                            <td class="py-2.5 whitespace-no-wrap border-b border-white text-sm leading-5">
                                 <button
                                     class="inline-flex items-center px-4 py-1 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150"
                                     wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
-                                </button>
-                                <button
-                                    class="inline-flex items-center px-4 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150"
-                                    wire:click.prevent="stop({{ $translation->id }})"
-                                    onclick="confirm('Do you want to end the publication of this post?') || event.stopImmediatePropagation()"> {{ __('Stop') }}
                                 </button>
                             </td>
                         </tr>
@@ -91,8 +98,14 @@
                         </svg>
                     </div>
                       <div class="flex py-2 space-x-12">
-                        @livewire('language-selectbox')
-                        @livewire('category-selectbox')
+                            <livewire:category-selectbox  key="{{ Str::random() }}" :categorySelected="$categoryId" />  <!-- Use the key to keep track of component that are in a loop -->
+                        @error('categoryId')
+                        <p class="mt-2 text-sm text-red-600" id="category-error">{{ $message }}</p>
+                        @enderror
+                            <livewire:language-selectbox  key="{{ Str::random() }}" :locale="$locale" :exclude="$localeExclude" />  <!-- Use the key to keep track of component that are in a loop -->
+                        @error('locale')
+                        <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="py-2 w-full">
                         <label class="block font-medium text-sm text-gray-700">
@@ -116,27 +129,38 @@
                                 <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="py-2 w-full">
-                        <x-textarea wire:model="post.content" label="{{ __('Content')}}" placeholder="" />
-                        @error('post.locale')
-                            <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
-                        @enderror
-                        </div>
 
 
                         <div class="flex space-x-12">
                             <div class="flex-auto my-6 z-50">
-                                <x-datetime-picker label="{{ __('Start of publication') }}" placeholder="{{ __('Select a date') }}" wire:model.defer="start" :without-time="true" display-format="DD-MM-YYYY" />
+                                <x-datetime-picker label="{{ __('Start of publication') }}" placeholder="{{ __('Select a date') }}" wire:model="start" :without-time="true" display-format="DD-MM-YYYY" />
                             </div>
                             <div class="flex-auto my-6 z-50">
-                                <x-datetime-picker label="{{ __('End of publication') }}" placeholder="{{ __('Select a date') }}" wire:model.defer="stop" :without-time="true" display-format="DD-MM-YYYY" />
+                                <x-datetime-picker label="{{ __('End of publication') }}" placeholder="{{ __('Select a date') }}" wire:model="stop" :without-time="true" display-format="DD-MM-YYYY" />
                             </div>
                         </div>
+                         @if ($start < \Carbon\Carbon::now() && $start !== null)
+                            @if ($stop > \Carbon\Carbon::now() || $stop === null)
+                            <div class="text-right mb-3">
+                                {{ __('Warning') . ': ' . __('post will be published immeditely!')}}
+                            </div>
+                            @endif
+                        @else
+                            <div class="text-right mb-3">
+                            </div>
+                        @endif
 
-                    <div class="ml-auto border-t mt-6">
-                        <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    <div class="ml-auto mt-6">
+
+                        @if ($createTranslation === true)
+                            <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                                type="submit">{{ $postId ? __('Add Translation') : __('Save') }}
+                            </button>
+                        @else
+                            <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                                 type="submit">{{ $postId ? __('Update') : __('Save') }}
-                        </button>
+                            </button>
+                        @endif
                         <button class="bg-gray-500 text-white font-bold py-2 px-4 rounded"
                                 wire:click="close"
                                 type="button"

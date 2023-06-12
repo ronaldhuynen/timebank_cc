@@ -8,7 +8,7 @@ use Livewire\Component;
 class LanguageSelectbox extends Component
 {
     public $langOptions = [];
-    public $langSelected;
+    public $localeSelected;
 
 
     /**
@@ -16,10 +16,13 @@ class LanguageSelectbox extends Component
      *
      * @return void
      */
-    public function mount()
+    public function mount($locale, $exclude)
     {
-        $this->langOptions = DB::table('languages')->get(['id','lang_code','name']);
+        info($exclude);
+        $this->langOptions = DB::table('languages')->whereNotIn('lang_code', $exclude)->get(['id','lang_code','name']);
+        $this->localeSelected = $locale;
     }
+
 
     /**
      * When component is updated
@@ -28,7 +31,7 @@ class LanguageSelectbox extends Component
      */
     public function updated()
     {
-        $this->emit('languageToParent', $this->langSelected);
+        $this->emit('languageToParent', $this->localeSelected);
     }
 
 

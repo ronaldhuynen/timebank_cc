@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
             $table->string('locale', 6)->index();
-            $table->string('slug')->unique();
+            $table->string('slug')->unique();;
             $table->string('title');
             $table->text('excerpt');
             $table->text('content');

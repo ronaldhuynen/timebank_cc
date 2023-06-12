@@ -9,7 +9,7 @@ class PostTranslation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id', 'locale', 'title', 'excerpt', 'content', 'start', 'stop'];
+    protected $fillable = ['post_id', 'locale', 'slug', 'title', 'excerpt', 'content', 'start', 'stop'];
 
 
     /**

@@ -5,6 +5,6 @@
         :options="$langOptions"
         option-label="name"
         option-value="lang_code"
-        wire:model="langSelected"
+        wire:model="localeSelected"
     />
 </div>

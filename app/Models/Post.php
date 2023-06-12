@@ -13,7 +13,7 @@ class Post extends Model
 {
     use HasFactory, BelongsToThrough;
 
-    protected $fillable = ['postable_id', 'postable_type'];
+    protected $fillable = ['postable_id', 'postable_type',  'category_id'];
 
 
     /**

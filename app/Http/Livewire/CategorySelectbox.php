@@ -17,9 +17,10 @@ class CategorySelectbox extends Component
      *
      * @return void
      */
-    public function mount()
+    public function mount($categorySelected)
     {
         $this->categoryOptions = DB::table('category_translations')->where('locale', App::getLocale())->get(['id','category_id','name']);
+        $this->categorySelected = $categorySelected;
     }
 
     /**

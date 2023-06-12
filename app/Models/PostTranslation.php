@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PostTranslation extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable, SoftDeletes;
 
     protected $fillable = ['post_id', 'locale', 'slug', 'title', 'excerpt', 'content', 'start', 'stop'];
 
@@ -20,6 +22,16 @@ class PostTranslation extends Model
     public function post()
     {
         return $this->belongsTo(Post::class);
+    }
+
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 
 }

@@ -18,12 +18,10 @@
         </tr>
         </thead>
         <tbody >
-                {{-- {{ dd($posts)}} --}}
         @forelse ($posts as $post)
         <tr>
             <td colspan="8" class="border-t-2 border-gray-900">
                     @foreach($post->translations as $key => $translation)
-                        {{-- {{ dump($translation)}} --}}
                         <tr>
                             <td class="px-6 py-3 whitespace-no-wrap border-b border-white text-sm leading-5">
                                 {{ $post->id }}
@@ -72,7 +70,7 @@
             </tr>
             @empty
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         {{ __('No posts found.') }}
                     </td>
                 </tr>
@@ -111,35 +109,45 @@
                         <label class="block font-medium text-sm text-gray-700">
                             {{ __('Title') }}
                         </label>
-                        <input wire:model.defer="post.title"
+                        <input wire:model.debounce.500ms="title"
                                class="mt-2 text-sm sm:text-base text-xl pl-2 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"/>
-                        @error('post.title')
+                        @error('title')
                             <p class="mt-2 text-sm text-red-600" id="title-error">{{ $message }}</p>
                         @enderror
-                        </div>
-                        <div class="py-2 w-full">
-                            <x-textarea wire:model="post.excerpt" label="{{ __('Intro')}}" placeholder="" />
-                            @error('post.excerpt')
-                                <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="py-2 w-full">
-                            <x-textarea wire:model="post.content" label="{{ __('Content')}}" placeholder="" />
-                            @error('post.content')
-                                <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    </div>
+                    <div class="py-2 w-full">
+                        <label class="block font-medium text-sm text-gray-700">
+                            {{ __('Slug') }}
+                        </label>
+                        <input wire:model.lazy="post.slug"
+                               class="mt-2 text-sm sm:text-base text-xl pl-2 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"/>
+                        @error('post.slug')
+                            <p class="mt-2 text-sm text-red-600" id="slug-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="py-2 w-full">
+                        <x-textarea wire:model.defer="post.excerpt" label="{{ __('Intro')}}" placeholder="" />
+                        @error('post.excerpt')
+                            <p class="mt-2 text-sm text-red-600" id="excerpt-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="py-2 w-full">
+                        <x-textarea wire:model.debounce.500ms="post.content" label="{{ __('Content')}}" placeholder="" />
+                        @error('post.content')
+                            <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
+                        @enderror
+                    </div>
 
 
-                        <div class="flex space-x-12">
-                            <div class="flex-auto my-6 z-50">
-                                <x-datetime-picker label="{{ __('Start of publication') }}" placeholder="{{ __('Select a date') }}" wire:model="start" :without-time="true" display-format="DD-MM-YYYY" />
-                            </div>
-                            <div class="flex-auto my-6 z-50">
-                                <x-datetime-picker label="{{ __('End of publication') }}" placeholder="{{ __('Select a date') }}" wire:model="stop" :without-time="true" display-format="DD-MM-YYYY" />
-                            </div>
+                    <div class="flex space-x-12">
+                        <div class="flex-auto my-6 z-50">
+                            <x-datetime-picker label="{{ __('Start of publication') }}" placeholder="{{ __('Select a date') }}" wire:model="start" :without-time="true" display-format="DD-MM-YYYY" />
                         </div>
-                         @if ($start < \Carbon\Carbon::now() && $start !== null)
+                        <div class="flex-auto my-6 z-50">
+                            <x-datetime-picker label="{{ __('End of publication') }}" placeholder="{{ __('Select a date') }}" wire:model="stop" :without-time="true" display-format="DD-MM-YYYY" />
+                        </div>
+                    </div>
+                        @if ($start < \Carbon\Carbon::now() && $start !== null)
                             @if ($stop > \Carbon\Carbon::now() || $stop === null)
                             <div class="text-right mb-3">
                                 {{ __('Warning') . ': ' . __('post will be published immeditely!')}}
@@ -167,11 +175,11 @@
                                 data-dismiss="modal">{{ __('Close') }}
                         </button>
                     </div>
+
                 </div>
             </form>
+
         </div>
     </div>
-
-
 
 </div>

@@ -4,8 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Models\Post;
 use App\Models\PostTranslation;
-use Illuminate\Support\Arr;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\App;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,11 +19,12 @@ class Posts extends Component
     public $createTranslation;
     public $postId;
     public $categoryId;
-    public $translationId;
+    // public $translationId;
     public $post;
     public $localeInit;
     public $locale;
     public $localeExclude = [];
+    public $title;
     public $start;   // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
     public $stop;     // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
 
@@ -30,16 +32,23 @@ class Posts extends Component
 
     protected $listeners = ['languageToParent', 'categoryToParent'];
 
-    protected $rules = [
-        'locale' => 'required|string',
+
+    protected function rules()
+    {
+        return [
         'categoryId' => 'required|integer',
+        'locale' => 'required|string',
+        'post.slug' =>  [
+        'required', 'min:3', 'max:150',
+        Rule::unique('post_translations', 'slug')->ignore($this->post['translation_id'], 'id')],
         'post.title' => 'required|string|min:3|max:150',
-        // 'post.slug' => 'required|string',
         'post.excerpt' => 'required|string|max:300',
-        'post.content' => 'required|string',
+        'post.content' => 'required|string|max:2000',
         'start' => 'date|nullable',
         'stop' => 'date|nullable',
-    ];
+        ];
+    }
+
 
     public function render()
     {
@@ -58,7 +67,7 @@ class Posts extends Component
                 $query->select('images.id', 'caption', 'path');
             },
             ]);
-;
+        ;
         return view('livewire.posts.admin', [
             'posts' => $post->latest()->paginate(10)
         ]);
@@ -70,7 +79,7 @@ class Posts extends Component
         if ($value === $this->localeInit) {
             $this->locale = $value;
             $this->createTranslation = false;
-        } else if ($value !== $this->localeInit) {
+        } elseif ($value !== $this->localeInit) {
             $this->locale = $value;
             $this->createTranslation = true;
         }
@@ -83,6 +92,13 @@ class Posts extends Component
         $this->categoryId = $value;
         $this->categoryId = $value;
 
+    }
+
+
+    public function updatedTitle($value)
+    {
+        $this->post['title'] = $value;
+        $this->post['slug'] = SlugService::createSlug(PostTranslation::class, 'slug', $value);
     }
 
 
@@ -105,6 +121,7 @@ class Posts extends Component
             'content' => $post['translations'][0]['content'],
         ];
 
+
         $this->localeInit = $post['translations'][0]['locale'];
         $this->locale = $post['translations'][0]['locale'];
 
@@ -126,16 +143,18 @@ class Posts extends Component
     // TODO: author in translation table! with updates when saved
     public function save()
     {
-        $this->validate();
-
         if (!is_null($this->postId)) {
+
             // Add translation to post
+
+            $this->validate();
+
             if ($this->createTranslation === true) {
 
                 $post = Post::find($this->postId);
 
                 $translation = new PostTranslation([
-                    'slug' => 'TODO-slug',
+                    'slug' => $this->post['slug'],
                     'locale' => $this->locale,
                     'title' => $this->post['title'],
                     'excerpt' => $this->post['excerpt'],
@@ -146,11 +165,15 @@ class Posts extends Component
                 $post->translations()->save($translation);
 
             } else {
+
                 // Update a post
+
+                $this->validate();
+
                 $post = Post::find($this->postId);
                 $postTranslation = [
                     'title' => $this->post['title'],
-                    'slug' => 'TODO-slug',
+                    'slug' => $this->post['slug'],
                     'content' => $this->post['content'],
                     'start' => $this->start,
                     'stop' => $this->stop,
@@ -163,14 +186,19 @@ class Posts extends Component
                 $post->save();
             }
         } else {
+
             // Create a new post
+
+            $this->post['translation_id'] = 0;   // for unique validdation on slug: do not ignore non-exsisting translation_id
+            $this->validate();
+
             $post = new Post(['postable_id' => Session('activeProfileId'),
                             'postable_type' => Session('activeProfileType'),
                             'category_id' => $this->categoryId]);
             $post->save();
 
             $translation = new PostTranslation([
-                'slug' => 'TODO-slug',
+                'slug' => $this->post['slug'],
                 'locale' => $this->locale,
                 'title' => $this->post['title'],
                 'excerpt' => $this->post['excerpt'],

@@ -138,7 +138,7 @@
                         <label class="block font-medium text-sm text-gray-700">
                             {{ __('Title') }}
                         </label>
-                        <input wire:model.debounce.500ms="title"
+                        <input wire:model.debounce.500ms="post.title"
                                class="mt-2 text-sm sm:text-base text-xl pl-2 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"/>
                         @error('title')
                             <p class="mt-2 text-sm text-red-600" id="title-error">{{ $message }}</p>

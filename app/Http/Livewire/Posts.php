@@ -18,8 +18,9 @@ class Posts extends Component
     public $showModal = false;
     public $createTranslation;
     public $postId;
+    public $bulkSelected = [];
+    public bool $bulkDisabled = true;
     public $categoryId;
-    // public $translationId;
     public $post;
     public $localeInit;
     public $locale;
@@ -210,6 +211,20 @@ class Posts extends Component
         }
         $this->createTranslation = false;
         $this->showModal = false;
+    }
+
+
+    public function deleteSelected()
+    {
+        $selected = PostTranslation::query()
+            ->whereIn('id', $this->bulkSelected);
+
+        $update = ['stop' => now()]; //set stop publicaton date at now() to prevent immediete publicaion of restored posts
+        $selected->update($update);
+
+        $selected->delete();
+
+        $this->bulkSelected = [];
     }
 
 

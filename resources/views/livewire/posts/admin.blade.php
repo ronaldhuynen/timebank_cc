@@ -1,12 +1,18 @@
-<div>
+<div class="mt-12">
     <button wire:click.prevent="create"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Add new post
+        {{ __('Add new post') }}
+    </button>
+    <button wire:click.prevent="deleteSelected"
+            onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
+            class="@if ($bulkDisabled) opacity-50 @endif bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        {{ __('Delete selected') }}
     </button>
 
-    <table class="table min-w-full mt-12 border-white">
+    <table class="table min-w-full mt-6 border-white">
         <thead>
         <tr>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Id') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Category') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Language') }}</th>
@@ -19,10 +25,16 @@
         </thead>
         <tbody >
         @forelse ($posts as $post)
+        @if (($post->translations->count() === 0))
+        {{-- Do not show post without any translation --}}
+        @else
         <tr>
-            <td colspan="8" class="border-t-2 border-gray-900">
+            <td colspan="9">
                     @foreach($post->translations as $key => $translation)
-                        <tr>
+                        <tr class="transition duration-300 ease-in-out hover:bg-gray-100 dark:bordergray-600 dark:hover:bg-gray-600">
+                            <td class="px-6 py34 whitespace-no-wrap border-b border-white text-sm leading-5">
+                                <input type="checkbox" wire:model="bulkSelected" value="{{ $translation->id }}">
+                            </td>
                             <td class="px-6 py-3 whitespace-no-wrap border-b border-white text-sm leading-5">
                                 {{ $post->id }}
                             </td>
@@ -66,11 +78,10 @@
                             </td>
                         </tr>
                     @endforeach
-                </td>
-            </tr>
+                @endif
             @empty
                 <tr>
-                    <td colspan="8">
+                    <td colspan="9">
                         {{ __('No posts found.') }}
                     </td>
                 </tr>

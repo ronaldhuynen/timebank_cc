@@ -86,6 +86,17 @@
 
     "News": "Nieuws",
     "by": "door",
-    "Read more": "Lees meer"
+    "Read more": "Lees meer",
+
+    "Post Index": "Post index",
+    "Add new post": "Nieuwe post",
+    "Delete selected": "Verwijder selectie",
+    "Category": "Categorie",
+    "Language": "Taal",
+    "Title": "Titel",
+    "Start date": "Startdatum",
+    "End date": "Einddatum",
+    "Stop": "Stop",
+    "Edit": "Bewerken"
 
 }

@@ -1,4 +1,7 @@
 <div class="mt-12">
+
+
+    <!-- Action buttons -->
     <button wire:click.prevent="create"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         {{ __('Add new post') }}
@@ -10,6 +13,9 @@
     </button>
 
     <table class="table min-w-full mt-6 border-white">
+
+
+        <!-- Table head -->
         <thead>
         <tr>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
@@ -23,6 +29,9 @@
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
         </tr>
         </thead>
+
+
+        <!-- Table body -->
         <tbody >
         @forelse ($posts as $post)
         @if (($post->translations->count() === 0))
@@ -39,7 +48,7 @@
                                 {{ $post->id }}
                             </td>
                             <td class="px-6 py-3 whitespace-no-wrap border-b border-white text-sm leading-5">
-                                @if (($post->category))
+                                @if (($post->category->translations->first()))
                                      {{ $post->category->translations->first()->name }}
                                 @endif
                             </td>
@@ -59,6 +68,9 @@
                                     {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->stop))->isoFormat('LL'); }}
                                 @endif
                             </td>
+
+
+                            <!-- Row buttons -->
                             <td class="py-2.5 whitespace-no-wrap border-b border-white text-sm leading-5">
                             @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
                                 @if ($translation->stop > \Carbon\Carbon::now() || $translation->stop === null)
@@ -76,6 +88,8 @@
                                     wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
                                 </button>
                             </td>
+
+
                         </tr>
                     @endforeach
                 @endif
@@ -90,8 +104,12 @@
     </table>
 <hr>
 
+
+    <!-- Pagination links -->
     {{ $posts->links() }}
 
+
+    <!-- Edit modal -->
     <div
         class="@if (!$showModal) hidden @endif flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50">
         <div class="bg-white rounded-lg w-1/2">

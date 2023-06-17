@@ -138,7 +138,7 @@
                         <label class="block font-medium text-sm text-gray-700">
                             {{ __('Title') }}
                         </label>
-                        <input wire:model.debounce.500ms="post.title"
+                        <input wire:model="title"
                                class="mt-2 text-sm sm:text-base text-xl pl-2 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"/>
                         @error('title')
                             <p class="mt-2 text-sm text-red-600" id="title-error">{{ $message }}</p>
@@ -161,13 +161,18 @@
                         @enderror
                     </div>
                     <div class="py-2 w-full">
-                        <x-textarea wire:model.debounce.500ms="post.content" label="{{ __('Content')}}" placeholder="" />
-                        @error('post.content')
-                            <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
-                        @enderror
+
+                    <!-- WYSIWYG editor (CKEditor) -->
+                    <x-editor
+                        property="post.content"
+                        id="ckeditor"
+                        />
+                    @error('post.content')
+                        <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
+                    @enderror
                     </div>
 
-
+                    <!-- Date pickers -->
                     <div class="flex space-x-12">
                         <div class="flex-auto my-6 z-50">
                             <x-datetime-picker label="{{ __('Start of publication') }}" placeholder="{{ __('Select a date') }}" wire:model="start" :without-time="true" display-format="DD-MM-YYYY" />

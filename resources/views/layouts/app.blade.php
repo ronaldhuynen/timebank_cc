@@ -7,17 +7,23 @@
         <meta name="title" content="@yield('title', config('messenger-ui.site_name'))">
 
         <title>@yield('title', config('messenger-ui.site_name'))</title>
-        <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Scripts -->
         <wireui:scripts />
+        <!-- Import jQuery -->
+        {{-- <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+        {{-- <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script> --}}
         <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>
+
+
 
         <!-- Fonts -->
 
         <!-- Styles -->
         @livewireStyles
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/content-styles.css') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link id="main_css" href="{{ asset(mix('app.css', 'vendor/messenger')) }}" rel="stylesheet"> {{--  Needed for Messenger notification pills in nav-bar --}}
         <style>
@@ -223,7 +229,11 @@
         <script src="{{ mix('js/echo.js') }}"></script>
         @livewireScripts
         @stack('modals')
+        @stack('scripts')
         @include('messenger::scripts')
+
+
+{{-- @yield('js') --}}
 
 
 

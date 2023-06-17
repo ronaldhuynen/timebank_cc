@@ -1,6 +1,7 @@
 // console.log('app.js is loaded');
 
 require('./bootstrap');
+require('alpinejs');
 
 
 import Alpine from 'alpinejs';

@@ -14,6 +14,7 @@ const mix = require('laravel-mix');
 mix.setPublicPath('public');
 mix.setResourceRoot('../');
 
+
 mix.js('resources/js/echo.js', 'public/js')
     .js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css/app.css')
@@ -25,5 +26,6 @@ mix.js('resources/js/echo.js', 'public/js')
         'public/webfonts'
     )
     .sourceMaps()
-    .version();
+    .version()
+    .autoload({ 'jquery': ['$', 'window.jQuery', "jQuery", "window.$", "jquery", "window.jquery", 'global.jQuery', "global.$"] });
 

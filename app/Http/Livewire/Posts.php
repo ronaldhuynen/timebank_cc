@@ -26,12 +26,13 @@ class Posts extends Component
     public $locale;
     public $localeExclude = [];
     public $title;
+    public $content;
     public $start;   // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
     public $stop;     // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
 
     protected $paginationTheme = 'tailwind';
 
-    protected $listeners = ['languageToParent', 'categoryToParent'];
+    protected $listeners = ['languageToParent', 'categoryToParent', 'modalShow'];
 
 
     protected function rules()
@@ -50,6 +51,18 @@ class Posts extends Component
         ];
     }
 
+    public function mount(PostTranslation $postTranslation)
+    {
+        // $collection = $postTranslation->select('id', 'content')->get();
+        // map id as keys and content as values
+        // $this->content = $collection->groupBy(function($item){
+        //     return $item->id;
+        // })->map(function($group){
+        //     return $group->map(function($item){
+        //         return $item->content;
+        //     });
+        // })->toArray();
+    }
 
     public function render()
     {
@@ -98,6 +111,7 @@ class Posts extends Component
 
     public function updatedTitle($value)
     {
+        info('updatedTitle');
         $this->post['title'] = $value;
         $this->post['slug'] = SlugService::createSlug(PostTranslation::class, 'slug', $value);
     }
@@ -122,6 +136,10 @@ class Posts extends Component
             'content' => $post['translations'][0]['content'],
         ];
 
+        // Emit content to editor component
+        $this->dispatchBrowserEvent('openModal', ['loadContent' => $this->post['content']]);
+
+        $this->title = $post['translations'][0]['title'];
 
         $this->localeInit = $post['translations'][0]['locale'];
         $this->locale = $post['translations'][0]['locale'];
@@ -139,6 +157,7 @@ class Posts extends Component
     {
         $this->reset();
         $this->showModal = true;
+        $this->dispatchBrowserEvent('openModal');
     }
 
     // TODO: author in translation table! with updates when saved
@@ -180,7 +199,6 @@ class Posts extends Component
                     'stop' => $this->stop,
                     ];
                 $post->translations()->where('id', $this->post['translation_id'])->update($postTranslation);
-
                 $post->category_id = $this->categoryId;
                 $post->postable_id = Session('activeProfileId');
                 $post->postable_type = Session('activeProfileType');
@@ -209,8 +227,8 @@ class Posts extends Component
                 ]);
             $post->translations()->save($translation);
         }
-        $this->createTranslation = false;
-        $this->showModal = false;
+
+        $this->close();
     }
 
 
@@ -230,6 +248,7 @@ class Posts extends Component
 
     public function close()
     {
+        $this->dispatchBrowserEvent('closeModal');  // destroys the CKEditor instance
         $this->createTranslation = false;
         $this->showModal = false;
     }

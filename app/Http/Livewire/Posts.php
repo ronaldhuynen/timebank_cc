@@ -32,7 +32,7 @@ class Posts extends Component
 
     protected $paginationTheme = 'tailwind';
 
-    protected $listeners = ['languageToParent', 'categoryToParent', 'modalShow'];
+    protected $listeners = ['languageToParent', 'categoryToParent', 'modalShow', 'twixEditor'];
 
 
     protected function rules()
@@ -53,15 +53,7 @@ class Posts extends Component
 
     public function mount(PostTranslation $postTranslation)
     {
-        // $collection = $postTranslation->select('id', 'content')->get();
-        // map id as keys and content as values
-        // $this->content = $collection->groupBy(function($item){
-        //     return $item->id;
-        // })->map(function($group){
-        //     return $group->map(function($item){
-        //         return $item->content;
-        //     });
-        // })->toArray();
+
     }
 
     public function render()
@@ -117,6 +109,13 @@ class Posts extends Component
     }
 
 
+    public function twixEditor($value)
+    {
+        $this->post['content'] = $value;
+        info('twixeditor: ' . $this->post['content']);
+    }
+
+
     public function edit($translationId)
     {
         $this->showModal = true;
@@ -136,8 +135,9 @@ class Posts extends Component
             'content' => $post['translations'][0]['content'],
         ];
 
-        // Emit content to editor component
-        $this->dispatchBrowserEvent('openModal', ['loadContent' => $this->post['content']]);
+        // Emit content to trix-editor component
+        $this->emit('showModal', $this->post['content']);
+        // $this->dispatchBrowserEvent('openModal', ['value' => $this->post['content']]);
 
         $this->title = $post['translations'][0]['title'];
 
@@ -157,7 +157,6 @@ class Posts extends Component
     {
         $this->reset();
         $this->showModal = true;
-        $this->dispatchBrowserEvent('openModal');
     }
 
     // TODO: author in translation table! with updates when saved
@@ -194,6 +193,7 @@ class Posts extends Component
                 $postTranslation = [
                     'title' => $this->post['title'],
                     'slug' => $this->post['slug'],
+                    'excerpt' => $this->post['excerpt'],
                     'content' => $this->post['content'],
                     'start' => $this->start,
                     'stop' => $this->stop,
@@ -248,9 +248,8 @@ class Posts extends Component
 
     public function close()
     {
-        $this->dispatchBrowserEvent('closeModal');  // destroys the CKEditor instance
-        $this->createTranslation = false;
-        $this->showModal = false;
+        $this->emit('resetModal');
+        $this->reset();
     }
 
 

@@ -116,7 +116,11 @@
             <form wire:submit.prevent="save" class="w-full">
                 <div class="flex flex-col items-start p-4">
                     <div class="flex items-center w-full pb-4">
+                        @if ($createTranslation === true)
+                        <div class="text-gray-900 font-medium text-lg">{{ __('Add translation to post') }}</div>
+                        @else
                         <div class="text-gray-900 font-medium text-lg">{{ $postId ? __('Edit post') : __('Create new post') }}</div>
+                        @endif
                         <svg wire:click="close"
                              class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer"
                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -160,17 +164,11 @@
                             <p class="mt-2 text-sm text-red-600" id="excerpt-error">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="py-2 w-full">
 
-                    <!-- WYSIWYG editor (CKEditor) -->
-                    <x-editor
-                        property="post.content"
-                        id="ckeditor"
-                        />
-                    @error('post.content')
-                        <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
-                    @enderror
-                    </div>
+                    <!-- Content --- WYSIWYG editor (Trix editor) -->
+                    <div class="py-2 w-full">
+                    <livewire:trix-editor :value="$post['content']"  />
+
 
                     <!-- Date pickers -->
                     <div class="flex space-x-12">

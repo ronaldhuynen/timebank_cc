@@ -53,7 +53,8 @@ class Posts extends Component
 
     public function mount(PostTranslation $postTranslation)
     {
-
+        $this->reset();
+        $this->post['content'] = '';
     }
 
     public function render()
@@ -136,8 +137,9 @@ class Posts extends Component
         ];
 
         // Emit content to trix-editor component
-        $this->emit('showModal', $this->post['content']);
+        // $this->emit('showModal', $this->post['content']);
         // $this->dispatchBrowserEvent('openModal', ['value' => $this->post['content']]);
+
 
         $this->title = $post['translations'][0]['title'];
 

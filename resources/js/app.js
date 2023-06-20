@@ -1,11 +1,13 @@
-// console.log('app.js is loaded');
-
 require('./bootstrap');
 require('alpinejs');
 
 
 import Alpine from 'alpinejs';
 import { createPopper } from "@popperjs/core";
+import Trix from "trix";
+document.addEventListener("trix-before-initialize", () => {
+  // Change Trix.config if you need
+})
 
 window.Alpine = Alpine;
 

@@ -35,8 +35,6 @@ Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
 });
-// CKeditor in Livewire test
-Route::get(uri: '/demo', action: \App\Http\Livewire\Demo::class);
 
 
 

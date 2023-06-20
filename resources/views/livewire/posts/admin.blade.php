@@ -166,8 +166,27 @@
                     </div>
 
                     <!-- Content --- WYSIWYG editor (Trix editor) -->
-                    <div class="py-2 w-full">
-                    <livewire:trix-editor :value="$post['content']"  />
+                    <div class="py-2 w-full"
+                        x-data="{ post: @entangle('post').defer }"
+                        x-init="$watch('post.content', function (value) {
+                                $refs.trix.editor.loadHTML(value)
+                                var length = $refs.trix.editor.getDocument().toString().length
+                                }
+                            )" wire:ignore>
+
+                        <label class="form-label">{{ __('Content') }} <span class="text-danger">*</span></label>
+                        <input name="post.content" id="post.content" type="hidden" x-model="post.content">
+                        <div x-on:trix-change.debounce.1000ms="post.content = $refs.trix.value">
+                            <trix-editor x-ref="trix"
+                                        input="post.content"
+                                        class=""
+                                        style="height: 10rem;">
+                            </trix-editor>
+                            @error('post.content')
+                                <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
 
                     <!-- Date pickers -->

@@ -23,9 +23,10 @@
         <!-- Styles -->
         @livewireStyles
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/content-styles.css') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link id="main_css" href="{{ asset(mix('app.css', 'vendor/messenger')) }}" rel="stylesheet"> {{--  Needed for Messenger notification pills in nav-bar --}}
+        <link rel="stylesheet" href="{{ asset('css/trix.css') }}">
+
         <style>
 
             /* Friends dropdown navigation bar */
@@ -227,6 +228,7 @@
 
         <!-- Scripts -->
         <script src="{{ mix('js/echo.js') }}"></script>
+        {{-- <script src="{{ asset('js/trix.js') }}"></script> --}}
         @livewireScripts
         @stack('modals')
         @stack('scripts')

@@ -228,7 +228,6 @@
 
         <!-- Scripts -->
         <script src="{{ mix('js/echo.js') }}"></script>
-        {{-- <script src="{{ asset('js/trix.js') }}"></script> --}}
         @livewireScripts
         @stack('modals')
         @stack('scripts')

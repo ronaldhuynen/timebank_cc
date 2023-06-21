@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Stevebauman\Location\Facades\Location as IpLocation;

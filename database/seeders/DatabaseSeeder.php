@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DistrictLocalesTableSeeder::class);
         $this->call(LanguagesTableSeeder::class);
         $this->call(LanguageCompetencesTableSeeder::class);
-        $this->call(MediaTableSeeder::class);
+        $this->call(SocialsTableSeeder::class);
         $this->call(CountryLanguagesTableSeeder::class);
         $this->call(PostsTableSeeder::class);
         $this->call(PostTranslationsTableSeeder::class);

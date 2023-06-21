@@ -119,12 +119,12 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
     /**
-     * Get all related media of the user.
+     * Get all related social of the user.
      * Many-to-many polymorphic.
      */
-    public function media()
+    public function social()
     {
-        return $this->morphToMany(Medium::class, 'mediable')->withPivot('id', 'user_on_medium', 'server_of_medium');
+        return $this->morphToMany(Social::class, 'sociable')->withPivot('id', 'user_on_social', 'server_of_social');
     }
 
 

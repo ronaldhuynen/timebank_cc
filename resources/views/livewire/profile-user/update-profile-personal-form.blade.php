@@ -75,10 +75,10 @@
             @enderror
         </div>
 
-        <!--- Media -->
+        <!--- Social media -->
         <div class="col-span-6 sm:col-span-4">
-            @livewire('media-form')
-            @error('media')
+            @livewire('socials-form')
+            @error('socials')
             <p class="text-sm text-red-500">{{$message}}</p>
             @enderror
         </div>

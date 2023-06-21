@@ -2,22 +2,22 @@
 
     <div class="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2">
         <x-select id="update"
-            label="Select social media profile"
+            label=" {{ __('Select social media profile')}}"
             placeholder="{{$selectedPlaceholder->name}}"
             option-label="name"
             option-value="id"
-            wire:model="mediaOptionSelected"
-            wire:key="{{ $mediaOptionSelected}}.select">
-            @foreach ($mediaOptions as $mediumOption)
-                <x-select.user-option src="{{ Storage::url($mediumOption->icon) }}" label="{{$mediumOption->name}}" value="{{ $mediumOption->id }}"/>
+            wire:model="socialsOptionSelected"
+            wire:key="{{ $socialsOptionSelected}}.select">
+            @foreach ($socialsOptions as $socialOption)
+                <x-select.user-option src="{{ Storage::url($socialOption->icon) }}" label="{{$socialOption->name}}" value="{{ $socialOption->id }}"/>
             @endforeach
         </x-select>
     </div>
         <div class="grid grid-cols-1 gap-6 mt-3 mb-3 md:grid-cols-2">
-        <x-input wire:model="userOnMedium" label="Username on medium" placeholder="AccountName" prefix="@ " />
-        @if(App\Models\Medium::find($mediaOptionSelected))
-            @if(Str::contains(App\Models\Medium::find($mediaOptionSelected)->url_structure, '#'))
-            <x-input wire:model="serverOfMedium" label="Server of medium" placeholder="Server name" prefix="@ " />
+        <x-input wire:model="userOnSocial" label="Username on medium" placeholder="AccountName" prefix="@ " />
+        @if(App\Models\Social::find($socialsOptionSelected))
+            @if(Str::contains(App\Models\Social::find($socialsOptionSelected)->url_structure, '#'))
+            <x-input wire:model="serverOfSocial" label="Server of social" placeholder="Server name" prefix="@ " />
             @endif
         @endif
         </div>

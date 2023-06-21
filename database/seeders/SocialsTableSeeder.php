@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class MediaTableSeeder extends Seeder
+class SocialsTableSeeder extends Seeder
 {
 
     /**
@@ -14,12 +14,12 @@ class MediaTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('media')->delete();
-        
-        \DB::table('media')->insert(array (
-            0 => 
+
+        \DB::table('socials')->delete();
+
+        \DB::table('socials')->insert(array (
+            0 =>
             array (
                 'id' => 1,
                 'name' => 'Facebook',
@@ -29,7 +29,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'name' => 'Instagram',
@@ -39,7 +39,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'name' => 'Twitter',
@@ -49,7 +49,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'name' => 'Mastodon',
@@ -59,7 +59,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'name' => 'LinkedIn',
@@ -69,7 +69,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'name' => 'YouTube',
@@ -79,7 +79,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'name' => 'WhatsApp',
@@ -89,7 +89,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
                 'name' => 'Vimeo',
@@ -99,7 +99,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 9,
                 'name' => 'Github',
@@ -109,7 +109,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 10,
                 'name' => 'Snappcar',
@@ -119,7 +119,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 11,
                 'name' => 'Peerby',
@@ -129,7 +129,7 @@ class MediaTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 12,
                 'name' => 'Telegram',
@@ -140,7 +140,7 @@ class MediaTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

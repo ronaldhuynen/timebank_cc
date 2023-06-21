@@ -1,10 +1,12 @@
 <?php
 
+
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateSocialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +15,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('demos', function (Blueprint $table) {
+        Schema::create('socials', function (Blueprint $table) {
             $table->id();
-            $table->longText(column: 'description')->nullable()->comment(comment: 'WYSIWYG' HTML);
+            $table->string('name');
+            $table->string('icon');
+            $table->string('url_structure');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('demos');
+        Schema::dropIfExists('socials');
     }
-};
+}

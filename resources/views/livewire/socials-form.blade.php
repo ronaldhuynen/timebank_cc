@@ -1,9 +1,9 @@
 <div id="updateFocus">
     <div id="update">
         @if(!$updateMode)
-            @include('livewire.media-form-create')
+            @include('livewire.socials-form-create')
         @else
-            @include('livewire.media-form-update')
+            @include('livewire.socials-form-update')
         @endif
     </div>
 
@@ -11,21 +11,21 @@
         <table class="table border-none mt-3">
 
             <tbody>
-                @foreach($media as $value)
+                @foreach($socials as $value)
                 <tr class="flex">
                     <td class="flex-none">
                         <img src="{{  Storage::url($value->icon) }}" alt="{{ $value->name }}" class="h-5 w-5"/>
                     </td>
                         <td class="grow">
                         <a class="text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition"
-                            href="{{ (str_starts_with($value->pivot->user_on_medium, 'https://') ? $value->pivot->user_on_medium :
-                                str_replace('#', $value->pivot->server_of_medium, $value->url_structure)  . $value->pivot->user_on_medium )}}"
+                            href="{{ (str_starts_with($value->pivot->user_on_social, 'https://') ? $value->pivot->user_on_social :
+                                str_replace('#', $value->pivot->server_of_social, $value->url_structure)  . $value->pivot->user_on_social )}}"
                             target="_blank">
-                            @if($value->pivot->server_of_medium)
-                               {{ Str::of('@ '. $value->pivot->user_on_medium . '@ '. $value->pivot->server_of_medium)->limit(43) }}
+                            @if($value->pivot->server_of_social)
+                               {{ Str::of('@ '. $value->pivot->user_on_social . '@ '. $value->pivot->server_of_social)->limit(43) }}
                             @else
-                                {{ (str_starts_with($value->pivot->user_on_medium, 'https://') ? Str::of($value->pivot->user_on_medium)->limit(44) :
-                                    Str::of('@ '. $value->pivot->user_on_medium)->limit(44) ) }}
+                                {{ (str_starts_with($value->pivot->user_on_social, 'https://') ? Str::of($value->pivot->user_on_social)->limit(44) :
+                                    Str::of('@ '. $value->pivot->user_on_social)->limit(44) ) }}
                             @endif
                         </a>
                         </td>

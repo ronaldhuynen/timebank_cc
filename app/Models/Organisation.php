@@ -61,12 +61,12 @@ class Organisation extends Model implements MessengerProvider, Searchable
 
 
     /**
-     * Get all of the media for the organisation.
+     * Get all of the social for the organisation.
      * Many-to-many polymorphic.
      */
-    public function media()
+    public function social()
     {
-        return $this->morphToMany(Medium::class, 'mediable');
+        return $this->morphToMany(Social::class, 'sociable');
     }
 
 

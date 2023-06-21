@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMediablesTable extends Migration
+class CreateSociablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateMediablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mediables', function (Blueprint $table) {
+        Schema::create('sociables', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('medium_id');
-            $table->string('mediable_type');
-            $table->unsignedBigInteger('mediable_id');
-            $table->string('user_on_medium');
-            $table->string('server_of_medium')->nullable();
+            $table->unsignedBigInteger('social_id');
+            $table->string('sociable_type');
+            $table->unsignedBigInteger('sociable_id');
+            $table->string('user_on_social');
+            $table->string('server_of_social')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateMediablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mediables');
+        Schema::dropIfExists('sociables');
     }
 }

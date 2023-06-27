@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\RegisterStep2Controller;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UploadController;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,9 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
     Route::get('/', function () {
         return view('welcome');
     });
+
+
+    // Route::post('upload', [UploadController::class, 'store']);
 
     //----- Protected auth verified routes -----//
     Route::middleware([

@@ -21,7 +21,8 @@ mix.js('resources/js/echo.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         //
     ])
-    .css('node_modules/trix/dist/trix.css', 'public/css/trix.css')
+    .copy('node_modules/trix/dist/trix.css', 'public/css/trix.css')
+    .copy('node_modules/filepond/dist/filepond.min.css', 'public/css/filepond.min.css')
     .copy(
         'node_modules/@fortawesome/fontawesome-free/webfonts',
         'public/webfonts'

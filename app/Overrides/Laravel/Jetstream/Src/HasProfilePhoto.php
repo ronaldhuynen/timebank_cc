@@ -48,7 +48,7 @@ trait HasProfilePhoto
         }
 
 
-         // Only delete a profile-photo, and not a efault-photo in 'app-images/'
+         // Only delete a profile-photo, and not a default-photo in 'app-images/'
         if (str_starts_with($this->profile_photo_path, 'profile-photos/')) {
             Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
 

@@ -8,11 +8,14 @@ use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Spatie\Image\Image;
 
 class Posts extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     public $search;
     public $showModal = false;
@@ -30,9 +33,13 @@ class Posts extends Component
     public $start;   // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
     public $stop;     // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
 
+    public $image;
+    public $imageCaption = '';
+    public $media;
+
     protected $paginationTheme = 'tailwind';
 
-    protected $listeners = ['languageToParent', 'categoryToParent', 'modalShow', 'twixEditor'];
+    protected $listeners = ['languageToParent', 'categoryToParent', 'trixEditor', 'uploadImage'];
 
 
     protected function rules()
@@ -48,13 +55,14 @@ class Posts extends Component
         'post.content' => 'required|string|',
         'start' => 'date|nullable',
         'stop' => 'date|nullable',
+        'image' => 'nullable|file|mimes:gif,png,jpg,jpeg|max:5120',
+        // 'temporary_file_upload' => ['rules' => 'file|mimes:gif,png,jpg,jpeg|max:5120']
         ];
     }
 
-    public function mount(PostTranslation $postTranslation)
+    public function mount($value = '')
     {
         $this->reset();
-        $this->post['content'] = '';
     }
 
     public function render()
@@ -104,18 +112,15 @@ class Posts extends Component
 
     public function updatedTitle($value)
     {
-        info('updatedTitle');
         $this->post['title'] = $value;
         $this->post['slug'] = SlugService::createSlug(PostTranslation::class, 'slug', $value);
     }
 
 
-    public function twixEditor($value)
+    public function updatedPostImages($value)
     {
-        $this->post['content'] = $value;
-        info('twixeditor: ' . $this->post['content']);
+        dd($value);
     }
-
 
     public function edit($translationId)
     {
@@ -125,39 +130,55 @@ class Posts extends Component
 
         $post = Post::with(['translations' => function ($query) use ($translationId) {
             $query->where('id', $translationId);
-        }])->find($this->postId)->toArray();
+        }])->find($this->postId);
 
         $this->post = [
-            'translation_id' => $post['translations'][0]['id'],
-            'locale' => $post['translations'][0]['locale'],
-            'title' => $post['translations'][0]['title'],
-            'slug' => $post['translations'][0]['slug'],
-            'excerpt' => $post['translations'][0]['excerpt'],
-            'content' => $post['translations'][0]['content'],
+            'category_id' => $post->category_id,
+            'translation_id' => $post->translations->first()->id,
+            'locale' => $post->translations->first()->locale,
+            'title' => $post->translations->first()->title,
+            'slug' => $post->translations->first()->slug,
+            'excerpt' => $post->translations->first()->excerpt,
+            'content' => $post->translations->first()->content,
         ];
+
+
+        // dd($this->media);
 
         // Emit content to trix-editor component
         // $this->emit('showModal', $this->post['content']);
+        // $this->emit('showModal', $this->media = $post->getFirstMedia('post_image'));
         // $this->dispatchBrowserEvent('openModal', ['value' => $this->post['content']]);
 
 
-        $this->title = $post['translations'][0]['title'];
+        // Emit content to trix-editor component
+        $this->emit('showModal', $this->post['content']);
 
-        $this->localeInit = $post['translations'][0]['locale'];
-        $this->locale = $post['translations'][0]['locale'];
+
+        $this->title = $this->post['title'];
+        $this->content = $this->post['content'];
+
+        $this->localeInit = $this->post['locale'];
+        $this->locale = $this->post['locale'];
 
         // Exclude exsisting translations but include initial locale from LanguageSelectbox
         $this->localeExclude = Post::find($this->postId)->translations()->whereNot('locale', $this->localeInit)->pluck('locale');
 
-        $this->categoryId = $post['category_id'];
-        $this->start = $post['translations'][0]['start'];   // x-date-time-picker and x-select need a separate public property, see start of this file
-        $this->stop = $post['translations'][0]['stop']; // x-date-time-picker and x-select need a separate public property, see start of this file
+        $this->categoryId = $post->category_id;
+        $this->start = $post->translations->first()->start;   // x-date-time-picker and x-select need a separate public property, see start of this file
+        $this->stop = $post->translations->first()->stop; // x-date-time-picker and x-select need a separate public property, see start of this file
+
+        if ($post->media->count() > 0) {
+            $this->media = $post->first()->getFirstMedia('posts')->img('thumbnail')->toHtml();
+            info($this->media);
+        }
     }
 
 
     public function create()
     {
         $this->reset();
+        $this->emit('showModal');
         $this->showModal = true;
     }
 
@@ -185,11 +206,26 @@ class Posts extends Component
                     ]);
                 $post->translations()->save($translation);
 
+                $post->clearMediaCollection('posts');
+
+                // Media Library
+
+                if ($this->image) {
+                    $post->addMedia($this->image->getRealPath())
+                        ->withCustomProperties([
+                            'caption' => $this->imageCaption,
+                        ])
+                        ->toMediaCollection('posts');
+                }
+
+
             } else {
 
                 // Update a post
 
                 $this->validate();
+
+                info('Update method: ' . $this->post['content']);
 
                 $post = Post::find($this->postId);
                 $postTranslation = [
@@ -205,12 +241,23 @@ class Posts extends Component
                 $post->postable_id = Session('activeProfileId');
                 $post->postable_type = Session('activeProfileType');
                 $post->save();
+
+                //TODO: refactor to function for create, update, translate
+                $post->clearMediaCollection('posts');
+                if ($this->image) {
+                    $post->addMedia($this->image->getRealPath())
+                        ->withCustomProperties([
+                            'caption' => $this->imageCaption,
+                        ])
+                        ->toMediaCollection('posts');
+                }
+
             }
         } else {
 
             // Create a new post
 
-            $this->post['translation_id'] = 0;   // for unique validdation on slug: do not ignore non-exsisting translation_id
+            $this->post['translation_id'] = 0;   // for unique validation on slug: do not ignore non-exsisting translation_id
             $this->validate();
 
             $post = new Post(['postable_id' => Session('activeProfileId'),
@@ -228,18 +275,54 @@ class Posts extends Component
                 'stop' => $this->stop,
                 ]);
             $post->translations()->save($translation);
+
+            $post->clearMediaCollection('posts');
+
+            if ($this->image) {
+                $post->addMedia($this->image->getRealPath())
+                    ->withCustomProperties([
+                        'caption' => $this->imageCaption,
+                    ])
+                    ->toMediaCollection('posts');
+            }
+
         }
 
         $this->close();
     }
 
 
+    /**
+     * Receives value from livewire trix-editor component
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function trixEditor($value)
+    {
+        $this->post['content'] = $value;
+        info('trixeditor: ' . $this->post['content']);
+    }
+
+
+    public function updatedImage()
+    {
+        info('image resize!');
+        // if ($this->image) {
+        //     // dd($this->image);
+        //     Image::load($this->image->path)
+        //     ->focalCrop(3072, 2304, 50, 50)
+        //     ->save();
+        // }
+        // return $this->image;
+    }
+
     public function deleteSelected()
     {
         $selected = PostTranslation::query()
             ->whereIn('id', $this->bulkSelected);
 
-        $update = ['stop' => now()]; //set stop publicaton date at now() to prevent immediete publicaion of restored posts
+        $update = ['stop' => now()]; //set stop publicaton date at now() to prevent immediate publication of restored posts
         $selected->update($update);
 
         $selected->delete();
@@ -250,8 +333,9 @@ class Posts extends Component
 
     public function close()
     {
-        $this->emit('resetModal');
-        $this->reset();
+        $this->emit('file-pond-clear');
+        $this->showModal = false;
+        // $this->reset();
     }
 
 

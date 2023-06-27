@@ -1,14 +1,21 @@
 require('./bootstrap');
 require('alpinejs');
 
-
-import Alpine from 'alpinejs';
+import Alpine from "alpinejs";
+import * as FilePond from "filepond";
 import { createPopper } from "@popperjs/core";
+import focus from "@alpinejs/focus";
 import Trix from "trix";
+
+Alpine.plugin(focus);
+
+window.FilePond = FilePond;
+window.createPopper = createPopper;
+window.Alpine = Alpine;
+
+
 document.addEventListener("trix-before-initialize", () => {
   // Change Trix.config if you need
-
-
     window.Trix = Trix; // Don't need to bind to the window, but useful for debugging.
     Trix.config.toolbar.getDefaultHTML = toolbarDefaultHTML;
 
@@ -63,10 +70,8 @@ document.addEventListener("trix-before-initialize", () => {
 
 })
 
-window.Alpine = Alpine;
 
 Alpine.start();
-window.createPopper = createPopper;
 
 
 

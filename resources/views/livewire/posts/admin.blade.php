@@ -112,10 +112,10 @@
     <!-- Edit modal -->
     <div
         class="@if (!$showModal) hidden @endif flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50">
-        <div class="bg-white rounded-lg w-1/2">
-            <form wire:submit.prevent="save" class="w-full">
+        <div class="bg-white rounded-lg w-3/5 overflow-scroll h-5/6">
+            <form wire:submit.prevent="save" class="w-ful">
                 <div class="flex flex-col items-start p-4">
-                    <div class="flex items-center w-full pb-4">
+                    <div class="flex items-center w-full pb-4 bg-white">
                         @if ($createTranslation === true)
                         <div class="text-gray-900 font-medium text-lg">{{ __('Add translation to post') }}</div>
                         @else
@@ -131,11 +131,11 @@
                       <div class="flex py-2 space-x-12">
                             <livewire:category-selectbox  key="{{ Str::random() }}" :categorySelected="$categoryId" />  <!-- Use the key to keep track of component that are in a loop -->
                         @error('categoryId')
-                        <p class="mt-2 text-sm text-red-600" id="category-error">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-red-600" id="category-error">{{ $message }}</p>
                         @enderror
                             <livewire:language-selectbox  key="{{ Str::random() }}" :locale="$locale" :exclude="$localeExclude" />  <!-- Use the key to keep track of component that are in a loop -->
                         @error('locale')
-                        <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="py-2 w-full">
@@ -165,27 +165,36 @@
                         @enderror
                     </div>
 
-                    <!-- Content --- WYSIWYG editor (Trix editor) -->
-                    <div class="py-2 w-full"
-                        x-data="{ post: @entangle('post').defer }"
-                        x-init="$watch('post.content', function (value) {
-                                $refs.trix.editor.loadHTML(value)
-                                var length = $refs.trix.editor.getDocument().toString().length
-                                }
-                            )" wire:ignore>
 
-                        <label class="form-label">{{ __('Content') }} <span class="text-danger">*</span></label>
-                        <input name="post.content" id="post.content" type="hidden" x-model="post.content">
-                        <div x-on:trix-change.debounce.1000ms="post.content = $refs.trix.value">
-                            <trix-editor x-ref="trix"
-                                        input="post.content"
-                                        class=""
-                                        style="height: 10rem;">
-                            </trix-editor>
-                            @error('post.content')
-                                <p class="mt-2 text-sm text-red-600" id="content-error">{{ $message }}</p>
-                            @enderror
+                    <!-- Content --- WYSIWYG editor (Trix editor) -->
+                        <livewire:trix-editor :value="$post['content']"  />
+                        @error('post.content')
+                            <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
+                        @enderror
+
+
+                    <!-- File upload -->
+                    <div class="py-2 h-56">
+                        @if ($image === null)
+                            {!! $media !!}
+                        @else
+                            <img src="{{ $image->temporaryUrl() }}" class="object-cover h-48 w-48">
+                        @endif
+                        <div
+                            x-data="{ isUploading: false, progress: 0 }"
+                            x-on:livewire-upload-start="isUploading = true"
+                            x-on:livewire-upload-finish="isUploading = false"
+                            x-on:livewire-upload-error="isUploading = false"
+                            x-on:livewire-upload-progress="progress = $event.detail.progress"
+                        >
+                            <!-- File Input -->
+                            <input type="file" wire:model="image">
+                            <!-- Progress Bar -->
+                            <div x-show="isUploading">
+                                <progress max="100" x-bind:value="progress"></progress>
+                            </div>
                         </div>
+                        @error('image') <span class="error">{{ $message }}</span> @enderror
                     </div>
 
 
@@ -209,7 +218,7 @@
                             </div>
                         @endif
 
-                    <div class="ml-auto mt-6">
+                    <div x-data class="ml-auto mt-6">
 
                         @if ($createTranslation === true)
                             <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
@@ -217,7 +226,7 @@
                             </button>
                         @else
                             <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                                type="submit">{{ $postId ? __('Update') : __('Save') }}
+                                type="submit" x-on:click="$refs.trix.editor.blur()">{{ $postId ? __('Update') : __('Save') }}
                             </button>
                         @endif
                         <button class="bg-gray-500 text-white font-bold py-2 px-4 rounded"
@@ -232,5 +241,15 @@
 
         </div>
     </div>
+
+    @section('scripts')
+        <script>
+        console.log('scripts section executes');
+
+            FilePond.registerPlugin(FilePondPluginImagePreview);
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+        </script>
+    @endsection
 
 </div>

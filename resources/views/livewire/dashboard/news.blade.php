@@ -5,12 +5,12 @@
         <div class="grid grid-cols-2 space-x-12">
             <div class="">
             <div class="px-2 py-1 text-xs font-semibold text-white bg-black">
-                {{ $post['category']}}
+                {{ $post->category}}
             </div>
-            <h1 class=" text-white bg-black px-2 py-1 font-bold text-2xl my-2">{{ $post['title']}}</h1>
-            <p class="text-gray-600 mb-2 md:mb-6 text-base"> {{ $post['excerpt']}}</p>
+            <h1 class=" text-white bg-black px-2 py-1 font-bold text-2xl my-2">{{ $post->title }}</h1>
+            <p class="text-gray-600 mb-2 md:mb-6 text-base"> {{ $post->excerpt }}</p>
                 <div class="flex justify-between mb-2 mt-6">
-                    <span class="font-thin text-sm text-gray-500">{{ $post['start'] . ' ' . __('by')}} {{ $author['name']}}</span>
+                    <span class="font-thin text-sm text-gray-500">{{ $post->start . ' ' . __('by')}} {{ $author }}</span>
                     <div class="flex justify-end">
                         <span class="sm:block hidden mb-2 text-gray-900 font-bold">{{ __('Read more') }}</span>
                     <div class="ml-1 mt-1">
@@ -20,10 +20,12 @@
                 </div>
             </div>
 
-            @if($images != null)
+            @if($media != null)
             <div class="grid grid-cols-1 place-items-end">
-                <div class="w-full h-full bg-cover" style="background-image: url({{$images['path']}})">
-                    <div class="w-full h-full bg-black opacity-25 text-white text-3xs pr-1 text-right">{{ $images['caption'] }}</div>
+                <div class=" w-full h-full">
+                {{ $media('4_3') }}
+                {{-- TODO: move caption to single post page --}}
+                    {{-- <div class="w-full h-full bg-black opacity-25 text-white text-3xs pr-1 text-right">{{ $images['caption'] }}</div> --}}
                 </div>
             </div>
             @endif

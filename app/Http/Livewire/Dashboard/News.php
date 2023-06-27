@@ -9,14 +9,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class News extends Component
 {
     public $author;
     public $post = [];
-    public $images =[];
+    public $media;
 
 
     public function mount(Request $request)
@@ -27,7 +26,7 @@ class News extends Component
         // TODO: check what happens with ciy_id, when multiple locations per user are used!
         // $dd($city_id);
         $city_id = [$city_id]; // This should become an array [300,305] for use with multiple city locations
-        $post =collect(
+        $post =
             Post::with([
             'postable' => function ($query) {
                 $query->select(['id', 'name', 'email']);
@@ -44,34 +43,27 @@ class News extends Component
                 })
                 ->orderBy('updated_at', 'desc');
             },
-            'images' => function ($query) {
-                $query->select('images.id', 'caption', 'path');
+            'media' => function ($query) {
+                $query->where('collection_name', 'post_image');
             },
             ])
             ->firstOrFail()
-        )->all();
-        // dd($post);
+        ;
 
-        if ($post['category']) {
+        if ($post->category) {      // Show only posts if it has the category type of this model's class
 
-            $this->author = collect([
-                'postable_id' => $post['postable_id'],
-                'postable_type' => $post['postable_type'],
-                'name' => $post['postable']['name'],
-            ]);
-            // dd($post);
-            if ($post['translations']) {
-                $this->post = collect($post['translations'][0]);
-                $this->post['start'] = Carbon::createFromTimeStamp(strtotime($this->post['start']))->isoFormat('LL');
-                $this->post['category'] = Category::find($post['category_id'])->translations->where('locale', App::getLocale())->first()->name;
-            }
-            // dd($post['images']);
-            if ($post['images']) {
-                //TODO: Update when multiple posts are fetched!
-                //TODO: Test when post has no images, or make images required!
-                $this->images['path'] = Storage::url($post['images'][0]['path']);
-                $this->images['caption'] = $post['images'][0]['caption'];
-                // dd($this->images);
+            $this->author = $post->postable->name;
+
+            if ($post->translations->first()) {
+                $this->post = $post->translations->first();
+                $this->post['start'] = Carbon::createFromTimeStamp(strtotime($this->post->start))->isoFormat('LL');
+                $this->post['category'] = Category::find($post->category_id)->translations->where('locale', App::getLocale())->first()->name;
+
+                if ($post->media) {
+                    $this->media = Post::find($post->id)->getFirstMedia('posts');
+                    // $this->post['caption'] = "TODO: move me to single post page";
+                    // dd($this->post['image']);
+                }
             }
         }
     }

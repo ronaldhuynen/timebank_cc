@@ -26,6 +26,8 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link id="main_css" href="{{ asset(mix('app.css', 'vendor/messenger')) }}" rel="stylesheet"> {{--  Needed for Messenger notification pills in nav-bar --}}
         <link rel="stylesheet" href="{{ asset('css/trix.css') }}">
+        {{-- <link rel="stylesheet" href="{{ asset('css/filepond.min.css') }}"> --}}
+        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/>
 
         <style>
 
@@ -229,8 +231,14 @@
         <!-- Scripts -->
         <script src="{{ mix('js/echo.js') }}"></script>
         @livewireScripts
+        {{-- @fcScripts  Form Components by rawilk/laravel-form-components use after @livewireScripts --}}
+        <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+        <script>
+        </script>
         @stack('modals')
         @stack('scripts')
+        @yield('scripts')
         @include('messenger::scripts')
 
 

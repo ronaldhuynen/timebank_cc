@@ -8,13 +8,9 @@
 
         <title>@yield('title', config('messenger-ui.site_name'))</title>
 
-        <!-- Scripts -->
+        <!-- Scripts head -->
         <wireui:scripts />
-        <!-- Import jQuery -->
-        {{-- <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
-        {{-- <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script> --}}
         <script src="{{ asset('js/app.js') }}" defer></script>
-        {{-- <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script> --}}
 
 
 
@@ -26,7 +22,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link id="main_css" href="{{ asset(mix('app.css', 'vendor/messenger')) }}" rel="stylesheet"> {{--  Needed for Messenger notification pills in nav-bar --}}
         <link rel="stylesheet" href="{{ asset('css/trix.css') }}">
-        {{-- <link rel="stylesheet" href="{{ asset('css/filepond.min.css') }}"> --}}
+        <link rel="stylesheet" href="{{ asset('css/filepond.min.css') }}">
         <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/>
 
         <style>
@@ -202,6 +198,30 @@
             #messenger-style-overrides .toast-error {background-color: #e3342f}
             #messenger-style-overrides .toast-succes {background-color: #fffff; color: #1f2937!important}
 
+            input[type=file]::file-selector-button {
+                border-style: none;
+                padding: 0;
+                color: #fff !important;
+                padding-left: 1.0rem;
+                padding-top: 0.25rem;
+                padding-right: 1.0rem;
+                padding-bottom: 0.25rem;
+                border-radius: 0.25rem;
+                -webkit-appearance: button;
+                font-weight: 700;
+                --tw-bg-opacity: 1;
+                background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+            	text-transform: none;
+            }
+
+            input[type=file]::file-selector-button:hover {
+            cursor: pointer;
+            --tw-text-opacity: 1;
+            --tw-bg-opacity: 1;
+            background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+            }
+
+
         </style>
 
     </head>
@@ -228,18 +248,17 @@
             </main>
         </div>
 
-        <!-- Scripts -->
+        <!-- Scripts body-->
         <script src="{{ mix('js/echo.js') }}"></script>
         @livewireScripts
         {{-- @fcScripts  Form Components by rawilk/laravel-form-components use after @livewireScripts --}}
         <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-        <script>
-        </script>
         @stack('modals')
-        @stack('scripts')
-        @yield('scripts')
+        {{-- @stack('scripts') --}}
+        @yield('scripts_body')
         @include('messenger::scripts')
+
 
 
 {{-- @yield('js') --}}

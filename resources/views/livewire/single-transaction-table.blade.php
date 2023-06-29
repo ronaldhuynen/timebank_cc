@@ -120,7 +120,6 @@
                 {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(280)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
                <script>
                    function qrModal() {
-                       console.log('qrModal exxcutes');
                         document.getElementById('qr-container').firstElementChild.setAttribute("width", "100%");
                         document.getElementById('qr-container').firstElementChild.setAttribute("height", "100%");
                         document.getElementById('qr-container').firstElementChild.setAttribute("viewBox", "0 0 600 600");

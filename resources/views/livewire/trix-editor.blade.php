@@ -1,4 +1,4 @@
-<div wire:ignore>
+<div wire:ignore class="ml-auto mt-6">
     <div
         x-data="{ value: @entangle('value').defer }"
         x-init="$watch('value', function (value) {
@@ -9,8 +9,15 @@
             wire:key="uniqueKey"
             wire:ignore
             >
-    <label class="form-label">{{ __('Content') }} <span class="text-danger">*</span></label>
-        <input  name="value" id="{{ $trixId }}" type="hidden" >
+    <label class="form-label">{{ __('Content') }} <span class="text-red-600">*</span></label>
+        <input  name="value" id="{{ $trixId }}" type="hidden"
+        class="block w-full text-sm text-slate-500
+      file:mr-4 file:py-2 file:px-4
+      file:rounded-full file:border-0
+      file:text-sm file:font-semibold
+      file:bg-violet-50 file:text-violet-700
+      hover:file:bg-violet-100"
+        >
         <trix-editor input="{{ $trixId }}" x-ref="trix" class="trix-content"
 
         ></trix-editor>

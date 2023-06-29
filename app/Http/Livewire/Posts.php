@@ -55,8 +55,7 @@ class Posts extends Component
         'post.content' => 'required|string|',
         'start' => 'date|nullable',
         'stop' => 'date|nullable',
-        'image' => 'nullable|file|mimes:gif,png,jpg,jpeg|max:5120',
-        // 'temporary_file_upload' => ['rules' => 'file|mimes:gif,png,jpg,jpeg|max:5120']
+        'image' => 'nullable|image|max:5120',
         ];
     }
 
@@ -116,11 +115,6 @@ class Posts extends Component
         $this->post['slug'] = SlugService::createSlug(PostTranslation::class, 'slug', $value);
     }
 
-
-    public function updatedPostImages($value)
-    {
-        dd($value);
-    }
 
     public function edit($translationId)
     {
@@ -307,7 +301,7 @@ class Posts extends Component
 
     public function updatedImage()
     {
-        info('image resize!');
+        info('updated image');
         // if ($this->image) {
         //     // dd($this->image);
         //     Image::load($this->image->path)
@@ -335,7 +329,10 @@ class Posts extends Component
     {
         $this->emit('file-pond-clear');
         $this->showModal = false;
-        // $this->reset();
+        $this->reset();
+
+info('HIERZO!');
+
     }
 
 

@@ -20,7 +20,7 @@ class News extends Component
 
     public function mount(Request $request)
     {
-        $type = substr(strrchr(get_class($this), '\\'), 1); // Get class name without namespace, used to query correct Post type
+        $type = substr(strrchr(get_class($this), '\\'), 1); // Get class name without namespace, used to query correct Post type ('News')
         $location_id = User::find($request->user()->id)->locations->all()[0]['pivot']['location_id'];
         $city_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
         // TODO: check what happens with ciy_id, when multiple locations per user are used!
@@ -29,7 +29,7 @@ class News extends Component
         $post =
             Post::with([
             'postable' => function ($query) {
-                $query->select(['id', 'name', 'email']);
+                $query->select(['id', 'name']);
             },
             'category' => function ($query) use ($type, $city_id) {
                 $query->where('type', $type)->where('city_id', $city_id);
@@ -38,7 +38,7 @@ class News extends Component
                 $query
                 ->where('locale', App::getLocale())
                 ->whereDate('start', '<=', now())
-                ->where( function($query) {
+                ->where(function ($query) {
                     $query->whereDate('stop', '>', now())->orWhereNull('stop');
                 })
                 ->orderBy('updated_at', 'desc');
@@ -64,6 +64,8 @@ class News extends Component
                     // $this->post['caption'] = "TODO: move me to single post page";
                     // dd($this->post['image']);
                 }
+
+
             }
         }
     }

@@ -128,8 +128,8 @@
                                 d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"/>
                         </svg>
                     </div>
-                      <div class="flex py-2 space-x-12">
-                            <livewire:category-selectbox  key="{{ Str::random() }}" :categorySelected="$categoryId" />  <!-- Use the key to keep track of component that are in a loop -->
+                      <div class="flex py-2 space-x-12 required">
+                            <livewire:category-selectbox  key="{{ Str::random() }}" :categorySelected="$categoryId" /> <!-- Use the key to keep track of component that are in a loop -->
                         @error('categoryId')
                             <p class="mt-2 text-sm text-red-600" id="category-error">{{ $message }}</p>
                         @enderror
@@ -140,7 +140,7 @@
                     </div>
                     <div class="py-2 w-full">
                         <label class="block font-medium text-sm text-gray-700">
-                            {{ __('Title') }}
+                            {{ __('Title') }} <span class="text-red-600">*</span>
                         </label>
                         <input wire:model="title"
                                class="mt-2 text-sm sm:text-base text-xl pl-2 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"/>
@@ -150,7 +150,7 @@
                     </div>
                     <div class="py-2 w-full">
                         <label class="block font-medium text-sm text-gray-700">
-                            {{ __('Slug') }}
+                            {{ __('Slug') }} <span class="text-red-600">*</span>
                         </label>
                         <input wire:model.lazy="post.slug"
                                class="mt-2 text-sm sm:text-base text-xl pl-2 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"/>
@@ -174,11 +174,14 @@
 
 
                     <!-- File upload -->
-                    <div class="py-2 h-56">
+                    <label class="form-label">{{ __('Image') }}</label>
+                    <div class="py-6 w-full">
                         @if ($image === null)
                             {!! $media !!}
                         @else
-                            <img src="{{ $image->temporaryUrl() }}" class="object-cover h-48 w-48">
+                            <!-- Preview image -->
+                            {{-- Make sure that that object cover class w and h is 4 by 3 proportion as images will later be cropped in 4 by 3 proportions --}}
+                            <img src="{{ $image->temporaryUrl() }}" class="object-cover w-64 h-48 my-6">
                         @endif
                         <div
                             x-data="{ isUploading: false, progress: 0 }"
@@ -218,7 +221,7 @@
                             </div>
                         @endif
 
-                    <div x-data class="ml-auto mt-6">
+                    <div class="ml-auto mt-6">
 
                         @if ($createTranslation === true)
                             <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
@@ -226,7 +229,7 @@
                             </button>
                         @else
                             <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                                type="submit" x-on:click="$refs.trix.editor.blur()">{{ $postId ? __('Update') : __('Save') }}
+                                type="submit">{{ $postId ? __('Update') : __('Save') }}
                             </button>
                         @endif
                         <button class="bg-gray-500 text-white font-bold py-2 px-4 rounded"
@@ -242,14 +245,18 @@
         </div>
     </div>
 
-    @section('scripts')
+
+<!--- Scripts body section, loaded in layouts at the end of the page just befor the </body> tag -->
+    @section('scripts_body')
+
         <script>
-        console.log('scripts section executes');
+        console.log('scripts body section executes');
 
             FilePond.registerPlugin(FilePondPluginImagePreview);
             FilePond.registerPlugin(FilePondPluginFileValidateType);
 
         </script>
+
     @endsection
 
 </div>

@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\RegisterStep2Controller;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +71,13 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
 
 
             Route::get('/posts', 'App\Http\Controllers\PostController@index')->name('posts.index');
+
+            Route::get('/post/{postId}', 'App\Http\Controllers\PostController@show')
+                ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed
+                ->name('post.show');
+
+
+
 
             Route::get('/user/personal-profile', 'App\Http\Controllers\ProfileUserController@show')->name('profile-user.show');
 

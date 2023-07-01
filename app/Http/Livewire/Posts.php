@@ -19,7 +19,7 @@ class Posts extends Component
     use Actions;
 
     public $search;
-    public $showModal = flse;
+    public $showModal = false;
     public $createTranslation;
     public $postId;
     public $bulkSelected = [];
@@ -250,7 +250,26 @@ class Posts extends Component
 
                 $this->saveMedia($post);
 
+                if ($post) {
 
+                    // WireUI notification
+                    $this->notification()->success(
+                        $title = __('Saved'),
+                        $description = __('Post was saved successfully!')
+
+                    );
+
+                } else {
+
+                    // WireUI notification
+                    $this->notification()->error(
+                        $title = __('Error!'),
+                        $description = __('Oops, we have an error: the post was not saved!')
+                    );
+
+                    return back();
+
+                }
             }
         } else {
 

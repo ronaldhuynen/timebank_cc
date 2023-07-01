@@ -67,7 +67,7 @@ class PostController extends Controller
 
 
 
-    public function index()
+    public function admin()
     {
         return view(
             'posts.index',

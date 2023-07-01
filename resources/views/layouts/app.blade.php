@@ -51,6 +51,25 @@
             background-color: rgb(107 114 128 / var(--tw-bg-opacity));
             }
 
+            progress {
+                width: 100%;
+                height: 20px;
+                border: none;
+                background-color: #f1f1f1;
+            }
+
+            progress::-webkit-progress-bar {
+                background-color: #f1f1f1;
+            }
+
+            progress::-webkit-progress-value {
+                background-color: #9ae6b4;
+            }
+
+            progress::-moz-progress-bar {
+                background-color: #9ae6b4;
+            }
+
 
         </style>
 

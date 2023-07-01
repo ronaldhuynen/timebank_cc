@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-900 leading-tight">
-            {{ __('Your transaction history') }}
+            {{ __('Posts') }}
         </h2>
     </x-slot>
 
@@ -23,10 +23,6 @@
 
                     <!--- Admin section -->
                     @livewire('posts')
-
-
-                    <!--- Transactions table -->
-                    {{-- @livewire('transactions-table') --}}
 
 
                 </div>

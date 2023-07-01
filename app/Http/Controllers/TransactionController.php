@@ -53,7 +53,13 @@ class TransactionController extends Controller
         return ($results != null ? view('transactions.statement', compact(['transactionId'])) : abort(403));
     }
 
-
+    
+    /**
+     * Get user accounts associated with the active profile. 
+     * Returns an array with account ID, name, and balance.
+     * 
+     * @return void
+     */
     public function userAccounts()
     {
         $class = new (Session('activeProfileType'));

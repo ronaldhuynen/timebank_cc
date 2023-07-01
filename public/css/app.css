@@ -21378,9 +21378,6 @@ select{
 .w-full{
   width: 100%;
 }
-.w-2\/3{
-  width: 66.666667%;
-}
 .min-w-0{
   min-width: 0px;
 }
@@ -21577,6 +21574,9 @@ select{
 .items-center{
   align-items: center;
 }
+.items-baseline{
+  align-items: baseline;
+}
 .justify-end{
   justify-content: flex-end;
 }
@@ -21758,6 +21758,9 @@ select{
 .whitespace-pre-wrap{
   white-space: pre-wrap;
 }
+.break-all{
+  word-break: break-all;
+}
 .rounded{
   border-radius: 0.25rem;
 }
@@ -21851,9 +21854,6 @@ select{
 }
 .border-l-4{
   border-left-width: 4px;
-}
-.border-r{
-  border-right-width: 1px;
 }
 .border-r-0{
   border-right-width: 0px;
@@ -22714,9 +22714,9 @@ select{
 .text-3xs{
   font-size: 0.5rem;
 }
-.text-4xl{
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+.text-5xl{
+  font-size: 3rem;
+  line-height: 1;
 }
 .text-base{
   font-size: 1rem;
@@ -22737,14 +22737,6 @@ select{
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
-}
-.text-6xl{
-  font-size: 3.75rem;
-  line-height: 1;
-}
-.text-5xl{
-  font-size: 3rem;
-  line-height: 1;
 }
 .font-bold{
   font-weight: 700;
@@ -23616,38 +23608,6 @@ input[type="number"].appearance-number-none{
 .selection\:bg-transparent::selection{
   background-color: transparent;
 }
-.file\:mr-4::file-selector-button{
-  margin-right: 1rem;
-}
-.file\:rounded-full::file-selector-button{
-  border-radius: 9999px;
-}
-.file\:border-0::file-selector-button{
-  border-width: 0px;
-}
-.file\:bg-violet-50::file-selector-button{
-  --tw-bg-opacity: 1;
-  background-color: rgb(245 243 255 / var(--tw-bg-opacity));
-}
-.file\:px-4::file-selector-button{
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-.file\:py-2::file-selector-button{
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-.file\:text-sm::file-selector-button{
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-.file\:font-semibold::file-selector-button{
-  font-weight: 600;
-}
-.file\:text-violet-700::file-selector-button{
-  --tw-text-opacity: 1;
-  color: rgb(109 40 217 / var(--tw-text-opacity));
-}
 .checked\:translate-x-3:checked{
   --tw-translate-x: 0.75rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -24280,10 +24240,6 @@ input[type="number"].appearance-number-none{
 .hover\:ring-zinc-600:hover{
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(82 82 91 / var(--tw-ring-opacity));
-}
-.hover\:file\:bg-violet-100::file-selector-button:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(237 233 254 / var(--tw-bg-opacity));
 }
 .focus\:z-10:focus{
   z-index: 10;

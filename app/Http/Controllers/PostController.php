@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 
@@ -21,7 +19,6 @@ class PostController extends Controller
     }
 
 
-
     public function show($postId)
     {
         $post =
@@ -29,7 +26,9 @@ class PostController extends Controller
             'postable' => function ($query) {
                 $query->select(['id', 'name']);
             },
-            'category',
+            'category'=> function ($query) {
+                $query->with('translations');
+            },
             'translations' => function ($query) {
                 $query
                 ->where('locale', App::getLocale());
@@ -46,11 +45,18 @@ class PostController extends Controller
                 $media = Post::find($postId)->getFirstMedia('posts');
             }
 
-            if ($post->category) {
-                $category =  Category::find($post->category_id)->translations->where('locale', App::getLocale())->first()->name;
+            if ($post->translations->count() >= 1){
+
+            if ($post->category->translations) {
+                $category =  $post->category->translations->where('locale', App::getLocale())->first()->name;
             }
 
             $update = Carbon::createFromTimeStamp(strtotime($post->translations->first()->updated_at))->isoFormat('LL');
+
+            } else {
+                // TODO: Make error page with back route!
+                dd('No translation available for this post!');
+            }
 
 
         //TODO: add permission check

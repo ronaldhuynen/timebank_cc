@@ -1,7 +1,8 @@
 {
-    "/js/echo.js": "/js/echo.js?id=5a3816c7389a2145b10b58ea8cfa7696",
-    "/js/app.js": "/js/app.js?id=4ba5c46cd2da4521edcc1206cee6d6cc",
-    "/css/app.css": "/css/app.css?id=c8f05a692cfea9e70a9bb4ac80bfac98",
+    "/js/echo.js": "/js/echo.js?id=1c3ebd31266c7219ea9764f167a405ff",
+    "/js/app.js": "/js/app.js?id=1b881ff526713b6fe29210f020ba1432",
+    "/css/app.css": "/css/app.css?id=5a117675e8b033f9b5d72ef7794b48c6",
+    "/css/custom_messenger.css": "/css/custom_messenger.css?id=2b76b7078941ec993ef3611723c16747",
     "/css/trix.css": "/css/trix.css?id=54667e76e68c34494f13a6771b0f1aae",
     "/css/filepond.min.css": "/css/filepond.min.css?id=19ec5cac972cc798172a28755ad14132",
     "/webfonts/fa-brands-400.ttf": "/webfonts/fa-brands-400.ttf?id=e2e2b1797606a266ed55549f5bb5a179",

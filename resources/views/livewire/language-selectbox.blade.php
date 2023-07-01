@@ -11,10 +11,10 @@
 
 {{--Style asterisk symbol to red --}}
 {{-- TODO: prevent 'Uncaught TypeError: $ is not a function' error when modal is still hiddden --}}
-    <script>
+    {{-- <script>
         $('.asteriks-red').each(function(){
         this.innerHTML = this.innerHTML.replace(/\*/g, '<span class="text-red-600">*</span>');
         });
-    </script>
+    </script> --}}
 
 </div>

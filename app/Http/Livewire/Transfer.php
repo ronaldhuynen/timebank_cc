@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
-
 class Transfer extends Component
 {
     use Actions;
@@ -89,12 +88,12 @@ class Transfer extends Component
     }
 
 
-     /**
-     * Sets To account details after it is selected
-     *
-     * @param  mixed $details
-     * @return void
-     */
+    /**
+    * Sets To account details after it is selected
+    *
+    * @param  mixed $details
+    * @return void
+    */
     public function toAccountDetails($details)
     {
         $this->requiredError = false;
@@ -121,7 +120,7 @@ class Transfer extends Component
         // TODO create also a validation error when from and to account is equal!!
     }
 
-       /**
+    /**
      * Sets description after it is updated
      *
      * @param  mixed $content
@@ -136,23 +135,23 @@ class Transfer extends Component
 
     public function validateModal()
     {
-    try {
-        $this->validate();
-    } catch (\Illuminate\Validation\ValidationException $errors) {
-        // dump($errors);
-        $this->validate();
-        // Execution stops here if validation fails.
-    }
+        try {
+            $this->validate();
+        } catch (\Illuminate\Validation\ValidationException $errors) {
+            // dump($errors);
+            $this->validate();
+            // Execution stops here if validation fails.
+        }
 
-    $fromAccountId = $this->fromAccountId;
-    $toAccountId = $this->toAccountId;
-    $amount = dbFormat($this->amount);
-    $transactions = new TransactionController();
-    $balanceFrom = $transactions->getBalance($fromAccountId);
-    $balanceTo = $transactions->getBalance($toAccountId);
+        $fromAccountId = $this->fromAccountId;
+        $toAccountId = $this->toAccountId;
+        $amount = dbFormat($this->amount);
+        $transactions = new TransactionController();
+        $balanceFrom = $transactions->getBalance($fromAccountId);
+        $balanceTo = $transactions->getBalance($toAccountId);
 
-    if ($toAccountId === $fromAccountId) {
-        return redirect()->back()->with('error', 'You cannot transfer Hours from and to the same account');
+        if ($toAccountId === $fromAccountId) {
+            return redirect()->back()->with('error', 'You cannot transfer Hours from and to the same account');
         } else {
             $account_exists = Account::where('id', $toAccountId)->first();
             if (!$account_exists) {

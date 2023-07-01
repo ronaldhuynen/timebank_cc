@@ -36,7 +36,6 @@
     "dependencies": {
         "emoji-toolkit": "^7.0.0",
         "filepond": "^4.30.4",
-        "trix": "^2.0.5",
-        "trumbowyg": "^2.27.3"
+        "trix": "^2.0.5"
     }
 }

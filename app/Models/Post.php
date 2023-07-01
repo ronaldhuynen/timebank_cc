@@ -15,7 +15,9 @@ use Znck\Eloquent\Traits\BelongsToThrough;
 
 class Post extends Model implements HasMedia
 {
-    use HasFactory, BelongsToThrough, InteractsWithMedia;
+    use HasFactory;
+    use BelongsToThrough;
+    use InteractsWithMedia;
 
 
     protected $fillable = ['postable_id', 'postable_type',  'category_id'];

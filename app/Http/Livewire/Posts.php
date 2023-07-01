@@ -10,15 +10,16 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Spatie\Image\Image;
+use WireUi\Traits\Actions;
 
 class Posts extends Component
 {
     use WithPagination;
     use WithFileUploads;
+    use Actions;
 
     public $search;
-    public $showModal = false;
+    public $showModal = flse;
     public $createTranslation;
     public $postId;
     public $bulkSelected = [];
@@ -27,7 +28,7 @@ class Posts extends Component
     public $post;
     public $localeInit;
     public $locale;
-    public $localeExclude = [];
+    public $localesAvailable = [];
     public $title;
     public $content;
     public $start;   // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
@@ -104,8 +105,9 @@ class Posts extends Component
     public function categoryToParent($value)
     {
         $this->categoryId = $value;
-        $this->categoryId = $value;
-
+        // HIERZO: language-selectbox reset
+        // langoption moeten worden bijgewerkt
+        //  refresh language-selectbox component?
     }
 
 
@@ -124,7 +126,11 @@ class Posts extends Component
 
         $post = Post::with(['translations' => function ($query) use ($translationId) {
             $query->where('id', $translationId);
-        }])->find($this->postId);
+        },
+        'category' => function ($query) {
+            $query->with('translations');
+        },
+        ])->find($this->postId);
 
         $this->post = [
             'category_id' => $post->category_id,
@@ -156,15 +162,21 @@ class Posts extends Component
         $this->locale = $this->post['locale'];
 
         // Exclude exsisting translations but include initial locale from LanguageSelectbox
-        $this->localeExclude = Post::find($this->postId)->translations()->whereNot('locale', $this->localeInit)->pluck('locale');
+        $localesExclude = Post::find($this->postId)->translations()->whereNot('locale', $this->localeInit)->pluck('locale');
+        info('localesExclude: ' .$localesExclude);
+        // Exclude also languages that have no translation for the selected category
+        $localesAvailable = $post->category->translations->pluck('locale');
+        info('localesAvailable:' .$localesAvailable);
+        $this->localesAvailable = $localesAvailable->diff($localesExclude);
+        info('localesAvailable result:' .$localesAvailable);
+
 
         $this->categoryId = $post->category_id;
         $this->start = $post->translations->first()->start;   // x-date-time-picker and x-select need a separate public property, see start of this file
         $this->stop = $post->translations->first()->stop; // x-date-time-picker and x-select need a separate public property, see start of this file
 
         if ($post->media->count() > 0) {
-            $this->media = $post->first()->getFirstMedia('posts')->img('thumbnail')->toHtml();
-            info($this->media);
+            $this->media = $post->first()->getFirstMedia('posts')->img('4_3')->toHtml();
         }
     }
 
@@ -194,23 +206,23 @@ class Posts extends Component
                     'locale' => $this->locale,
                     'title' => $this->post['title'],
                     'excerpt' => $this->post['excerpt'],
-                    'content' => $this->post['content'],
+                    'content' => $this->content,
                     'start' => $this->start,
                     'stop' => $this->stop,
                     ]);
                 $post->translations()->save($translation);
 
-                $post->clearMediaCollection('posts');
 
-                // Media Library
+                $this->saveMedia($post);
 
-                if ($this->image) {
-                    $post->addMedia($this->image->getRealPath())
-                        ->withCustomProperties([
-                            'caption' => $this->imageCaption,
-                        ])
-                        ->toMediaCollection('posts');
-                }
+                // if ($this->image) {
+                //                     $post->clearMediaCollection('posts');
+                //     $post->addMedia($this->image->getRealPath())
+                //         ->withCustomProperties([
+                //             'caption' => $this->imageCaption,
+                //         ])
+                //         ->toMediaCollection('posts');
+                // }
 
 
             } else {
@@ -226,7 +238,7 @@ class Posts extends Component
                     'title' => $this->post['title'],
                     'slug' => $this->post['slug'],
                     'excerpt' => $this->post['excerpt'],
-                    'content' => $this->post['content'],
+                    'content' => $this->content,
                     'start' => $this->start,
                     'stop' => $this->stop,
                     ];
@@ -236,15 +248,8 @@ class Posts extends Component
                 $post->postable_type = Session('activeProfileType');
                 $post->save();
 
-                //TODO: refactor to function for create, update, translate
-                $post->clearMediaCollection('posts');
-                if ($this->image) {
-                    $post->addMedia($this->image->getRealPath())
-                        ->withCustomProperties([
-                            'caption' => $this->imageCaption,
-                        ])
-                        ->toMediaCollection('posts');
-                }
+                $this->saveMedia($post);
+
 
             }
         } else {
@@ -264,21 +269,14 @@ class Posts extends Component
                 'locale' => $this->locale,
                 'title' => $this->post['title'],
                 'excerpt' => $this->post['excerpt'],
-                'content' => $this->post['content'],
+                'content' => $this->content,
                 'start' => $this->start,
                 'stop' => $this->stop,
                 ]);
             $post->translations()->save($translation);
 
-            $post->clearMediaCollection('posts');
 
-            if ($this->image) {
-                $post->addMedia($this->image->getRealPath())
-                    ->withCustomProperties([
-                        'caption' => $this->imageCaption,
-                    ])
-                    ->toMediaCollection('posts');
-            }
+            $this->saveMedia($post);
 
         }
 
@@ -286,16 +284,28 @@ class Posts extends Component
     }
 
 
+    public function saveMedia($post)
+    {
+        if ($this->image) {
+            $post->clearMediaCollection('posts');
+            $post->addMedia($this->image->getRealPath())
+                ->withCustomProperties([
+                    'caption' => $this->imageCaption,
+                ])
+                ->toMediaCollection('posts');
+        }
+    }
+
     /**
      * Receives value from livewire trix-editor component
      *
      * @param  mixed $value
      * @return void
      */
-    public function trixEditor($value)
+    public function trixEditor($value = null)
     {
-        $this->post['content'] = $value;
-        info('trixeditor: ' . $this->post['content']);
+        info('trixEditor catch');
+        $this->content = $value;
     }
 
 
@@ -327,12 +337,9 @@ class Posts extends Component
 
     public function close()
     {
-        $this->emit('file-pond-clear');
+        // $this->emit('file-pond-clear');
         $this->showModal = false;
         $this->reset();
-
-info('HIERZO!');
-
     }
 
 

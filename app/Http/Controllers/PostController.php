@@ -55,8 +55,7 @@ class PostController extends Controller
             $update = Carbon::createFromTimeStamp(strtotime($post->translations->first()->updated_at))->isoFormat('LL');
 
         } else {
-            // TODO: Make error page with back route!
-            dd('No translation available for this post!');
+            return view('posts.no_translation');
         }
 
 
@@ -78,8 +77,7 @@ class PostController extends Controller
     {
         $postTranslation = PostTranslation::where('slug', $slug)->get()->first();
         if (!$postTranslation) {
-            // TODO: Make error page with back route!
-            dd('Sorry, this post does not exsist.');
+            return view('posts.not_found');
         }
         $postId = $postTranslation->post_id;
         $locale = $postTranslation->locale;
@@ -116,9 +114,7 @@ class PostController extends Controller
             $update = Carbon::createFromTimeStamp(strtotime($post->translations->first()->updated_at))->isoFormat('LL');
 
         } else {
-            // Post has not been published or does not exist
-            // TODO: Make error page with back route!
-            dd('Sorry, we can not find this post. Maybe it is removed, or it is not published yet.');
+             return view('posts.not_found');
         }
 
 
@@ -130,11 +126,14 @@ class PostController extends Controller
     }
 
 
-
     public function admin()
     {
-        return view(
-            'posts.index',
-        );
+        return view('posts.index');
+    }
+
+
+    public function notFound()
+    {
+        return view('posts.not_found');
     }
 }

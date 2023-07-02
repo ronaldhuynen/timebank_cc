@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="mt-6">
-                        <div class="px-0 py-2 text-gray-900 text-xl font-bold text-sm">
+                        <div class="px-0 py-2 text-gray-900 text-xl font-bold">
                             {{ $post->translations->first()->excerpt }}
                         </div>
 

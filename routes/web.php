@@ -74,7 +74,8 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
 
             Route::get('/posts/{postId}', 'App\Http\Controllers\PostController@showById')
                 ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed
-                ->name('posts.show_by_id');
+                ->name('posts.show_by_id')
+                ->missing(function () {return view('posts.not_found');});
 
             Route::get('/posts/{slug}', 'App\Http\Controllers\PostController@showBySlug')
                 ->name('posts.show_by_slug');

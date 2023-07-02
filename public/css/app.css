@@ -20992,6 +20992,10 @@ select{
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
+.mx-6{
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
@@ -21854,6 +21858,9 @@ select{
 }
 .border-l-4{
   border-left-width: 4px;
+}
+.border-r{
+  border-right-width: 1px;
 }
 .border-r-0{
   border-right-width: 0px;

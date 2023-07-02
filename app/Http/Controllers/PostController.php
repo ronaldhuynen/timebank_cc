@@ -66,9 +66,9 @@ class PostController extends Controller
         return ($post != null ? view('posts.show', compact(['post','media','category','update'])) : abort(403));
     }
 
-    
+
     /**
-     * Show view by .../posts/{slug}. 
+     * Show view by .../posts/{slug}.
      * Post will be shown in user's App:locale() language if available, even is the slug is in another language.
      *
      * @param  mixed $slug
@@ -77,6 +77,10 @@ class PostController extends Controller
     public function showBySlug($slug)
     {
         $postTranslation = PostTranslation::where('slug', $slug)->get()->first();
+        if (!$postTranslation) {
+            // TODO: Make error page with back route!
+            dd('Sorry, this post does not exsist.');
+        }
         $postId = $postTranslation->post_id;
         $locale = $postTranslation->locale;
         $post =
@@ -89,16 +93,15 @@ class PostController extends Controller
             },
             'translations' => function ($query) {
                 $query
-                ->where('locale', App::getLocale());
-                // ->whereDate('start', '<=', now())    //! include date queries and not (yet) published page!
-                // ->where( function($query) {
-                //     $query->whereDate('stop', '>', now())->orWhereNull('stop');
-                // })
-            },
+                ->where('locale', App::getLocale())
+                ->whereDate('start', '<=', now())
+                ->where(function ($query) {
+                    $query->whereDate('stop', '>', now())->orWhereNull('stop');
+                });
+            }
             ])
             ->where('id', $postId)
             ->firstOrFail();
-            // dd($postId);
 
         if ($post->media) {
             $media = Post::find($postId)->getFirstMedia('posts');
@@ -113,8 +116,9 @@ class PostController extends Controller
             $update = Carbon::createFromTimeStamp(strtotime($post->translations->first()->updated_at))->isoFormat('LL');
 
         } else {
+            // Post has not been published or does not exist
             // TODO: Make error page with back route!
-            dd('No translation available for this post!');
+            dd('Sorry, we can not find this post. Maybe it is removed, or it is not published yet.');
         }
 
 

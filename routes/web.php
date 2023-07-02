@@ -72,9 +72,12 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
 
             Route::get('/posts/admin', 'App\Http\Controllers\PostController@admin')->name('posts.admin');
 
-            Route::get('/posts/{postId}', 'App\Http\Controllers\PostController@show')
+            Route::get('/posts/{postId}', 'App\Http\Controllers\PostController@showById')
                 ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed
-                ->name('post.show');
+                ->name('post.show_by_id');
+
+            Route::get('/posts/{slug}', 'App\Http\Controllers\PostController@showBySlug')
+                ->name('post.show_by_slug');
 
 
 

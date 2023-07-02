@@ -215,6 +215,21 @@ class Posts extends Component
 
                 $this->saveMedia($post);
 
+                // WireUI notification
+                if ($post) {
+                    $this->notification()->success(
+                        $title = __('Saved'),
+                        $description = __('Post was saved successfully')
+                    );
+                } else {
+                    $this->notification()->error(
+                        $title = __('Error!'),
+                        $description = __('Oops, we have an error: the post was not saved!')
+                    );
+                    return back();
+                }
+
+
                 // if ($this->image) {
                 //                     $post->clearMediaCollection('posts');
                 //     $post->addMedia($this->image->getRealPath())
@@ -250,25 +265,18 @@ class Posts extends Component
 
                 $this->saveMedia($post);
 
+                // WireUI notification
                 if ($post) {
-
-                    // WireUI notification
                     $this->notification()->success(
                         $title = __('Saved'),
-                        $description = __('Post was saved successfully!')
-
+                        $description = __('Post was saved successfully')
                     );
-
                 } else {
-
-                    // WireUI notification
                     $this->notification()->error(
                         $title = __('Error!'),
                         $description = __('Oops, we have an error: the post was not saved!')
                     );
-
                     return back();
-
                 }
             }
         } else {
@@ -296,6 +304,21 @@ class Posts extends Component
 
 
             $this->saveMedia($post);
+
+            // WireUI notification
+            if ($post) {
+                $this->notification()->success(
+                    $title = __('Saved'),
+                    $description = __('Post was saved successfully!')
+                );
+            } else {
+                $this->notification()->error(
+                    $title = __('Error!'),
+                    $description = __('Oops, we have an error: the post was not saved!')
+                );
+                return back();
+            }
+
 
         }
 

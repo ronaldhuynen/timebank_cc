@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Fix 'Specified key was too long error' when storing emoji's as striung in DB.
+        // Fix 'Specified key was too long error' when storing emoji's as string in DB.
         Schema::defaultStringLength(191);
 
 

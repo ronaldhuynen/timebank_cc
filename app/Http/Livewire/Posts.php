@@ -49,7 +49,8 @@ class Posts extends Component
         'categoryId' => 'required|integer',
         'locale' => 'required|string',
         'post.slug' =>  [
-        'required', 'min:3', 'max:150',
+        'required', 'min:3', 'max:150', 'regex:/^[\pL\pM\pN-]+$/u',
+
         Rule::unique('post_translations', 'slug')->ignore($this->post['translation_id'], 'id')],
         'post.title' => 'required|string|min:3|max:150',
         'post.excerpt' => 'required|string|max:300',

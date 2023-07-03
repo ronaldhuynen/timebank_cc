@@ -14,13 +14,13 @@
                         <!-- TODO: insert not found image here -->
 
                         <div class="mt-8 text-5xl font-bold text-gray-900">
-                            {{ __('Sorry, this post does not exist') }}
+                            {{ __('Sorry, this page does not exist') }}
                         </div>
 
 
                     </div>
                     <div class="mb-12 mt-6 flex justify-between">
-                        <span class="text-xl font-bold text-gray-900">This web-address does not link to a published post.
+                        <span class="text-xl font-bold text-gray-900">{{ __('This web-address does not link to a published page.') }}'
                         </span>
                         <div class="flex justify-end">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

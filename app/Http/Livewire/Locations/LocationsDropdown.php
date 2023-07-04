@@ -20,6 +20,7 @@ class LocationsDropdown extends Component
         $this->country = $value;
     }
 
+
     public function cityToChildren($value)
     {
         $this->city = $value;

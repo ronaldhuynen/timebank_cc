@@ -11,7 +11,7 @@ class CategorySelectbox extends Component
     public $categoryOptions = [];
     public $categorySelected;
 
-    /**
+    /**  
      * Prepare the component.
      *
      * @return void

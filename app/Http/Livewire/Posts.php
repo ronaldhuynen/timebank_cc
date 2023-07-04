@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Category;
+use App\Models\CategoryTranslation;
 use App\Models\Post;
 use App\Models\PostTranslation;
 use Cviebrock\EloquentSluggable\Services\SlugService;
@@ -25,6 +27,7 @@ class Posts extends Component
     public $bulkSelected = [];
     public bool $bulkDisabled = true;
     public $categoryId;
+    public $translationId;
     public $post;
     public $localeInit;
     public $locale;
@@ -54,7 +57,7 @@ class Posts extends Component
         Rule::unique('post_translations', 'slug')->ignore($this->post['translation_id'], 'id')],
         'post.title' => 'required|string|min:3|max:150',
         'post.excerpt' => 'required|string|max:300',
-        'post.content' => 'required|string|',
+        'content' => 'required|string|',
         'start' => 'date|nullable',
         'stop' => 'date|nullable',
         'image' => 'nullable|image|max:5120',
@@ -106,7 +109,9 @@ class Posts extends Component
     public function categoryToParent($value)
     {
         $this->categoryId = $value;
-        // HIERZO: language-selectbox reset
+        info('Catched categoryId: ' . $value);
+        $this->getLangOptions();
+        // !HIERZO: language-selectbox reset
         // langoption moeten worden bijgewerkt
         //  refresh language-selectbox component?
     }
@@ -122,6 +127,7 @@ class Posts extends Component
     public function edit($translationId)
     {
         $this->showModal = true;
+        $this->translationId;
         $this->createTranslation = false;
         $this->postId = PostTranslation::find($translationId)->post_id;
 
@@ -162,22 +168,46 @@ class Posts extends Component
         $this->localeInit = $this->post['locale'];
         $this->locale = $this->post['locale'];
 
-        // Exclude exsisting translations but include initial locale from LanguageSelectbox
-        $localesExclude = Post::find($this->postId)->translations()->whereNot('locale', $this->localeInit)->pluck('locale');
-        info('localesExclude: ' .$localesExclude);
-        // Exclude also languages that have no translation for the selected category
-        $localesAvailable = $post->category->translations->pluck('locale');
-        info('localesAvailable:' .$localesAvailable);
-        $this->localesAvailable = $localesAvailable->diff($localesExclude);
-        info('localesAvailable result:' .$localesAvailable);
-
-
         $this->categoryId = $post->category_id;
+
+        $this->getLangOptions();
+
         $this->start = $post->translations->first()->start;   // x-date-time-picker and x-select need a separate public property, see start of this file
         $this->stop = $post->translations->first()->stop; // x-date-time-picker and x-select need a separate public property, see start of this file
 
         if ($post->media->count() > 0) {
             $this->media = $post->first()->getFirstMedia('posts')->img('4_3')->toHtml();
+        }
+    }
+
+
+        
+    /**
+     * Get all available language options for the language selectbox
+     *
+     * @return void
+     */
+    public function getLangOptions()
+    {
+        // Get available translations for the selected category
+        $localesAvailable = Category::with(['translations' => function ($query) {
+            $query->select('category_id', 'locale');
+        }])->find($this->categoryId);
+
+        // Exclude existing translations but include initial locale
+        if ($this->postId) {
+            $localesExclude = Post::find($this->postId)->translations()->whereNot('locale', $this->localeInit)->pluck('locale');
+            info('localesExclude: ' .$localesExclude);
+        } else {
+            $localesExclude = [];
+        }
+
+        if ($localesAvailable) {
+            $localesAvailable = $localesAvailable->translations()->pluck('locale');
+            $this->localesAvailable = $localesAvailable->diff($localesExclude);
+            info('localesAvailable result:' . $this->localesAvailable);
+        } else {
+            $this->localesAvailable = [];
         }
     }
 
@@ -189,7 +219,7 @@ class Posts extends Component
         $this->showModal = true;
     }
 
-    // TODO: author in translation table! with updates when saved
+    // TODO: author in translation table! with updates when saved ?
     public function save()
     {
         if (!is_null($this->postId)) {

@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Component;
-use RTippin\Messenger\Facades\Messenger;
 use Stevebauman\Location\Facades\Location as IpLocation;
 use Throwable;
 use WireUi\Traits\Actions;
@@ -47,22 +46,21 @@ class Registration extends Component implements CreatesNewUsers
     {
         if (App::environment(['local', 'staging'])) {
             // $ip = '103.75.231.255'; // Static IP address Brussels for testing
-            $ip = '31.20.250.12'; // Statis IP address The Hague for testing
-        // $ip = '102.129.156.0'; // Statis IP address Berlin for testing
+            $ip = '31.20.250.12'; // Static IP address The Hague for testing
+            // $ip = '102.129.156.0'; // Static IP address Berlin for testing
         } else {
+            // TODO: Test ip lookup in production
             $ip = $request->ip(); // Dynamic IP address
         }
         $IpLocationInfo = IpLocation::get($ip);
         if ($IpLocationInfo) {
-
-            //HIERZO: VERGELIJK OPGEZOCHTE LOCATIE MET AANWEZIGE LOCATIES IN DB !
-
+            
             $country = Country::select('id')->where('code', $IpLocationInfo->countryCode)->first();
             if ($country) {
                 $this->country = $country->id;
             }
 
-            $city = DB::table('city_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', 'en')->first();
+            $city = DB::table('city_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', app()->getLocale())->first(); //We only need the city_id, therefore we use the default app locale in the where query.
             if ($city) {
                 $this->city = $city->city_id;
             };

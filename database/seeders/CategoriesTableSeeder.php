@@ -55,6 +55,18 @@ class CategoriesTableSeeder extends Seeder
                 'updated_at' => '2023-06-02 16:20:59',
                 'deleted_at' => NULL,
             ),
+            3 => 
+            array (
+                'id' => 4,
+                'type' => 'Event',
+                'country_id' => NULL,
+                'division_id' => NULL,
+                'city_id' => 305,
+                'district_id' => NULL,
+                'created_at' => '2023-07-04 09:00:02',
+                'updated_at' => '2023-07-04 09:00:02',
+                'deleted_at' => NULL,
+            ),
         ));
         
         

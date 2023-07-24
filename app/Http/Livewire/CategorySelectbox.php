@@ -18,8 +18,12 @@ class CategorySelectbox extends Component
      */
     public function mount($categorySelected)
     {
-        $this->categoryOptions = DB::table('category_translations')->where('locale', App::getLocale())->get(['id','category_id','name']);
+        $this->categoryOptions = DB::table('category_translations')
+            ->where('locale', App::getLocale())
+            ->orderBy('name')
+            ->get(['id','category_id','name']);
         $this->categorySelected = $categorySelected;
+        $this->updated();
     }
 
     /**

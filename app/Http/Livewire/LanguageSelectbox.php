@@ -18,7 +18,10 @@ class LanguageSelectbox extends Component
     public function mount($locale, $available)
     {
         info($available);
-        $this->langOptions = DB::table('languages')->whereIn('lang_code', $available)->get(['id','lang_code','name']);
+        $this->langOptions = DB::table('languages')
+            ->whereIn('lang_code', $available)            
+            ->orderBy('name')
+            ->get(['id','lang_code','name']);
         $this->localeSelected = $locale;
     }
 

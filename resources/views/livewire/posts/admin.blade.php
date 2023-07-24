@@ -170,54 +170,113 @@
 
                     <!-- Content --- WYSIWYG editor (Trix editor) -->
                     <livewire:trix-editor :value="$post['content']" />
-                    @error('post.content')
+                    @error('content')
                         <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
                     @enderror
 
+                    <div class="w-full py-2">
+                        <!-- Image upload -->
+                        <div class="w-1/2">
+                            <label class="form-label mt-6">{{ __('Image') }}</label>
 
-                    <!-- File upload -->
-                    <label class="form-label mt-6">{{ __('Image') }}</label>
-                    <div class="w-full">
-                        @if ($image === null)
-                            <div class="mb-2 h-48 w-64"> {!! $media !!} </div>
-                        @else
-                            <!-- Preview image -->
-                            {{-- Make sure that that object cover class w and h is 4 by 3 proportion as images will later be cropped in 4 by 3 proportions --}}
-                            <img src="{{ $image->temporaryUrl() }}" class="mb-2 h-48 w-64 object-cover">
-                        @endif
-                        <div x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
-                            x-on:livewire-upload-finish="isUploading = false; progress = 5"
-                            x-on:livewire-upload-error="isUploading = false"
-                            x-on:livewire-upload-progress="progress = $event.detail.progress">
-                            <!-- File Input -->
-                            <input type="file" wire:model="image">
-                            <!-- Progress Bar -->
-                            <div x-show.transition="isUploading"
-                                class="flex-start my-6 flex h-4 w-64 overflow-hidden rounded bg-gray-100 font-sans text-xs font-medium">
-                                <progress max="100" x-bind:value="progress"
-                                    class="flex h-full items-baseline justify-center overflow-hidden break-all text-white"
-                                    x-bind:style="`width:${progress}%`"></progress>
+                            @if ($image === null)
+                                <div class="mb-2 h-48 w-64"> {!! $media !!} </div>
+                            @else
+                                <!-- Preview image -->
+                                {{-- Make sure that that object cover class w and h is 4 by 3 proportion as images will later be cropped in 4 by 3 proportions --}}
+                                <img src="{{ $image->temporaryUrl() }}" class="mb-2 h-48 w-64 object-cover">
+                            @endif
+                            <div x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
+                                x-on:livewire-upload-finish="isUploading = false; progress = 5"
+                                x-on:livewire-upload-error="isUploading = false"
+                                x-on:livewire-upload-progress="progress = $event.detail.progress">
+                                <!-- File Input -->
+                                <input type="file" wire:model="image">
+                                <!-- Progress Bar -->
+                                <div x-show.transition="isUploading"
+                                    class="flex-start my-6 flex h-4 w-64 overflow-hidden rounded bg-gray-100 font-sans text-xs font-medium">
+                                    <progress max="100" x-bind:value="progress"
+                                        class="flex h-full items-baseline justify-center overflow-hidden break-all text-white"
+                                        x-bind:style="`width:${progress}%`"></progress>
+                                </div>
                             </div>
+                            @error('image')
+                                <span class="error">{{ $message }}</span>
+                            @enderror
                         </div>
-                        @error('image')
-                            <span class="error">{{ $message }}</span>
-                        @enderror
+
+                        <!-- Event details -->
+                        @if ($meetingShow)
+                            <div class="w-2/3">
+                                <!-- Event date pickers: from and till -->
+                                <div class="flex space-x-12">
+                                    <div class="my-6 flex-auto">
+                                        <x-datetime-picker label="{{ __('Start of the event') }}"
+                                            placeholder="{{ __('Select a date and time') }}"
+                                            wire:model="meetingFrom"
+                                            time-format="24" 
+                                            display-format="DD-MM-YYYY @ H:mm" 
+                                            parse-format="YYYY-MM-DD HH:mm" 
+                                            />
+                                        @error('meetingFrom')
+                                            <p class="mt-2 text-sm text-red-600" id="meeting-from-error">
+                                                {{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="my-6 flex-auto">
+                                        <x-datetime-picker label="{{ __('End of the event') }}"
+                                            placeholder="{{ __('Select a date and time') }}"
+                                            wire:model="meetingTill"
+                                            time-format="24" 
+                                            display-format="DD-MM-YYYY @ H:mm" 
+                                            parse-format="YYYY-MM-DD HH:mm"
+                                            />
+                                        @error('meetingTill')
+                                            <p class="mt-2 text-sm text-red-600" id="meeting-till-error">
+                                                {{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="my-6 flex-auto">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    {{ __('Event address') }} <span class="text-red-600">*</span>
+                                </label>
+                                <input wire:model.defer="meeting.address"
+                                    class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
+                                @error('meeting.address')
+                                    <p class="mt-2 text-sm text-red-600" id="meeting-address-error">{{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+                        @endif
                     </div>
 
 
-                    <!-- Date pickers -->
+                    <!-- Publication start and stop -->
                     <div class="flex space-x-12">
-                        <div class="z-50 my-6 flex-auto">
+                        <div class="my-6 flex-auto">
                             <x-datetime-picker label="{{ __('Start of publication') }}"
-                                placeholder="{{ __('Select a date') }}" wire:model="start" :without-time="true"
-                                display-format="DD-MM-YYYY" />
+                                placeholder="{{ __('Select a date') }}" 
+                                wire:model="start"
+                                time-format="24" 
+                                display-format="DD-MM-YYYY @ H:mm" 
+                                parse-format="YYYY-MM-DD HH:mm"
+                                />
                         </div>
-                        <div class="z-50 my-6 flex-auto">
+                        <div class="my-6 flex-auto">
                             <x-datetime-picker label="{{ __('End of publication') }}"
-                                placeholder="{{ __('Select a date') }}" wire:model="stop" :without-time="true"
-                                display-format="DD-MM-YYYY" />
+                                placeholder="{{ __('Select a date') }}" 
+                                wire:model="stop"
+                                time-format="24" 
+                                display-format="DD-MM-YYYY @ H:mm" 
+                                parse-format="YYYY-MM-DD HH:mm"        
+                                />
                         </div>
                     </div>
+
+                    <!-- Publication warning -->
                     @if ($start < \Carbon\Carbon::now() && $start !== null)
                         @if ($stop > \Carbon\Carbon::now() || $stop === null)
                             <div class="mb-3 text-right">
@@ -241,7 +300,7 @@
                             </button>
                         @endif
                         <button class="rounded bg-gray-500 py-2 px-4 font-bold text-white" wire:click="close"
-                            type="button" data-dismiss="modal">{{ __('Close') }}
+                            type="button" data-dismiss="modal">{{ __('Cancel') }}
                         </button>
                     </div>
 

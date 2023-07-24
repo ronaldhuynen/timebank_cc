@@ -4,13 +4,13 @@ namespace App\Models;
 
 use App\Models\Category;
 use App\Models\Image;
+use App\Models\Meeting;
 use App\Models\PostTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
 use Znck\Eloquent\Traits\BelongsToThrough;
 
 class Post extends Model implements HasMedia
@@ -45,7 +45,7 @@ class Post extends Model implements HasMedia
 
 
     /**
-     * Get the related catogory of the post
+     * Get the related category of the post
      *
      * @return void
      */
@@ -101,5 +101,19 @@ class Post extends Model implements HasMedia
             ->useDisk('media')
             ->singleFile();
     }
+
+
+    /**
+     * Get the related meeting of the post
+     * One-to-one relation
+     *
+     * @return void
+     */
+    public function meeting()
+    {
+        return $this->hasOne(Meeting::class);
+    }
+
+
 
 }

@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class PostTranslation extends Model
 {
     use HasFactory, Sluggable, SoftDeletes;
 
-    protected $fillable = ['post_id', 'locale', 'slug', 'title', 'excerpt', 'content', 'start', 'stop'];
+    protected $fillable = ['post_id', 'locale', 'slug', 'title', 'excerpt', 'content', 'status', 'start', 'stop'];
 
 
     /**

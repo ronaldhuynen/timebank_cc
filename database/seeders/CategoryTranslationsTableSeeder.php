@@ -79,6 +79,26 @@ class CategoryTranslationsTableSeeder extends Seeder
                 'created_at' => '2023-06-05 15:35:50',
                 'updated_at' => '2023-06-05 15:35:50',
             ),
+            6 => 
+            array (
+                'id' => 7,
+                'category_id' => 2,
+                'locale' => 'es',
+                'slug' => 'noticias-de-la-haya',
+                'name' => 'La Haya Noticias',
+                'created_at' => '2023-06-30 11:08:16',
+                'updated_at' => '2023-06-30 11:08:16',
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'category_id' => 4,
+                'locale' => 'en',
+                'slug' => '',
+                'name' => 'The Hague events',
+                'created_at' => '2023-07-04 09:02:46',
+                'updated_at' => '2023-07-04 09:02:46',
+            ),
         ));
         
         

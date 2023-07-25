@@ -8,6 +8,9 @@
         wire:model="localeSelected"
         class="asteriks-red"
     />
+    @error('locale')
+    <div class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</div>
+    @enderror
 
 {{--Style asterisk symbol to red --}}
 {{-- TODO: prevent 'Uncaught TypeError: $ is not a function' error when modal is still hiddden --}}

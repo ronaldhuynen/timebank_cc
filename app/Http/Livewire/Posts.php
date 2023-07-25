@@ -10,7 +10,6 @@ use App\Models\PostTranslation;
 use App\Models\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -72,6 +71,7 @@ class Posts extends Component
         'image' => 'nullable|image|max:5120',
         'meetingFrom' =>  [Rule::when(isset($this->meeting), 'required'),'date'],
         'meetingTill' =>  [Rule::when(isset($this->meeting), 'required'),'date'],
+        // 'meeting' =>  [Rule::when(isset($this->meeting), 'required')],
         'meeting.address' => [Rule::when(isset($this->meeting), 'required') ,'string','max:100'],
         'organizer.id' =>  [Rule::when(isset($this->meeting), 'required'),'integer'],
         'organizer.type' =>  [Rule::when(isset($this->meeting), 'required'),'string'],
@@ -117,7 +117,7 @@ class Posts extends Component
                 $this->getMeeting();
                 $this->meetingShow = true;
             }
-            $this->getOrganizerOptions();
+            // $this->getOrganizerOptions();
             $this->meetingShow = true;
 
         } else {

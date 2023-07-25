@@ -131,20 +131,14 @@
                     <div class="required flex space-x-12 py-2">
                         <livewire:category-selectbox key="{{ Str::random() }}" :categorySelected="$categoryId" />
                         <!-- Use the key to keep track of component that are in a loop -->
-                        @error('categoryId')
-                            <p class="mt-2 text-sm text-red-600" id="category-error">{{ $message }}</p>
-                        @enderror
                         <livewire:language-selectbox key="{{ Str::random() }}" :locale="$locale" :available="$localesAvailable" />
                         <!-- Use the key to keep track of component that are in a loop -->
-                        @error('locale')
-                            <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
-                        @enderror
                     </div>
                     <div class="w-full py-2">
                         <label class="block text-sm font-medium text-gray-700">
                             {{ __('Title') }} <span class="text-red-600">*</span>
                         </label>
-                        <input wire:model.lazy="title"
+                        <input wire:model.debounce.800ms="title"
                             class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
                         @error('title')
                             <p class="mt-2 text-sm text-red-600" id="title-error">{{ $message }}</p>
@@ -214,20 +208,12 @@
                                             placeholder="{{ __('Select a date and time') }}" wire:model="meetingFrom"
                                             time-format="24" display-format="DD-MM-YYYY @ H:mm"
                                             parse-format="YYYY-MM-DD HH:mm" />
-                                        @error('meetingFrom')
-                                            <p class="mt-2 text-sm text-red-600" id="meeting-from-error">
-                                                {{ $message }}</p>
-                                        @enderror
                                     </div>
                                     <div class="my-6 flex-auto">
                                         <x-datetime-picker label="{{ __('End of the event') }} *"
                                             placeholder="{{ __('Select a date and time') }}" wire:model="meetingTill"
                                             time-format="24" display-format="DD-MM-YYYY @ H:mm"
                                             parse-format="YYYY-MM-DD HH:mm" />
-                                        @error('meetingTill')
-                                            <p class="mt-2 text-sm text-red-600" id="meeting-till-error">
-                                                {{ $message }}</p>
-                                        @enderror
                                     </div>
                                 </div>
 
@@ -244,27 +230,11 @@
                             </div>
 
                             <div class="w-1/3 my-6 flex-auto">
-                                {{-- <x-select label="{{ __('Event organizer') }} * "
-                                    placeholder="{{ __('Select...') }}" 
-                                    option-label="name"
-                                    :template="[
-                                        'name'   => 'user-option',
-                                        'config' => ['src' => 'profile_photo_path']
-                                    ]"
-                                    option-value="id"
-                                    wire:model="meeting.organizer" class="asteriks-red" 
-                                    />
-                                @error('meeting.organizer')
-                                    <p class="mt-2 text-sm text-red-600" id="meeting-organizer-error">{{ $message }}
-                                    </p>
-                                @enderror --}}
 
                                 <!--- Eevent organizer --->
                                 <livewire:posts.select-organizer>
-                                {{-- @error('select-organizer')
-                                <div class="text-sm text-red-700 mb-3" role="alert">
-                                    {{ __($message) }}
-                                </div>
+                                {{-- @error('meeting')
+                                    <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
                                 @enderror --}}
 
                             </div>
@@ -312,7 +282,7 @@
                         </button>
                     </div>
                     </div>
-
+                    
                 </div>
             </form>
 

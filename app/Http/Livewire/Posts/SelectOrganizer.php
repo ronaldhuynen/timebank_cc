@@ -14,8 +14,6 @@ class SelectOrganizer extends Component
     public $showDropdown = false;
     public $selectedId;
     public $selected = [];
-    // public $description;
-    // public $name;
 
     protected $listeners = [
         'resetForm',
@@ -23,9 +21,11 @@ class SelectOrganizer extends Component
     ];
 
 
-    public function checkValidation()
+    public function inputBlur()
     {
-        $this->emit('toAccountValidation');
+        $this->emit('toAccountValidation');        
+        $this->showDropdown = false;
+        $this->search = '';
     }
 
     public function resetForm()

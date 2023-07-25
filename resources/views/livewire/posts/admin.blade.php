@@ -201,21 +201,21 @@
 
                         <!-- Event details -->
                         @if ($meetingShow)
-                                <!-- Event date pickers: from and till -->
-                                <div class="flex space-x-12">
-                                    <div class="my-6 flex-auto">
-                                        <x-datetime-picker label="{{ __('Start of the event') }} *"
-                                            placeholder="{{ __('Select a date and time') }}" wire:model="meetingFrom"
-                                            time-format="24" display-format="DD-MM-YYYY @ H:mm"
-                                            parse-format="YYYY-MM-DD HH:mm" />
-                                    </div>
-                                    <div class="my-6 flex-auto">
-                                        <x-datetime-picker label="{{ __('End of the event') }} *"
-                                            placeholder="{{ __('Select a date and time') }}" wire:model="meetingTill"
-                                            time-format="24" display-format="DD-MM-YYYY @ H:mm"
-                                            parse-format="YYYY-MM-DD HH:mm" />
-                                    </div>
+                            <!-- Event date pickers: from and till -->
+                            <div class="flex space-x-12">
+                                <div class="my-6 flex-auto">
+                                    <x-datetime-picker label="{{ __('Start of the event') }} *"
+                                        placeholder="{{ __('Select a date and time') }}" wire:model="meetingFrom"
+                                        time-format="24" display-format="DD-MM-YYYY @ H:mm"
+                                        parse-format="YYYY-MM-DD HH:mm" />
                                 </div>
+                                <div class="my-6 flex-auto">
+                                    <x-datetime-picker label="{{ __('End of the event') }} *"
+                                        placeholder="{{ __('Select a date and time') }}" wire:model="meetingTill"
+                                        time-format="24" display-format="DD-MM-YYYY @ H:mm"
+                                        parse-format="YYYY-MM-DD HH:mm" />
+                                </div>
+                            </div>
 
                             <div class="my-6 flex-auto">
                                 <label class="block text-sm font-medium text-gray-700">
@@ -229,60 +229,61 @@
                                 @enderror
                             </div>
 
-                            <div class="w-1/3 my-6 flex-auto">
+                            <div class="my-6 w-1/3 flex-auto">
 
                                 <!--- Eevent organizer --->
                                 <livewire:posts.select-organizer>
-                                {{-- @error('meeting')
+                                    {{-- @error('meeting')
                                     <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
                                 @enderror --}}
 
                             </div>
                         @endif
 
-                    <!-- Publication start and stop -->
-                    <div class="flex space-x-12">
-                        <div class="my-6 flex-auto">
-                            <x-datetime-picker label="{{ __('Start of publication') }}"
-                                placeholder="{{ __('Select a date') }}" wire:model="start" time-format="24"
-                                display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
+                        <!-- Publication start and stop -->
+                        <div class="flex space-x-12">
+                            <div class="my-6 flex-auto">
+                                <x-datetime-picker label="{{ __('Start of publication') }}"
+                                    placeholder="{{ __('Select a date') }}" wire:model="start" time-format="24"
+                                    display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
+                            </div>
+                            <div class="my-6 flex-auto">
+                                <x-datetime-picker label="{{ __('End of publication') }}"
+                                    placeholder="{{ __('Select a date') }}" wire:model="stop" time-format="24"
+                                    display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
+                            </div>
                         </div>
-                        <div class="my-6 flex-auto">
-                            <x-datetime-picker label="{{ __('End of publication') }}"
-                                placeholder="{{ __('Select a date') }}" wire:model="stop" time-format="24"
-                                display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
-                        </div>
-                    </div>
 
-                    <!-- Publication warning -->
-                    @if ($start < \Carbon\Carbon::now() && $start !== null)
-                        @if ($stop > \Carbon\Carbon::now() || $stop === null)
+                        <!-- Publication warning -->
+                        @if ($start < \Carbon\Carbon::now() && $start !== null)
+                            @if ($stop > \Carbon\Carbon::now() || $stop === null)
+                                <div class="mb-3 text-right">
+                                    {{ __('Warning') . ': ' . __('post will be published immeditely!') }}
+                                </div>
+                            @endif
+                        @else
                             <div class="mb-3 text-right">
-                                {{ __('Warning') . ': ' . __('post will be published immeditely!') }}
                             </div>
                         @endif
-                    @else
-                        <div class="mb-3 text-right">
+                        
+                        <x-errors/>      
+
+                        <div class="ml-auto mt-6">                        
+                            @if ($createTranslation === true)
+                                <button class="rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-700"
+                                    type="submit">{{ $postId ? __('Add Translation') : __('Save') }}
+                                </button>
+                            @else
+                                <button class="rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-700"
+                                    type="submit">{{ $postId ? __('Update') : __('Save') }}
+                                </button>
+                            @endif
+                            <button class="rounded bg-gray-500 px-4 py-2 font-bold text-white" wire:click="close"
+                                type="button" data-dismiss="modal">{{ __('Cancel') }}
+                            </button>
                         </div>
-                    @endif
-
-                    <div class="ml-auto mt-6">
-
-                        @if ($createTranslation === true)
-                            <button class="rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-700"
-                                type="submit">{{ $postId ? __('Add Translation') : __('Save') }}
-                            </button>
-                        @else
-                            <button class="rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-700"
-                                type="submit">{{ $postId ? __('Update') : __('Save') }}
-                            </button>
-                        @endif
-                        <button class="rounded bg-gray-500 px-4 py-2 font-bold text-white" wire:click="close"
-                            type="button" data-dismiss="modal">{{ __('Cancel') }}
-                        </button>
                     </div>
-                    </div>
-                    
+
                 </div>
             </form>
 

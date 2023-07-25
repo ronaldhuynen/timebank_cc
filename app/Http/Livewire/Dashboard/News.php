@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Category;
 use App\Models\Locations\Location;
+use App\Models\News as NewsModel;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,7 +21,6 @@ class News extends Component
 
     public function mount(Request $request)
     {
-        $type = substr(strrchr(get_class($this), '\\'), 1); // Get class name without namespace, used to query correct Post type ('News')
         $location_id = User::find($request->user()->id)->locations->all()[0]['pivot']['location_id'];
         $city_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
         // TODO: check what happens with ciy_id, when multiple locations per user are used!
@@ -31,8 +31,8 @@ class News extends Component
             'postable' => function ($query) {
                 $query->select(['id', 'name']);
             },
-            'category' => function ($query) use ($type, $city_id) {
-                $query->where('type', $type)->where('city_id', $city_id);
+            'category' => function ($query) use ($city_id) {
+                $query->where('type', NewsModel::class)->where('city_id', $city_id);
             },
             'translations' => function ($query) {
                 $query
@@ -47,13 +47,11 @@ class News extends Component
                 $query->where('collection_name', 'post_image');
             },
             ])
-            ->firstOrFail()
-        ;
+            ->firstOrFail();
 
         if ($post->category) {      // Show only posts if it has the category type of this model's class
 
             $this->author = $post->postable->name;
-
             if ($post->translations->first()) {
                 $this->post = $post->translations->first();
                 $this->post['start'] = Carbon::createFromTimeStamp(strtotime($this->post->start))->isoFormat('LL');

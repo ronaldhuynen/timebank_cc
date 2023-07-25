@@ -11,7 +11,9 @@
                 <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
 
                   <div class="mt-12">
+                        @if ($media != null)
                         {{ $media('4_3') }}
+                        @endif
                     </div>
                         <div class="flex justify-between mb-2 mt-6">
                         <span class="font-thin text-sm text-gray-500">{{ __('Updated on')}} {{ $update }}</span>

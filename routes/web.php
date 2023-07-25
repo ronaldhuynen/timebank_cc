@@ -70,7 +70,7 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
                 ->name('transaction.show');
 
 
-            Route::get('/posts/admin', 'App\Http\Controllers\PostController@admin')->name('posts.admin');
+            Route::get('/posts/manage', 'App\Http\Controllers\PostController@admin')->name('posts.manage');
 
             Route::get('/posts/{postId}', 'App\Http\Controllers\PostController@showById')
                 ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed

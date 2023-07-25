@@ -57,6 +57,8 @@ class Posts extends Component
 
     protected function rules()
     {
+        //  Note that most fields are not required, this is to store concept posts
+        //  TODO: make certain fields required when publish start date is selected?
         return [
         'categoryId' => 'required|integer',
         'locale' => 'required|string',
@@ -64,17 +66,16 @@ class Posts extends Component
             'required', 'string', 'min:3', 'max:150', 'regex:/^[\pL\pM\pN-]+$/u',
             Rule::unique('post_translations', 'slug')->ignore($this->post['translation_id'], 'id')],
         'post.title' => 'required|string|min:3|max:150',
-        'post.excerpt' => 'required|string|max:300',
-        'content' => 'required|string|',
+        'post.excerpt' => 'string|max:300',
+        'content' => 'string|',
         'start' => 'date|nullable',
         'stop' => 'date|nullable',
         'image' => 'nullable|image|max:5120',
-        'meetingFrom' =>  [Rule::when(isset($this->meeting), 'required'),'date'],
-        'meetingTill' =>  [Rule::when(isset($this->meeting), 'required'),'date'],
-        // 'meeting' =>  [Rule::when(isset($this->meeting), 'required')],
-        'meeting.address' => [Rule::when(isset($this->meeting), 'required') ,'string','max:100'],
-        'organizer.id' =>  [Rule::when(isset($this->meeting), 'required'),'integer'],
-        'organizer.type' =>  [Rule::when(isset($this->meeting), 'required'),'string'],
+        'meetingFrom' =>  'date|nullable', 
+        'meetingTill' =>  'date|nullable',
+        'meeting.address' => 'string|max:100|nullable',
+        'organizer.id' => 'integer|nullable',
+        'organizer.type' => 'string|nullable',
     ];
     }
 
@@ -117,11 +118,8 @@ class Posts extends Component
                 $this->getMeeting();
                 $this->meetingShow = true;
             }
-            // $this->getOrganizerOptions();
             $this->meetingShow = true;
-
         } else {
-            info('no meeting category selected');
             $this->meetingShow = false;
         }
     }
@@ -180,7 +178,6 @@ class Posts extends Component
         ];
         if ($post->meeting) {
             $this->getMeeting();
-            $this->meetingShow = true;
         }
 
         // Emit content to trix-editor component
@@ -194,6 +191,7 @@ class Posts extends Component
         $this->locale = $this->post['locale'];
 
         $this->categoryId = $post->category_id;
+        $this->meetingShow = Category::where('id', $post->category_id)->where('type', Meeting::class)->exists();    // Toggle meeting section based on category type
 
         $this->getLangOptions();
 
@@ -237,6 +235,7 @@ class Posts extends Component
                 $post->translations()->save($postTranslation);
 
                 if ($this->meeting) {
+                    
                     $postMeeting = [
                         'post_id' => $this->postId,
                         'address' => $this->meeting['address'],
@@ -452,7 +451,6 @@ class Posts extends Component
         // Exclude existing translations but include initial locale
         if ($this->postId) {
             $localesExclude = Post::find($this->postId)->translations()->whereNot('locale', $this->localeInit)->pluck('locale');
-            info('localesExclude: ' .$localesExclude);
         } else {
             $localesExclude = [];
         }
@@ -503,12 +501,14 @@ class Posts extends Component
     public function getMeeting()
     {
         $this->meeting = collect(Meeting::where('post_id', $this->postId)->first());
-        // dd($this->meeting);
         if ($this->meeting->isNotEmpty()) {
             $this->meetingFrom = $this->meeting['from'];    // WireUI is not (yet) able to bind nested properties
             $this->meetingTill = $this->meeting['till'];    // WireUI is not (yet) able to bind nested properties
+            $this->organizer['id'] = $this->meeting['meetingable_id'];
+            $this->organizer['type'] = $this->meeting['meetingable_type'];
+
+            $this->emit('meetingExists', $this->meeting);
         }
-         $this->emit('meetingExists', $this->meeting);
     }
 
     /**

@@ -22,7 +22,7 @@ class CategoriesTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'type' => 'FrontPage',
+                'type' => 'App\\Models\\FrontPage',
                 'country_id' => NULL,
                 'division_id' => NULL,
                 'city_id' => NULL,
@@ -34,7 +34,7 @@ class CategoriesTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'type' => 'News',
+                'type' => 'App\\Models\\News',
                 'country_id' => NULL,
                 'division_id' => NULL,
                 'city_id' => 305,
@@ -46,7 +46,7 @@ class CategoriesTableSeeder extends Seeder
             2 => 
             array (
                 'id' => 3,
-                'type' => 'SystemAnnouncement',
+                'type' => 'App\\Modesl\\SystemAnnouncement',
                 'country_id' => NULL,
                 'division_id' => NULL,
                 'city_id' => NULL,
@@ -58,7 +58,7 @@ class CategoriesTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'type' => 'Event',
+                'type' => 'App\\Models\\Meeting',
                 'country_id' => NULL,
                 'division_id' => NULL,
                 'city_id' => 305,

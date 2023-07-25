@@ -25,9 +25,9 @@
                     <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
                         {{ __('Your Profile') }}
                     </x-jet-nav-link>
-                    @can('manage users')
-                    <x-jet-nav-link href="{{ route('users-overview') }}" :active="request()->routeIs('admin.users-overview')">
-                        {{ __('Users') }}
+                    @can('manage posts')
+                    <x-jet-nav-link href="{{ route('posts.manage') }}" :active="request()->routeIs('posts.manage')">
+                        {{ __('Posts') }}
                     </x-jet-nav-link>
                     @endcan
                 </div>

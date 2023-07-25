@@ -94,10 +94,20 @@ class CategoryTranslationsTableSeeder extends Seeder
                 'id' => 8,
                 'category_id' => 4,
                 'locale' => 'en',
-                'slug' => '',
+                'slug' => 'the-hague-events',
                 'name' => 'The Hague events',
                 'created_at' => '2023-07-04 09:02:46',
                 'updated_at' => '2023-07-04 09:02:46',
+            ),
+            8 => 
+            array (
+                'id' => 11,
+                'category_id' => 4,
+                'locale' => 'nl',
+                'slug' => 'den-haag-evenementen',
+                'name' => 'Den Haag evenementen',
+                'created_at' => '2023-07-25 12:45:20',
+                'updated_at' => '2023-07-25 12:45:26',
             ),
         ));
         

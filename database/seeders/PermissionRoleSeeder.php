@@ -20,11 +20,11 @@ class PermissionRoleSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'create site articles']);
-        Permission::create(['name' => 'update site articles']);
-        Permission::create(['name' => 'delete site articles']);
-        Permission::create(['name' => 'publish site articles']);
-        Permission::create(['name' => 'unpublish site articles']);
+        Permission::create(['name' => 'create site posts']);
+        Permission::create(['name' => 'update site posts']);
+        Permission::create(['name' => 'delete site posts']);
+        Permission::create(['name' => 'publish site posts']);
+        Permission::create(['name' => 'unpublish site posts']);
 
         Permission::create(['name' => 'create users']);
         Permission::create(['name' => 'update users']);
@@ -33,11 +33,11 @@ class PermissionRoleSeeder extends Seeder
 
         // create roles and assign existing permissions
         $role1 = Role::create(['name' => 'Site-Editor']);
-        $role1->givePermissionTo('create site articles');
-        $role1->givePermissionTo('update site articles');
-        $role1->givePermissionTo('delete site articles');
-        $role1->givePermissionTo('publish site articles');
-        $role1->givePermissionTo('unpublish site articles');
+        $role1->givePermissionTo('create site posts');
+        $role1->givePermissionTo('update site posts');
+        $role1->givePermissionTo('delete site posts');
+        $role1->givePermissionTo('publish site posts');
+        $role1->givePermissionTo('unpublish site posts');
 
         $role2 = Role::create(['name' => 'Bank-Admin']);
         $role2->givePermissionTo('create users');

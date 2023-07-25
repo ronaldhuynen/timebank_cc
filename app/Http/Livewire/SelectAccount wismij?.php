@@ -23,7 +23,6 @@ abstract class SelectAccount extends Component
     public function myAccountSelected($myAccount)
     {
         $this->myAccountSelected = $myAccount;
-        dump('stap 2' , $this->myAccountSelected);
     }
 
     public function mount()

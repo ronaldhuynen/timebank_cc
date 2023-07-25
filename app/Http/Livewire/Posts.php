@@ -4,10 +4,13 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Meeting;
+use App\Models\Organisation;
 use App\Models\Post;
 use App\Models\PostTranslation;
+use App\Models\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -34,8 +37,8 @@ class Posts extends Component
     public $localesAvailable = [];
     public $title;
     public $content;
-    public $start;   // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
-    public $stop;     // x-date-time-picker and x-select do not entangle if they do not exsist beforehand
+    public $start;   // x-date-time-picker and x-select do not entangle if they do not exist beforehand
+    public $stop;     // x-date-time-picker and x-select do not entangle if they do not exist beforehand
 
     public $image;
     public $imageCaption = '';
@@ -45,10 +48,12 @@ class Posts extends Component
     public $meeting;
     public $meetingFrom;
     public $meetingTill;
+    public $organizerOptions;
+    public $organizer;
 
     protected $paginationTheme = 'tailwind';
 
-    protected $listeners = ['categoryToParent', 'languageToParent', 'trixEditor', 'uploadImage'];
+    protected $listeners = ['categoryToParent', 'languageToParent', 'trixEditor', 'uploadImage', 'orgSelected'];
 
 
     protected function rules()
@@ -65,9 +70,11 @@ class Posts extends Component
         'start' => 'date|nullable',
         'stop' => 'date|nullable',
         'image' => 'nullable|image|max:5120',
-        'meeting.address' => [Rule::when(isset($this->meeting), 'required') ,'string','max:100'],
         'meetingFrom' =>  [Rule::when(isset($this->meeting), 'required'),'date'],
         'meetingTill' =>  [Rule::when(isset($this->meeting), 'required'),'date'],
+        'meeting.address' => [Rule::when(isset($this->meeting), 'required') ,'string','max:100'],
+        'organizer.id' =>  [Rule::when(isset($this->meeting), 'required'),'integer'],
+        'organizer.type' =>  [Rule::when(isset($this->meeting), 'required'),'string'],
     ];
     }
 
@@ -110,7 +117,7 @@ class Posts extends Component
                 $this->getMeeting();
                 $this->meetingShow = true;
             }
-            
+            $this->getOrganizerOptions();
             $this->meetingShow = true;
 
         } else {
@@ -130,6 +137,11 @@ class Posts extends Component
             $this->createTranslation = true;
         }
 
+    }
+
+    public function orgSelected($value)
+    {
+        $this->organizer = $value; 
     }
 
 
@@ -201,7 +213,6 @@ class Posts extends Component
         $this->showModal = true;
     }
 
-    // TODO: translator author in translation table? with updates when saved ?
     public function save()
     {
         if (!is_null($this->postId)) {
@@ -229,8 +240,8 @@ class Posts extends Component
                     $postMeeting = [
                         'post_id' => $this->postId,
                         'address' => $this->meeting['address'],
-                        'meetingable_id' => '1',            // TODO: select contact
-                        'meetingable_type' => 'App\Models\Organisation',    // TODO: select contact
+                        'meetingable_id' => $this->organizer['id'],      
+                        'meetingable_type' => $this->organizer['type'],
                         'from' => $this->meetingFrom,
                         'till' => $this->meetingTill
                         ];
@@ -280,8 +291,8 @@ class Posts extends Component
                     $postMeeting = [
                         'post_id' => $this->postId,
                         'address' => $this->meeting['address'],
-                        'meetingable_id' => '1',            // TODO: select contact
-                        'meetingable_type' => 'App\Models\Organisation',    // TODO: select contact
+                        'meetingable_id' => $this->organizer['id'],      
+                        'meetingable_type' => $this->organizer['type'],
                         'from' => $this->meetingFrom,
                         'till' => $this->meetingTill
                     ];
@@ -332,8 +343,8 @@ class Posts extends Component
             if ($this->meeting) {
                 $postMeeting = [
                     'address' => $this->meeting['address'],
-                    'meetingable_id' => '1',            // TODO: select contact
-                    'meetingable_type' => 'App\Models\Organisation',    // TODO: select contact
+                    'meetingable_id' => $this->organizer['id'],      
+                    'meetingable_type' => $this->organizer['type'],
                     'from' => $this->meetingFrom,
                     'till' => $this->meetingTill
                     ];
@@ -453,8 +464,35 @@ class Posts extends Component
         } else {
             $this->localesAvailable = [];
         }
-
     }
+
+    // public function getOrganizerOptions()
+    // {
+    //     $users = User::select('id', 'name', 'profile_photo_path')->get();
+    //     $users = $users->map(function ($item) {
+    //         return 
+    //         [
+    //             'id' => $item['id'],
+    //             'type' => User::class,
+    //             'name' => $item['name'],
+    //             'profile_photo_path' => url('/storage/' . $item['profile_photo_path'])
+    //         ];
+    //     });
+    //     $organizations = Organisation::select('id', 'name', 'profile_photo_path')->get();        
+    //     $organizations = $organizations->map(function ($item) {
+    //         return
+    //         [
+    //             'id' => $item['id'],
+    //             'type' => Organisation::class,
+    //             'name' => $item['name'],
+    //             'profile_photo_path' => url(Storage::url($item['profile_photo_path']))
+    //         ];
+    //     });
+    //     $merged = collect($users->merge($organizations));
+    //     // dd($merged);
+    //     $this->meeting = ['organizer' => ''];
+    //     $this->organizerOptions = $merged;
+    // }
 
 
     /**
@@ -465,10 +503,12 @@ class Posts extends Component
     public function getMeeting()
     {
         $this->meeting = collect(Meeting::where('post_id', $this->postId)->first());
+        // dd($this->meeting);
         if ($this->meeting->isNotEmpty()) {
             $this->meetingFrom = $this->meeting['from'];    // WireUI is not (yet) able to bind nested properties
             $this->meetingTill = $this->meeting['till'];    // WireUI is not (yet) able to bind nested properties
         }
+         $this->emit('meetingExists', $this->meeting);
     }
 
     /**

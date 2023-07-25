@@ -2,11 +2,11 @@
 
 
     <!-- Action buttons -->
-    <button wire:click.prevent="create" class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
+    <button wire:click.prevent="create" class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
         {{ __('Add new post') }}
     </button>
     <button wire:click.prevent="deleteSelected" onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
-        class="@if ($bulkDisabled) opacity-50 @endif rounded bg-red-500 py-2 px-4 font-bold text-white hover:bg-red-700">
+        class="@if ($bulkDisabled) opacity-50 @endif rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700">
         {{ __('Delete selected') }}
     </button>
 
@@ -111,7 +111,7 @@
 
     <!-- Edit modal -->
     <div
-        class="@if (!$showModal) hidden @endif fixed left-0 bottom-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
+        class="@if (!$showModal) hidden @endif fixed bottom-0 left-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
         <div class="h-5/6 w-3/5 overflow-scroll rounded-lg bg-white">
             <form wire:submit.prevent="save" class="w-ful">
                 <div class="flex flex-col items-start p-4">
@@ -144,7 +144,7 @@
                         <label class="block text-sm font-medium text-gray-700">
                             {{ __('Title') }} <span class="text-red-600">*</span>
                         </label>
-                        <input wire:model="title"
+                        <input wire:model.lazy="title"
                             class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
                         @error('title')
                             <p class="mt-2 text-sm text-red-600" id="title-error">{{ $message }}</p>
@@ -207,37 +207,29 @@
 
                         <!-- Event details -->
                         @if ($meetingShow)
-                            <div class="w-2/3">
                                 <!-- Event date pickers: from and till -->
                                 <div class="flex space-x-12">
                                     <div class="my-6 flex-auto">
-                                        <x-datetime-picker label="{{ __('Start of the event') }}"
-                                            placeholder="{{ __('Select a date and time') }}"
-                                            wire:model="meetingFrom"
-                                            time-format="24" 
-                                            display-format="DD-MM-YYYY @ H:mm" 
-                                            parse-format="YYYY-MM-DD HH:mm" 
-                                            />
+                                        <x-datetime-picker label="{{ __('Start of the event') }} *"
+                                            placeholder="{{ __('Select a date and time') }}" wire:model="meetingFrom"
+                                            time-format="24" display-format="DD-MM-YYYY @ H:mm"
+                                            parse-format="YYYY-MM-DD HH:mm" />
                                         @error('meetingFrom')
                                             <p class="mt-2 text-sm text-red-600" id="meeting-from-error">
                                                 {{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div class="my-6 flex-auto">
-                                        <x-datetime-picker label="{{ __('End of the event') }}"
-                                            placeholder="{{ __('Select a date and time') }}"
-                                            wire:model="meetingTill"
-                                            time-format="24" 
-                                            display-format="DD-MM-YYYY @ H:mm" 
-                                            parse-format="YYYY-MM-DD HH:mm"
-                                            />
+                                        <x-datetime-picker label="{{ __('End of the event') }} *"
+                                            placeholder="{{ __('Select a date and time') }}" wire:model="meetingTill"
+                                            time-format="24" display-format="DD-MM-YYYY @ H:mm"
+                                            parse-format="YYYY-MM-DD HH:mm" />
                                         @error('meetingTill')
                                             <p class="mt-2 text-sm text-red-600" id="meeting-till-error">
                                                 {{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
 
                             <div class="my-6 flex-auto">
                                 <label class="block text-sm font-medium text-gray-700">
@@ -250,29 +242,45 @@
                                     </p>
                                 @enderror
                             </div>
-                        @endif
-                    </div>
 
+                            <div class="w-1/3 my-6 flex-auto">
+                                {{-- <x-select label="{{ __('Event organizer') }} * "
+                                    placeholder="{{ __('Select...') }}" 
+                                    option-label="name"
+                                    :template="[
+                                        'name'   => 'user-option',
+                                        'config' => ['src' => 'profile_photo_path']
+                                    ]"
+                                    option-value="id"
+                                    wire:model="meeting.organizer" class="asteriks-red" 
+                                    />
+                                @error('meeting.organizer')
+                                    <p class="mt-2 text-sm text-red-600" id="meeting-organizer-error">{{ $message }}
+                                    </p>
+                                @enderror --}}
+
+                                <!--- Eevent organizer --->
+                                <livewire:posts.select-organizer>
+                                {{-- @error('select-organizer')
+                                <div class="text-sm text-red-700 mb-3" role="alert">
+                                    {{ __($message) }}
+                                </div>
+                                @enderror --}}
+
+                            </div>
+                        @endif
 
                     <!-- Publication start and stop -->
                     <div class="flex space-x-12">
                         <div class="my-6 flex-auto">
                             <x-datetime-picker label="{{ __('Start of publication') }}"
-                                placeholder="{{ __('Select a date') }}" 
-                                wire:model="start"
-                                time-format="24" 
-                                display-format="DD-MM-YYYY @ H:mm" 
-                                parse-format="YYYY-MM-DD HH:mm"
-                                />
+                                placeholder="{{ __('Select a date') }}" wire:model="start" time-format="24"
+                                display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                         </div>
                         <div class="my-6 flex-auto">
                             <x-datetime-picker label="{{ __('End of publication') }}"
-                                placeholder="{{ __('Select a date') }}" 
-                                wire:model="stop"
-                                time-format="24" 
-                                display-format="DD-MM-YYYY @ H:mm" 
-                                parse-format="YYYY-MM-DD HH:mm"        
-                                />
+                                placeholder="{{ __('Select a date') }}" wire:model="stop" time-format="24"
+                                display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                         </div>
                     </div>
 
@@ -291,17 +299,18 @@
                     <div class="ml-auto mt-6">
 
                         @if ($createTranslation === true)
-                            <button class="rounded bg-black py-2 px-4 font-bold text-white hover:bg-gray-700"
+                            <button class="rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-700"
                                 type="submit">{{ $postId ? __('Add Translation') : __('Save') }}
                             </button>
                         @else
-                            <button class="rounded bg-black py-2 px-4 font-bold text-white hover:bg-gray-700"
+                            <button class="rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-700"
                                 type="submit">{{ $postId ? __('Update') : __('Save') }}
                             </button>
                         @endif
-                        <button class="rounded bg-gray-500 py-2 px-4 font-bold text-white" wire:click="close"
+                        <button class="rounded bg-gray-500 px-4 py-2 font-bold text-white" wire:click="close"
                             type="button" data-dismiss="modal">{{ __('Cancel') }}
                         </button>
+                    </div>
                     </div>
 
                 </div>

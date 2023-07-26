@@ -16,11 +16,14 @@ class News extends Component
 {
     public $author;
     public $post = [];
+    public $posts;
     public $media;
+    public $postNr;
 
 
-    public function mount(Request $request)
+    public function mount($postNr, Request $request)
     {
+        $this->postNr = $postNr;
         $location_id = User::find($request->user()->id)->locations->all()[0]['pivot']['location_id'];
         $city_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
         // TODO: check what happens with ciy_id, when multiple locations per user are used!
@@ -28,42 +31,49 @@ class News extends Component
         $city_id = [$city_id]; // This should become an array [300,305] for use with multiple city locations
         $post =
             Post::with([
-            'postable' => function ($query) {
-                $query->select(['id', 'name']);
-            },
-            'category' => function ($query) use ($city_id) {
-                $query->where('type', NewsModel::class)->where('city_id', $city_id);
-            },
-            'translations' => function ($query) {
-                $query
-                ->where('locale', App::getLocale())
-                ->whereDate('start', '<=', now())
-                ->where(function ($query) {
-                    $query->whereDate('stop', '>', now())->orWhereNull('stop');
+                'postable' => function ($query) {
+                    $query->select(['id', 'name']);
+                },
+                'category'=> function ($query) {
+                    $query->with(['translations' => function ($query) {
+                        $query->where('locale', App::getLocale());
+                    }]);
+                },
+                'translations',
+                'media',
+                ])
+                ->whereHas('category', function ($query) use ($city_id) {
+                    $query->where('type', NewsModel::class)->where('city_id', $city_id);
                 })
-                ->orderBy('updated_at', 'desc');
-            },
-            'media' => function ($query) {
-                $query->where('collection_name', 'post_image');
-            },
-            ])
-            ->firstOrFail();
+                ->whereHas('translations', function ($query) {
+                    $query
+                    ->where('locale', App::getLocale())
+                    ->whereDate('start', '<=', now())
+                    ->where(function ($query) {
+                        $query->whereDate('stop', '>', now())->orWhereNull('stop');
+                    })
+                    ->orderBy('updated_at', 'desc');
+                })
+                ->get();
 
-        if ($post->category) {      // Show only posts if it has the category type of this model's class
+        $lastNr = $post->count() -1;
+        if ($postNr > $lastNr) {
+            $post = null;
+        } else {
+            $post = $post[$postNr];
+        }
 
-            $this->author = $post->postable->name;
+        if ($post != null) {      // Show only posts if it has the category type of this model's class
+
             if ($post->translations->first()) {
                 $this->post = $post->translations->first();
                 $this->post['start'] = Carbon::createFromTimeStamp(strtotime($this->post->start))->isoFormat('LL');
                 $this->post['category'] = Category::find($post->category_id)->translations->where('locale', App::getLocale())->first()->name;
+                $this->post['author'] = $post->postable->name;
 
                 if ($post->media) {
                     $this->media = Post::find($post->id)->getFirstMedia('posts');
-                    // $this->post['caption'] = "TODO: move me to single post page";
-                    // dd($this->post['image']);
                 }
-
-
             }
         }
     }

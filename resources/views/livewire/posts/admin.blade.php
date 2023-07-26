@@ -3,7 +3,7 @@
 
     <!-- Action buttons -->
     <div class="">
-    <button wire:click.prevent="create" class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-900 disabled:opacity-25">
+    <button wire:click.prevent="create" class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25">
         {{ __('Add new post') }}
     </button>
     <button @if ($bulkDisabled) disabled="true" @endif wire:click.prevent="deleteSelected" onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
@@ -91,7 +91,7 @@
                             </td>
                             <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
                                 <button
-                                    class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-900 disabled:opacity-25"
+                                    class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25"
                                     wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
                                 </button>
                             </td>
@@ -273,15 +273,15 @@
 
                         <div class="ml-auto mt-6">                        
                             @if ($createTranslation === true)
-                                <button class="rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-700"
+                                <button class="rounded bg-gray-900 px-4 py-2 font-bold text-white hover:bg-gray-700"
                                     type="submit">{{ $postId ? __('Add Translation') : __('Save') }}
                                 </button>
                             @else
-                                <button class="rounded bg-black px-4 py-2 font-bold text-white hover:bg-gray-700"
+                                <button class="rounded bg-gray-900 px-4 py-2 font-bold text-white hover:bg-gray-700"
                                     type="submit">{{ $postId ? __('Update') : __('Save') }}
                                 </button>
                             @endif
-                            <button class="rounded bg-gray-500 px-4 py-2 font-bold text-white" wire:click="close"
+                            <button class="rounded bg-gray-500 px-4 py-2 font-bold text-white hover:bg-gray-600" wire:click="close"
                                 type="button" data-dismiss="modal">{{ __('Cancel') }}
                             </button>
                         </div>

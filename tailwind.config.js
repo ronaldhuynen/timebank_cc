@@ -39,7 +39,7 @@ module.exports = {
                     900: '#1A1A1A',
                 },
                 secondary: colors.gray,
-                positive: colors.emerald,
+                positive: colors.gray,
                 negative: colors.red,
                 warning: colors.amber,
                 info: colors.gray

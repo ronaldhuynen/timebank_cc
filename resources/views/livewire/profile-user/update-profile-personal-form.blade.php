@@ -56,14 +56,22 @@
 
         <!-- About Me -->
         <div class="col-span-6 sm:col-span-4">
-            <x-textarea wire:model.debounce.500ms="state.about" label="{{ __('About me')}}" placeholder="{{ __('Short intro or background info') }}" />
+            <x-textarea 
+                wire:model.debounce.500ms="state.about" 
+                label="{{ __('About me')}}" 
+                placeholder="{{ __('Short intro or background info') }}" 
+                class="placeholder-gray-300"/>
             <x-jet-input-error for="about" class="mt-2" />
         </div>
 
 
         <!-- Motivation -->
         <div class="col-span-6 sm:col-span-4">
-            <x-textarea wire:model.debounce.500ms="state.motivation" label="{{ __('Why I am a Timbanker') }}" placeholder="{{__('Just trying out or serious about a new value system?')}}" />
+            <x-textarea 
+                wire:model.debounce.500ms="state.motivation" 
+                label="{{ __('Why I am a Timbanker') }}" 
+                placeholder="{{__('Just trying out or serious about a new value system?')}}" 
+                class="placeholder-gray-300"/>
             <x-jet-input-error for="motivation" class="mt-2" />
         </div>
 
@@ -94,6 +102,7 @@
                     display-format="DD-MM-YYYY"
                     placeholder="{{__('Select a date')}}"
                     wire:model.defer="state.date_of_birth"
+                    class="placeholder-gray-300"
                 />
                 <x-jet-input-error for="date_of_birth" class="mt-2" />
             </div>
@@ -108,6 +117,7 @@
                 placeholder="website.org"
                 prefix="https://"
                 wire:model.lazy="state.website"
+                class="placeholder-gray-300"
             />
             <x-jet-input-error for="state.website" class="mt-2" />
         </div>

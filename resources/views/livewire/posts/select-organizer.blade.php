@@ -1,7 +1,6 @@
 <div x-data class="mt-4 max-w-md">
 
-    <label for="toAccount" class="my-2 block text-sm font-medium text-gray-700"> {{ __('Event organizer') }} <span
-            class="text-red-600">*</span> </label>
+    <label for="toAccount" class="my-2 block text-sm font-medium text-gray-700"> {{ __('Event organizer') }} </label>
 
     <div class="relative">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex pl-3 pt-2">

@@ -25,6 +25,9 @@
                     <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
                         {{ __('Your Profile') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
+                        {{ __('Commons') }}
+                    </x-jet-nav-link>
                     @can('manage posts')
                     <x-jet-nav-link href="{{ route('posts.manage') }}" :active="request()->routeIs('posts.manage')">
                         {{ __('Posts') }}
@@ -93,7 +96,7 @@
                         @if($localeCode == app()->getLocale())
                         <span class="text-gray-900 font-weight-900">{{ strtoupper($localeCode) }}</span>
                         @else
-                        <span class="text-gray-500"> {{ strtoupper($localeCode) }}
+                        <span class="text-gray-400"> {{ strtoupper($localeCode) }}
                         @endif
                         </a>
                     @endforeach

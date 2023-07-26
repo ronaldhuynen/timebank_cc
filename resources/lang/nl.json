@@ -73,6 +73,7 @@
     "Delete": "Verwijderen",
     "Deleted": "Verwijderd",
     "Not available": "Niet beschikbaar",
+    "results": "resultaten",
 
     "Sorry, your data could not be saved!": "Sorry, je gegevens konden niet worden opgeslagen!",
 
@@ -98,6 +99,22 @@
     "End date": "Einddatum",
     "Stop": "Stop",
     "Edit": "Bewerken",
-    "No posts found": "Geen posts gevonden"
+    "No posts found": "Geen posts gevonden",
+
+    "Transfer Timebank.cc Hours": "Betaal Timebank.cc uren",
+    "Amount": "Aantal",
+    "From account": "Vanaf rekening",
+    "To account": "Naar rekening",
+
+    "Your transaction history": "Je transactie-overicht",
+    "From date": "Vanaf datum",
+    "To date": "Tot datum",
+    "Date": "Datum",
+    "From/to": "Van/naar",
+    "Details": "Details",
+    "Balance": "Saldo",
+
+    "Commons": "Meent",
+    "Yesterday": "Gisteren"
 
 }

@@ -174,11 +174,11 @@
                             <label class="form-label mt-6">{{ __('Image') }}</label>
 
                             @if ($image === null)
-                                <div class="mb-2 h-48 w-64"> {!! $media !!} </div>
+                                <div class="mb-2 h-48 w-64 border rounded-md border-gray-600"> {!! $media !!} </div>
                             @else
                                 <!-- Preview image -->
                                 {{-- Make sure that that object cover class w and h is 4 by 3 proportion as images will later be cropped in 4 by 3 proportions --}}
-                                <img src="{{ $image->temporaryUrl() }}" class="mb-2 h-48 w-64 object-cover">
+                                <img src="{{ $image->temporaryUrl() }}" class="mb-2 h-48 w-64 object-cover border rounded-md border-gray-600">
                             @endif
                             <div x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
                                 x-on:livewire-upload-finish="isUploading = false; progress = 5"
@@ -233,9 +233,6 @@
 
                                 <!--- Eevent organizer --->
                                 <livewire:posts.select-organizer>
-                                    {{-- @error('meeting')
-                                    <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
-                                @enderror --}}
 
                             </div>
                         @endif
@@ -265,7 +262,7 @@
                             <div class="mb-3 text-right">
                             </div>
                         @endif
-                        
+
                         <x-errors/>      
 
                         <div class="ml-auto mt-6">                        

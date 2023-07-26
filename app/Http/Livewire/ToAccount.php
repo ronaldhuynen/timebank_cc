@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Account;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class ToAccount extends Component
@@ -15,6 +16,7 @@ class ToAccount extends Component
     public $toAccountId;
     public $toAccountName;
     public $toHolderName;
+    public $toHolderPhoto;
     public $userAccounts;
 
 
@@ -54,6 +56,7 @@ class ToAccount extends Component
         $this->emit('toAccountDetails', $toAccountDetails);
         $this->toAccountName = $toAccountDetails['accountName'];
         $this->toHolderName = $toAccountDetails['holderName'];
+        $this->toHolderPhoto = $toAccountDetails['holderPhoto'];
         $this->showDropdown = false;
         $this->search = '';
         $this->emit('toAccountSelected', $toAccount);
@@ -78,13 +81,14 @@ class ToAccount extends Component
             })
             ->orWhere('name', 'like', '%' . $search . '%')
             ->get();
-
+        $photo = 
         $mappedAccounts = $accounts->map(function ($account, $key) {
             return [
                 'accountId' => $account->id,
                 'accountName' => $account->name,
                 'holderId' => $account->accountable->id,
-                'holderName' => $account->accountable->name
+                'holderName' => $account->accountable->name,
+                'holderPhoto' => url(Storage::url($account->accountable->profile_photo_path))
             ];
         })->whereNotIn('accountId', $excludeAccount);
 

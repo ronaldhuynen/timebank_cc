@@ -20,14 +20,17 @@
                     wire:model="phonecode"
                     :options="$phoneCodeOptions"
                     option-value="code"
-                    option-label="label">
+                    option-label="label"
+                    class="placeholder-gray-300"
+                    >
                 </x-native-select>
             </div>
             <div class="col-span-2 -ml-3">
                 <x-input
                     id="phone"
                     placeholder="Enter mobile phone number"
-                    wire:model.lazy="state.phone" />
+                    wire:model.lazy="state.phone" 
+                    class="placeholder-gray-300"/>
             </div>
             @error('phone')
                 <p class="col-span-6 -mt-6 text-sm text-red-500">{{$message}}</p>

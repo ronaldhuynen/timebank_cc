@@ -71,7 +71,7 @@
         @endif
     </x-dynamic-component>
 
-    <x-wireui::parts.popover :margin="(bool) $label" class="max-h-96 overflow-y-auto p-3 sm:w-72">
+    <x-wireui::parts.popover :margin="(bool) $label" class="max-h-72 overflow-y-auto p-2 sm:w-72">
         <div x-show="tab === 'date'" class="space-y-5">
             @unless ($withoutTips)
                 <div class="grid grid-cols-3 gap-x-2 text-center text-secondary-600">
@@ -146,7 +146,7 @@
                     </template>
                 </div>
 
-                <div class="grid grid-cols-7 gap-2">
+                <div class="grid grid-cols-7 gap-3">
                     <template x-for="day in weekDays" :key="`week-day.${day}`">
                         <span class="text-secondary-400 text-3xs text-center uppercase pointer-events-none"
                             x-text="day">

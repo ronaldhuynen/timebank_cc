@@ -25,6 +25,8 @@
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('End date') }}</th>
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
+                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
+
             </tr>
         </thead>
 
@@ -70,6 +72,10 @@
 
 
                         <!-- Row buttons -->
+                        <td class="whitespace-no-wrap border-b border-white text-sm leading-5 align-middle">
+                            <a class="mb-2 hidden font-bold text-gray-900 sm:block"
+                                href="{{ route('posts.show_by_slug', [$translation->slug]) }}"><x-icon name="external-link" class="w-5 h-5" /><a>
+                        </td>
                         <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
                             @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
                                 @if ($translation->stop > \Carbon\Carbon::now() || $translation->stop === null)

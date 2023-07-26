@@ -90,12 +90,18 @@ class PostController extends Controller
                 $query->with('translations');
             },
             'translations' => function ($query) {
-                $query
-                ->where('locale', App::getLocale())
-                ->whereDate('start', '<=', now())
-                ->where(function ($query) {
-                    $query->whereDate('stop', '>', now())->orWhereNull('stop');
-                });
+                //TODO!: Currently only user 1 (Super-admin) can view unpublished posts, change to permission/role based!
+                if (auth()->user()->id != 1) {
+                    $query
+                    ->where('locale', App::getLocale())
+                    ->whereDate('start', '<=', now())
+                    ->where(function ($query) {
+                        $query->whereDate('stop', '>', now())->orWhereNull('stop');
+                    });
+                } else {                    
+                    $query
+                    ->where('locale', App::getLocale());
+                }
             }
             ])
             ->where('id', $postId)
@@ -105,6 +111,7 @@ class PostController extends Controller
             $media = Post::find($postId)->getFirstMedia('posts');
         }
 
+        
         if ($post->translations->count() >= 1) {
 
             if ($post->category->translations) {

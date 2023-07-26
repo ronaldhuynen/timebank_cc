@@ -22698,6 +22698,9 @@ select{
 .pt-8{
   padding-top: 2rem;
 }
+.pb-2{
+  padding-bottom: 0.5rem;
+}
 .text-left{
   text-align: left;
 }
@@ -22710,6 +22713,9 @@ select{
 .text-end{
   text-align: end;
 }
+.align-baseline{
+  vertical-align: baseline;
+}
 .align-top{
   vertical-align: top;
 }
@@ -22718,6 +22724,9 @@ select{
 }
 .align-bottom{
   vertical-align: bottom;
+}
+.align-text-bottom{
+  vertical-align: text-bottom;
 }
 .font-mono{
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

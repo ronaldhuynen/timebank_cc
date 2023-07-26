@@ -4,10 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Meeting;
-use App\Models\Organisation;
 use App\Models\Post;
 use App\Models\PostTranslation;
-use App\Models\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Validation\Rule;
@@ -401,13 +399,6 @@ class Posts extends Component
     public function updatedImage()
     {
         info('updated image');
-        // if ($this->image) {
-        //     // dd($this->image);
-        //     Image::load($this->image->path)
-        //     ->focalCrop(3072, 2304, 50, 50)
-        //     ->save();
-        // }
-        // return $this->image;
     }
 
     public function deleteSelected()
@@ -463,34 +454,6 @@ class Posts extends Component
             $this->localesAvailable = [];
         }
     }
-
-    // public function getOrganizerOptions()
-    // {
-    //     $users = User::select('id', 'name', 'profile_photo_path')->get();
-    //     $users = $users->map(function ($item) {
-    //         return 
-    //         [
-    //             'id' => $item['id'],
-    //             'type' => User::class,
-    //             'name' => $item['name'],
-    //             'profile_photo_path' => url('/storage/' . $item['profile_photo_path'])
-    //         ];
-    //     });
-    //     $organizations = Organisation::select('id', 'name', 'profile_photo_path')->get();        
-    //     $organizations = $organizations->map(function ($item) {
-    //         return
-    //         [
-    //             'id' => $item['id'],
-    //             'type' => Organisation::class,
-    //             'name' => $item['name'],
-    //             'profile_photo_path' => url(Storage::url($item['profile_photo_path']))
-    //         ];
-    //     });
-    //     $merged = collect($users->merge($organizations));
-    //     // dd($merged);
-    //     $this->meeting = ['organizer' => ''];
-    //     $this->organizerOptions = $merged;
-    // }
 
 
     /**

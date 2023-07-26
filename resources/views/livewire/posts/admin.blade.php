@@ -2,14 +2,15 @@
 
 
     <!-- Action buttons -->
-    <button wire:click.prevent="create" class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+    <div class="">
+    <button wire:click.prevent="create" class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-900 disabled:opacity-25">
         {{ __('Add new post') }}
     </button>
-    <button wire:click.prevent="deleteSelected" onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
-        class="@if ($bulkDisabled) opacity-50 @endif rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700">
+    <button @if ($bulkDisabled) disabled="true" @endif wire:click.prevent="deleteSelected" onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
+        class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white focus:border-gray-900 focus:outline-none disabled:opacity-25">
         {{ __('Delete selected') }}
     </button>
-
+    </div>
     <table class="mt-6 table min-w-full border-white">
 
 
@@ -40,66 +41,65 @@
                     <tr>
                         <td colspan="9">
                             @foreach ($post->translations as $key => $translation)
-                    <tr
-                        class="dark:bordergray-600 transition duration-300 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <td class="py34 whitespace-no-wrap border-b border-white px-6 text-sm leading-5">
-                            <input type="checkbox" wire:model="bulkSelected" value="{{ $translation->id }}">
-                        </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                            {{ $post->id }}
-                        </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                            @if ($post->category->translations->first())
-                                {{ $post->category->translations->first()->name }}
-                            @endif
-                        </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                            {{ $translation->locale }}
-                        </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                            {{ $translation->title }}
-                        </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                            @if ($translation->start)
-                                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->start))->isoFormat('LL') }}
-                            @endif
-                        </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                            @if ($translation->stop)
-                                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->stop))->isoFormat('LL') }}
-                            @endif
-                        </td>
-
-
-                        <!-- Row buttons -->
-                        <td class="whitespace-no-wrap border-b border-white text-sm leading-5 align-middle">
-                            <a class="mb-2 hidden font-bold text-gray-900 sm:block"
-                                href="{{ route('posts.show_by_slug', [$translation->slug]) }}"><x-icon name="external-link" class="w-5 h-5" /><a>
-                        </td>
-                        <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
-                            @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
-                                @if ($translation->stop > \Carbon\Carbon::now() || $translation->stop === null)
-                                    <button
-                                        class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:border-gray-900 focus:outline-none disabled:opacity-25"
-                                        wire:click.prevent="stop({{ $translation->id }})"
-                                        onclick="confirm('Do you want to end the publication of this post?') || event.stopImmediatePropagation()">
-                                        {{ __('Stop') }}
-                                    </button>
+                        <tr
+                            class="dark:bordergray-600 hover:bg-gray-50">
+                            <td class="py3 whitespace-no-wrap border-b border-white px-6 text-sm leading-5">
+                                <input type="checkbox" wire:model="bulkSelected" value="{{ $translation->id }}">
+                            </td>
+                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                                {{ $post->id }}
+                            </td>
+                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                                @if ($post->category->translations->first())
+                                    {{ $post->category->translations->first()->name }}
                                 @endif
-                            @endif
-                        </td>
-                        <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
-                            <button
-                                class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-900 disabled:opacity-25"
-                                wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
-                            </button>
-                        </td>
+                            </td>
+                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                                {{ $translation->locale }}
+                            </td>
+                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                                {{ $translation->title }}
+                            </td>
+                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                                @if ($translation->start)
+                                    {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->start))->isoFormat('LL') }}
+                                @endif
+                            </td>
+                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                                @if ($translation->stop)
+                                    {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->stop))->isoFormat('LL') }}
+                                @endif
+                            </td>
 
 
-                    </tr>
-                @endforeach
-            @endif
-        @empty
+                            <!-- Row buttons -->
+                            <td class="whitespace-no-wrap border-b border-white text-sm leading-5 align-middle">
+                                <a class="mb-2 hidden font-bold text-gray-900 sm:block"
+                                    href="{{ route('posts.show_by_slug', [$translation->slug]) }}"><x-icon name="external-link" class="w-5 h-5" /><a>
+                            </td>
+                            <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
+                                @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
+                                    @if ($translation->stop > \Carbon\Carbon::now() || $translation->stop === null)
+                                        <button
+                                            class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:border-gray-900 focus:outline-none disabled:opacity-25"
+                                            wire:click.prevent="stop({{ $translation->id }})"
+                                            onclick="confirm('Do you want to end the publication of this post?') || event.stopImmediatePropagation()">
+                                            {{ __('Stop') }}
+                                        </button>
+                                    @endif
+                                @endif
+                            </td>
+                            <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
+                                <button
+                                    class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-900 disabled:opacity-25"
+                                    wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
+                                </button>
+                            </td>
+                        </tr>
+
+                    @endforeach
+                @endif
+            @empty
             <tr>
                 <td colspan="9">
                     {{ __('No posts found.') }}

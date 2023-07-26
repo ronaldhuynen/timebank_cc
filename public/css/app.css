@@ -21033,6 +21033,14 @@ select{
   margin-top: auto;
   margin-bottom: auto;
 }
+.my-0{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.-my-2{
+  margin-top: -0.5rem;
+  margin-bottom: -0.5rem;
+}
 .-mb-0{
   margin-bottom: -0px;
 }
@@ -25207,6 +25215,18 @@ input[type="number"].appearance-number-none{
 :is(.dark .dark\:hover\:bg-zinc-600:hover){
   --tw-bg-opacity: 1;
   background-color: rgb(82 82 91 / var(--tw-bg-opacity));
+}
+:is(.dark .dark\:hover\:bg-gray-400:hover){
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
+}
+:is(.dark .dark\:hover\:bg-gray-300:hover){
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+:is(.dark .dark\:hover\:bg-gray-50:hover){
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 :is(.dark .dark\:hover\:text-secondary-100:hover){
   --tw-text-opacity: 1;

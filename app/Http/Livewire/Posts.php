@@ -25,7 +25,7 @@ class Posts extends Component
     public $createTranslation;
     public $postId;
     public $bulkSelected = [];
-    public bool $bulkDisabled = true;
+    public $bulkDisabled = true;
     public $categoryId;
     public $translationId;
     public $post;
@@ -401,17 +401,27 @@ class Posts extends Component
         info('updated image');
     }
 
-    public function deleteSelected()
+
+    public function updatedBulkSelected() 
     {
+        if (count($this->bulkSelected) > 0) {
+            $this->bulkDisabled = false;
+        } else {
+            $this->bulkDisabled = true;
+        }
+    }
+
+    
+    public function deleteSelected()
+    {       
         $selected = PostTranslation::query()
             ->whereIn('id', $this->bulkSelected);
-
         $update = ['stop' => now()]; //set stop publication date at now() to prevent immediate publication of restored posts
         $selected->update($update);
-
         $selected->delete();
 
         $this->bulkSelected = [];
+        $this->bulkDisabled = true;
     }
 
 

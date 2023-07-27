@@ -38,7 +38,7 @@ class Posts extends Component
     public $stop;     // x-date-time-picker and x-select do not entangle if they do not exist beforehand
 
     public $image;
-    public $imageCaption = '';
+    public $imageCaption = '';  // TODO! Make image cation field
     public $media;
 
     public $meetingShow = false;
@@ -197,7 +197,7 @@ class Posts extends Component
         $this->stop = $post->translations->first()->stop; // x-date-time-picker and x-select need a separate public property, see start of this file
 
         if ($post->media->count() > 0) {
-            $this->media = $post->first()->getFirstMedia('posts')->img('4_3')->toHtml();
+            $this->media = $post->getFirstMediaUrl('posts');    // Do not use responsive media in livewire pages that have multiple update cycles as the placeholder img show after an update
         }
     }
 

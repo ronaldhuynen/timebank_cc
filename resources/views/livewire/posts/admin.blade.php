@@ -71,11 +71,10 @@
                                 @endif
                             </td>
 
-
                             <!-- Row buttons -->
                             <td class="whitespace-no-wrap border-b border-white text-sm leading-5 align-middle">
                                 <a class="mb-2 hidden font-bold text-gray-900 sm:block"
-                                    href="{{ route('posts.show_by_slug', [$translation->slug]) }}"><x-icon name="external-link" class="w-5 h-5" /><a>
+                                    href="{{ url($translation->locale . '/posts/' . $translation->slug) }}" target="_blank" ><x-icon name="external-link" class="w-5 h-5" /><a>
                             </td>
                             <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
                                 @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
@@ -142,7 +141,7 @@
                     </div>
                     <div class="w-full py-2">
                         <label class="block text-sm font-medium text-gray-700">
-                            {{ __('Title') }} <span class="text-red-600">*</span>
+                            {{ __('Title') }}
                         </label>
                         <input wire:model.debounce.800ms="title"
                             class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
@@ -152,7 +151,7 @@
                     </div>
                     <div class="w-full py-2">
                         <label class="block text-sm font-medium text-gray-700">
-                            {{ __('Slug') }} <span class="text-red-600">*</span>
+                            {{ __('Slug') }}
                         </label>
                         <input wire:model.lazy="post.slug"
                             class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
@@ -175,12 +174,14 @@
                     @enderror
 
                     <div class="w-full py-2">
+
+                    
                         <!-- Image upload -->
                         <div class="w-1/2">
                             <label class="form-label mt-6">{{ __('Image') }}</label>
 
                             @if ($image === null)
-                                <div class="mb-2 h-48 w-64 border rounded-md border-gray-600"> {!! $media !!} </div>
+                                <img src="{{ $media }}" class="mb-2 h-48 w-64 object-cover border rounded-md border-gray-600">
                             @else
                                 <!-- Preview image -->
                                 {{-- Make sure that that object cover class w and h is 4 by 3 proportion as images will later be cropped in 4 by 3 proportions --}}
@@ -210,13 +211,13 @@
                             <!-- Event date pickers: from and till -->
                             <div class="flex space-x-12">
                                 <div class="my-6 flex-auto">
-                                    <x-datetime-picker label="{{ __('Start of the event') }} *"
+                                    <x-datetime-picker label="{{ __('Start of the event') }}"
                                         placeholder="{{ __('Select a date and time') }}" wire:model="meetingFrom"
                                         time-format="24" display-format="DD-MM-YYYY @ H:mm"
                                         parse-format="YYYY-MM-DD HH:mm" />
                                 </div>
                                 <div class="my-6 flex-auto">
-                                    <x-datetime-picker label="{{ __('End of the event') }} *"
+                                    <x-datetime-picker label="{{ __('End of the event') }}"
                                         placeholder="{{ __('Select a date and time') }}" wire:model="meetingTill"
                                         time-format="24" display-format="DD-MM-YYYY @ H:mm"
                                         parse-format="YYYY-MM-DD HH:mm" />
@@ -225,7 +226,7 @@
 
                             <div class="my-6 flex-auto">
                                 <label class="block text-sm font-medium text-gray-700">
-                                    {{ __('Event address') }} <span class="text-red-600">*</span>
+                                    {{ __('Event address') }}
                                 </label>
                                 <input wire:model.defer="meeting.address"
                                     class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />

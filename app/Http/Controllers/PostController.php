@@ -89,6 +89,7 @@ class PostController extends Controller
             'category'=> function ($query) {
                 $query->with('translations');
             },
+            'meeting',
             'translations' => function ($query) {
                 //TODO!: Currently only user 1 (Super-admin) can view unpublished posts, change to permission/role based!
                 if (auth()->user()->id != 1) {
@@ -113,7 +114,6 @@ class PostController extends Controller
 
         
         if ($post->translations->count() >= 1) {
-
             if ($post->category->translations) {
                 $category =  $post->category->translations->where('locale', App::getLocale())->first()->name;
             }

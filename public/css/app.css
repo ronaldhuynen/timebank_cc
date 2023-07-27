@@ -22694,6 +22694,9 @@ select{
 .pt-8{
   padding-top: 2rem;
 }
+.pb-2{
+  padding-bottom: 0.5rem;
+}
 .text-left{
   text-align: left;
 }
@@ -22702,6 +22705,9 @@ select{
 }
 .text-right{
   text-align: right;
+}
+.text-justify{
+  text-align: justify;
 }
 .text-end{
   text-align: end;
@@ -22735,9 +22741,16 @@ select{
 .text-3xs{
   font-size: 0.5rem;
 }
+.text-4xl{
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
 .text-5xl{
   font-size: 3rem;
   line-height: 1;
+}
+.text-\[500px\]{
+  font-size: 500px;
 }
 .text-base{
   font-size: 1rem;
@@ -22758,6 +22771,9 @@ select{
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
+}
+.text-\[50px\]{
+  font-size: 50px;
 }
 .font-bold{
   font-weight: 700;

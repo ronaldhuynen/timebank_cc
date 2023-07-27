@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Category;
 use App\Models\Locations\Location;
-use App\Models\News as NewsModel;
+use App\Models\News;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Livewire\Component;
 
-class News extends Component
+class NewsCardFull extends Component
 {
     public $author;
     public $post = [];
@@ -34,16 +34,14 @@ class News extends Component
                 'postable' => function ($query) {
                     $query->select(['id', 'name']);
                 },
-                'category'=> function ($query) {
-                    $query->with(['translations' => function ($query) {
-                        $query->where('locale', App::getLocale());
-                    }]);
+                'category',
+                'translations' => function ($query) {
+                    $query->where('locale', App::getLocale());
                 },
-                'translations',
                 'media',
                 ])
                 ->whereHas('category', function ($query) use ($city_id) {
-                    $query->where('type', NewsModel::class)->where('city_id', $city_id);
+                    $query->where('type', News::class)->where('city_id', $city_id);
                 })
                 ->whereHas('translations', function ($query) {
                     $query
@@ -64,10 +62,9 @@ class News extends Component
         }
 
         if ($post != null) {      // Show only posts if it has the category type of this model's class
-
             if ($post->translations->first()) {
                 $this->post = $post->translations->first();
-                $this->post['start'] = Carbon::createFromTimeStamp(strtotime($this->post->start))->isoFormat('LL');
+                $this->post['start'] = Carbon::parse(strtotime($post->translations->first()->updated_at))->isoFormat('LL');
                 $this->post['category'] = Category::find($post->category_id)->translations->where('locale', App::getLocale())->first()->name;
                 $this->post['author'] = $post->postable->name;
 
@@ -81,6 +78,6 @@ class News extends Component
 
     public function render()
     {
-        return view('livewire.dashboard.news');
+        return view('livewire.dashboard.news-card-full');
     }
 }

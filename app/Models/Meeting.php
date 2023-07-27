@@ -31,7 +31,7 @@ class Meeting extends Model
      *
      * @return void
      */
-    public function meetable()
+    public function meetingable()
     {
         return $this->morphTo();
     }

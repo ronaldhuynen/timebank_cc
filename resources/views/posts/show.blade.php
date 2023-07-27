@@ -22,6 +22,11 @@
                     <div class="mt-8 text-5xl font-bold text-gray-900">
                         {{ $post->translations->first()->title }}
                     </div>
+                    @if ($post->meeting != null)
+                    <div class="mt-8 text-5xl font-bold text-gray-900">
+                        {{ Illuminate\Support\Carbon::parse($post->meeting->from)->isoFormat('dddd D MMMM H:m') . ' ' . __('h.') }}
+                    </div>
+                    @endif
 
                     <div class="mt-6">
                         <div class="px-0 py-2 text-gray-900 text-xl font-bold">
@@ -32,8 +37,17 @@
                             {!! $post->translations->first()->content !!}
                         </div>
                     </div>
-                    <div class="flex justify-between mb-2 mt-6">
-                        <span class="font-thin text-sm text-gray-500">{{ __('Written by')}} {{ $post->postable->name }}</span>
+                    @if ($post->meeting != null)
+                    <div class="text-lg font-bold text-gray-900">
+                        {{ $post->meeting->address }}
+                    </div>
+                    <div class="text-lg font-bold text-gray-900">
+                        {{ __('Organizer')}} :
+                        {{ $post->meeting->meetingable->name }}<img src="{{ url(Storage::url($post->meeting->meetingable->profile_photo_path)) }}" class="w-10 rounded-full">
+                    </div>
+                    @endif
+                    <div class="flex justify-between mb-6 mt-12">
+                        <span class="font-thin text-sm text-gray-500">{{ __('Written by') . ' ' . $post->postable->name . ' ' .  __('on') . ' ' . $update }}</span>
                         <div class="flex justify-end">
                             <span class="sm:block hidden mb-2 text-gray-900 font-bold">{{ __('More articles') }}</span>
                             <div class="ml-1 mt-1">

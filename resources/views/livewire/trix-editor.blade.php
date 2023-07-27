@@ -9,19 +9,12 @@
             wire:key="uniqueKey"
             wire:ignore
             >
-    <label class="form-label">{{ __('Content') }} <span class="text-red-600">*</span></label>
+    <label class="form-label">{{ __('Content') }}</label>
         <input  name="value" id="{{ $trixId }}" type="hidden"
         class="block w-full text-sm text-slate-500 rounded-lg border border-gray-400">
         <trix-editor input="{{ $trixId }}" x-ref="trix" class="trix-content"
 
         ></trix-editor>
     </div>
-
-    <script>
-        var trixEditor = document.getElementById("{{ $trixId }}")
-        addEventListener("trix-blur", function(event) {
-            @this.set('value', trixEditor.getAttribute('value'))
-        })
-    </script>
 
 </div>

@@ -105,14 +105,11 @@ class Posts extends Component
 
     public function languageToParent($value)
     {
-        info('value: '. $value);
         if ($value === $this->localeInit) {
-        info('2');
             $this->locale = $value;
             $this->post['translation_id'] = Post::find($this->postId)->translations->first()->id;     // No new translation, so restore post['translation_id] to ignore unique slug validation
             $this->createTranslation = false;
         } elseif ($value !== $this->localeInit) {
-        info('2');
             $this->locale = $value;
             $this->post['translation_id'] = null;   // New translation, so reset post['translation_id'] for unique slug validation
             $this->createTranslation = true;
@@ -244,7 +241,7 @@ class Posts extends Component
                 if ($post) {
                     $this->notification()->success(
                         $title = __('Saved'),
-                        $description = __('Post was saved successfully')
+                        $description = __('Post is saved successfully')
                     );
                 } else {
                     $this->notification()->error(
@@ -296,7 +293,7 @@ class Posts extends Component
                 if ($post) {
                     $this->notification()->success(
                         $title = __('Saved'),
-                        $description = __('Post was saved successfully')
+                        $description = __('Post is saved successfully')
                     );
                 } else {
                     $this->notification()->error(
@@ -346,7 +343,7 @@ class Posts extends Component
             if ($post) {
                 $this->notification()->success(
                     $title = __('Saved'),
-                    $description = __('Post was saved successfully!')
+                    $description = __('Post is saved successfully!')
                 );
             } else {
                 $this->notification()->error(

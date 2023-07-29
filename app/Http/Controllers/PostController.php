@@ -94,7 +94,7 @@ class PostController extends Controller
                 //TODO!: Currently only user 1 (Super-admin) can view unpublished posts, change to permission/role based!
                 if (auth()->user()->id != 1) {
                     $query
-                    ->where('locale', App::getLocale())
+                    ->where('locale', App::getLocale())->first()
                     ->whereDate('start', '<=', now())
                     ->where(function ($query) {
                         $query->whereDate('stop', '>', now())->orWhereNull('stop');

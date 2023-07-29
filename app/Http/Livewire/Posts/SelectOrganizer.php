@@ -17,7 +17,7 @@ class SelectOrganizer extends Component
 
     protected $listeners = [
         'resetForm',
-        'meetingExists'
+        'organizerExists'
     ];
 
 
@@ -39,7 +39,7 @@ class SelectOrganizer extends Component
      * @param  mixed $value
      * @return void
      */
-    public function meetingExists($value)
+    public function organizerExists($value)
     {
         $this->selectedId = $value['meetingable_id'];
         $this->selected['id'] = $value['meetingable_id']; 
@@ -63,7 +63,7 @@ class SelectOrganizer extends Component
         $this->selected = collect($this->searchResults)->where('id', '=', $value)->first();
         $this->showDropdown = false;
         $this->search = '';
-        $this->emit('orgSelected', $this->selected);
+        $this->emit('organizerSelected', $this->selected);
     }
 
 

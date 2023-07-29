@@ -74,6 +74,7 @@
     "Deleted": "Verwijderd",
     "Not available": "Niet beschikbaar",
     "results": "resultaten",
+    "Browse...": "Bladeren...",
 
     "Sorry, your data could not be saved!": "Sorry, je gegevens konden niet worden opgeslagen!",
 
@@ -100,6 +101,17 @@
     "Stop": "Stop",
     "Edit": "Bewerken",
     "No posts found": "Geen posts gevonden",
+    "Create new post": "Nieuwe post",
+    "Edit post": "Post bewerken",
+    "Add translation": "Vertaling toevoegen",
+    "version": "versie",
+    "Intro": "Introductie",
+    "Content": "Inhoud",
+    "Image": "Afbeelding",
+    "Start of publication": "Start publicatie",
+    "End of publication": "Einde publicatie",
+    "Select language": "Kies taal",
+    
 
     "Transfer Timebank.cc Hours": "Betaal Timebank.cc uren",
     "Amount": "Aantal",

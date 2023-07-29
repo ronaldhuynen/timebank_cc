@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class LanguageSelectbox extends Component
+class AddTranslationSelectbox extends Component
 {
     public $langOptions = [];
     public $localeSelected;
@@ -17,11 +17,18 @@ class LanguageSelectbox extends Component
      */
     public function mount($locale, $available)
     {
-        info($available);
-        $this->langOptions = DB::table('languages')
+        $langOptions = DB::table('languages')
             ->whereIn('lang_code', $available)            
             ->orderBy('name')
             ->get(['id','lang_code','name']);
+            
+        $this->langOptions =  $langOptions->map(function ($item, $key) {
+            return  [
+                'id' => $item->id,
+                'lang_code' => $item->lang_code,
+                'name' => __('messages.' . $item->name)];
+        });
+
         $this->localeSelected = $locale;
     }
 
@@ -32,12 +39,14 @@ class LanguageSelectbox extends Component
      */
     public function updated()
     {
-        $this->emit('languageToParent', $this->localeSelected);
+        if ($this->localeSelected) {
+            $this->emit('languageToParent', $this->localeSelected);
+        }
     }
 
 
     public function render()
     {
-        return view('livewire.language-selectbox');
+        return view('livewire.add-translation-selectbox');
     }
 }

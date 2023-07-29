@@ -1,7 +1,7 @@
 <div>
     <x-select
-        label="{{ __('Language') }} * "
-        placeholder="{{ __('Select a language') }}"
+        label="{{ __('Add translation') }} * "
+        placeholder="{{ __('Select language') }}"
         :options="$langOptions"
         option-label="name"
         option-value="lang_code"

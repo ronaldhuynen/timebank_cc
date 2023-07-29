@@ -3,13 +3,15 @@
 
     <!-- Action buttons -->
     <div class="">
-    <button wire:click.prevent="create" class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25">
-        {{ __('Add new post') }}
-    </button>
-    <button @if ($bulkDisabled) disabled="true" @endif wire:click.prevent="deleteSelected" onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
-        class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white focus:border-gray-900 focus:outline-none disabled:opacity-25">
-        {{ __('Delete selected') }}
-    </button>
+        <button wire:click.prevent="create"
+            class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25">
+            {{ __('Add new post') }}
+        </button>
+        <button @if ($bulkDisabled) disabled="true" @endif wire:click.prevent="deleteSelected"
+            onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
+            class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white focus:border-gray-900 focus:outline-none disabled:opacity-25">
+            {{ __('Delete selected') }}
+        </button>
     </div>
     <table class="mt-6 table min-w-full border-white">
 
@@ -41,64 +43,64 @@
                     <tr>
                         <td colspan="9">
                             @foreach ($post->translations as $key => $translation)
-                        <tr
-                            class="dark:bordergray-600 hover:bg-gray-50">
-                            <td class="py3 whitespace-no-wrap border-b border-white px-6 text-sm leading-5">
-                                <input type="checkbox" wire:model="bulkSelected" value="{{ $translation->id }}">
-                            </td>
-                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                                {{ $post->id }}
-                            </td>
-                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                                @if ($post->category->translations->first())
-                                    {{ $post->category->translations->first()->name }}
-                                @endif
-                            </td>
-                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                                {{ $translation->locale }}
-                            </td>
-                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                                {{ $translation->title }}
-                            </td>
-                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                                @if ($translation->start)
-                                    {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->start))->isoFormat('LL') }}
-                                @endif
-                            </td>
-                            <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                                @if ($translation->stop)
-                                    {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->stop))->isoFormat('LL') }}
-                                @endif
-                            </td>
+                    <tr class="dark:bordergray-600 hover:bg-gray-50">
+                        <td class="py3 whitespace-no-wrap border-b border-white px-6 text-sm leading-5">
+                            <input type="checkbox" wire:model="bulkSelected" value="{{ $translation->id }}">
+                        </td>
+                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                            {{ $post->id }}
+                        </td>
+                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                            @if ($post->category->translations->first())
+                                {{ $post->category->translations->first()->name }}
+                            @endif
+                        </td>
+                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                            {{ $translation->locale }}
+                        </td>
+                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                            {{ $translation->title }}
+                        </td>
+                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                            @if ($translation->start)
+                                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->start))->isoFormat('LL') }}
+                            @endif
+                        </td>
+                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                            @if ($translation->stop)
+                                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->stop))->isoFormat('LL') }}
+                            @endif
+                        </td>
 
-                            <!-- Row buttons -->
-                            <td class="whitespace-no-wrap border-b border-white text-sm leading-5 align-middle">
-                                <a class="mb-2 hidden font-bold text-gray-900 sm:block"
-                                    href="{{ url($translation->locale . '/posts/' . $translation->slug) }}" target="_blank" ><x-icon name="external-link" class="w-5 h-5" /><a>
-                            </td>
-                            <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
-                                @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
-                                    @if ($translation->stop > \Carbon\Carbon::now() || $translation->stop === null)
-                                        <button
-                                            class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:border-gray-900 focus:outline-none disabled:opacity-25"
-                                            wire:click.prevent="stop({{ $translation->id }})"
-                                            onclick="confirm('Do you want to end the publication of this post?') || event.stopImmediatePropagation()">
-                                            {{ __('Stop') }}
-                                        </button>
-                                    @endif
+                        <!-- Row buttons -->
+                        <td class="whitespace-no-wrap border-b border-white align-middle text-sm leading-5">
+                            <a class="mb-2 hidden font-bold text-gray-900 sm:block"
+                                href="{{ url($translation->locale . '/posts/' . $translation->slug) }}"
+                                target="_blank">
+                                <x-icon name="external-link" class="h-5 w-5" /><a>
+                        </td>
+                        <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
+                            @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
+                                @if ($translation->stop > \Carbon\Carbon::now() || $translation->stop === null)
+                                    <button
+                                        class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:border-gray-900 focus:outline-none disabled:opacity-25"
+                                        wire:click.prevent="stop({{ $translation->id }})"
+                                        onclick="confirm('Do you want to end the publication of this post?') || event.stopImmediatePropagation()">
+                                        {{ __('Stop') }}
+                                    </button>
                                 @endif
-                            </td>
-                            <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
-                                <button
-                                    class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25"
-                                    wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
-                                </button>
-                            </td>
-                        </tr>
-
-                    @endforeach
-                @endif
-            @empty
+                            @endif
+                        </td>
+                        <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
+                            <button
+                                class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25"
+                                wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+        @empty
             <tr>
                 <td colspan="9">
                     {{ __('No posts found.') }}
@@ -121,12 +123,17 @@
             <form wire:submit.prevent="save" class="w-ful">
                 <div class="flex flex-col items-start p-4">
                     <div class="flex w-full items-center bg-white pb-4">
-                        @if ($createTranslation === true)
-                            <div class="text-lg font-medium text-gray-900">{{ __('Add translation to post') }}</div>
-                        @else
-                            <div class="text-lg font-medium text-gray-900">
-                                {{ $postId ? __('Edit post') : __('Create new post') }}</div>
-                        @endif
+                        <div wire:model="language" class="text-lg font-medium text-gray-900">
+                            @if ($postId)
+                                @if ($createTranslation)
+                                    {{ __('Add translation') .':' . ' ' . __('messages.' . $language) }}
+                                @else
+                                    {{ __('Edit post') . ':' . ' ' . __('messages.' . $language) . 'e' . ' ' . __('version') }}
+                                @endif
+                            @else
+                                {{  !$language ? __('Create new post') : __('Create new post') . ':' . ' ' . __('messages.' . $language) . 'e' . ' ' . __('version') }}
+                            @endif
+                        </div>
                         <svg wire:click="close" class="ml-auto h-6 w-6 cursor-pointer fill-current text-gray-700"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
                             <path
@@ -136,7 +143,8 @@
                     <div class="required flex space-x-12 py-2">
                         <livewire:category-selectbox key="{{ Str::random() }}" :categorySelected="$categoryId" />
                         <!-- Use the key to keep track of component that are in a loop -->
-                        <livewire:language-selectbox key="{{ Str::random() }}" :locale="$locale" :available="$localesAvailable" />
+                        <livewire:add-translation-selectbox key="{{ Str::random() }}" :locale="$locale"
+                            :available="$localesAvailable" />
                         <!-- Use the key to keep track of component that are in a loop -->
                     </div>
                     <div class="w-full py-2">
@@ -175,17 +183,19 @@
 
                     <div class="w-full py-2">
 
-                    
+
                         <!-- Image upload -->
                         <div class="w-1/2">
                             <label class="form-label mt-6">{{ __('Image') }}</label>
 
                             @if ($image === null)
-                                <img src="{{ $media }}" class="mb-2 h-48 w-64 object-cover border rounded-md border-gray-600">
+                                <img src="{{ $media }}"
+                                    class="mb-2 h-48 w-64 rounded-md border border-gray-600 object-cover">
                             @else
                                 <!-- Preview image -->
                                 {{-- Make sure that that object cover class w and h is 4 by 3 proportion as images will later be cropped in 4 by 3 proportions --}}
-                                <img src="{{ $image->temporaryUrl() }}" class="mb-2 h-48 w-64 object-cover border rounded-md border-gray-600">
+                                <img src="{{ $image->temporaryUrl() }}"
+                                    class="mb-2 h-48 w-64 rounded-md border border-gray-600 object-cover">
                             @endif
                             <div x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
                                 x-on:livewire-upload-finish="isUploading = false; progress = 5"
@@ -270,9 +280,9 @@
                             </div>
                         @endif
 
-                        <x-errors/>      
+                        <x-errors />
 
-                        <div class="ml-auto mt-6">                        
+                        <div class="ml-auto mt-6">
                             @if ($createTranslation === true)
                                 <button class="rounded bg-gray-900 px-4 py-2 font-bold text-white hover:bg-gray-700"
                                     type="submit">{{ $postId ? __('Add Translation') : __('Save') }}
@@ -282,8 +292,8 @@
                                     type="submit">{{ $postId ? __('Update') : __('Save') }}
                                 </button>
                             @endif
-                            <button class="rounded bg-gray-500 px-4 py-2 font-bold text-white hover:bg-gray-600" wire:click="close"
-                                type="button" data-dismiss="modal">{{ __('Cancel') }}
+                            <button class="rounded bg-gray-500 px-4 py-2 font-bold text-white hover:bg-gray-600"
+                                wire:click="close" type="button" data-dismiss="modal">{{ __('Cancel') }}
                             </button>
                         </div>
                     </div>

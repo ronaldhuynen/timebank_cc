@@ -35,7 +35,9 @@ class EventCardFull extends Component
                     $query->select(['id', 'name']);
                 },
                 'category',
-                'translations',
+                'translations' => function ($query) {
+                    $query->where('locale', App::getLocale())->first();
+                },
                 'meeting',
                 'media',
                 ])
@@ -52,7 +54,6 @@ class EventCardFull extends Component
                     ->orderBy('updated_at', 'desc');
                 })
                 ->get();
-                // dd($post);
         $lastNr = $post->count() -1;
         if ($postNr > $lastNr) {
             $post = null;
@@ -67,7 +68,7 @@ class EventCardFull extends Component
                 $this->post['start'] = Carbon::parse($post->translations->first()->updated_at)->isoFormat('LL');
                 $this->post['category'] = Category::find($post->category_id)->translations->where('locale', App::getLocale())->first()->name;
                 $this->post['author'] = $post->postable->name;
-                $this->post['address'] = $post->meeting->address;               
+                $this->post['address'] = $post->meeting->address;
                 $this->post['from'] = $post->meeting->from;
 
 

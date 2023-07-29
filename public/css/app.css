@@ -20935,14 +20935,8 @@ select{
 .z-30{
   z-index: 30;
 }
-.z-40{
-  z-index: 40;
-}
 .z-50{
   z-index: 50;
-}
-.z-\[100\]{
-  z-index: 100;
 }
 .z-\[60\]{
   z-index: 60;
@@ -21102,9 +21096,6 @@ select{
 .mb-4{
   margin-bottom: 1rem;
 }
-.mb-5{
-  margin-bottom: 1.25rem;
-}
 .mb-6{
   margin-bottom: 1.5rem;
 }
@@ -21185,6 +21176,9 @@ select{
 }
 .mt-8{
   margin-top: 2rem;
+}
+.mb-5{
+  margin-bottom: 1.25rem;
 }
 .block{
   display: block;
@@ -22694,9 +22688,6 @@ select{
 .pt-8{
   padding-top: 2rem;
 }
-.pb-2{
-  padding-bottom: 0.5rem;
-}
 .text-left{
   text-align: left;
 }
@@ -22705,9 +22696,6 @@ select{
 }
 .text-right{
   text-align: right;
-}
-.text-justify{
-  text-align: justify;
 }
 .text-end{
   text-align: end;
@@ -22749,9 +22737,6 @@ select{
   font-size: 3rem;
   line-height: 1;
 }
-.text-\[500px\]{
-  font-size: 500px;
-}
 .text-base{
   font-size: 1rem;
   line-height: 1.5rem;
@@ -22771,9 +22756,6 @@ select{
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
-}
-.text-\[50px\]{
-  font-size: 50px;
 }
 .font-bold{
   font-weight: 700;

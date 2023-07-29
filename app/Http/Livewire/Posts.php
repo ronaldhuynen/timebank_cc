@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\PostTranslation;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -27,18 +28,20 @@ class Posts extends Component
     public $bulkSelected = [];
     public $bulkDisabled = true;
     public $categoryId;
-    public $translationId;
-    public $post;
+    public $post = ['excerpt' => '','content' => ''];   // In case fields are left empty (concept post)
+    
     public $localeInit;
     public $locale;
     public $localesAvailable = [];
+    public $language;
+
     public $title;
     public $content;
     public $start;   // x-date-time-picker and x-select do not entangle if they do not exist beforehand
     public $stop;     // x-date-time-picker and x-select do not entangle if they do not exist beforehand
 
     public $image;
-    public $imageCaption = '';  // TODO! Make image cation field
+    public $imageCaption = '';  // TODO! Make image caption field
     public $media;
 
     public $meetingShow = false;
@@ -46,11 +49,11 @@ class Posts extends Component
     public $meetingFrom;
     public $meetingTill;
     public $organizerOptions;
-    public $organizer;
+    public $organizer = ['id' => null, 'type' => null]; // In case fields are left empty (concept post)
 
     protected $paginationTheme = 'tailwind';
 
-    protected $listeners = ['categoryToParent', 'languageToParent', 'trixEditor', 'uploadImage', 'orgSelected'];
+    protected $listeners = ['categoryToParent', 'languageToParent', 'trixEditor', 'uploadImage', 'organizerSelected'];
 
 
     protected function rules()
@@ -65,7 +68,7 @@ class Posts extends Component
             Rule::unique('post_translations', 'slug')->ignore($this->post['translation_id'], 'id')],
         'post.title' => 'required|string|min:3|max:150',
         'post.excerpt' => 'string|max:300',
-        'content' => 'string|',
+        'content' => 'string|nullable',
         'start' => 'date|nullable',
         'stop' => 'date|nullable',
         'image' => 'nullable|image|max:5120',
@@ -77,32 +80,9 @@ class Posts extends Component
     ];
     }
 
-    public function mount($value = '')
+    public function mount()
     {
         $this->reset();
-    }
-
-    public function render()
-    {
-        $post = Post::with([
-            'postable' => function ($query) {
-                $query->select(['id', 'name', 'email']);
-            },
-            'category' => function ($query) {
-                $query->with(['translations' => function ($query) {
-                    $query->where('locale', App::getLocale());
-                }]);
-            },
-            'translations' => function ($query) {
-            },
-            'images' => function ($query) {
-                $query->select('images.id', 'caption', 'path');
-            },
-            ]);
-        ;
-        return view('livewire.posts.admin', [
-            'posts' => $post->latest()->paginate(10)
-        ]);
     }
 
 
@@ -125,17 +105,29 @@ class Posts extends Component
 
     public function languageToParent($value)
     {
+        info('value: '. $value);
         if ($value === $this->localeInit) {
+        info('2');
             $this->locale = $value;
+            $this->post['translation_id'] = Post::find($this->postId)->translations->first()->id;     // No new translation, so restore post['translation_id] to ignore unique slug validation
             $this->createTranslation = false;
         } elseif ($value !== $this->localeInit) {
+        info('2');
             $this->locale = $value;
+            $this->post['translation_id'] = null;   // New translation, so reset post['translation_id'] for unique slug validation
             $this->createTranslation = true;
         }
-
+        $this->setLanguageName();
     }
 
-    public function orgSelected($value)
+    public function setLanguageName()
+    {   
+        if ($this->locale) {
+            $this->language = DB::table('languages')->where('lang_code', $this->locale)->first()->name;
+        }
+    }
+
+    public function organizerSelected($value)
     {
         $this->organizer = $value; 
     }
@@ -152,7 +144,6 @@ class Posts extends Component
     {
         $this->showModal = true;
         $this->meetingShow = false;     // Hide the event details unless an event category is selected
-        $this->translationId;
         $this->createTranslation = false;
         $this->postId = PostTranslation::find($translationId)->post_id;
 
@@ -187,6 +178,7 @@ class Posts extends Component
 
         $this->localeInit = $this->post['locale'];
         $this->locale = $this->post['locale'];
+        $this->setLanguageName();
 
         $this->categoryId = $post->category_id;
         $this->meetingShow = Category::where('id', $post->category_id)->where('type', Meeting::class)->exists();    // Toggle meeting section based on category type
@@ -459,7 +451,6 @@ class Posts extends Component
         if ($localesAvailable) {
             $localesAvailable = $localesAvailable->translations()->pluck('locale');
             $this->localesAvailable = $localesAvailable->diff($localesExclude);
-            info('localesAvailable result:' . $this->localesAvailable);
         } else {
             $this->localesAvailable = [];
         }
@@ -479,8 +470,9 @@ class Posts extends Component
             $this->meetingTill = $this->meeting['till'];    // WireUI is not (yet) able to bind nested properties
             $this->organizer['id'] = $this->meeting['meetingable_id'];
             $this->organizer['type'] = $this->meeting['meetingable_type'];
-
-            $this->emit('meetingExists', $this->meeting);
+            if ($this->organizer['id']) {    
+                $this->emit('organizerExists', $this->meeting);
+            }
         }
     }
 
@@ -498,4 +490,34 @@ class Posts extends Component
             $translation->update($stop);
         }
     }
+
+    
+    public function render()
+    {
+        $post = Post::with([
+            'postable' => function ($query) {
+                $query->select(['id', 'name', 'email']);
+            },
+            'category' => function ($query) {
+                $query->with(['translations' => function ($query) {
+                    $query->where('locale', App::getLocale());
+                }]);
+            },
+            'translations' => function ($query) {
+            },
+            'images' => function ($query) {
+                $query->select('images.id', 'caption', 'path');
+            },
+            ]);
+        ;
+        return view('livewire.posts.admin', [
+            'posts' => $post->latest()->paginate(10)
+        ]);
+    }
+
+
+
 }
+
+
+

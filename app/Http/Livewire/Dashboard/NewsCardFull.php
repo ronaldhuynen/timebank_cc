@@ -36,7 +36,7 @@ class NewsCardFull extends Component
                 },
                 'category',
                 'translations' => function ($query) {
-                    $query->where('locale', App::getLocale());
+                    $query->where('locale', App::getLocale())->first();
                 },
                 'media',
                 ])
@@ -53,6 +53,7 @@ class NewsCardFull extends Component
                     ->orderBy('updated_at', 'desc');
                 })
                 ->get();
+                // dd(App::getlocale());
 
         $lastNr = $post->count() -1;
         if ($postNr > $lastNr) {

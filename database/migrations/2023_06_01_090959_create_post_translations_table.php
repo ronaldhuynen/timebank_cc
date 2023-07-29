@@ -17,9 +17,9 @@ return new class () extends Migration {
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
             $table->string('locale', 6)->index();
             $table->string('slug')->unique();
-            $table->string('title');
-            $table->text('excerpt');
-            $table->text('content');
+            $table->string('title')->nullable();
+            $table->text('excerpt')->nullable();
+            $table->text('content')->nullable();
             $table->integer('status')->unsigned()->default(1);
             $table->dateTime('start')->nullable();
             $table->dateTime('stop')->nullable();

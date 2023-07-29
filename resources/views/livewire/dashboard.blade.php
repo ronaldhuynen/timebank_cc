@@ -32,8 +32,8 @@
 
    <livewire:dashboard.event-card-full :postNr=0>
    <livewire:dashboard.news-card-full :postNr=0>
-   {{-- <livewire:dashboard.event-card-full :postNr=1> --}}
-   {{-- <livewire:dashboard.news-card-full :postNr=1> --}}
+   <livewire:dashboard.event-card-full :postNr=1>
+   <livewire:dashboard.news-card-full :postNr=1>
 
 
 

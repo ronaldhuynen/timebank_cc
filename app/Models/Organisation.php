@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Locations\Location;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -150,5 +152,22 @@ class Organisation extends Model implements MessengerProvider, Searchable
             $this->name,
          );
      }
+
+    /**
+     * Get all of the Organization's posts.
+     */
+    public function posts()
+    {
+        return $this->morphMany(Post::class, 'postable');
+    }
+
+    /**
+     * Get all related the locations of the user.
+     * Many-to-many polymorphic.
+     */
+    public function locations()
+    {
+        return $this->morphToMany(Location::class, 'locationable');
+    }
 
 }

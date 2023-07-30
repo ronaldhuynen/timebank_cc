@@ -2,8 +2,9 @@
 
 namespace App\Models\Locations;
 
+use App\Models\Category;
+use App\Models\Locations\City;
 use App\Models\Locations\DivisionLocale;
-use App\Traits\LocationTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
@@ -24,7 +25,7 @@ class Division extends Model
      *
      * @return void
      */
-    public function locales()
+    public function translations()
     {
         return $this->hasMany(DivisionLocale::class, 'division_id');
     }
@@ -103,28 +104,31 @@ class Division extends Model
      * @param string $search
      * @return void
      */
-    public function cities(string $search = '')
+    public function cities()
     {
-        $locale = collect(
-            $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
-            ->where('locale', App::getLocale())
-            ->get()
-            )->keyBy('city_id');
+    // {
+    //     $locale = collect(
+    //         $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
+    //         ->where('locale', App::getLocale())
+    //         ->get()
+    //         )->keyBy('city_id');
 
-        $fallback = collect(
-            $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
-            ->where('locale', App::getFallbackLocale())
-            ->get()
-            )->keyBy('city_id');
+    //     $fallback = collect(
+    //         $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
+    //         ->where('locale', App::getFallbackLocale())
+    //         ->get()
+    //         )->keyBy('city_id');
 
-        $result = $locale
-            ->union($fallback)
-            ->filter(function ($item) use ($search){
-                return false !== stripos($item->name, $search);
-            })
-            ->sortBy('name');
+    //     $result = $locale
+    //         ->union($fallback)
+    //         ->filter(function ($item) use ($search){
+    //             return false !== stripos($item->name, $search);
+    //         })
+    //         ->sortBy('name');
 
-        return $result;
+    //     return $result;
+
+        return $this->hasMany(City::class);
     }
 
 
@@ -148,6 +152,15 @@ class Division extends Model
     public function parent()
     {
         return $this->country();
+    }
+
+    
+    /**
+     * Get all of the related categories for this model.
+     */
+    public function categories()
+    {
+        return $this->morphMany(Category::class, 'categoryable');
     }
 
 }

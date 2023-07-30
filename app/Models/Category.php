@@ -33,4 +33,16 @@ class Category extends Model
         return $this->hasMany(CategoryTranslation::class);
     }
 
+
+
+    /**
+     * Get the polymorph relation of this type of category (i.e. division, user, organisation).
+     *
+     * @return void
+     */
+    public function categoryable()
+    {
+        return $this->morphTo();
+    }
+
 }

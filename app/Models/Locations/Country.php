@@ -2,6 +2,7 @@
 
 namespace App\Models\Locations;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -47,13 +48,13 @@ class Country extends Model
      *
      * @return void
      */
-    public function locales()
+    public function translations()
     {
         return $this->hasMany(CountryLocale::class, 'country_id');
     }
 
 
-    public function localeExists()
+    public function translationExists()
     {
         return $this->hasOne(CountryLocale::class, 'country_id')->where('locale', App::getLocale())->exists();
     }
@@ -226,6 +227,15 @@ class Country extends Model
             return $this->divisions($search);
         }
         return $this->cities($search);
+    }
+
+    
+    /**
+     * Get all of the related categories for this model.
+     */
+    public function categories()
+    {
+        return $this->morphMany(Category::class, 'categoryable');
     }
 
 }

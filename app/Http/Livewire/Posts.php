@@ -46,6 +46,7 @@ class Posts extends Component
 
     public $meetingShow = false;
     public $meeting;
+    public $meetingAddress;
     public $meetingFrom;
     public $meetingTill;
     public $organizerOptions;
@@ -221,11 +222,11 @@ class Posts extends Component
                     ]);
                 $post->translations()->save($postTranslation);
 
-                if ($this->meeting) {
+                if ($this->meetingShow) {
                     
                     $postMeeting = [
                         'post_id' => $this->postId,
-                        'address' => $this->meeting['address'],
+                        'address' => $this->meetingAddress,
                         'meetingable_id' => $this->organizer['id'],      
                         'meetingable_type' => $this->organizer['type'],
                         'from' => $this->meetingFrom,
@@ -257,8 +258,6 @@ class Posts extends Component
 
                 $this->validate();
 
-                info('Update method: ' . $this->post['content']);
-
                 $post = Post::find($this->postId);
                 $postTranslation = [
                     'title' => $this->post['title'],
@@ -273,10 +272,10 @@ class Posts extends Component
                 $post->postable_id = Session('activeProfileId');
                 $post->postable_type = Session('activeProfileType');
                 
-                if ($this->meeting) {
+                if ($this->meetingShow) {
                     $postMeeting = [
                         'post_id' => $this->postId,
-                        'address' => $this->meeting['address'],
+                        'address' => $this->meetingAddress,
                         'meetingable_id' => $this->organizer['id'],      
                         'meetingable_type' => $this->organizer['type'],
                         'from' => $this->meetingFrom,
@@ -326,9 +325,9 @@ class Posts extends Component
                 ]);
             $post->translations()->save($translation);
 
-            if ($this->meeting) {
+            if ($this->meetingShow) {
                 $postMeeting = [
-                    'address' => $this->meeting['address'],
+                    'address' => $this->meetingAddress,
                     'meetingable_id' => $this->organizer['id'],      
                     'meetingable_type' => $this->organizer['type'],
                     'from' => $this->meetingFrom,
@@ -463,6 +462,7 @@ class Posts extends Component
     {
         $this->meeting = collect(Meeting::where('post_id', $this->postId)->first());
         if ($this->meeting->isNotEmpty()) {
+            $this->meetingAddress = $this->meeting['address'];
             $this->meetingFrom = $this->meeting['from'];    // WireUI is not (yet) able to bind nested properties
             $this->meetingTill = $this->meeting['till'];    // WireUI is not (yet) able to bind nested properties
             $this->organizer['id'] = $this->meeting['meetingable_id'];
@@ -500,13 +500,13 @@ class Posts extends Component
                     $query->where('locale', App::getLocale());
                 }]);
             },
-            'translations' => function ($query) {
-            },
+            'translations',
             'images' => function ($query) {
                 $query->select('images.id', 'caption', 'path');
             },
-            ]);
-        ;
+            ])
+            ;
+        // dd($post->where('id', 2));
         return view('livewire.posts.admin', [
             'posts' => $post->latest()->paginate(10)
         ]);

@@ -7,6 +7,7 @@
                 <div class="">
                     <div class="bg-black px-2 py-1 text-xs font-semibold text-white">
                         {{ $post->category }}
+                        {{ $post->id}}
                     </div>
                     <h1 class="my-2 bg-black px-2 py-1 text-2xl font-bold text-white">{{ $post->title }}</h1>
                     @if (isset($post->excerpt))

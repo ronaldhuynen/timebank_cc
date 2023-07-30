@@ -9,6 +9,7 @@ use App\Models\Locations\Country;
 use App\Models\Locations\District;
 use App\Models\Locations\Location;
 use App\Models\Organisation;
+use App\Models\Post;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -262,5 +263,14 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
         ->logOnlyDirty()   // Only log attributes that have been changed
         ->dontSubmitEmptyLogs()
         ->useLogName('user');
+    }
+
+
+    /**
+     * Get all of the User's posts.
+     */
+    public function posts()
+    {
+        return $this->morphMany(Post::class, 'postable');
     }
 }

@@ -14,80 +14,125 @@ class PostTranslationsTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('post_translations')->delete();
-
+        
         \DB::table('post_translations')->insert(array (
-            0 =>
+            0 => 
             array (
-                'id' => 1,
-                'post_id' => 1,
-                'locale' => 'nl',
-                'slug' => 'Lekkernassuh-Timebank-evenement',
-                'title' => 'Timebanken waar is dat nou goed voor ?!',
-                'excerpt' => 'Een evenement speciaal voor Lekkernassûh medewerkers en lekker nassûhende timebankers.',
-                'content' => 'Een evenement speciaal voor Lekkernassûh medewerkers en lekker nassûhende timebankers over waarom Lekkernassûh met Timebank werkt en hoe je direct méér, echt veel meer, met die Timebank Uren kunt doen.
-
-Kom op [dag en datum] om [tijd] naar de Gymzaal !',
-                'status' => 1,
-                'start' => '2023-06-03 15:46:00',
-                'created_at' => '2023-06-01 12:50:11',
-                'updated_at' => '2023-06-01 12:50:11',
-                'stop' => NULL,
-            ),
-            1 =>
-            array (
-                'id' => 2,
-                'post_id' => 1,
+                'id' => 15,
+                'post_id' => 13,
                 'locale' => 'en',
-                'slug' => 'Lekkernassuh-Timebank-event',
-                'title' => 'Timebanking, what is it good for ?!',
-                'excerpt' => 'An event especially for Lekkernassuh workers.',
-                'content' => 'An event especially for Lekkernassuh workers and l..An event especially for Lekkernassuh workers and l..An event especially for Lekkernassuh workers and l..',
+                'slug' => 'empty-event',
+                'title' => 'Empty event',
+                'excerpt' => '',
+                'content' => NULL,
                 'status' => 1,
-                'start' => '2023-06-03 15:46:00',
-                'created_at' => '2023-06-01 12:51:11',
-                'updated_at' => '2023-06-01 12:51:11',
+                'start' => '2023-07-29 21:44:00',
                 'stop' => NULL,
+                'created_at' => '2023-07-29 21:44:43',
+                'updated_at' => '2023-07-29 22:30:58',
+                'deleted_at' => NULL,
             ),
-            2 =>
+            1 => 
             array (
-                'id' => 3,
-                'post_id' => 3,
+                'id' => 16,
+                'post_id' => 13,
                 'locale' => 'nl',
-                'slug' => 'Lekkernassuh-samenwerking',
-                'title' => 'Jouw tijd, jouw verdienste',
-                'excerpt' => 'Sinds 2018 werkt Lekkernassûh samen met Timebank.cc.',
-                'content' => 'Sinds 2018 werkt Lekkernassûh samen met Timebank.cc. Timebank.cc is een Community Currency, toegankelijk voor iedereen, om je tijd, vaardigheden en kennis te delen. Bij Lekkernassûh kun je Timebank uren verdienen door mee te helpen op een versmarkt of in de verpakkingsvrije winkel. Met deze uren kun je bijvoorbeeld je goentepakket, kaas en producten van de verpakkingsvrije winkel kopen.
-
-Om de Lekkernassûh markt en de organisatie ervan draaiende te houden hebben we geld (Euro’s) en arbeid (tijd) nodig. Met de Euro’s betalen we groenten, de kosten van het pand, internet, logistiek en dergelijke. Daarnaast hebben we menskracht nodig om van alles gedaan te krijgen. Met Timebank.cc creëren we de mogelijkheid om gewerkte uren te waarderen met Timebank uren, die je vervolgens weer uit kunt geven bij Lekkernassûh of in de Timebank.cc gemeenschap.
-Foto door finefocus.nl',
+                'slug' => 'leeg-evenement',
+                'title' => 'Leeg evenement',
+                'excerpt' => '',
+                'content' => NULL,
+                'status' => 1,
+                'start' => '2023-07-29 21:45:00',
+                'stop' => NULL,
+                'created_at' => '2023-07-29 21:45:06',
+                'updated_at' => '2023-07-29 22:57:03',
+                'deleted_at' => NULL,
+            ),
+            2 => 
+            array (
+                'id' => 17,
+                'post_id' => 14,
+                'locale' => 'en',
+                'slug' => 'empty-event-2',
+                'title' => 'Empty event 2',
+                'excerpt' => '',
+                'content' => NULL,
+                'status' => 1,
+                'start' => '2023-07-26 21:49:00',
+                'stop' => NULL,
+                'created_at' => '2023-07-29 21:49:40',
+                'updated_at' => '2023-07-29 22:28:58',
+                'deleted_at' => NULL,
+            ),
+            3 => 
+            array (
+                'id' => 18,
+                'post_id' => 14,
+                'locale' => 'nl',
+                'slug' => 'leeg-evenement-2',
+                'title' => 'Leeg evenement 2',
+                'excerpt' => '',
+                'content' => NULL,
+                'status' => 1,
+                'start' => '2023-07-26 21:49:00',
+                'stop' => NULL,
+                'created_at' => '2023-07-29 22:29:28',
+                'updated_at' => '2023-07-29 23:09:36',
+                'deleted_at' => NULL,
+            ),
+            4 => 
+            array (
+                'id' => 19,
+                'post_id' => 15,
+                'locale' => 'nl',
+                'slug' => 'third-event',
+                'title' => 'Third event',
+                'excerpt' => '',
+                'content' => NULL,
                 'status' => 1,
                 'start' => NULL,
-                'created_at' => '2023-06-01 13:14:23',
-                'updated_at' => '2023-06-01 13:14:23',
                 'stop' => NULL,
+                'created_at' => '2023-07-29 22:30:08',
+                'updated_at' => '2023-07-29 22:30:08',
+                'deleted_at' => NULL,
             ),
-            3 =>
+            5 => 
             array (
-                'id' => 4,
-                'post_id' => 3,
+                'id' => 20,
+                'post_id' => 16,
                 'locale' => 'en',
-                'slug' => 'Lekkernassuh-coorperation',
-                'title' => 'Earn Timebank hours for your time',
-                'excerpt' => 'Since 2018, Lekkernassuh has partnered with Timebank.cc.',
-                'content' => 'Since 2018, Lekkernassuh has partnered with Timebank.cc, which is a Community Currency, accessible to everyone, as a way to share time, skills and knowledge. At Lekkernassûh, you can help out at the market and earn Timebank hours. These hours can be used to buy things like your veggie package, cheese and products from the package-free shop.
-
-To keep the Lekkernassûh market and its organization running, we need money (euros) and labor (time). With Euros, we pay for vegetables, the cost of the premises, internet, logistics among other similar things. With Timebank hours, we create the possibility to credit hours worked with Timebank hours, which can then be spent at Lekkernassûh or in other ways within the Timebank.cc community.',
+                'slug' => 'oud-nieuws',
+                'title' => 'Oud nieuws',
+                'excerpt' => '',
+                'content' => NULL,
                 'status' => 1,
-                'start' => '2023-05-01 15:46:00',
-                'created_at' => '2023-06-01 13:16:12',
-                'updated_at' => '2023-06-01 13:16:12',
-                'stop' => '2023-06-01 20:33:43',
+                'start' => '2023-07-01 23:00:00',
+                'stop' => NULL,
+                'created_at' => '2023-07-29 23:00:21',
+                'updated_at' => '2023-07-29 23:00:21',
+                'deleted_at' => NULL,
+            ),
+            6 => 
+            array (
+                'id' => 21,
+                'post_id' => 17,
+                'locale' => 'en',
+                'slug' => 'vers-nieuws',
+                'title' => 'Vers nieuws',
+                'excerpt' => '',
+                'content' => NULL,
+                'status' => 1,
+                'start' => '2023-07-29 23:00:00',
+                'stop' => NULL,
+                'created_at' => '2023-07-29 23:00:53',
+                'updated_at' => '2023-07-29 23:00:53',
+                'deleted_at' => NULL,
             ),
         ));
-
-
+        
+        
     }
 }

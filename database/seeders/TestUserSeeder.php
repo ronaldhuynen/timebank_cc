@@ -41,7 +41,7 @@ class TestUserSeeder extends Seeder
                 ->create([
                     'name' => 'Joeri',
                     'email' => 'joeri@test.nl',
-                    'profile_photo_path' => 'profile-photos/lN2E99fso4ULml9wi7cHSsfT1BTAtJYEsTAql2Ly.png',
+                    'profile_photo_path' => 'profile-photos/yhFDKOsyWMr6PkCEd34SK6I3kz2T0YZ3AXMD2PRr.png',
                     'password' => bcrypt('password'),
                     ]);
 
@@ -74,12 +74,19 @@ class TestUserSeeder extends Seeder
                 ->has(Account::factory()->state(
                     ['name' => 'General']
                 ))
+                ->has(Location::factory())
                 ->create([
                     'name' => 'Timebank.cc Den Haag',
                     'email' => 'tb-den-haag@test.nl',
                     'profile_photo_path' => 'profile-photos/RMawhGXxED1wNNJDEJ7pVbBdg07LGKPAyhGL3npH.png',
                     ]);
+            
+            DB::table('cityables')->insert([
+                    'city_id' => 305,
+                    'cityable_type' => Location::class,
+                    'cityable_id' => $org1->locations()->first()->id]);
 
+                    
             $org2 = Organisation::factory()
                 ->has(Account::factory()->state(
                     ['name' => 'Algemeen']
@@ -96,11 +103,20 @@ class TestUserSeeder extends Seeder
                 ->has(Account::factory()->state(
                     ['name' => 'Mozartlaan']
                 ))
+                ->has(Location::factory())
                 ->create([
                     'name' => 'Lekkernassuh',
                     'email' => 'lekkernassuh@test.nl',
                     'profile_photo_path' => 'profile-photos/hWcYqfdquJW7QiPnyuUtdFsrldykLFZPbR6H4qwF.jpg',
                     ]);
+
+
+
+            DB::table('cityables')->insert([
+                    'city_id' => 305,
+                    'cityable_type' => Location::class,
+                    'cityable_id' => $org2->locations()->first()->id]);
+
 
             DB::table('organisation_user')->insert([
                 'organisation_id' => $org1->id,

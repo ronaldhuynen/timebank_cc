@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Category;
+use App\Models\Locations\City;
 use App\Models\Locations\Location;
 use App\Models\Meeting;
 use App\Models\Post;
@@ -19,30 +20,57 @@ class EventCardFull extends Component
     public $posts;
     public $media;
     public $postNr;
+    public $related;
+    
 
-
-    public function mount($postNr, Request $request)
+    public function mount($postNr, $related, Request $request)
     {
         $this->postNr = $postNr;
-        $location_id = User::find($request->user()->id)->locations->all()[0]['pivot']['location_id'];
-        $city_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
-        // TODO: check what happens with ciy_id, when multiple locations per user are used!
-        // $dd($city_id);
-        $city_id = [$city_id]; // This should become an array [300,305] for use with multiple city locations
+        $this->related = $related;
+        
+        $location_id = session('activeProfileType')::find(session('activeProfileId'))->locations->all()[0]['pivot']['location_id'];
+        $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
+        $categoryable_type = City::class;
+
+        if ($related) {
+            // Include also parent of city (division or country)
+            $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
+        } else {
+            $categoryable_id = [$categoryable_id];
+        }
+
+
+        // TODO: check what happens when multiple locations per user are used!
+
         $post =
             Post::with([
                 'postable' => function ($query) {
                     $query->select(['id', 'name']);
                 },
-                'category',
-                'translations' => function ($query) {
-                    $query->where('locale', App::getLocale());
+                'category' => function ($query) use ($categoryable_id, $categoryable_type) {
+                    $query
+                    ->where('type', News::class)
+                    ->where(function ($query) use ($categoryable_id, $categoryable_type) {
+                        $query
+                            ->whereIn('categoryable_id', $categoryable_id)
+                            ->where('categoryable_type', $categoryable_type);
+                        });
                 },
+                'translations' => function ($query) {
+                    $query
+                        ->where('locale', App::getLocale())
+;                },
                 'meeting',
                 'media',
                 ])
-                ->whereHas('category', function ($query) use ($city_id) {
-                    $query->where('type', Meeting::class)->where('city_id', $city_id);
+                ->whereHas('category', function ($query) use ($categoryable_id, $categoryable_type) {
+                    $query
+                        ->where('type', Meeting::class)
+                         ->where(function ($query) use ($categoryable_id, $categoryable_type) {
+                            $query
+                                ->whereIn('categoryable_id', $categoryable_id)
+                                ->where('categoryable_type', $categoryable_type);
+                            });
                 })
                 ->whereHas('translations', function ($query) {
                     $query
@@ -53,8 +81,12 @@ class EventCardFull extends Component
                     })
                     ->orderBy('updated_at', 'desc');
                 })
-                ->get();
-                
+                ->get()->sortBy( function ($query) {
+                     if (isset($query->meeting->from)) { 
+                        return $query->meeting->from; 
+                    };
+                })->values();       // Use values() method to reset the collection keys after sortBy
+                                
         $lastNr = $post->count() -1;
         
         if ($postNr > $lastNr) {
@@ -63,19 +95,18 @@ class EventCardFull extends Component
             $post = $post[$postNr];
         }
 
-        if ($post->translations->first()) {
+        if (isset($post->translations)) {
             $this->post = $post->translations->first();
             $this->post['start'] = Carbon::parse($post->translations->first()->updated_at)->isoFormat('LL');
             $this->post['category'] = Category::find($post->category_id)->translations->where('locale', App::getLocale())->first()->name;
             $this->post['author'] = $post->postable->name;
-            $this->post['address'] = $post->meeting->address;
-            $this->post['from'] = $post->meeting->from;
+            $this->post['address'] = ($post->meeting->from) ? $post->meeting->address : '';
+            $this->post['from'] = ($post->meeting->from) ? $post->meeting->from : '';
 
             if ($post->media) {
                 $this->media = Post::find($post->id)->getFirstMedia('posts');
             }
         }
-
     }
 
 

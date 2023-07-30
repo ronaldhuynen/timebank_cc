@@ -2,6 +2,7 @@
 
 namespace App\Models\Locations;
 
+use App\Models\Category;
 use App\Models\Locations\DistrictLocale;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ class District extends Model
     *
     * @return void
     */
-    public function locales()
+    public function translations()
     {
         return $this->hasMany(DistrictLocale::class, 'district_id');
     }
@@ -122,6 +123,15 @@ class District extends Model
             return $this->division();
         }
         return $this->city();
+    }
+
+
+    /**
+     * Get all of the related categories for this model.
+     */
+    public function categories()
+    {
+        return $this->morphMany(Category::class, 'categoryable');
     }
 
 }

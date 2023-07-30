@@ -3,10 +3,10 @@
 namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Category;
+use App\Models\Locations\City;
 use App\Models\Locations\Location;
 use App\Models\News;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
@@ -19,29 +19,52 @@ class NewsCardFull extends Component
     public $posts;
     public $media;
     public $postNr;
+    public $related;
 
 
-    public function mount($postNr, Request $request)
+    public function mount($postNr, $related, Request $request)
     {
         $this->postNr = $postNr;
-        $location_id = User::find($request->user()->id)->locations->all()[0]['pivot']['location_id'];
-        $city_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
-        // TODO: check what happens with ciy_id, when multiple locations per user are used!
-        // $dd($city_id);
-        $city_id = [$city_id]; // This should become an array [300,305] for use with multiple city locations
+        $this->related = $related;
+        $location_id = session('activeProfileType')::find(session('activeProfileId'))->locations->all()[0]['pivot']['location_id'];
+        $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
+        $categoryable_type = City::class;
+
+        if ($related) {
+            // Include also parent of city (division or country)
+            $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
+        } else {
+            $categoryable_id = [$categoryable_id];
+        }
+
+        // TODO: check what happens when multiple locations per user are used!
         $post =
             Post::with([
                 'postable' => function ($query) {
                     $query->select(['id', 'name']);
                 },
-                'category',
+                'category' => function ($query) use ($categoryable_id, $categoryable_type) {
+                    $query
+                    ->where('type', News::class)
+                    ->where(function ($query) use ($categoryable_id, $categoryable_type) {
+                        $query
+                            ->whereIn('categoryable_id', $categoryable_id)
+                            ->where('categoryable_type', $categoryable_type);
+                        });
+                },
                 'translations' => function ($query) {
                     $query->where('locale', App::getLocale());
                 },
                 'media',
                 ])
-                ->whereHas('category', function ($query) use ($city_id) {
-                    $query->where('type', News::class)->where('city_id', $city_id);
+                ->whereHas('category', function ($query) use ($categoryable_id, $categoryable_type) {
+                    $query
+                        ->where('type', News::class)
+                        ->where(function ($query) use ($categoryable_id, $categoryable_type) {
+                        $query
+                            ->whereIn('categoryable_id', $categoryable_id)
+                            ->where('categoryable_type', $categoryable_type);
+                        });
                 })
                 ->whereHas('translations', function ($query) {
                     $query
@@ -52,7 +75,13 @@ class NewsCardFull extends Component
                     })
                     ->orderBy('updated_at', 'desc');
                 })
-                ->get();
+                ->get()->sortByDesc( function ($query) {
+                     if (isset($query->translations)) { 
+                        return $query->translations->first()->start;
+                    };
+                })->values();       // Use values() method to reset the collection keys after sortBy
+
+                // dump($post);
 
         $lastNr = $post->count() -1;
         if ($postNr > $lastNr) {
@@ -61,8 +90,8 @@ class NewsCardFull extends Component
             $post = $post[$postNr];
         }
 
-        if ($post != null) {      // Show only posts if it has the category type of this model's class
-            if ($post->translations->first()) {
+        // if ($post != null) {      // Show only posts if it has the category type of this model's class
+            if (isset($post->translations)) {
                 $this->post = $post->translations->first();
                 $this->post['start'] = Carbon::parse(strtotime($post->translations->first()->updated_at))->isoFormat('LL');
                 $this->post['category'] = Category::find($post->category_id)->translations->where('locale', App::getLocale())->first()->name;
@@ -72,7 +101,7 @@ class NewsCardFull extends Component
                     $this->media = Post::find($post->id)->getFirstMedia('posts');
                 }
             }
-        }
+        // }
     }
 
 

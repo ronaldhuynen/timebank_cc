@@ -54,7 +54,8 @@ class DatabaseSeeder extends Seeder
             $this->call(PostTranslationsTableSeeder::class);
             $this->call(CategoriesTableSeeder::class);
             $this->call(CategoryTranslationsTableSeeder::class);
-        }
+            $this->call(MeetingsTableSeeder::class);
+    }
 
         $this->call([
         TestUserSeeder::class,

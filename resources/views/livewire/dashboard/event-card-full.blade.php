@@ -6,8 +6,9 @@
             <div class="grid grid-cols-2 space-x-12">
 
                 <div class="">
-                    <div class="mb-2 bg-black px-2 py-1 text-xs font-semibold text-white">
+                    <div class="mb-2 bg-black px-2 py-1 text-xs font-semibold text-white flex justify-between">
                         {{ $post->category }}
+                    <span class="text-black"> {{ $post->id}} </span>
                     </div>
                     <h1 class="mb-0 bg-black px-2 py-3 text-center text-4xl font-bold uppercase text-white">
                         {{ $post->title }}</h1>

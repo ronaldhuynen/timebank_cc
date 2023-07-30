@@ -3,9 +3,11 @@
 namespace App\Models\Locations;
 
 
+use App\Models\Category;
 use App\Models\Locations\CityLocale;
+use App\Models\Locations\Country;
 use App\Models\Locations\DistrictLocale;
-use App\Models\Locations\Location;
+use App\Models\Locations\Division;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +33,7 @@ class City extends Model
     *
     * @return void
     */
-    public function locales()
+    public function translations()
     {
         return $this->hasMany(CityLocale::class, 'city_id');
     }
@@ -136,14 +138,15 @@ class City extends Model
      */
     public function country()
     {
-        $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
-        $result = CountryLocale::where('country_id', $country)
-            ->where('locale', App::getLocale());
-        if ($result->count() === 0) {
-            $result = CountryLocale::where('country_id', $country)
-                ->where('locale', App::getFallbackLocale());
-        }
-        return $result;
+        // $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
+        // $result = CountryLocale::where('country_id', $country)
+        //     ->where('locale', App::getLocale());
+        // if ($result->count() === 0) {
+        //     $result = CountryLocale::where('country_id', $country)
+        //         ->where('locale', App::getFallbackLocale());
+        // }
+        // return $result;
+        return $this->belongsTo(Country::class);
     }
 
 
@@ -154,14 +157,15 @@ class City extends Model
      */
     public function division()
     {
-        $division = $this->belongsTo(Division::class, 'division_id')->pluck('id');
-        $result = DivisionLocale::where('division_id', $division)
-            ->where('locale', App::getLocale());
-        if ($result->count() === 0) {
-            $result = DivisionLocale::where('division_id', $division)
-                    ->where('locale', App::getFallbackLocale());
-            }
-        return $result;
+        // $division = $this->belongsTo(Division::class, 'division_id')->pluck('id');
+        // $result = DivisionLocale::where('division_id', $division)
+        //     ->where('locale', App::getLocale());
+        // if ($result->count() === 0) {
+        //     $result = DivisionLocale::where('division_id', $division)
+        //             ->where('locale', App::getFallbackLocale());
+        //     }
+        // return $result;
+        return $this->belongsTo(Division::class);
     }
 
     /**
@@ -186,6 +190,15 @@ class City extends Model
             return $this->country();
         }
         return $this->division();
+    }
+
+    
+    /**
+     * Get all of the related categories for this model.
+     */
+    public function categories()
+    {
+        return $this->morphMany(Category::class, 'categoryable');
     }
 
 }

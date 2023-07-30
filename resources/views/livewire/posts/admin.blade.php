@@ -238,9 +238,9 @@
                                 <label class="block text-sm font-medium text-gray-700">
                                     {{ __('Event address') }}
                                 </label>
-                                <input wire:model.defer="meeting.address"
+                                <input wire:model.defer="meetingAddress"
                                     class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
-                                @error('meeting.address')
+                                @error('meetingAddress')
                                     <p class="mt-2 text-sm text-red-600" id="meeting-address-error">{{ $message }}
                                     </p>
                                 @enderror

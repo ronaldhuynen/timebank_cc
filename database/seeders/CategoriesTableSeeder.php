@@ -33,7 +33,7 @@ class CategoriesTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'type' => 'App\\Models\\News',
-                'categoryable_id' => 304,
+                'categoryable_id' => 305,
                 'categoryable_type' => 'App\\Models\\Locations\\City',
                 'created_at' => '2023-06-02 16:15:10',
                 'updated_at' => '2023-06-02 16:15:10',

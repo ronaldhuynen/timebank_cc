@@ -25,11 +25,11 @@ protected $fillable = [
 
 
     /**
-     * Get all organisations that are assigned to this language.
+     * Get all organizations that are assigned to this language.
      */
-    public function organisations()
+    public function organizations()
     {
-        return $this->morphedByMany(Organisation::class, 'languagable');
+        return $this->morphedByMany(Organization::class, 'languagable');
     }
 
 

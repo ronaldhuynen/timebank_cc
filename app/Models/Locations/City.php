@@ -78,13 +78,13 @@ class City extends Model
 
 
     /**
-     * Get all of the organisations of the cities.
+     * Get all of the organizations of the cities.
      * Many-to-many polymorph
      * @return void
      */
-    public function organisations()
+    public function organizations()
     {
-        return $this->morphedByMany(Organisation::class, 'cityable');
+        return $this->morphedByMany(Organization::class, 'cityable');
         // cityable refers to pivot columns and cityables refers to pivot table
     }
 

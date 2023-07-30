@@ -17,8 +17,8 @@ return new class () extends Migration {
             $table->unsignedBigInteger('post_id'); // one-to-one relationship
             $table->foreign('post_id')->nullable()->references('id')->on('posts')->onDelete('cascade');
             $table->string('address')->nullable(); // TODO: refactor into location model in later stage            
-            $table->integer('meetingable_id')->nullable();  // Make organizer polymorph: user / organisation / other
-            $table->string('meetingable_type')->nullable();     // Make organizer polymorph: user / organisation / other
+            $table->integer('meetingable_id')->nullable();  // Make organizer polymorph: user / organization / other
+            $table->string('meetingable_type')->nullable();     // Make organizer polymorph: user / organization / other
             $table->integer('status')->unsigned()->default(1);
             $table->dateTime('from')->nullable();
             $table->dateTime('till')->nullable();

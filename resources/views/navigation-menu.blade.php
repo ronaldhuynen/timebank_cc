@@ -26,9 +26,9 @@
                         <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
                         {{ __('Your Profile') }}
                         </x-jet-nav-link>
-                    @elseif (session('activeProfileType') == 'App\Models\Organisation')
+                    @elseif (session('activeProfileType') == 'App\Models\Organization')
                         <x-jet-nav-link href="{{ route('profile-organization.show') }}" :active="request()->routeIs('profile-organization.show')">
-                        {{ __('Organization Profile') }}
+                        {{ __('Organization profile') }}
                         </x-jet-nav-link>
                     @endif
                     <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
@@ -139,8 +139,8 @@
                         <x-slot name="content">
 
                             <!---- Switch Profile --->
-                            @if  (App\Models\User::with('organisations')->find(Auth::user()->id)->organisations->find(1) != null)
-                                <livewire:select-organisation>
+                            @if  (App\Models\User::with('organizations')->find(Auth::user()->id)->organizations->find(1) != null)
+                                <livewire:select-organization>
                             @endif
 
                             <!--- Messenger --->

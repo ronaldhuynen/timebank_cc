@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->integer('postable_id'); // Make author polymorph: user / organisation / other
-            $table->string('postable_type'); // Make author polymorph: user / organisation / other
+            $table->integer('postable_id'); // Make author polymorph: user / organization / other
+            $table->string('postable_type'); // Make author polymorph: user / organization / other
             $table->integer('category_id')->nullable();
             $table->timestamps();
         });

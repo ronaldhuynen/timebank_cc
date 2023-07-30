@@ -8,7 +8,7 @@ use App\Models\Locations\City;
 use App\Models\Locations\Country;
 use App\Models\Locations\District;
 use App\Models\Locations\Location;
-use App\Models\Organisation;
+use App\Models\Organization;
 use App\Models\Post;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -92,12 +92,12 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
 
     /**
-     * Get the user's organisation(s).
+     * Get the user's organization(s).
      * Many-to-many.
      */
-    public function organisations()
+    public function organizations()
     {
-        return $this->belongsToMany(Organisation::class);
+        return $this->belongsToMany(Organization::class);
     }
 
 

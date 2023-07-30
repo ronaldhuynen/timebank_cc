@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('organisation_user', function (Blueprint $table) {
+        Schema::create('organization_user', function (Blueprint $table) {
             $table->id();
-            $table->integer('organisation_id')->unsigned;
+            $table->integer('organization_id')->unsigned;
             $table->integer('user_id')->unsigned;
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organisation_user');
+        Schema::dropIfExists('organization_user');
     }
 };

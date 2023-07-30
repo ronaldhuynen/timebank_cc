@@ -36,7 +36,7 @@ class Category extends Model
 
 
     /**
-     * Get the polymorph relation of this type of category (i.e. division, user, organisation).
+     * Get the polymorph relation of this type of category (i.e. division, user, organization).
      *
      * @return void
      */

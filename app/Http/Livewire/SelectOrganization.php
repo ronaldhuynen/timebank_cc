@@ -3,28 +3,28 @@
 namespace App\Http\Livewire;
 
 use App\Events\ProfileSwitchEvent;
-use App\Models\Organisation;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
 
-class SelectOrganisation extends Component
+class SelectOrganization extends Component
 {
     use Actions;
 
     public $user;
-    public $userOrganisations = [];
-    public $organisationId;
+    public $userOrganizations = [];
+    public $organizationId;
     public $notifySwitchProfile;
     public $activeProfile = [];
 
     public function mount()
     {
         $this->user = Auth::user();
-        $orgs = User::with('organisations')->find(Auth::user()->id)->organisations;
-        $this->userOrganisations = $orgs->map(function ($org, $key) {
+        $orgs = User::with('organizations')->find(Auth::user()->id)->organizations;
+        $this->userOrganizations = $orgs->map(function ($org, $key) {
             return [
                 'id' => $org->id,
                 'name' => $org->name,
@@ -58,14 +58,14 @@ class SelectOrganisation extends Component
     }
 
 
-    public function organisationSelected($organisationId = null)
+    public function organizationSelected($organizationId = null)
     {
-        if ($organisationId != null) {
+        if ($organizationId != null) {
             Session([
-                'activeProfileType' => Organisation::class,
-                'activeProfileId' => $organisationId,
-                'activeProfileName'=> $this->userOrganisations[$organisationId-1]['name'],
-                'activeProfilePhoto'=> $this->userOrganisations[$organisationId-1]['photo']
+                'activeProfileType' => Organization::class,
+                'activeProfileId' => $organizationId,
+                'activeProfileName'=> $this->userOrganizations[$organizationId-1]['name'],
+                'activeProfilePhoto'=> $this->userOrganizations[$organizationId-1]['photo']
             ]);
         } else {
             Session([
@@ -90,6 +90,6 @@ class SelectOrganisation extends Component
 
     public function render()
     {
-        return view('livewire.select-organisation');
+        return view('livewire.select-organization');
     }
 }

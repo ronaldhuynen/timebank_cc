@@ -23,7 +23,7 @@ class Post extends Model implements HasMedia
     protected $fillable = ['postable_id', 'postable_type',  'category_id'];
 
     /**
-     * Get the creator of the post (i.e. user or organisation).
+     * Get the creator of the post (i.e. user or organization).
      *
      * @return void
      */

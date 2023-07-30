@@ -42,8 +42,9 @@
     "Delete Account": "Verwijder Rekening",
 
     "Personal Account": "Privé-rekening",
-    "Organisation Account": "Organisatie-rekening",
+    "Organization Account": "Organisatie-rekening",
 
+    "Your Profile": "Jouw profiel",
     "About me": "Over mij",
     "Why I am a Timbanker": "Waarom ik een Timebanker ben",
     "Add social media profiles": "Voeg social media profielen toe",
@@ -51,6 +52,9 @@
     "Date of Birth": "Geboortedatum",
     "(DD-MM-YYYY)": "(DD-MM-JJJJ)",
     "My Website": "Mijn website",
+
+    "Organization profile": "Organisatie profiel",
+
 
     "Mobile phone number": "Mobiele telefoon",
     "Mobile phone (visible public for friends)": "Mobiele telefoon (zichtaar voor vrienden)",
@@ -80,7 +84,6 @@
 
     "Transfer": "Betalen",
     "Transactions": "Transacties",
-    "Your Profile": "Jouw profiel",
 
     "Dashboard": "Dashboard",
     "Previous login": "Vorige login",

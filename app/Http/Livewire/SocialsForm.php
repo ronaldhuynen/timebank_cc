@@ -55,7 +55,7 @@ class SocialsForm extends Component
 
     public function edit($id)
     {
-        //TODO: make also suitable for organisations with session('activeProfileType') instead of auth()->user()->id
+        //TODO: make also suitable for organizations with session('activeProfileType') instead of auth()->user()->id
 
         $this->sociables_id = $id;
         $this->socialsOptionSelected = User::find(session('activeProfileId'))->social->where('pivot.id', $id)->first()->pivot->social_id;
@@ -107,7 +107,7 @@ class SocialsForm extends Component
 
     public function render()
     {
-        //TODO: make also suitable for organisations with session('activeProfileType') instead of auth()->user()->id
+        //TODO: make also suitable for organizations with session('activeProfileType') instead of auth()->user()->id
     //    Social::select("*")->orderBy("name")->get();
         $this->socials = User::find(session('activeProfileId'))->social()->orderBy('sociables.updated_at','desc')->get();
 

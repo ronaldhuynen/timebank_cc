@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('type');           
-            $table->integer('categoryable_id'); // Link the category type to another model: city / organisation / other (polymorph) 
-            $table->string('categoryable_type'); // Link the category type to another model: city / organisation / other (polymorph)
+            $table->integer('categoryable_id'); // Link the category type to another model: city / organization / other (polymorph) 
+            $table->string('categoryable_type'); // Link the category type to another model: city / organization / other (polymorph)
             $table->timestamps();
             $table->softDeletes();
         });

@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Posts;
 
-use App\Models\Organisation;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -48,7 +48,7 @@ class SelectOrganizer extends Component
             $organizer = User::where('id', $value['meetingable_id'])->select('name', 'profile_photo_path')->firstOrFail();
             $description = '';
         } else {
-            $organizer = Organisation::where('id', $value['meetingable_id'])->select('name', 'profile_photo_path')->firstOrFail();
+            $organizer = Organization::where('id', $value['meetingable_id'])->select('name', 'profile_photo_path')->firstOrFail();
             $description = __('Organization');
         }
         $this->selected['name'] = $organizer->name;
@@ -91,12 +91,12 @@ class SelectOrganizer extends Component
                 'profile_photo_path' => url('/storage/' . $item['profile_photo_path'])
             ];
         });
-        $organizations = Organisation::where('name', 'like', '%' . $search . '%')->select('id', 'name', 'profile_photo_path')->get();
+        $organizations = Organization::where('name', 'like', '%' . $search . '%')->select('id', 'name', 'profile_photo_path')->get();
         $organizations = $organizations->map(function ($item) {
             return
             [
                 'id' => $item['id'],
-                'type' => Organisation::class,
+                'type' => Organization::class,
                 'name' => $item['name'],
                 'description' => __('Organization'),
                 'profile_photo_path' => url(Storage::url($item['profile_photo_path']))

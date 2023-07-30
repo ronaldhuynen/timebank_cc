@@ -17,10 +17,10 @@ return [
             'limit_min' => 0,
             'limit_max' => 6000,
         ],
-        'organisation' => [
-            'name' => 'Organisation Account',
+        'organization' => [
+            'name' => 'Organization Account',
             'limit_min' => 0,
-            'limit_max' => 6000,
+            'limit_max' => 18000,
         ],
     ],
 

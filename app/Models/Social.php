@@ -37,11 +37,11 @@ class Social extends Model
 
 
     /**
-     * Get all organisations that are assigned to this social.
+     * Get all organizations that are assigned to this social.
      */
-    public function organisations()
+    public function organizations()
     {
-        return $this->morphedByMany(Organisation::class, 'sociable')->where('sociable_type', Organisation::class);
+        return $this->morphedByMany(Organization::class, 'sociable')->where('sociable_type', Organization::class);
         ;
     }
 

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Account;
 use App\Models\Locations\Location;
-use App\Models\Organisation;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +18,7 @@ class TestUserSeeder extends Seeder
      */
     public function run()
     {
-        if ($this->command->confirm('Do you want to seed the test users and organisations?')) {
+        if ($this->command->confirm('Do you want to seed the test users and organizations?')) {
 
             $user1 = User::factory()
                 ->has(Account::factory()->state(['name' => 'Personal Account']))
@@ -65,7 +65,7 @@ class TestUserSeeder extends Seeder
                     'cityable_type' => Location::class,
                     'cityable_id' => $user3->locations()->first()->id]);
 
-            $org1 = Organisation::factory()
+            $org1 = Organization::factory()
                 ->has(Account::factory()->state(['name' => 'General Account'])->state(
                     ['name' => 'Currency Creation',
                     'limit_min' => -12000
@@ -87,7 +87,7 @@ class TestUserSeeder extends Seeder
                     'cityable_id' => $org1->locations()->first()->id]);
 
                     
-            $org2 = Organisation::factory()
+            $org2 = Organization::factory()
                 ->has(Account::factory()->state(
                     ['name' => 'Algemeen']
                 ))
@@ -118,27 +118,27 @@ class TestUserSeeder extends Seeder
                     'cityable_id' => $org2->locations()->first()->id]);
 
 
-            DB::table('organisation_user')->insert([
-                'organisation_id' => $org1->id,
+            DB::table('organization_user')->insert([
+                'organization_id' => $org1->id,
                 'user_id' => $user1->id]);
 
-            DB::table('organisation_user')->insert([
-                'organisation_id' => $org1->id,
+            DB::table('organization_user')->insert([
+                'organization_id' => $org1->id,
                 'user_id' => $user2->id]);
 
-            DB::table('organisation_user')->insert([
-                'organisation_id' => $org2->id,
+            DB::table('organization_user')->insert([
+                'organization_id' => $org2->id,
                 'user_id' => $user1->id]);
 
-            DB::table('organisation_user')->insert([
-                'organisation_id' => $org2->id,
+            DB::table('organization_user')->insert([
+                'organization_id' => $org2->id,
                 'user_id' => $user2->id]);
 
-            DB::table('organisation_user')->insert([
-                'organisation_id' => $org2->id,
+            DB::table('organization_user')->insert([
+                'organization_id' => $org2->id,
                 'user_id' => $user3->id]);
 
-            $this->command->info('The test users and organisations are seeded');
+            $this->command->info('The test users and organizations are seeded');
         }
     }
 }

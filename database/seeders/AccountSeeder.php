@@ -21,10 +21,10 @@ class AccountSeeder extends Seeder
         //     ['name' => 'Personal Account', 'limit_min' => 0, 'limit_max' => 200, 'accountable_type' => 'App\Models\User' , 'accountable_id' => 1, 'created_at' => now(), 'updated_at' => now()],
         //     ['name' => 'Personal Account', 'limit_min' => 0, 'limit_max' => 200, 'accountable_type' => 'App\Models\User', 'accountable_id' => 2, 'created_at' => now(), 'updated_at' => now()],
         //     ['name' => 'Personal Account', 'limit_min' => 0, 'limit_max' => 200, 'accountable_type' => 'App\Models\User', 'accountable_id' => 201, 'created_at' => now(), 'updated_at' => now()],
-        //     ['name' => 'Organisation Account', 'limit_min' => 0, 'limit_max' => 500, 'accountable_type' => 'App\Models\Organisation', 'accountable_id' => 4, 'created_at' => now(), 'updated_at' => now()],
-        //     ['name' => 'Organisation Account', 'limit_min' => 0, 'limit_max' => 500, 'accountable_type' => 'App\Models\Organisation', 'accountable_id' => 3, 'created_at' => now(), 'updated_at' => now()],
-        //     ['name' => 'Local bank Account', 'limit_min' => 0, 'limit_max' => 200, 'accountable_type' => 'App\Models\Organisation' , 'accountable_id' => 2, 'created_at' => now(), 'updated_at' => now()],
-        //     ['name' => 'Super bank Account', 'limit_min' => 0, 'limit_max' => 200, 'accountable_type' => 'App\Models\Organisation' , 'accountable_id' => 1, 'created_at' => now(), 'updated_at' => now()]
+        //     ['name' => 'Organization Account', 'limit_min' => 0, 'limit_max' => 500, 'accountable_type' => 'App\Models\Organization', 'accountable_id' => 4, 'created_at' => now(), 'updated_at' => now()],
+        //     ['name' => 'Organization Account', 'limit_min' => 0, 'limit_max' => 500, 'accountable_type' => 'App\Models\Organization', 'accountable_id' => 3, 'created_at' => now(), 'updated_at' => now()],
+        //     ['name' => 'Local bank Account', 'limit_min' => 0, 'limit_max' => 200, 'accountable_type' => 'App\Models\Organization' , 'accountable_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+        //     ['name' => 'Super bank Account', 'limit_min' => 0, 'limit_max' => 200, 'accountable_type' => 'App\Models\Organization' , 'accountable_id' => 1, 'created_at' => now(), 'updated_at' => now()]
         // ]);
 
     }

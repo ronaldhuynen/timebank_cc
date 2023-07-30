@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Account;
-use App\Models\Organisation;
-use Illuminate\Database\Seeder;
+use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Database\Seeder;
 
-class OrganisationSeeder extends Seeder
+class OrganizationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,10 +16,10 @@ class OrganisationSeeder extends Seeder
      */
     public function run()
     {
-        $orgCount = max((int)$this->command->ask('How many organisations would you like?', 10), 1);
-        Organisation::factory()->count($orgCount)
+        $orgCount = max((int)$this->command->ask('How many organizations would you like?', 10), 1);
+        Organization::factory()->count($orgCount)
             ->has(Account::factory()->count(3)->state(new Sequence(
-                ['name' => 'Organisation Account'],
+                ['name' => 'Organization Account'],
                 ['name' => 'Project 1 Account'],
                 ['name' => 'Project 2 Account']
             )))

@@ -48,7 +48,7 @@ class PostTranslationsTableSeeder extends Seeder
                 'start' => '2023-07-29 21:45:00',
                 'stop' => NULL,
                 'created_at' => '2023-07-29 21:45:06',
-                'updated_at' => '2023-07-29 22:57:03',
+                'updated_at' => '2023-07-30 10:12:39',
                 'deleted_at' => NULL,
             ),
             2 => 
@@ -80,7 +80,7 @@ class PostTranslationsTableSeeder extends Seeder
                 'start' => '2023-07-26 21:49:00',
                 'stop' => NULL,
                 'created_at' => '2023-07-29 22:29:28',
-                'updated_at' => '2023-07-29 23:09:36',
+                'updated_at' => '2023-07-30 10:11:40',
                 'deleted_at' => NULL,
             ),
             4 => 
@@ -112,7 +112,7 @@ class PostTranslationsTableSeeder extends Seeder
                 'start' => '2023-07-01 23:00:00',
                 'stop' => NULL,
                 'created_at' => '2023-07-29 23:00:21',
-                'updated_at' => '2023-07-29 23:00:21',
+                'updated_at' => '2023-07-30 12:44:49',
                 'deleted_at' => NULL,
             ),
             6 => 
@@ -128,7 +128,7 @@ class PostTranslationsTableSeeder extends Seeder
                 'start' => '2023-07-29 23:00:00',
                 'stop' => NULL,
                 'created_at' => '2023-07-29 23:00:53',
-                'updated_at' => '2023-07-29 23:00:53',
+                'updated_at' => '2023-07-30 12:45:18',
                 'deleted_at' => NULL,
             ),
         ));

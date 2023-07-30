@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\Transaction;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
@@ -13,7 +13,7 @@ class Account extends Model
     protected $fillable = [];
     protected $table = 'accounts';
 
-    // Get all of the owning accountable tables: users and organisations
+    // Get all of the owning accountable tables: users and organizations
     // One-to-many polymorphic
     public function accountable()
     {

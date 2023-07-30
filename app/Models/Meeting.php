@@ -27,7 +27,7 @@ class Meeting extends Model
 
 
     /**
-     * Get the organizer of the meeting (i.e. user or organisation).
+     * Get the organizer of the meeting (i.e. user or organization).
      *
      * @return void
      */

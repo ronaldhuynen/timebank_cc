@@ -14,7 +14,7 @@ use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
 
-class Organisation extends Model implements MessengerProvider, Searchable
+class Organization extends Model implements MessengerProvider, Searchable
 {
     use HasFactory;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
@@ -32,7 +32,7 @@ class Organisation extends Model implements MessengerProvider, Searchable
 
 
     /**
-     * Get all of the organisation's accounts.
+     * Get all of the organization's accounts.
      * One-to-many polymorphic.
      *
      * @return void
@@ -44,7 +44,7 @@ class Organisation extends Model implements MessengerProvider, Searchable
 
 
     /**
-     * Get the organisation's user(s).
+     * Get the organization's user(s).
      * Many-to-many.
      */
     public function users()
@@ -53,7 +53,7 @@ class Organisation extends Model implements MessengerProvider, Searchable
     }
 
     /**
-     * Get all of the languages for the organisation.
+     * Get all of the languages for the organization.
      * Many-to-many polymorphic.
      */
     public function languages()
@@ -63,7 +63,7 @@ class Organisation extends Model implements MessengerProvider, Searchable
 
 
     /**
-     * Get all of the social for the organisation.
+     * Get all of the social for the organization.
      * Many-to-many polymorphic.
      */
     public function social()
@@ -81,7 +81,7 @@ class Organisation extends Model implements MessengerProvider, Searchable
     public static function getProviderSettings(): array
     {
         return [
-            'alias' => 'organisation',
+            'alias' => 'organization',
             'searchable' => true,
             'friendable' => true,
             'devices' => true,

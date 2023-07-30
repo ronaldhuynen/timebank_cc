@@ -85,6 +85,8 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
 
             Route::get('/user/personal-profile', 'App\Http\Controllers\ProfileUserController@show')->name('profile-user.show');
 
+            Route::get('/org/organization-profile', 'App\Http\Controllers\ProfileOrgController@show')->name('profile-organization.show');
+
             Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
         });
 

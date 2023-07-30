@@ -22,9 +22,15 @@
                     <x-jet-nav-link href="{{ route('transactions') }}" :active="request()->routeIs('transactions')">
                         {{ __('Transactions') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
+                    @if (session('activeProfileType') == 'App\Models\User')
+                        <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
                         {{ __('Your Profile') }}
-                    </x-jet-nav-link>
+                        </x-jet-nav-link>
+                    @elseif (session('activeProfileType') == 'App\Models\Organisation')
+                        <x-jet-nav-link href="{{ route('profile-organization.show') }}" :active="request()->routeIs('profile-organization.show')">
+                        {{ __('Organization Profile') }}
+                        </x-jet-nav-link>
+                    @endif
                     <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
                         {{ __('Commons') }}
                     </x-jet-nav-link>

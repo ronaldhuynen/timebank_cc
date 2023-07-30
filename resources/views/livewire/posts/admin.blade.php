@@ -128,10 +128,10 @@
                                 @if ($createTranslation)
                                     {{ __('Add translation') .':' . ' ' . __('messages.' . $language) }}
                                 @else
-                                    {{ __('Edit post') . ':' . ' ' . __('messages.' . $language) . 'e' . ' ' . __('version') }}
+                                    {{ __('Edit post') . ':' . ' ' . __('messages.' . $language) }}
                                 @endif
                             @else
-                                {{  !$language ? __('Create new post') : __('Create new post') . ':' . ' ' . __('messages.' . $language) . 'e' . ' ' . __('version') }}
+                                {{  !$language ? __('Create new post') : __('Create new post') . ':' . ' ' . __('messages.' . $language) }}
                             @endif
                         </div>
                         <svg wire:click="close" class="ml-auto h-6 w-6 cursor-pointer fill-current text-gray-700"

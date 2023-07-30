@@ -31,7 +31,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 {
     use HasApiTokens;
     use HasFactory;
-    use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasProfilePhoto;

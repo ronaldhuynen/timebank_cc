@@ -7,11 +7,11 @@
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                @livewire('profile-user.update-profile-personal-form')
+                @livewire('profile-organization.update-profile-organization-form')
                 <x-jet-section-border />
-                @livewire('profile-user.update-profile-location-form')
+                {{-- @livewire('profile-organization.update-profile-location-form') --}}
                 <x-jet-section-border />
-                @livewire('profile-user.update-profile-professional-form')
+                {{-- @livewire('profile-user.update-profile-professional-form') --}}
         </div>
     </div>
 </x-app-layout>

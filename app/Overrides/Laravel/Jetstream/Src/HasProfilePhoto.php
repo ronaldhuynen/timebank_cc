@@ -4,7 +4,6 @@ namespace Laravel\Jetstream;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
 
 trait HasProfilePhoto
@@ -48,7 +47,7 @@ trait HasProfilePhoto
         }
 
 
-         // Only delete a profile-photo, and not a default-photo in 'app-images/'
+        // Only delete a profile-photo, and not a default-photo in 'app-images/'
         if (str_starts_with($this->profile_photo_path, 'profile-photos/')) {
             Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
 
@@ -79,7 +78,11 @@ trait HasProfilePhoto
      */
     protected function defaultProfilePhotoUrl()
     {
-        return config('timebank-cc.files.profile_user.photo_default');
+        if (session('profileactiveProfileType') == Organization::class) {
+            return config('timebank-cc.files.profile_organization.photo_default');
+        } else {
+            return config('timebank-cc.files.profile_user.photo_default');
+        }
     }
 
     /**

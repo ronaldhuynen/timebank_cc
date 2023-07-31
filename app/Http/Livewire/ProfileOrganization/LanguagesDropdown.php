@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\ProfileOrganization;
 
-use App\Models\User;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class LanguagesDropdown extends Component
 {
     public $state = [];
-    public $langOptions = [];
     public $langSelected = [];
     public $langSelectedOptions = [];
+    public $langOptions;
 
 
     /**
@@ -23,8 +21,6 @@ class LanguagesDropdown extends Component
      */
     public function mount()
     {
-        $this->state = Auth::user()->withoutRelations()->toArray();
-
         // Create a language options collection that combines all language and competence options
         $langOptions = DB::table('languages')->get(['id','name']);
         $compOptions = DB::table('language_competences')->get(['id','name']);
@@ -39,7 +35,7 @@ class LanguagesDropdown extends Component
         });
 
         // Create an array of the (pre)selected language options
-        $this->langSelected = User::find($this->state['id'])->languages;
+        $this->langSelected = session('activeProfileType')::find(session('activeProfileId'))->languages;
         $this->langSelected = $this->langSelected->map(function ($language, $key) {
             $competence = DB::table('language_competences')->find($language->pivot->competence);
             $langSelected = collect($this->langOptions)->where('name', trans($language->name) . ' - ' . trans($competence->name));
@@ -67,6 +63,6 @@ class LanguagesDropdown extends Component
 
     public function render()
     {
-        return view('livewire.languages-dropdown');
+        return view('livewire.profile-organization.languages-dropdown');
     }
 }

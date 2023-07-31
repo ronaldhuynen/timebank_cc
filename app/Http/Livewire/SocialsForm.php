@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Social;
-use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -28,15 +27,14 @@ class SocialsForm extends Component
     public function mount()
     {
         $this->socialsOptions = Social::select("*")->orderBy("name")->get();
-        // $this->socialOptions = Social::all();
     }
 
 
     public function store()
     {
         $validatedSocial = $this->validate([
-            'socialsOptionSelected' => 'required',
-            'userOnSocial' => 'required|string',
+            'socialsOptionSelected' => 'required|integer',
+            'userOnSocial' => 'required|string|max:150',
         ]);
 
         DB::table('sociables')->insert([
@@ -48,19 +46,17 @@ class SocialsForm extends Component
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
            ]);
-        session()->flash('message', __('Added successfully'));
+        session()->flash('message', __('Saved'));
         $this->resetInputFields();
     }
 
 
     public function edit($id)
     {
-        //TODO: make also suitable for organizations with session('activeProfileType') instead of auth()->user()->id
-
         $this->sociables_id = $id;
-        $this->socialsOptionSelected = User::find(session('activeProfileId'))->social->where('pivot.id', $id)->first()->pivot->social_id;
-        $this->userOnSocial = User::find(session('activeProfileId'))->social->where('pivot.id', $id)->first()->pivot->user_on_social;
-        $this->serverOfSocial = User::find(session('activeProfileId'))->social->where('pivot.id', $id)->first()->pivot->server_of_social;
+        $this->socialsOptionSelected = session('activeProfileType')::find(session('activeProfileId'))->socials->where('pivot.id', $id)->first()->pivot->social_id;
+        $this->userOnSocial = session('activeProfileType')::find(session('activeProfileId'))->socials->where('pivot.id', $id)->first()->pivot->user_on_social;
+        $this->serverOfSocial = session('activeProfileType')::find(session('activeProfileId'))->socials->where('pivot.id', $id)->first()->pivot->server_of_social;
         $this->selectedPlaceholder = Social::find($this->socialsOptionSelected);
         $this->updateMode = true;
 
@@ -78,8 +74,8 @@ class SocialsForm extends Component
     public function update()
     {
         $validatedDate = $this->validate([
-            'socialsOptionSelected' => 'required',
-            'userOnSocial' => 'required|string',
+            'socialsOptionSelected' => 'required|integer',
+            'userOnSocial' => 'required|string|max:150',
         ]);
 
 
@@ -107,10 +103,8 @@ class SocialsForm extends Component
 
     public function render()
     {
-        //TODO: make also suitable for organizations with session('activeProfileType') instead of auth()->user()->id
-    //    Social::select("*")->orderBy("name")->get();
-        $this->socials = User::find(session('activeProfileId'))->social()->orderBy('sociables.updated_at','desc')->get();
-
+        $this->socials = session('activeProfileType')::find(session('activeProfileId'))->socials()->orderBy('sociables.updated_at','desc')->get();  
+        // dd($this->socials);      
         return view('livewire.socials-form');
     }
 }

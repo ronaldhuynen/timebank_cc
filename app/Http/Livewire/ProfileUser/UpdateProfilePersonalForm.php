@@ -20,6 +20,7 @@ class UpdateProfilePersonalForm extends Component
     public $user;
     public $photo;
     public $languages;
+    public $website;
 
     protected $listeners = ['languagesToParent'];
 
@@ -27,27 +28,14 @@ class UpdateProfilePersonalForm extends Component
     public function rules()
     {
         return [
-            'photo' => config('timebank-cc.rules.profile_user.profile_photo'),
-            'state.about' => config('timebank-cc.rules.profile_user.about'),
-            'state.motivation' => config('timebank-cc.rules.profile_user.motivation'),
-            'state.date_of_birth' => config('timebank-cc.rules.profile_user.date_of_birth'),
-            'state.website' => config('timebank-cc.rules.profile_user.website'),
+            'photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',
+            'state.about' => 'required|string|max:400',   //TODO: check max with legacy cyclos data
+            'state.motivation' => 'required|string|max:200',  //TODO: check max with legacy cyclos data
+            'languages' => 'required',
+            'languages.id' => 'integer',
+            'state.date_of_birth' => 'nullable|date',
+            'website' => 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
         ];
-    }
-
-
-    public function messages()
-    {
-        return [
-            'state.motivation' => config('timebank-cc.messages.profile_user.motivation'),
-            // 'state.date_of_birth' => config('timebank-cc.messages.profile_user.date_of_birth'),
-        ];
-    }
-
-
-    public function languagesToParent($values)
-    {
-        $this->languages = $values;
     }
 
     /**
@@ -58,8 +46,17 @@ class UpdateProfilePersonalForm extends Component
     public function mount()
     {
         $this->state = Auth::user()->withoutRelations()->toArray();
+        $this->website = $this->state['website'];
         $this->user = Auth::user();
     }
+
+    
+    public function languagesToParent($values)
+    {
+        $this->languages = $values;
+        $this->validateOnly('languages');
+    }
+    
 
     /**
      * Validate a single field when updated.
@@ -70,6 +67,9 @@ class UpdateProfilePersonalForm extends Component
      */
     public function updated($field)
     {
+        if ($field = 'website') {    
+        $this->website = $this->addUrlScheme($this->website);
+        }
         $this->validateOnly($field);
     }
 
@@ -83,13 +83,12 @@ class UpdateProfilePersonalForm extends Component
         if (isset($this->photo)) {
             $this->user->updateProfilePhoto($this->photo);
         }
-
         $this->validate();  // 2nd validation, just before save method
-
+        
         $this->user->about = $this->state['about'];
         $this->user->motivation = $this->state['motivation'];
         $this->user->date_of_birth = $this->state['date_of_birth'];
-        $this->user->website =  str_replace(['http://', 'https://', ], '', $this->state['website']);
+        $this->user->website =  $this->website;
 
 
         if (isset($this->languages)) {
@@ -128,14 +127,12 @@ class UpdateProfilePersonalForm extends Component
         return redirect()->route('profile-user.show');
     }
 
-    /**
-     * Get the current user of the application.
-     *
-     * @return mixed
-     */
-    public function getUserProperty()
+    
+        
+    function addUrlScheme($url, $scheme = 'https://')
     {
-        return Auth::user();
+        return parse_url($url, PHP_URL_SCHEME) === null ?
+        $scheme . $url : $url;
     }
 
 

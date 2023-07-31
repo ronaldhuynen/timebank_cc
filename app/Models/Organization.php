@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Language;
 use App\Models\Locations\Location;
 use App\Models\Post;
 use App\Models\User;
@@ -60,7 +61,7 @@ class Organization extends Model implements MessengerProvider, Searchable
      */
     public function languages()
     {
-        return $this->morphToMany(Language::class, 'languagable');
+        return $this->morphToMany(Language::class, 'languagable')->withPivot('competence');
     }
 
 
@@ -68,9 +69,9 @@ class Organization extends Model implements MessengerProvider, Searchable
      * Get all of the social for the organization.
      * Many-to-many polymorphic.
      */
-    public function social()
+    public function socials()
     {
-        return $this->morphToMany(Social::class, 'sociable');
+        return $this->morphToMany(Social::class, 'sociable')->withPivot('id', 'user_on_social', 'server_of_social');
     }
 
 

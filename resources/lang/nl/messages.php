@@ -10,8 +10,9 @@ return [
     | Messages that can be addressed by variables.
     | Useful to translate fetched strings from the database.
     | Usage:
+    | $language = 'Dutch'
     | __('messages.' . $language)
-    |
+    | // 'Nederlands'
     */
 
     'Dutch' => 'Nederlands',

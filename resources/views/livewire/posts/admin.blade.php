@@ -280,6 +280,7 @@
                             </div>
                         @endif
 
+                        <!-- List of validation errors -->
                         <x-errors />
 
                         <div class="ml-auto mt-6">

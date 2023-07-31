@@ -1,6 +1,6 @@
 <div>
     <x-select
-        label="{{ __('What language(s) do you speak?') }}"
+        label="{{ __('What language(s) does your organisation use?') }} *"
         placeholder="{{ __('Select (multiple) languages') }}"
         multiselect
         :options="$langOptions"

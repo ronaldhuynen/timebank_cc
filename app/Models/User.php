@@ -122,7 +122,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
      * Get all related social of the user.
      * Many-to-many polymorphic.
      */
-    public function social()
+    public function socials()
     {
         return $this->morphToMany(Social::class, 'sociable')->withPivot('id', 'user_on_social', 'server_of_social');
     }

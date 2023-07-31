@@ -58,7 +58,7 @@
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
                 wire:model.debounce.500ms="state.about" 
-                label="{{ __('About me')}}" 
+                label="{{ __('Please introduce yourself')}} *" 
                 placeholder="{{ __('Short intro or background info') }}" 
                 class="placeholder-gray-300"/>
             <x-jet-input-error for="about" class="mt-2" />
@@ -69,7 +69,7 @@
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
                 wire:model.debounce.500ms="state.motivation" 
-                label="{{ __('Why I am a Timbanker') }}" 
+                label="{{ __('Why are you Timbanker?') }} *" 
                 placeholder="{{__('Just trying out or serious about a new value system?')}}" 
                 class="placeholder-gray-300"/>
             <x-jet-input-error for="motivation" class="mt-2" />
@@ -77,31 +77,30 @@
 
         <!--- Languages -->
         <div class="col-span-6 sm:col-span-4">
-            @livewire('languages-dropdown')
-            @error('languages')
-            <p class="text-sm text-red-500">{{$message}}</p>
-            @enderror
+            @livewire('profile-user.languages-dropdown')
+            <x-jet-input-error for="languages" class="mt-2" />
         </div>
 
         <!--- Social media -->
         <div class="col-span-6 sm:col-span-4">
             @livewire('socials-form')
-            @error('socials')
-            <p class="text-sm text-red-500">{{$message}}</p>
-            @enderror
+            <x-jet-input-error for="socials" class="mt-2" />
         </div>
 
 
         <!-- Birth Date -->
         <div class="col-span-6 sm:col-span-4">
               <div class="col-span-2 sm:col-span-1">
-                <x-datetime-picker
-                    label="{{__('Date of Birth') . ' ' . __('(DD-MM-YYYY)') }}"
+                <!-- min age is 5 and max is 120 to prevent obvious faulty inputs / typo's -->
+                <x-datetime-picker 
+                    label="{{__('Date of birth') . ' ' . __('(DD-MM-YYYY)') }}"
                     without-time
                     without-tips
                     display-format="DD-MM-YYYY"
                     placeholder="{{__('Select a date')}}"
                     wire:model.defer="state.date_of_birth"
+                    :max="now()->subYears(5)" 
+                    :min="now()->subYears(120)"
                     class="placeholder-gray-300"
                 />
                 <x-jet-input-error for="date_of_birth" class="mt-2" />
@@ -111,19 +110,17 @@
 
         <!-- Website -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="state.website" value="{{ __('My Website') }}" />
+            <x-jet-label for="website" value="{{ __('My Website') }}" />
             <x-input
-                class="!pl-[3.8rem]"
                 placeholder="website.org"
-                prefix="https://"
-                wire:model.lazy="state.website"
+                wire:model.lazy="website"
                 class="placeholder-gray-300"
             />
-            <x-jet-input-error for="state.website" class="mt-2" />
         </div>
-
-
     </x-slot>
+
+    <!-- List of validation errors -->
+    <x-errors />
 
     <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">

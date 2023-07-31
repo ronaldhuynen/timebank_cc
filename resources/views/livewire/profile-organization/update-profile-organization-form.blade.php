@@ -53,11 +53,11 @@
             </div>
         @endif
 
-        <!-- About Me -->
+        <!-- Description -->
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
                 wire:model.debounce.800ms="state.about" 
-                label="{{ __('About your organization')}}" 
+                label="{{ __('Please introduce your organization')}} *" 
                 placeholder="{{ __('What does your organization do? And why?') }}" 
                 class="placeholder-gray-300"/>
             <x-jet-input-error for="about" class="mt-2" />
@@ -68,7 +68,7 @@
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
                 wire:model.debounce.800ms="state.motivation" 
-                label="{{ __('Why are you using Timbank.cc?') }}" 
+                label="{{ __('Why is your organization using Timebank?') }} *" 
                 placeholder="{{__('Reaching out to a new community or serious about a new value system?')}}" 
                 class="placeholder-gray-300"/>
             <x-jet-input-error for="motivation" class="mt-2" />
@@ -76,35 +76,30 @@
 
         <!--- Languages -->
         <div class="col-span-6 sm:col-span-4">
-            @livewire('languages-dropdown')
-            @error('languages')
-            <p class="text-sm text-red-500">{{$message}}</p>
-            @enderror
+            @livewire('profile-organization.languages-dropdown')
+            <x-jet-input-error for="languages" class="mt-2" />
         </div>
 
         <!--- Social media -->
         <div class="col-span-6 sm:col-span-4">
             @livewire('socials-form')
-            @error('socials')
-            <p class="text-sm text-red-500">{{$message}}</p>
-            @enderror
+            <x-jet-input-error for="socials" class="mt-2" />
         </div>
 
         <!-- Website -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="state.website" value="{{ __('Organization Website') }}" />
+            <x-jet-label for="website" value="{{ __('Organization Website') }}" />
             <x-input
-                class="!pl-[3.8rem]"
                 placeholder="website.org"
-                prefix="https://"
-                wire:model.lazy="state.website"
+                wire:model.lazy="website"
                 class="placeholder-gray-300"
             />
-            <x-jet-input-error for="state.website" class="mt-2" />
         </div>
 
-
     </x-slot>
+
+    <!-- List of validation errors -->
+    <x-errors />
 
     <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">

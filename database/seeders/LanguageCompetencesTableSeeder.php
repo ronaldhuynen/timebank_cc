@@ -22,12 +22,12 @@ class LanguageCompetencesTableSeeder extends Seeder
             0 =>
             array (
                 'id' => 1,
-                'name' => 'Good',
+                'name' => 'good',
             ),
             1 =>
             array (
                 'id' => 2,
-                'name' => 'Beginner',
+                'name' => 'limited',
             ),
         ));
 

@@ -29,7 +29,9 @@ class LocationsDropdown extends Component
 
     public function updatedCountry()
     {
-        $this->reset(['city', 'cities']);
+        $this->reset(['city', 'cities']);        
+        $this->emit('countryToParent', $this->country);
+        $this->emit('cityToParent', $this->city);   
     }
 
 

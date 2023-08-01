@@ -92,7 +92,10 @@
     "results": "resultaten",
     "Browse...": "Bladeren...",
 
+    "Error message": "Foutmelding",
     "Sorry, your data could not be saved!": "Sorry, je gegevens konden niet worden opgeslagen!",
+    "Our team has ben notified about this error. Please try again later.": "Ons team krijgt bericht van deze fout. Probeer het alsjeblieft later nog eens.",
+
 
     "Transfer": "Betalen",
     "Transactions": "Transacties",

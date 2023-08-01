@@ -141,8 +141,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'city' => [
+            'required_if' => 'The :attribute field is required (when there are cities available).',
         ],
     ],
 
@@ -166,6 +166,13 @@ return [
         'state.date_of_birth' => 'Date of birth',    
         'socialsOptionSelected' => 'Social Media',
         'userOnSocial' => 'Username on social media',
+
+        // UpdateProfileLocationForm.php
+        'country' => 'Country',
+        'division' => 'Division',
+        'city' => 'City',
+        'district' => 'District'
+
     ],
 
 ];

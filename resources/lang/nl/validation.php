@@ -167,6 +167,13 @@ return [
         'state.date_of_birth' => 'Geboortedatum',
         'socialsOptionSelected' => 'Social Media',
         'userOnSocial' => 'Profiel op social media',
+
+        // UpdateProfileLocationForm.php
+        'country' => 'Land',
+        'division' => 'Provincie',
+        'city' => 'Plaats',
+        'district' => 'Buurt',
+        'noCityOptions' => 'geen plaats beschikbaar'
     ],
 
 ];

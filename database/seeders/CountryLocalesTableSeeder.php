@@ -14,12 +14,12 @@ class CountryLocalesTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('country_locales')->delete();
-
+        
         \DB::table('country_locales')->insert(array (
-            0 =>
+            0 => 
             array (
                 'id' => 1,
                 'country_id' => 1,
@@ -27,7 +27,7 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 2,
                 'country_id' => 1,
@@ -35,7 +35,7 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            2 =>
+            2 => 
             array (
                 'id' => 3,
                 'country_id' => 1,
@@ -43,7 +43,7 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            3 =>
+            3 => 
             array (
                 'id' => 4,
                 'country_id' => 2,
@@ -51,7 +51,7 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'nl',
             ),
-            4 =>
+            4 => 
             array (
                 'id' => 5,
                 'country_id' => 2,
@@ -59,7 +59,7 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            5 =>
+            5 => 
             array (
                 'id' => 6,
                 'country_id' => 2,
@@ -67,7 +67,7 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
-            6 =>
+            6 => 
             array (
                 'id' => 7,
                 'country_id' => 2,
@@ -75,7 +75,7 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'de',
             ),
-            7 =>
+            7 => 
             array (
                 'id' => 8,
                 'country_id' => 3,
@@ -83,7 +83,7 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'fr',
             ),
-            8 =>
+            8 => 
             array (
                 'id' => 9,
                 'country_id' => 3,
@@ -91,8 +91,32 @@ class CountryLocalesTableSeeder extends Seeder
                 'alias' => NULL,
                 'locale' => 'en',
             ),
+            9 => 
+            array (
+                'id' => 10,
+                'country_id' => 4,
+                'name' => 'Verenigd Koninkrijk',
+                'alias' => 'Groot-Brittanië',
+                'locale' => 'nl',
+            ),
+            10 => 
+            array (
+                'id' => 11,
+                'country_id' => 4,
+                'name' => 'Royaume-Uni',
+                'alias' => NULL,
+                'locale' => 'fr',
+            ),
+            11 => 
+            array (
+                'id' => 12,
+                'country_id' => 4,
+                'name' => 'United Kingdom',
+                'alias' => NULL,
+                'locale' => 'en',
+            ),
         ));
-
-
+        
+        
     }
 }

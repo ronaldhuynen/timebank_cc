@@ -32,6 +32,20 @@ class Division extends Model
 
 
     /**
+    * Get the division locale.
+    * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+    * @return void
+    */
+    public function locale()
+    {
+        return $this->hasOne(DivisionLocale::class)
+        ->where('locale', App::getLocale())
+        ->orWhere('locale', App::getFallbackLocale())
+        ->orderByRaw("CASE WHEN `locale` = ? THEN 2 ELSE 1 END ASC", App::getFallbackLocale());
+    }
+
+
+    /**
      * Get the local division name.
      * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
      * @return void
@@ -106,27 +120,27 @@ class Division extends Model
      */
     public function cities()
     {
-    // {
-    //     $locale = collect(
-    //         $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
-    //         ->where('locale', App::getLocale())
-    //         ->get()
-    //         )->keyBy('city_id');
+        // {
+        //     $locale = collect(
+        //         $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
+        //         ->where('locale', App::getLocale())
+        //         ->get()
+        //         )->keyBy('city_id');
 
-    //     $fallback = collect(
-    //         $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
-    //         ->where('locale', App::getFallbackLocale())
-    //         ->get()
-    //         )->keyBy('city_id');
+        //     $fallback = collect(
+        //         $this->hasManyThrough(CityLocale::class, City::class, 'division_id', 'city_id')
+        //         ->where('locale', App::getFallbackLocale())
+        //         ->get()
+        //         )->keyBy('city_id');
 
-    //     $result = $locale
-    //         ->union($fallback)
-    //         ->filter(function ($item) use ($search){
-    //             return false !== stripos($item->name, $search);
-    //         })
-    //         ->sortBy('name');
+        //     $result = $locale
+        //         ->union($fallback)
+        //         ->filter(function ($item) use ($search){
+        //             return false !== stripos($item->name, $search);
+        //         })
+        //         ->sortBy('name');
 
-    //     return $result;
+        //     return $result;
 
         return $this->hasMany(City::class);
     }
@@ -154,7 +168,7 @@ class Division extends Model
         return $this->country();
     }
 
-    
+
     /**
      * Get all of the related categories for this model.
      */

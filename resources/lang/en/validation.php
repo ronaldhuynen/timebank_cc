@@ -141,8 +141,17 @@ return [
     */
 
     'custom' => [
+        'country' => [
+            'required_if' => 'The :attribute field is required.',
+        ],
+        'division' => [
+            'required_if' => 'The :attribute field is required.',
+        ],
         'city' => [
-            'required_if' => 'The :attribute field is required (when there are cities available).',
+            'required_if' => 'The :attribute field is required.',
+        ],
+        'district' => [
+            'required_if' => 'The :attribute field is required.',
         ],
     ],
 
@@ -160,10 +169,10 @@ return [
     'attributes' => [
         // update-profile-organization-form.blade.php
         // update-profile-personal-form.blade.php
-        'state.about' => 'Description',  
+        'state.about' => 'Description',
         'state.motivation' => 'Motivation',
         'language' => 'Language',
-        'state.date_of_birth' => 'Date of birth',    
+        'state.date_of_birth' => 'Date of birth',
         'socialsOptionSelected' => 'Social Media',
         'userOnSocial' => 'Username on social media',
 
@@ -172,7 +181,6 @@ return [
         'division' => 'Division',
         'city' => 'City',
         'district' => 'District'
-
     ],
 
 ];

@@ -16,6 +16,9 @@
             @error('country')
                 <p class="text-sm text-red-500">{{$message}}</p>
             @enderror
+            @error('division')
+                <p class="text-sm text-red-500">{{$message}}</p>
+            @enderror
             @error('city')
                 <p class="text-sm text-red-500">{{$message}}</p>
             @enderror

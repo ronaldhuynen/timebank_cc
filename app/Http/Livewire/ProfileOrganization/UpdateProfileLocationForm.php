@@ -5,6 +5,7 @@ namespace App\Http\Livewire\ProfileOrganization;
 
 use App\Models\Locations\City;
 use App\Models\Locations\Country;
+use App\Models\Locations\Division;
 use App\Models\Locations\Location;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -15,19 +16,23 @@ class UpdateProfileLocationForm extends Component
 {
     use Actions;
 
-    public $state = [];
+    public $state;
     public $country;
+    public $division;
     public $city;
-    public $noCityOptions = true;
+    public $validateCountry = true;
+    public $validateDivision = true; 
+    public $validateCity = true;
     public $district;
 
-    protected $listeners = ['countryToParent', 'cityToParent'];
+    protected $listeners = ['countryToParent', 'divisionToParent', 'cityToParent'];
 
     public function rules()
     {
         return [
-        'country' => 'required',
-        'city' => 'required_if:noCityOptions,false'
+        'country' => 'required_if:validateCountry,true',
+        'division' => 'required_if:validateDivision,true',
+        'city' => 'required_if:validateCity,true',
         ];
     }
 
@@ -38,102 +43,135 @@ class UpdateProfileLocationForm extends Component
      */
     public function mount()
     {
-        $this->state = session('activeProfileType')::find(session('activeProfileId'))->load(['locations', 'locations.countries', 'locations.cities'])->toArray();
-        // In case no location is attached.
-        if (isset($this->state['locations'][0]['countries'][0])) {
+        $this->state = session('activeProfileType')::find(session('activeProfileId'))->load(['locations', 'locations.countries', 'locations.divisions', 'locations.cities']);
+        
+        if ($this->state->locations->first()->countries()->count() > 0) {
             // For now we only use a single location. In the future this can become an array of locations.
-            $this->country = $this->state['locations'][0]['countries'][0]['id'];
-            $this->checkCityOptions($this->country);
+            $this->country = $this->state->locations->first()->countries()->first()->id;
+            $this->emit('countryToChildren', $this->country);
         }
-        // In case no city is attached.
-        if (isset($this->state['locations'][0]['cities'][0])) {
+        
+        
+        if ($this->state->locations->first()->divisions()->count() > 0) {
             // For now we only use a single location. In the future this can become an array of locations.
-            $this->city = $this->state['locations'][0]['cities'][0]['id'];
-            $this->country = City::find($this->city)->country_id;
+            $this->division = $this->state->locations->first()->divisions()->first()->id;
         }
+
+
+        if ($this->state->locations->first()->cities()->count() > 0) {
+            // For now we only use a single location. In the future this can become an array of locations.
+            $this->city = $this->state->locations->first()->cities()->first()->id;
+
+            // In case a city without a country is present in the db:
+            if ($this->state->locations->first()->countries()->count() === 0) {
+                $this->country = City::find($this->city)->country_id;
+            }
+        }
+        
+        $this->setValidationOptions();
+
     }
 
 
     public function countryToParent($value)
     {
         $this->country = $value;
-        $this->checkCityOptions($value);
+        $this->setValidationOptions();
+    }
+
+    
+    public function divisionToParent($value)
+    {
+        $this->division = $value;
+        $this->setValidationOptions();
+
     }
 
 
     public function cityToParent($value)
     {
         $this->city = $value;
+        $this->setValidationOptions();
     }
 
 
     public function emitLocationToChildren()
     {
         $this->emit('countryToChildren', $this->country);
+        $this->emit('divisionToChildren', $this->division);
         $this->emit('cityToChildren', $this->city);
     }
 
-    public function checkCityOptions($country)
+
+    public function setValidationOptions()
     {        
-        // In case no cities for selected country are seeded in database
-    if ($this->country) {
-        $cityCount = Country::find($country)->cities()->count();
-        if ($cityCount <= 1) {
-            $this->noCityOptions = true;
-        } else {
-            $this->noCityOptions = false;
+        $this->validateCountry = $this->validateDivision = $this->validateCity = true;
+
+        $countDivisions = Country::find($this->country)->divisions()->count();
+        $countCities = Country::find($this->country)->cities()->count();
+
+        // In case no cities or divisions for selected country are seeded in database
+        if ($this->country) {
+            if ($countDivisions > 0 && $countCities < 1) {
+                $this->validateDivision = true;
+                $this->validateCity = false;
+            } elseif ($countDivisions < 1 && $countCities > 1) {
+                $this->validateDivision = false;
+                $this->validateCity = true;
+            } elseif ($countDivisions < 1 && $countCities < 1) {
+                $this->validateDivision = false;
+                $this->validateCity = false;
+            } elseif ($countDivisions > 0 && $countCities > 0) {
+                $this->validateDivision = false;
+                $this->validateCity = true;
+            }
+
         }
-    }
+        // In case no country is selected, no need to show other validation errors
+        if (!$this->country) {
+            $this->validateCountry = true;     
+            $this->validateDivision = $this->validateCity = false;
+        }
+        
     }
 
 
 
     public function updateProfileInformation()
     {
-        $valid = $this->validate();
+        $this->validate();
 
 // try {
     // Use a transaction for creating the new user.
-    DB::transaction(function () use ($valid): void {
+    DB::transaction(function (): void {
 
         // For now we only use a single location. In the future this can become an array of locations.
-        if (isset($this->state['locations'][0])) {
-            $location = Location::find($this->state['locations'][0]['id']);
+            if ($this->state->locations()) {
+            $location = Location::find($this->state->locations()->first()->id);
         } else {
             $location = new Location();
             $location->name = 'Default location';
             session('activeProfileType')::find(session('activeProfileId'))->locations()->save($location); // create a new location
         }
         $country = new Country();
-        $country = $valid['country'];
+        $country = $this->country;
         $location->countries()->sync($country); // attach country to location
+        
+        $division = new Division();
+        $division= $this->division;
+        $location->divisions()->sync($division);  // attach city to location
 
         $city = new City();
-        $city = $valid['city'];
+        $city = $this->city;
         $location->cities()->sync($city);  // attach city to location
 
         $this->emit('saved');
         });
-    // End of transaction
-    // }
-        // } catch (Throwable $e) {
-        //     // WireUI notification
-        //     // TODO: create event to send error notification to admin
-        //     $this->notification([
-        //     'title' => __('Error!'),
-        //     'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
-        //     'icon' => 'error',
-        //     'timeout'=> 100000
-        //     ]);
-
-        //     return back();
-        // }
-        // $this->emit('refresh-navigation-menu');
     }
 
 
     public function render()
     {
-        return view('livewire.profile-user.update-profile-location-form');
+        return view('livewire.profile-organization.update-profile-location-form');
     }
 }

@@ -141,8 +141,17 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'country' => [
+            'required_if' => ':Attribute is verplicht.',
+        ],
+        'division' => [
+            'required_if' => ':Attribute is verplicht.',
+        ],
+        'city' => [
+            'required_if' => ':Attribute is verplicht.',
+        ],
+        'district' => [
+            'required_if' => ':Attribute is verplicht.',
         ],
     ],
 
@@ -173,7 +182,6 @@ return [
         'division' => 'Provincie',
         'city' => 'Plaats',
         'district' => 'Buurt',
-        'noCityOptions' => 'geen plaats beschikbaar'
     ],
 
 ];

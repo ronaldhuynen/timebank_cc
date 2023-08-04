@@ -14,34 +14,41 @@ class CountriesTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('countries')->delete();
-
+        
         \DB::table('countries')->insert(array (
-            0 =>
+            0 => 
             array (
                 'id' => 1,
                 'code' => 'NL',
                 'flag' => '🇳🇱',
                 'phonecode' => '31',
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 2,
                 'code' => 'BE',
                 'flag' => '🇧🇪',
                 'phonecode' => '32',
             ),
-            2 =>
+            2 => 
             array (
                 'id' => 3,
                 'code' => 'DE',
                 'flag' => '🇩🇪',
                 'phonecode' => '49',
             ),
+            3 => 
+            array (
+                'id' => 4,
+                'code' => 'UK',
+                'flag' => '🇬🇧',
+                'phonecode' => '44',
+            ),
         ));
-
-
+        
+        
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models\Locations;
 
-
 use App\Models\Category;
 use App\Models\Locations\CityLocale;
 use App\Models\Locations\Country;
@@ -13,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
-
 
 class City extends Model
 {
@@ -64,7 +62,7 @@ class City extends Model
         // cityable refers to pivot columns and cityables refers to pivot table
     }
 
-        /**
+    /**
      * Get all of the cityables of the cities.
      * Many-to-many polymorph
      * @return void
@@ -175,7 +173,7 @@ class City extends Model
      */
     public function children($search = '')
     {
-         return $this->districts($search);
+        return $this->districts($search);
     }
 
 
@@ -192,7 +190,7 @@ class City extends Model
         return $this->division();
     }
 
-    
+
     /**
      * Get all of the related categories for this model.
      */

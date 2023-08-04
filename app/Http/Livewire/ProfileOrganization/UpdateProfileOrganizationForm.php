@@ -124,9 +124,7 @@ class UpdateProfileOrganizationForm extends Component
     public function deleteProfilePhoto(UpdatesUserProfileInformation $updater)
     {
         Auth::organization()->deleteProfilePhoto();
-
         $this->emit('saved');
-
         return redirect()->route('profile-organization.show');
     }
 

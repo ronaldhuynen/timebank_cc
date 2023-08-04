@@ -107,11 +107,12 @@ class UpdateProfileLocationForm extends Component
     {        
         $this->validateCountry = $this->validateDivision = $this->validateCity = true;
 
-        $countDivisions = Country::find($this->country)->divisions()->count();
-        $countCities = Country::find($this->country)->cities()->count();
-
         // In case no cities or divisions for selected country are seeded in database
         if ($this->country) {
+                        
+            $countDivisions = Country::find($this->country)->divisions()->count();
+            $countCities = Country::find($this->country)->cities()->count();
+
             if ($countDivisions > 0 && $countCities < 1) {
                 $this->validateDivision = true;
                 $this->validateCity = false;
@@ -141,7 +142,6 @@ class UpdateProfileLocationForm extends Component
     {
         $this->validate();
 
-// try {
     // Use a transaction for creating the new user.
     DB::transaction(function (): void {
 

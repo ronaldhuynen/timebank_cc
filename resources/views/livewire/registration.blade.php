@@ -36,12 +36,15 @@
                             <div class="mt-4" wire:init="emitLocationToChildren">
                                 <!-- TODO: Explanantion for location dropdowns -->
                                 @livewire('locations.locations-dropdown')
-                            @error('country')
-                                <p class="text-sm text-red-500">{{$message}}</p>
-                            @enderror
-                            @error('city')
-                                <p class="text-sm text-red-500">{{$message}}</p>
-                            @enderror
+                                @error('country')
+                                    <p class="text-sm text-red-500">{{$message}}</p>
+                                @enderror
+                                @error('division')
+                                    <p class="text-sm text-red-500">{{$message}}</p>
+                                @enderror
+                                @error('city')
+                                    <p class="text-sm text-red-500">{{$message}}</p>
+                                @enderror
                             </div>
 
                           </div>

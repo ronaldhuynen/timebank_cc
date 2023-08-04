@@ -16,9 +16,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if (App::environment(['local', 'staging'])) {
-            // $ip = '103.75.231.255'; // Static IP address Brussels for testing
+            $ip = '103.75.231.255'; // Static IP address Brussels for testing
             // $ip = '31.20.250.12'; // Statis IP address The Hague for testing
-            $ip = '102.129.156.0'; // Statis IP address Berlin for testing
+            // $ip = '102.129.156.0'; // Statis IP address Berlin for testing
         } else {
             $ip = $request->ip(); // Dynamic IP address
         }

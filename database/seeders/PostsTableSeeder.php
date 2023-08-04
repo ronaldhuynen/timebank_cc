@@ -64,6 +64,42 @@ class PostsTableSeeder extends Seeder
                 'created_at' => '2023-07-29 23:00:53',
                 'updated_at' => '2023-07-29 23:00:53',
             ),
+            5 => 
+            array (
+                'id' => 18,
+                'postable_id' => 1,
+                'postable_type' => 'App\\Models\\User',
+                'category_id' => 5,
+                'created_at' => '2023-08-04 14:09:47',
+                'updated_at' => '2023-08-04 14:09:47',
+            ),
+            6 => 
+            array (
+                'id' => 19,
+                'postable_id' => 1,
+                'postable_type' => 'App\\Models\\User',
+                'category_id' => 6,
+                'created_at' => '2023-08-04 14:42:31',
+                'updated_at' => '2023-08-04 14:42:31',
+            ),
+            7 => 
+            array (
+                'id' => 20,
+                'postable_id' => 1,
+                'postable_type' => 'App\\Models\\User',
+                'category_id' => 7,
+                'created_at' => '2023-08-04 16:23:26',
+                'updated_at' => '2023-08-04 16:23:42',
+            ),
+            8 => 
+            array (
+                'id' => 21,
+                'postable_id' => 1,
+                'postable_type' => 'App\\Models\\User',
+                'category_id' => 8,
+                'created_at' => '2023-08-04 16:24:25',
+                'updated_at' => '2023-08-04 16:24:25',
+            ),
         ));
         
         

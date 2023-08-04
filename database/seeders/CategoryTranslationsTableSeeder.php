@@ -109,6 +109,56 @@ class CategoryTranslationsTableSeeder extends Seeder
                 'created_at' => '2023-07-25 12:45:20',
                 'updated_at' => '2023-07-25 12:45:26',
             ),
+            9 => 
+            array (
+                'id' => 12,
+                'category_id' => 5,
+                'locale' => 'nl',
+                'slug' => 'provincie-antwerpen',
+                'name' => 'Antwerpen provincie evenementen',
+                'created_at' => '2023-08-04 14:06:00',
+                'updated_at' => '2023-08-04 14:06:00',
+            ),
+            10 => 
+            array (
+                'id' => 13,
+                'category_id' => 5,
+                'locale' => 'en',
+                'slug' => 'division-antwerp',
+                'name' => 'Antwerp division events',
+                'created_at' => '2023-08-04 14:07:50',
+                'updated_at' => '2023-08-04 14:07:50',
+            ),
+            11 => 
+            array (
+                'id' => 14,
+                'category_id' => 6,
+                'locale' => 'en',
+                'slug' => 'germany-events',
+                'name' => 'Germany events',
+                'created_at' => '2023-08-04 14:40:23',
+                'updated_at' => '2023-08-04 14:40:23',
+            ),
+            12 => 
+            array (
+                'id' => 15,
+                'category_id' => 7,
+                'locale' => 'en',
+                'slug' => 'antwerp-division-news',
+                'name' => 'Antwerp division news',
+                'created_at' => '2023-08-04 16:20:46',
+                'updated_at' => '2023-08-04 16:20:46',
+            ),
+            13 => 
+            array (
+                'id' => 16,
+                'category_id' => 8,
+                'locale' => 'en',
+                'slug' => 'germany-news',
+                'name' => 'Germany news',
+                'created_at' => '2023-08-04 16:20:46',
+                'updated_at' => '2023-08-04 16:20:46',
+            ),
         ));
         
         

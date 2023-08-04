@@ -4,11 +4,11 @@ namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Category;
 use App\Models\Locations\City;
+use App\Models\Locations\Country;
 use App\Models\Locations\Division;
 use App\Models\Locations\Location;
 use App\Models\Meeting;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
@@ -31,34 +31,38 @@ class EventCardFull extends Component
 
         $location_id = session('activeProfileType')::find(session('activeProfileId'))->locations->all()[0]['pivot']['location_id'];
         $location = Location::find($location_id);
-        
-        if ($location->divisions->count() > 0 && $location->cities->count() < 1) {
-            $categoryable_id = Location::find($location_id)->divisions->first()->id;
-            $categoryable_type = Division::class;
-            
-            if ($related) {
 
-                // Include also parent of division (country)
-                $categoryable_id = Division::find($categoryable_id)->parent->divisions()->pluck('id');
-                
-            } else {
-                $categoryable_id = [$categoryable_id];
+        if ($location->divisions->count() < 1 && $location->cities->count() < 1) {
+                $categoryable_id = Location::find($location_id)->countries->first()->id;
+                $categoryable_type = Country::class;
+                if ($related) {
+                    // Include also all other countries
+                    $categoryable_id = Country::pluck('id');
+                } else {
+                    $categoryable_id = [$categoryable_id];
+                }
             }
-        }
-
-
-        if ($location->cities->count() > 0) {
-            $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
-            $categoryable_type = City::class;
-
-            if ($related) {
-                // Include also parent of city (division or country)
-                $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
-            } else {
-                $categoryable_id = [$categoryable_id];
-            }
-        } else {
-            // No cities found
+            elseif ($location->divisions->count() > 0 && $location->cities->count() < 1) {
+                $categoryable_id = Location::find($location_id)->divisions->first()->id;
+                $categoryable_type = Division::class;
+                if ($related) {
+                    // Include also parent of division (country)
+                    $categoryable_id = Division::find($categoryable_id)->parent->divisions()->pluck('id');
+                } else {
+                    $categoryable_id = [$categoryable_id];
+                }
+            } 
+            elseif ($location->cities->count() > 0) {
+                $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
+                $categoryable_type = City::class;
+                if ($related) {
+                    // Include also parent of city (division or country)
+                    $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
+                } else {
+                    $categoryable_id = [$categoryable_id];
+                }
+            } 
+        else {
             $categoryable_id = [];
             $categoryable_type = '';
         }
@@ -72,7 +76,7 @@ class EventCardFull extends Component
                 },
                 'category' => function ($query) use ($categoryable_id, $categoryable_type) {
                     $query
-                    ->where('type', News::class)
+                    ->where('type', Meeting::class)
                     ->where(function ($query) use ($categoryable_id, $categoryable_type) {
                         $query
                             ->whereIn('categoryable_id', $categoryable_id)
@@ -124,8 +128,10 @@ class EventCardFull extends Component
             $this->post['start'] = Carbon::parse($post->translations->first()->updated_at)->isoFormat('LL');
             $this->post['category'] = Category::find($post->category_id)->translations->where('locale', App::getLocale())->first()->name;
             $this->post['author'] = $post->postable->name;
-            $this->post['address'] = ($post->meeting->from) ? $post->meeting->address : '';
-            $this->post['from'] = ($post->meeting->from) ? $post->meeting->from : '';
+            if ($post->meeting) {
+                $this->post['address'] = ($post->meeting->from) ? $post->meeting->address : '';
+                $this->post['from'] = ($post->meeting->from) ? $post->meeting->from : '';
+            }
 
             if ($post->media) {
                 $this->media = Post::find($post->id)->getFirstMedia('posts');

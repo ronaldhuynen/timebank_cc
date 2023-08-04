@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Locations\City;
 use App\Models\Locations\DivisionLocale;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\App;
 
 class Division extends Model
@@ -91,14 +92,16 @@ class Division extends Model
      */
     public function country()
     {
-        $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
-        $result = CountryLocale::where('country_id', $country)
-            ->where('locale', App::getLocale());
-        if ($result->count() === 0) {
-            $result = CountryLocale::where('country_id', $country)
-                ->where('locale', App::getFallbackLocale());
-        }
-        return $result;
+        // $country = $this->belongsTo(Country::class, 'country_id')->pluck('id');
+        // $result = CountryLocale::where('country_id', $country)
+        //     ->where('locale', App::getLocale());
+        // if ($result->count() === 0) {
+        //     $result = CountryLocale::where('country_id', $country)
+        //         ->where('locale', App::getFallbackLocale());
+        // }
+        // return $result;
+
+        return $this->belongsTo(Country::class, 'country_id');
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Category;
 use App\Models\Locations\City;
+use App\Models\Locations\Division;
 use App\Models\Locations\Location;
 use App\Models\News;
 use App\Models\Post;
@@ -26,15 +27,37 @@ class NewsCardFull extends Component
     {
         $this->postNr = $postNr;
         $this->related = $related;
+        
         $location_id = session('activeProfileType')::find(session('activeProfileId'))->locations->all()[0]['pivot']['location_id'];
-        $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
-        $categoryable_type = City::class;
+        $location = Location::find($location_id);
 
-        if ($related) {
-            // Include also parent of city (division or country)
-            $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
+        if ($location->divisions->count() > 0 && $location->cities->count() < 1) {
+            $categoryable_id = Location::find($location_id)->divisions->first()->id;
+            $categoryable_type = Division::class;
+
+            if ($related) {
+                // Include also parent of division (country)
+                $categoryable_id = Division::find($categoryable_id)->parent->divisions()->pluck('id');
+            } else {
+                $categoryable_id = [$categoryable_id];
+            }
+        }
+
+
+        if ($location->cities->count() > 0) {
+            $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
+            $categoryable_type = City::class;
+
+            if ($related) {
+                // Include also parent of city (division or country)
+                $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
+            } else {
+                $categoryable_id = [$categoryable_id];
+            }
         } else {
-            $categoryable_id = [$categoryable_id];
+            // No cities found
+            $categoryable_id = [];
+            $categoryable_type = '';
         }
 
         // TODO: check what happens when multiple locations per user are used!

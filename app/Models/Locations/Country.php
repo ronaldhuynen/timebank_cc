@@ -109,26 +109,28 @@ class Country extends Model
      */
     public function divisions(string $search = '')
     {
-        $locale = collect(
-            $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
-                ->where('locale', App::getLocale())
-                ->get()
-        )->keyBy('division_id');
+        // $locale = collect(
+        //     $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
+        //         ->where('locale', App::getLocale())
+        //         ->get()
+        // )->keyBy('division_id');
 
-        $fallback = collect(
-            $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
-                ->where('locale', App::getFallbackLocale())
-                ->get()
-        )->keyBy('division_id');
+        // $fallback = collect(
+        //     $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
+        //         ->where('locale', App::getFallbackLocale())
+        //         ->get()
+        // )->keyBy('division_id');
 
-        $result = $locale
-            ->union($fallback)
-            ->filter(function ($item) use ($search) {
-                return false !== stripos($item->name, $search);
-            })
-            ->sortBy('name');
+        // $result = $locale
+        //     ->union($fallback)
+        //     ->filter(function ($item) use ($search) {
+        //         return false !== stripos($item->name, $search);
+        //     })
+        //     ->sortBy('name');
 
-        return $result;
+        // return $result;
+
+        return $this->hasMany(Division::class);
 
     }
 

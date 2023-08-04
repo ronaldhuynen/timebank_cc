@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Category;
 use App\Models\Locations\City;
+use App\Models\Locations\Division;
 use App\Models\Locations\Location;
 use App\Models\Meeting;
 use App\Models\Post;
@@ -21,24 +22,46 @@ class EventCardFull extends Component
     public $media;
     public $postNr;
     public $related;
-    
+
 
     public function mount($postNr, $related, Request $request)
     {
         $this->postNr = $postNr;
         $this->related = $related;
-        
-        $location_id = session('activeProfileType')::find(session('activeProfileId'))->locations->all()[0]['pivot']['location_id'];
-        $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
-        $categoryable_type = City::class;
 
-        if ($related) {
-            // Include also parent of city (division or country)
-            $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
-        } else {
-            $categoryable_id = [$categoryable_id];
+        $location_id = session('activeProfileType')::find(session('activeProfileId'))->locations->all()[0]['pivot']['location_id'];
+        $location = Location::find($location_id);
+        
+        if ($location->divisions->count() > 0 && $location->cities->count() < 1) {
+            $categoryable_id = Location::find($location_id)->divisions->first()->id;
+            $categoryable_type = Division::class;
+            
+            if ($related) {
+
+                // Include also parent of division (country)
+                $categoryable_id = Division::find($categoryable_id)->parent->divisions()->pluck('id');
+                
+            } else {
+                $categoryable_id = [$categoryable_id];
+            }
         }
 
+
+        if ($location->cities->count() > 0) {
+            $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
+            $categoryable_type = City::class;
+
+            if ($related) {
+                // Include also parent of city (division or country)
+                $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
+            } else {
+                $categoryable_id = [$categoryable_id];
+            }
+        } else {
+            // No cities found
+            $categoryable_id = [];
+            $categoryable_type = '';
+        }
 
         // TODO: check what happens when multiple locations per user are used!
 
@@ -54,23 +77,24 @@ class EventCardFull extends Component
                         $query
                             ->whereIn('categoryable_id', $categoryable_id)
                             ->where('categoryable_type', $categoryable_type);
-                        });
+                    });
                 },
                 'translations' => function ($query) {
                     $query
                         ->where('locale', App::getLocale())
-;                },
+                    ;
+                },
                 'meeting',
                 'media',
                 ])
                 ->whereHas('category', function ($query) use ($categoryable_id, $categoryable_type) {
                     $query
                         ->where('type', Meeting::class)
-                         ->where(function ($query) use ($categoryable_id, $categoryable_type) {
+                        ->where(function ($query) use ($categoryable_id, $categoryable_type) {
                             $query
                                 ->whereIn('categoryable_id', $categoryable_id)
                                 ->where('categoryable_type', $categoryable_type);
-                            });
+                        });
                 })
                 ->whereHas('translations', function ($query) {
                     $query
@@ -81,14 +105,14 @@ class EventCardFull extends Component
                     })
                     ->orderBy('updated_at', 'desc');
                 })
-                ->get()->sortBy( function ($query) {
-                     if (isset($query->meeting->from)) { 
-                        return $query->meeting->from; 
+                ->get()->sortBy(function ($query) {
+                    if (isset($query->meeting->from)) {
+                        return $query->meeting->from;
                     };
                 })->values();       // Use values() method to reset the collection keys after sortBy
-                                
+
         $lastNr = $post->count() -1;
-        
+
         if ($postNr > $lastNr) {
             $post = null;
         } else {
@@ -107,7 +131,9 @@ class EventCardFull extends Component
                 $this->media = Post::find($post->id)->getFirstMedia('posts');
             }
         }
+
     }
+
 
 
     public function render()

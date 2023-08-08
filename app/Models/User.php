@@ -10,6 +10,7 @@ use App\Models\Locations\District;
 use App\Models\Locations\Location;
 use App\Models\Organization;
 use App\Models\Post;
+use App\Traits\TaggableWithContext;
 use Cviebrock\EloquentTaggable\Taggable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,7 +38,8 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use HasRoles; // Spatie Permissions
     use LogsActivity; // Spatie Activity Log
-    use Taggable; // Cviebrock Eloquent Taggable
+    // use Taggable; // Cviebrock Eloquent Taggable
+    use TaggableWithContext;
 
     /**
      * The attributes that are mass assignable.

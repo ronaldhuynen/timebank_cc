@@ -10,6 +10,7 @@ use App\Models\Locations\District;
 use App\Models\Locations\Location;
 use App\Models\Organization;
 use App\Models\Post;
+use Cviebrock\EloquentTaggable\Taggable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +27,6 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
-
 class User extends Authenticatable implements MessengerProvider, Searchable, MustVerifyEmail
 {
     use HasApiTokens;
@@ -37,6 +37,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use HasRoles; // Spatie Permissions
     use LogsActivity; // Spatie Activity Log
+    use Taggable; // Cviebrock Eloquent Taggable
 
     /**
      * The attributes that are mass assignable.

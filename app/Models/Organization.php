@@ -6,6 +6,7 @@ use App\Models\Language;
 use App\Models\Locations\Location;
 use App\Models\Post;
 use App\Models\User;
+use Cviebrock\EloquentTaggable\Taggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,8 @@ class Organization extends Model implements MessengerProvider, Searchable
     use HasFactory;
     use HasProfilePhoto;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
+    use Taggable; // Cviebrock Eloquent Taggable
+
 
 
     /**

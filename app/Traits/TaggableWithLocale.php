@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\TagContext;
+use App\Models\TaggableLocale;
 use Cviebrock\EloquentTaggable\Events\ModelTagged;
 use Cviebrock\EloquentTaggable\Events\ModelUntagged;
 use Cviebrock\EloquentTaggable\Exceptions\NoTagsSpecifiedException;
@@ -15,7 +15,7 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\App;
 
 /**
- * Class TaggableWithContext
+ * Class TaggableWithLocale
  *
  * Is a customized copy of:
  * @package Cviebrock\EloquentTaggable 9.0
@@ -24,8 +24,66 @@ use Illuminate\Support\Facades\App;
  * which is not included in the original Taggable package.
  */
 
-trait TaggableWithContext
+trait TaggableWithLocale
 {
+    public function translateTag($tagName, $fromLocale, $toLocale)
+    {
+        $tagName =  mb_strtolower($tagName);
+        $result = Tag::where('name', $tagName)
+            ->whereHas('locale', function ($query) use ($fromLocale) {
+                $query->where('locale', $fromLocale);
+            })
+        ->with(
+            'contexts.tags',
+            function ($q) use ($toLocale) {
+                $q->whereHas('locale', function ($q) use ($toLocale) {
+                    $q->where('locale', $toLocale);
+                })->select('normalized');
+            }
+        )
+          ->get();
+
+        if ($result->count() != 0) {
+
+            $result = $result->first()
+            ->contexts;
+
+            if ($result->first()) {
+                $result = $result
+                        ->first()
+                        ->tags
+                          ->pluck('normalized')
+                          ->unique()
+                          ->values()
+                          ->reject($tagName)
+                          ->flatten()
+                        ;
+            } else {
+            $result = [];
+            }
+        } else {
+            $result = [];
+        }
+        return $result;
+    }
+
+
+
+    /**
+     * Find the tag with the given name.
+     *
+     * @param string $value
+     *
+     * @return static|null
+     */
+    public static function findByName(string $value)
+    {
+        return app(TagService::class)->find($value);
+    }
+
+
+
+
     /**
      * Property to control sequence on alias
      *
@@ -59,6 +117,8 @@ trait TaggableWithContext
         return $this->morphToMany($model, 'taggable', $table, 'taggable_id', 'tag_id')
             ->withTimestamps();
     }
+
+
 
     /**
      * Attach one or multiple tags to the model.
@@ -177,15 +237,15 @@ trait TaggableWithContext
     protected function addOneTag(string $tagName): void
     {
         /** @var Tag $tag */
-        $tag = app(TagService::class)->findOrCreate($tagName);
+        $tag = app(TagService::class)->findOrCreate(str_replace("-", " ", $tagName));   // Customization: str_replace to improve normalization
         $tagKey = $tag->getKey();
 
         if (!$this->getAttribute('tags')->contains($tagKey)) {
             $this->tags()->attach($tagKey);
         }
 
-        $context = ['locale' => App::getLocale()];      // Customization: include App Locale when adding a tag
-        TagContext::updateOrCreate(['taggable_tag_id' => $tag->getKey()], $context);    // Customization: include App Locale when adding a tag
+        $locale = ['locale' => App::getLocale()];      // Customization: include App Locale when adding a tag
+        TaggableLocale::updateOrCreate(['taggable_tag_id' => $tag->getKey()], $locale);    // Customization: include App Locale when adding a tag
     }
 
     /**

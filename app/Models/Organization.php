@@ -6,6 +6,7 @@ use App\Models\Language;
 use App\Models\Locations\Location;
 use App\Models\Post;
 use App\Models\User;
+use App\Traits\TaggableWithLocale;
 use Cviebrock\EloquentTaggable\Taggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,13 +17,13 @@ use RTippin\Messenger\Traits\Messageable;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
-
 class Organization extends Model implements MessengerProvider, Searchable
 {
     use HasFactory;
     use HasProfilePhoto;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
-    use Taggable; // Cviebrock Eloquent Taggable
+    // use Taggable; // Cviebrock Eloquent Taggable
+    use TaggableWithLocale;
 
 
 
@@ -109,8 +110,7 @@ class Organization extends Model implements MessengerProvider, Searchable
         Builder $query,
         string $search,
         array $searchItems
-    )
-    {
+    ) {
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
                 $query->orWhere('name', 'LIKE', "%{$item}%")
@@ -153,11 +153,11 @@ class Organization extends Model implements MessengerProvider, Searchable
      */
     public function getSearchResult(): SearchResult
     {
-         return new \Spatie\Searchable\SearchResult(
+        return new \Spatie\Searchable\SearchResult(
             $this,
             $this->name,
-         );
-     }
+        );
+    }
 
     /**
      * Get all of the Organization's posts.

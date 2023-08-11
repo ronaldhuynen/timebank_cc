@@ -11,7 +11,7 @@
                 <x-jet-section-border />
                 @livewire('profile-user.update-profile-location-form')
                 <x-jet-section-border />
-                @livewire('profile-user.update-profile-professional-form')
+                @livewire('profile-user.update-skills-form')
         </div>
     </div>
 </x-app-layout>

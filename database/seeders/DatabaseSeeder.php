@@ -64,6 +64,12 @@ class DatabaseSeeder extends Seeder
         TransactionSeeder::class,
         ]);
 
+        if ($this->command->confirm('Do you want to seed test tags?')) {
+            $this->call(TaggableTagsTableSeeder::class);
+            $this->call(TaggableLocalesTableSeeder::class);
+            $this->call(TaggableContextsTableSeeder::class);
+            $this->call(TaggableLocaleContextTableSeeder::class);
+        }
         $this->command->info('Super-Admin user: admin@admin.com');
         $this->command->info('Super-Admin password: SecurePassword');
         $this->command->info('All other users have password: password');

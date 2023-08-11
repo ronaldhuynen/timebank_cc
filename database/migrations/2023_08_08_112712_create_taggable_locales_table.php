@@ -13,19 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tag_contexts', function (Blueprint $table) {
+        Schema::create('taggable_locales', function (Blueprint $table) {
             $table->id();            
             $table->unsignedBigInteger('taggable_tag_id'); // Foreign key column
-            $table->string('locale', 6);
-            $table->unsignedBigInteger('parent_taggable_id')->nullable();
-            $table->unsignedBigInteger('tag_context_class_id')->nullable();
-            $table->string('descr_short',200)->nullable();
+            $table->string('locale', 6);            
+            $table->string('descr_short', 200)->nullable();
             $table->string('descr_long')->nullable();
             $table->json('examples')->nullable();
             $table->timestamps();
 
             $table->unique(['taggable_tag_id', 'locale']);
-            $table->foreign('taggable_tag_id')->references('tag_id')->on('taggable_tags')->onDelete('cascade');
+            $table->foreign('taggable_tag_id')->references('tag_id')->on('taggable_tags')->onDelete('cascade');     
+            
+            $table->index('locale');
 
         });
     }
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tag_contexts');
+        Schema::dropIfExists('taggable_locales');
     }
 };

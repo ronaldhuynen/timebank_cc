@@ -68,7 +68,7 @@ class TaggableLocalesTableSeeder extends Seeder
                 'id' => 5,
                 'taggable_tag_id' => 5,
                 'locale' => 'en',
-                'descr_short' => NULL,
+                'descr_short' => 'Colour',
                 'descr_long' => NULL,
                 'examples' => NULL,
                 'created_at' => '2023-08-11 16:47:31',
@@ -106,6 +106,50 @@ class TaggableLocalesTableSeeder extends Seeder
                 'examples' => NULL,
                 'created_at' => '2023-08-11 17:08:10',
                 'updated_at' => '2023-08-11 17:08:10',
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'taggable_tag_id' => 9,
+                'locale' => 'nl',
+                'descr_short' => 'Deel van een golfbaan',
+                'descr_long' => NULL,
+                'examples' => NULL,
+                'created_at' => '2023-08-11 21:08:10',
+                'updated_at' => '2023-08-11 21:08:10',
+            ),
+            9 => 
+            array (
+                'id' => 10,
+                'taggable_tag_id' => 10,
+                'locale' => 'en',
+                'descr_short' => 'To make out of wood',
+                'descr_long' => NULL,
+                'examples' => NULL,
+                'created_at' => '2023-08-12 00:02:43',
+                'updated_at' => '2023-08-12 00:02:43',
+            ),
+            10 => 
+            array (
+                'id' => 11,
+                'taggable_tag_id' => 11,
+                'locale' => 'nl',
+                'descr_short' => 'Uit hout maken',
+                'descr_long' => NULL,
+                'examples' => NULL,
+                'created_at' => '2023-08-12 00:13:05',
+                'updated_at' => '2023-08-12 00:14:19',
+            ),
+            11 => 
+            array (
+                'id' => 13,
+                'taggable_tag_id' => 13,
+                'locale' => 'en',
+                'descr_short' => NULL,
+                'descr_long' => NULL,
+                'examples' => NULL,
+                'created_at' => '2023-08-12 00:37:16',
+                'updated_at' => '2023-08-12 00:37:16',
             ),
         ));
         

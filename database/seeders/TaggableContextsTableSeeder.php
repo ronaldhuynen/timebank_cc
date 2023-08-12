@@ -23,7 +23,6 @@ class TaggableContextsTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'parent_context_id' => NULL,
-                'similar_context_id' => NULL,
                 'updated_by_user_id' => 2,
                 'created_at' => '2023-08-11 14:43:11',
                 'updated_at' => '2023-08-11 14:43:11',
@@ -32,7 +31,6 @@ class TaggableContextsTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'parent_context_id' => NULL,
-                'similar_context_id' => NULL,
                 'updated_by_user_id' => 2,
                 'created_at' => '2023-08-11 16:48:53',
                 'updated_at' => '2023-08-11 16:48:53',
@@ -41,10 +39,17 @@ class TaggableContextsTableSeeder extends Seeder
             array (
                 'id' => 3,
                 'parent_context_id' => NULL,
-                'similar_context_id' => NULL,
                 'updated_by_user_id' => 2,
                 'created_at' => '2023-08-11 17:33:06',
                 'updated_at' => '2023-08-11 17:33:06',
+            ),
+            3 => 
+            array (
+                'id' => 4,
+                'parent_context_id' => NULL,
+                'updated_by_user_id' => 2,
+                'created_at' => '2023-08-12 00:03:30',
+                'updated_at' => '2023-08-12 00:03:30',
             ),
         ));
         

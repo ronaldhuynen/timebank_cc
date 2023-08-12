@@ -7,6 +7,19 @@ use Livewire\Component;
 class UpdateSkillsForm extends Component
 {
     public $phoneCodeOptions;
+    public $state;
+    public $tags=[];
+    public $suggestions = [];
+
+
+    public function mount()
+    {
+        $this->fill([
+            'tags' => implode(',', $this->tags),
+            'suggestions' => $this->suggestions
+            ]);
+    }
+
 
     public function render()
     {

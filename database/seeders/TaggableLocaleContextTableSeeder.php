@@ -67,6 +67,18 @@ class TaggableLocaleContextTableSeeder extends Seeder
                 'tag_id' => 8,
                 'context_id' => 2,
             ),
+            8 => 
+            array (
+                'id' => 9,
+                'tag_id' => 10,
+                'context_id' => 4,
+            ),
+            9 => 
+            array (
+                'id' => 10,
+                'tag_id' => 11,
+                'context_id' => 4,
+            ),
         ));
         
         

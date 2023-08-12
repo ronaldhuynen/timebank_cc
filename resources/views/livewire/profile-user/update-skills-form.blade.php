@@ -16,8 +16,36 @@
         >
         <x-jet-label for="phone" value="{{ __('Skills, separated by a comma') }}" />
             <div class="col-span-2">
+
+        <div>
+            <input
+                x-data="{ }"
+                x-ref="input"
+                x-init="new Tagify($refs.input,{
+                    pattern: /^.{0,20}$/,   // max 20 characters
+                    maxTags: 40,
+                    whitelist:{{json_encode($suggestions)}},
+                    dropdown: {   
+                    position: 'text',  
+                    maxItems: 7,           // <- mixumum allowed rendered suggestions
+                    classname: 'tag-dropdown',
+                    enabled: 2, // show suggestions on focus
+                    closeOnSelect: true // don't hide the dropdown when an item is selected
+                    }
+                    })"
+                    
+                type="text"
+                spellcheck='true'
+                placeholder='Select or create tags'
+                value="{{$tags }}"
+                >
+        </div>
+
                 <x-input
-                    id="skills"
+                    {{-- name="tags" 
+                    type="text" 
+                    id="tags" --}}
+                
                     placeholder="Writing English, Walking your dog, Moving house, Electronics repair"
                     wire:model.lazy="state.phone" 
                     class="placeholder-gray-300"/>
@@ -43,4 +71,10 @@
             {{ __('Save') }}
         </x-jet-button>
     </x-slot>
+
+    {{-- <script>
+     var input = document.querySelector('input#tags');
+ tagify = new Tagify(input);
+ tagify.addTags(['laravel','Vue','React','PHP']);
+    </script> --}}
 </x-jet-form-section>

@@ -15,7 +15,6 @@ return new class () extends Migration {
         Schema::create('taggable_contexts', function (Blueprint $table) {
             $table->id();     
             $table->unsignedBigInteger('parent_context_id')->nullable();
-            $table->unsignedBigInteger('similar_context_id')->nullable();
             $table->unsignedBigInteger('updated_by_user_id')->nullable();
             $table->timestamps();
 

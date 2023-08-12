@@ -83,6 +83,38 @@ class TaggableTagsTableSeeder extends Seeder
                 'created_at' => '2023-08-11 17:08:10',
                 'updated_at' => '2023-08-11 17:08:10',
             ),
+            8 => 
+            array (
+                'tag_id' => 9,
+                'name' => 'green',
+                'normalized' => 'green',
+                'created_at' => '2023-08-11 21:07:16',
+                'updated_at' => '2023-08-11 21:07:16',
+            ),
+            9 => 
+            array (
+                'tag_id' => 10,
+                'name' => 'Wood working',
+                'normalized' => 'wood working',
+                'created_at' => '2023-08-12 00:02:43',
+                'updated_at' => '2023-08-12 00:02:43',
+            ),
+            10 => 
+            array (
+                'tag_id' => 11,
+                'name' => 'houtbewerking',
+                'normalized' => 'houtbewerking',
+                'created_at' => '2023-08-12 00:13:05',
+                'updated_at' => '2023-08-12 00:13:05',
+            ),
+            11 => 
+            array (
+                'tag_id' => 13,
+                'name' => 'Metal Working',
+                'normalized' => 'metal working',
+                'created_at' => '2023-08-12 00:37:16',
+                'updated_at' => '2023-08-12 00:37:16',
+            ),
         ));
         
         

@@ -22,12 +22,14 @@
         <link id="main_css" href="{{ asset(mix('app.css', 'vendor/messenger')) }}" rel="stylesheet"> {{--  Needed for Messenger notification pills in nav-bar --}}
         <link rel="stylesheet" href="{{ asset('css/custom_messenger.css') }}">
         <link rel="stylesheet" href="{{ asset('css/trix.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/tagify.css') }}">
+
         {{-- <link rel="stylesheet" href="{{ asset('css/filepond.min.css') }}">
         <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/> --}}
         {{-- <script src="https://cdn.jsdeivr.net/npm/@yaireo/tagify"></script> --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js" integrity="sha512-7vyDVrzHbIl2MbbDj2lgeXUVSe4NSbY5jn030+QN321CTl8XEc3J5Qlq976YY5gs+Ifwff9Q2SrDXLPWxAp2oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js" integrity="sha512-7vyDVrzHbIl2MbbDj2lgeXUVSe4NSbY5jn030+QN321CTl8XEc3J5Qlq976YY5gs+Ifwff9Q2SrDXLPWxAp2oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script> --}}
+        {{-- <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" /> --}}
         @livewireStyles
 
 

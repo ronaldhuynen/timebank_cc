@@ -67,7 +67,21 @@ trait TaggableWithLocale
         return $result;
     }
 
+    public function localTagArray($locale)
+    {        
+        $array = Tag::whereHas('locale', function ($query) use ($locale) {
+            $query->where('locale', $locale);
+        })->pluck('normalized')->toArray();
+        return $array;
+    }
 
+    public function localTagList($locale)
+    {        
+        $array = Tag::whereHas('locale', function ($query) use ($locale) {
+            $query->where('locale', $locale);
+        })->pluck('normalized')->toArray();
+        return implode(config('taggable.glue'), $array);
+    }
 
     /**
      * Find the tag with the given name.

@@ -29,7 +29,7 @@
                     position: 'text',  
                     maxItems: 7,           // <- mixumum allowed rendered suggestions
                     classname: 'tag-dropdown',
-                    enabled: 2, // show suggestions on focus
+                    enabled: 0, // show suggestions on focus
                     closeOnSelect: true // don't hide the dropdown when an item is selected
                     }
                     })"

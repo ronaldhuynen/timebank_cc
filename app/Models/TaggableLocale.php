@@ -15,9 +15,6 @@ class TaggableLocale extends Model
 
     protected $guarded = [];
 
-
-
-
     public function tag()
     {
         return $this->belongsTo(Tag::class, 'taggable_tag_id', 'tag_id');

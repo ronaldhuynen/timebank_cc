@@ -17,7 +17,7 @@ class UpdateSkillsForm extends Component
     public function mount()
     {
         $tagService = app(TagService::class);        
-        $this->suggestions = (new Tag())->localTagArray('en');
+        $this->suggestions = (new Tag())->localTagArray(app()->getLocale());
         $this->fill([
             'tags' => implode(',', $this->tags),
             // 'suggestions' => $this->suggestions

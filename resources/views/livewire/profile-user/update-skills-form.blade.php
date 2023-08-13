@@ -22,11 +22,11 @@
                 x-data="{ }"
                 x-ref="input"
                 x-init="new Tagify($refs.input,{
-                    pattern: /^.{0,20}$/,   // max 20 characters
+                    pattern: /^.{0,50}$/,   // max 20 characters
                     maxTags: 40,
                     whitelist:{{json_encode($suggestions)}},
                     dropdown: {   
-                    position: 'text',  
+                    {{-- position: 'text',    --}}
                     maxItems: 7,           // <- mixumum allowed rendered suggestions
                     classname: 'tag-dropdown',
                     enabled: 0, // show suggestions on focus

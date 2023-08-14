@@ -4,8 +4,14 @@
         {{ __('Previous login') . ': ' . $lastLoginAt }}
     </div>
 
-    <div>
+
+     <div class="grid grid-cols-2 text-xs text-gray-500">
+     <div>
         <x-jet-application-logo class="block h-12 w-auto" />
+    </div>
+         <div>
+        @livewire('skills-form')
+    </div>
     </div>
 
     @else
@@ -27,7 +33,7 @@
         ecosystem to be a breath of fresh air. We hope you love it.
     </div>
     @endif
-
+    
 </div>
 
    <livewire:dashboard.event-card-full :postNr=0 :related=1>

@@ -182,6 +182,9 @@ return [
         'division' => 'Provincie',
         'city' => 'Plaats',
         'district' => 'Buurt',
+
+        // update-skills-form.blade.php
+        'tagsArray.*' => 'Label',
     ],
 
 ];

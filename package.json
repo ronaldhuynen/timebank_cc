@@ -35,6 +35,7 @@
     },
     "dependencies": {
         "@yaireo/tagify": "^4.17.8",
+        "emoji-assets": "^7.0.1",
         "emoji-toolkit": "^7.0.0",
         "trix": "^2.0.5"
     }

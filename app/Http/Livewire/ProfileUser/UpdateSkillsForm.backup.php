@@ -12,12 +12,13 @@ class UpdateSkillsForm extends Component
     use TaggableWithLocale;
 
     public $tags = '';
+    public $tagsArray = [];
     public $suggestions = [];
 
 
     //! TODO: fix max characters validation!
      protected $rules = [
-        'tags.*' => 'required|string|max:3',
+        'tagsArray.*' => 'required|string|max:50',   // make sure to set also 50 in Alpine Tagify script (in view)
     ];
 
     public function mount()
@@ -26,13 +27,15 @@ class UpdateSkillsForm extends Component
         $this->suggestions = (new Tag())->localTagArray(app()->getLocale());
         $tags = session('activeProfileType')::find(session('activeProfileId'))->tags()->get();
         $tags = collect(json_decode($tags))->pluck('normalized')->toArray();
+        $this->tagsArray = $tags;
         $this->tags = implode(", ", $tags);
     }
 
     public function updated()
     {
-        $this->tags = collect(json_decode($this->tags))->pluck('value')->toArray();
-    }
+        $this->tagsArray = collect(json_decode($this->tags))->pluck('value')->toArray();
+        }
+
 
 
     /**
@@ -45,21 +48,21 @@ class UpdateSkillsForm extends Component
         $owner = session('activeProfileType')::find(session('activeProfileId'));
 
         if ($this->tags != null) {
+            // dd($this->tagsArray);
             $this->validate();  // 2nd validation, just before save method
-            $this->resetErrorBag();
-           // $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
-            //$user->phone = $phone;
-            //$user->phone_public_for_friends = $this->state['phone_public_for_friends'];
-
-                        
+            $this->resetErrorBag();                       
             $owner->detag();
-            $tagList = (implode(", ", $this->tags));
+            $tagList = (implode(", ", $this->tagsArray));
             $owner->tag($tagList);
             $this->tags = '';
+            $this->tagsArray = [];
 
         } else {
             $this->resetErrorBag();
             $owner->detag();
+            $this->tags = '';
+            $this->tagsArray = [];
+
         }
 
         $this->emit('saved');
@@ -69,6 +72,6 @@ class UpdateSkillsForm extends Component
 
     public function render()
     {
-        return view('livewire.profile-user.update-skills-form');
+        return view('livewire.skills-form');
     }
 }

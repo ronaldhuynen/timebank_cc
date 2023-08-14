@@ -180,7 +180,11 @@ return [
         'country' => 'Country',
         'division' => 'Division',
         'city' => 'City',
-        'district' => 'District'
+        'district' => 'District',
+
+        // update-skills-form.blade.php
+        'tagsArray.*' => 'Tags',
+
     ],
 
 ];

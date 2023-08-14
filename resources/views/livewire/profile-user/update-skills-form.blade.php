@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateProfilePhone">
+<x-jet-form-section submit="saveTags">
     <x-slot name="title">
         {{ __('Skills you share on Timebank.cc') }}
     </x-slot>
@@ -11,56 +11,51 @@
     <x-slot name="form">
 
         <!-- Skills -->
-        <div class="col-span-6  mb-6" 
-        {{-- wire:init="phonecodeInit" --}}
-        >
-        <x-jet-label for="phone" value="{{ __('Skills, separated by a comma') }}" />
+        <div class="col-span-6  mb-6">
+        <x-jet-label for="skills" value="{{ __('Skills, separated by a comma') }}" />
             <div class="col-span-2">
 
-        <div>
+        <div wire:ignore>
+            <div                
+             x-data="{ input: @entangle('tags')  }"
+            >
             <input
-                x-data="{ }"
                 x-ref="input"
-                x-init="new Tagify($refs.input,{
-                    pattern: /^.{0,50}$/,   // max 20 characters
+                x-init=" tagify = new Tagify($refs.input,{
+                    pattern: /^.{0,50}$/,   // max 50 characters
                     maxTags: 40,
+                    autocapitalize: true,
+                    spellcheck: true,
                     whitelist:{{json_encode($suggestions)}},
+                    callbacks        : {
+                            add    : console.log,  // callback when adding a tag
+                            remove : console.log   // callback when removing a tag
+                        },
                     dropdown: {   
-                    {{-- position: 'text',    --}}
-                    maxItems: 7,           // <- mixumum allowed rendered suggestions
-                    classname: 'tag-dropdown',
-                    enabled: 0, // show suggestions on focus
-                    closeOnSelect: true // don't hide the dropdown when an item is selected
-                    }
-                    })"
-                    
+                        {{-- position: 'text',    --}}
+                        maxItems: 7,           // <- mixumum allowed rendered suggestions
+                        classname: 'tag-dropdown',
+                        enabled: 3, // show suggestions on focus
+                        closeOnSelect: true // don't hide the dropdown when an item is selected
+                        }
+                    });
+                    $refs.input.addEventListener('change', onChange)
+                    function onChange(e){
+                        $wire.set('tags', e.target.value, true) // true sets defer to true
+                    };"  
                 type="text"
-                spellcheck='true'
-                placeholder='Select or create tags'
-                value="{{$tags }}"
+                placeholder='Select or create new tags'
+                value="{{$tags}}"
+                wire:key="uniqueKey"
                 >
         </div>
-
-                <x-input
-                    {{-- name="tags" 
-                    type="text" 
-                    id="tags" --}}
-                
-                    placeholder="Writing English, Walking your dog, Moving house, Electronics repair"
-                    wire:model.lazy="state.phone" 
-                    class="placeholder-gray-300"/>
+        </div>
             </div>
-            @error('phone')
+            @error('tags')
                 <p class="col-span-6 -mt-6 text-sm text-red-500">{{$message}}</p>
             @enderror
-
-        <div class="col-span-6 mt-3">
-            <x-checkbox id="right-label" label="Visible for my Timebank.cc friends" wire:model.defer="state.phone_public_for_friends" />
-        </div>
         </div>
     </x-slot>
-
-
 
     <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">
@@ -71,10 +66,4 @@
             {{ __('Save') }}
         </x-jet-button>
     </x-slot>
-
-    {{-- <script>
-     var input = document.querySelector('input#tags');
- tagify = new Tagify(input);
- tagify.addTags(['laravel','Vue','React','PHP']);
-    </script> --}}
 </x-jet-form-section>

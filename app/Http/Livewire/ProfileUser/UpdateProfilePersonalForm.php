@@ -55,7 +55,7 @@ class UpdateProfilePersonalForm extends Component
     {
         $this->languages = $values;
         $this->validateOnly('languages');
-    }
+    } 
     
 
     /**

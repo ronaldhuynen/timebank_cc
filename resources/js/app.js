@@ -2,7 +2,6 @@ require('./bootstrap');
 require('alpinejs');
 
 import Alpine from "alpinejs";
-import * as FilePond from "filepond";
 import { createPopper } from "@popperjs/core";
 import focus from "@alpinejs/focus";
 import Trix from "trix";
@@ -10,7 +9,6 @@ import tagifyMin from "@yaireo/tagify";
 
 Alpine.plugin(focus);
 
-window.FilePond = FilePond;
 window.Tagify = tagifyMin;
 window.createPopper = createPopper;
 window.Alpine = Alpine;

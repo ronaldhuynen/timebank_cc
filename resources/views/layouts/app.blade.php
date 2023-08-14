@@ -15,7 +15,7 @@
 
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
@@ -109,9 +109,6 @@
         <!-- Scripts body-->
         <script src="{{ mix('js/echo.js') }}"></script>
         @livewireScripts
-        {{-- @fcScripts  Form Components by rawilk/laravel-form-components use after @livewireScripts --}}
-        <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
         @stack('modals')
         {{-- @stack('scripts') --}}
         @yield('scripts_body')

@@ -36,7 +36,6 @@
     "dependencies": {
         "@yaireo/tagify": "^4.17.8",
         "emoji-toolkit": "^7.0.0",
-        "filepond": "^4.30.4",
         "trix": "^2.0.5"
     }
 }

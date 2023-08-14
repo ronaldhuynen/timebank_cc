@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\App;
 
 trait TaggableWithLocale
 {
-    public function translateTag($tagName, $fromLocale, $toLocale)
+    public function translateTagName($tagName, $fromLocale, $toLocale)
     {
         $tagName =  mb_strtolower($tagName);
         $result = Tag::where('name', $tagName)
@@ -67,6 +67,74 @@ trait TaggableWithLocale
         return $result;
     }
 
+
+    public function translateTagId($tagId, $toLocale)
+    {
+        $result = Tag::where('tag_id' , $tagId)
+            // ->whereHas('locale', function ($query) use ($fromLocale) {
+            //     $query->where('locale', $fromLocale);
+            // })
+        ->with(
+            'contexts.tags',
+            function ($q) use ($toLocale) {
+                $q->whereHas('locale', function ($q) use ($toLocale) {
+                    $q->where('locale', $toLocale);
+                })->select('normalized');
+            }
+        )
+          ->get();
+
+        if ($result->count() != 0) {
+
+            $result = $result->first()
+            ->contexts;
+
+            if ($result->first()) {
+                $result = $result
+                        ->first()
+                        ->tags
+                          ->pluck('pivot')
+                          ->pluck('tag_id')
+                          ->unique()
+                          ->values()
+                          ->flatten()
+                        ;
+            } else {
+            $result = [];
+            }
+        } else {
+            $result = [];
+        }
+        return $result;
+    }
+
+
+
+    public function translateTagIds($array, $toLocale)
+    {
+        $collection = collect($array);
+        $translated = $collection->map(function ($item, $key) use ($toLocale) {
+
+            $source = Tag::find($item)->locale->locale;
+            $trans = $this->translateTagId($item, $toLocale);
+
+            if ( $source == $toLocale) {
+                return  $item;
+            } 
+            elseif ($trans == null) {
+                return  $item;
+            } else {               
+                $translated = $this->translateTagId($item, $toLocale);
+                return  $translated;            
+            }
+        })->flatten()->toArray();
+        
+        return $translated;
+
+    }
+
+
+
     public function localTagArray($locale)
     {        
         $array = Tag::whereHas('locale', function ($query) use ($locale) {
@@ -94,6 +162,8 @@ trait TaggableWithLocale
     {
         return app(TagService::class)->find($value);
     }
+
+
 
 
 

@@ -4,9 +4,11 @@ use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\RegisterStep2Controller;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 
@@ -36,6 +38,51 @@ Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
 });
+
+
+Route::get('/delete-duplicate-tags', function () {
+   
+    $tags = Tag::with('locale')->get();
+    $tagsUnique = $tags->unique(function ($item) {
+        return $item['name'].$item['locale']['locale'];
+    });
+    $tagsDupl = $tags->diff($tagsUnique)->toArray();
+    if ($tagsDupl == []){
+        echo "No duplicate tags found.";
+    } else {
+        echo "These duplicate tags have been deleted: <br />";
+        echo "<br>";
+        foreach ($tagsDupl as $key => $item) {
+            $del = Tag::find($item['tag_id'])->delete();
+            if ($del) {
+                echo $item['locale']['locale'] . ": ";
+                echo $item['name'] . "<br />";
+                Log::notice('duplicate tag deleted: '. $item['locale']['locale'] . ' '. $item['name']);
+            }
+        }
+        echo "See log for more details";
+    }
+});
+
+        
+    // /**
+    //  * Delete all tags with duplicate name in a single locale.
+    //  * Locale records will also be removed.
+    //  *
+    //  * @return void
+    //  */
+    // public function deleteDuplicates()
+    // {
+    //     $tags = Tag::with('locale')->get();
+    //     $tagsUnique = $tags->unique(function ($item) {
+    //         return $item['name'].$item['locale']['locale'];
+    //     });
+    //     $tagsDupl = $tags->diff($tagsUnique)->pluck('name')->toArray();
+    //     return  Tag::find($tagsDupl)->delete();
+    // }
+
+
+
 
 
 

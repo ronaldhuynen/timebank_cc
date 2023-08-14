@@ -61,4 +61,6 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
 
         return $query->where('normalized', $normalized);
     }
+
+
 }

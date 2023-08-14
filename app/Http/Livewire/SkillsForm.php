@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Tag;
 use App\Traits\TaggableWithLocale;
 use Cviebrock\EloquentTaggable\Services\TagService;
+use Illuminate\Support\Facades\App;
 use Livewire\Component;
 
 class SkillsForm extends Component
@@ -23,8 +24,11 @@ class SkillsForm extends Component
     {
         $tagService = app(TagService::class);
         $this->suggestions = (new Tag())->localTagArray(app()->getLocale());
-        $tags = session('activeProfileType')::find(session('activeProfileId'))->tags()->get();
-        $tags = collect(json_decode($tags))->pluck('normalized')->toArray();
+        $sourceTags = session('activeProfileType')::find(session('activeProfileId'))->tags()->get();
+        $tagIds = collect(json_decode($sourceTags))->pluck('tag_id')->toArray();
+        $translatedIds = (new Tag)->translateTagIds($tagIds, App::getLocale());
+        $translatedTags = Tag::find($translatedIds);
+        $tags = collect(json_decode($translatedTags))->pluck('normalized')->toArray();
         $this->tagsArray = $tags;
         $this->tags = implode(", ", $tags);
     }

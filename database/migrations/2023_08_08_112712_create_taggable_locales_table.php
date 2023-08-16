@@ -19,6 +19,7 @@ return new class () extends Migration {
             $table->string('descr_short', 200)->nullable();
             $table->string('descr_long')->nullable();
             $table->string('example', 300)->nullable();
+            $table->unsignedBigInteger('updated_by_user')->nullable();
             $table->timestamps();
 
             $table->unique(['taggable_tag_id', 'locale']);

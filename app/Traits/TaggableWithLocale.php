@@ -57,9 +57,9 @@ trait TaggableWithLocale
                           ->values()
                           ->reject($tagName)
                           ->flatten()
-                        ;
+                ;
             } else {
-            $result = [];
+                $result = [];
             }
         } else {
             $result = [];
@@ -70,7 +70,7 @@ trait TaggableWithLocale
 
     public function translateTagId($tagId, $toLocale)
     {
-        $result = Tag::where('tag_id' , $tagId)
+        $result = Tag::where('tag_id', $tagId)
             // ->whereHas('locale', function ($query) use ($fromLocale) {
             //     $query->where('locale', $fromLocale);
             // })
@@ -98,9 +98,9 @@ trait TaggableWithLocale
                           ->unique()
                           ->values()
                           ->flatten()
-                        ;
+                ;
             } else {
-            $result = [];
+                $result = [];
             }
         } else {
             $result = [];
@@ -110,33 +110,34 @@ trait TaggableWithLocale
 
 
 
-    public function translateTagIds($array, $toLocale)
+    public function translateTagIds($array, $toLocale, $toFallbackLocale)
     {
         $collection = collect($array);
-        $translated = $collection->map(function ($item, $key) use ($toLocale) {
+        $translated = $collection->map(function ($item, $key) use ($toLocale, $toFallbackLocale) {
 
-            $source = Tag::find($item)->locale->locale;
-            $trans = $this->translateTagId($item, $toLocale);
+            $source = $item;
 
-            if ( $source == $toLocale) {
-                return  $item;
-            } 
-            elseif ($trans == null) {
-                return  $item;
-            } else {               
-                $translated = $this->translateTagId($item, $toLocale);
-                return  $translated;            
+            $transLocale = $this->translateTagId($source, $toLocale);
+            $transFallbackLocale = $this->translateTagId($source, $toFallbackLocale);
+
+            if ($transLocale === $source) {
+                return  $source;
+            } elseif (count($transLocale) > 0) {
+                return  $transLocale;
+            } elseif (count($transFallbackLocale) > 0) {
+                return  $transFallbackLocale;
+            } else {
+                return $source;
             }
         })->flatten()->toArray();
-        
-        return $translated;
 
+        return $translated;
     }
 
 
 
     public function localTagArray($locale)
-    {        
+    {
         $array = Tag::whereHas('locale', function ($query) use ($locale) {
             $query->where('locale', $locale);
         })->pluck('normalized')->toArray();
@@ -144,7 +145,7 @@ trait TaggableWithLocale
     }
 
     public function localTagList($locale)
-    {        
+    {
         $array = Tag::whereHas('locale', function ($query) use ($locale) {
             $query->where('locale', $locale);
         })->pluck('normalized')->toArray();
@@ -330,6 +331,10 @@ trait TaggableWithLocale
 
         $locale = ['locale' => App::getLocale()];      // Customization: include App Locale when adding a tag
         TaggableLocale::updateOrCreate(['taggable_tag_id' => $tag->getKey()], $locale);    // Customization: include App Locale when adding a tag
+
+        // $updatedByUser = app()->auth()->user()->id;
+        // TaggableContext::updateOrCreate
+
     }
 
     /**

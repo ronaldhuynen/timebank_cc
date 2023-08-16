@@ -49,7 +49,7 @@ class UpdateProfileOrganizationForm extends Component
     public function mount()
     {
         $this->state = Organization::find(session('activeProfileId'))->toArray();
-        $this->website = $this->state['website'];
+        // $this->website = $this->state['website'];
         $this->organization = Organization::find(session('activeProfileId'));
         $this->organization['profile_photo_url'] = url(Storage::url($this->organization->profile_photo_path));
     }
@@ -71,9 +71,9 @@ class UpdateProfileOrganizationForm extends Component
      */
     public function updated($field)
     {
-        if ($field = 'website') {    
-        $this->website = $this->addUrlScheme($this->website);
-        }
+        // if ($field = 'website') {    
+        // $this->website = $this->addUrlScheme($this->website);
+        // }
         $this->validateOnly($field);
     }
 
@@ -126,13 +126,6 @@ class UpdateProfileOrganizationForm extends Component
         Auth::organization()->deleteProfilePhoto();
         $this->emit('saved');
         return redirect()->route('profile-organization.show');
-    }
-
-
-    function addUrlScheme($url, $scheme = 'https://')
-    {
-        return parse_url($url, PHP_URL_SCHEME) === null ?
-        $scheme . $url : $url;
     }
 
 

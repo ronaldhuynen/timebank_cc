@@ -23,7 +23,7 @@ class SkillsForm extends Component
 
     protected $rules = [
         'newTagsArray' => 'array',
-        'newTagsArray.*.value' => 'required|string|max:10',   // make sure to set also 50 in Alpine Tagify script (in view)
+        'newTagsArray.*.value' => 'required|string|max:50',   // make sure to set also 50 in Alpine Tagify script (in view)
         'newTagsArray.*.example' => 'string|max:200', 
         'newTagsArray.*.locale' => 'string|max:6', 
 

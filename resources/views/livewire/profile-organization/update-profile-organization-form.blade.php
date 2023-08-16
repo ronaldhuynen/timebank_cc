@@ -80,22 +80,6 @@
             <x-jet-input-error for="languages" class="mt-2" />
         </div>
 
-        <!--- Social media -->
-        <div class="col-span-6 sm:col-span-4">
-            @livewire('socials-form')
-            <x-jet-input-error for="socials" class="mt-2" />
-        </div>
-
-        <!-- Website -->
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="website" value="{{ __('Organization Website') }}" />
-            <x-input
-                placeholder="website.org"
-                wire:model.lazy="website"
-                class="placeholder-gray-300"
-            />
-        </div>
-
     </x-slot>
 
     <!-- List of validation errors -->

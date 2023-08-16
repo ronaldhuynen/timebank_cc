@@ -86,7 +86,10 @@ class SocialsForm extends Component
                 'server_of_social' => str_replace('@', '', $this->serverOfSocial),
                 'updated_at' => Carbon::now(),
             ]);
-            session()->flash('message', __('Updated'));
+            // session()->flash('message', __('Saved'));
+            
+            $this->emitUp('emitSaved');
+
             $this->resetInputFields();
         }
     }

@@ -33,7 +33,8 @@
                         
                         type="text"
                         placeholder='Select or create new tags' 
-                        value="{{ $tagsArray }}">
+                        value="{{ $tagsArray }}"
+                        >
             </div>
             @error('newTagsArray.*')
                 <p class="col-span-6 mt-3 text-sm text-red-500">{{ $message }}</p>

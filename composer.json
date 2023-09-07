@@ -35,6 +35,7 @@
         "spatie/laravel-web-tinker": "^1.8",
         "staudenmeir/belongs-to-through": "^2.5",
         "staudenmeir/eloquent-has-many-deep": "^1.7",
+        "staudenmeir/laravel-adjacency-list": "^1.0",
         "stevebauman/location": "^6.6",
         "victorybiz/laravel-simple-select": "^1.4",
         "wireui/wireui": "^1.17"

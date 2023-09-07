@@ -20,7 +20,8 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
 {
     use HasFactory;
     use TaggableWithLocale;
-    
+
+
 
     protected $table = 'taggable_tags';
 
@@ -47,7 +48,7 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     }
 
 
-        /**
+    /**
      * Scope to find tags by name.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

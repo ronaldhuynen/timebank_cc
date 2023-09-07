@@ -13,11 +13,10 @@ return new class () extends Migration {
     public function up()
     {
         Schema::create('taggable_contexts', function (Blueprint $table) {
-            $table->id();     
-            $table->unsignedBigInteger('parent_context_id')->nullable();
+            $table->id();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('updated_by_user_id')->nullable();
             $table->timestamps();
-
             $table->foreign('updated_by_user_id')->references('id')->on('users');
         });
     }

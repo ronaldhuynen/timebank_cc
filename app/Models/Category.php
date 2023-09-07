@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Models\CategoryTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Category extends Model
 {
     use HasFactory;
+    use HasRecursiveRelationships;
 
     protected $fillable = ['type', 'country_id', 'division_id', 'city_id', 'district_id'];
 

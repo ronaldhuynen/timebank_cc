@@ -19,9 +19,9 @@
                             whitelist: {{ json_encode($suggestions) }},
                             dropdown: {
                                 {{-- position: 'text',    --}}
-                                maxItems: 10, // <- mixumum allowed rendered suggestions
+                                maxItems: 10, // <- maxumum allowed rendered suggestions
                                 classname: 'readonlyMix',
-                                enabled: 3, // show suggestions on focus
+                                enabled: 3, // characters types to show suggestions on focus
                                 closeOnSelect: false // don't hide the dropdown when an item is selected
                             }
                         });

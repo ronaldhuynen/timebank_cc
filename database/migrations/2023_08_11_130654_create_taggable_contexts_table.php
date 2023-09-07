@@ -15,9 +15,9 @@ return new class () extends Migration {
         Schema::create('taggable_contexts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->unsignedBigInteger('updated_by_user_id')->nullable();
+            $table->unsignedBigInteger('updated_by_user')->nullable();
             $table->timestamps();
-            $table->foreign('updated_by_user_id')->references('id')->on('users');
+            $table->foreign('updated_by_user')->references('id')->on('users');
         });
     }
 

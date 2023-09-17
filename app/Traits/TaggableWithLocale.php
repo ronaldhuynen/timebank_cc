@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Category;
 use App\Models\TaggableLocale;
 use Cviebrock\EloquentTaggable\Events\ModelTagged;
 use Cviebrock\EloquentTaggable\Events\ModelUntagged;
@@ -25,7 +26,8 @@ use Illuminate\Support\Facades\App;
  */
 
 trait TaggableWithLocale
-{
+{  
+
     public function translateTagName($tagName, $fromLocale, $toLocale)
     {
         $tagName =  mb_strtolower($tagName);
@@ -144,6 +146,7 @@ trait TaggableWithLocale
         return $array;
     }
 
+
     public function localTagList($locale)
     {
         $array = Tag::whereHas('locale', function ($query) use ($locale) {
@@ -151,6 +154,7 @@ trait TaggableWithLocale
         })->pluck('normalized')->toArray();
         return implode(config('taggable.glue'), $array);
     }
+    
 
     /**
      * Find the tag with the given name.
@@ -331,9 +335,6 @@ trait TaggableWithLocale
 
         $locale = ['locale' => App::getLocale()];      // Customization: include App Locale when adding a tag
         TaggableLocale::updateOrCreate(['taggable_tag_id' => $tag->getKey()], $locale);    // Customization: include App Locale when adding a tag
-
-        // $updatedByUser = app()->auth()->user()->id;
-        // TaggableContext::updateOrCreate
 
     }
 

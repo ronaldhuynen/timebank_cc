@@ -22607,6 +22607,9 @@ select {
 .pl-4 {
   padding-left: 1rem;
 }
+.pl-6 {
+  padding-left: 1.5rem;
+}
 .pl-8 {
   padding-left: 2rem;
 }
@@ -22804,6 +22807,10 @@ select {
 }
 .tracking-widest {
   letter-spacing: 0.1em;
+}
+.\!text-gray-200 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(229 231 235 / var(--tw-text-opacity)) !important;
 }
 .\!text-transparent {
   color: transparent !important;

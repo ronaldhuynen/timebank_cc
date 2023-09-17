@@ -7,7 +7,7 @@
             class="placeholder-gray-300"
             >
             @foreach ($socialsOptions as $option)
-                <x-select.user-option src="{{ Storage::url($option->icon) }}" label="{{ $option->name}}" value="{{ $option->id }}" />
+                <x-select.option src="{{ Storage::url($option->icon) }}" label="{{ $option->name}}" value="{{ $option->id }}" />
             @endforeach
         </x-select>
     </div>

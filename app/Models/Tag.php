@@ -48,6 +48,7 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     }
 
 
+
     /**
      * Scope to find tags by name.
      *

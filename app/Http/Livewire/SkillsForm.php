@@ -6,8 +6,9 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\TaggableLocale;
 use App\Traits\TaggableWithLocale;
-use Cviebrock\EloquentTaggable\Services\TagService;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class SkillsForm extends Component
@@ -35,17 +36,55 @@ class SkillsForm extends Component
 
     protected $listeners = ['save', 'refreshComponent' => '$refresh'];
 
-    protected $rules = [
-        'newTagsArray' => 'array',
-        'newTagsArray.*.value' => 'required|string|max:50',   // make sure to set also 50 in Alpine Tagify script (in view)
-        'newTagsArray.*.example' => 'string|max:200',
-        'newTagsArray.*.locale' => 'string|max:6',
-
-        'newTag.name' => 'required|string|max:50',
-        'newTag.example' => 'required|string|max:100',
-        'newTag.check' => 'required|accepted',
-        'newTagCategory' => 'required|int',
-    ];
+    protected function rules()
+    {
+        return [
+            'newTagsArray' => 'array',
+            'newTagsArray.*.value' => 'required|string|max:50',
+            'newTagsArray.*.example' => 'string|max:200',
+            'newTagsArray.*.locale' => 'string|max:6',
+            'newTag' => 'array',
+            'newTag.name' => 'sometimes|required|string|max:50',
+            'newTag.example' =>Rule::when(
+                function ($input) {
+                    // Check if newTag is not an empty array
+                    return count($input['newTag']) > 0;
+                },
+                ['required', 'string','min:10', 'max:100'] 
+                ),
+            'newTag.check' => 'required_if:newTag.name,!=,|accepted',
+            'newTagCategory' => Rule::when(
+                function ($input) {
+                    // Check if newTag is not an empty array
+                    return count($input['newTag']) > 0;
+                },
+                ['required', 'int'] 
+                ),
+            'selectTagTranslation' => Rule::when(
+                function ($input) {
+                    // Check if existing tag translation is selected
+                    return ($this->translationVisible === true && $this->translateRadioButton == 'select');
+                },
+                ['required', 'int'] 
+                ),
+            'inputTagTranslation' => 'array',
+            'inputTagTranslation.name' => Rule::when(
+                function ($input) {
+                    // Check if existing tag translation is selected
+                    return ($this->translationVisible === true && $this->translateRadioButton == 'input');
+                },
+                ['required', 'string', 'max:50'] 
+                ),
+            'inputTagTranslation.example' => Rule::when(
+                function ($input) {
+                    // Check if existing tag translation is selected
+                    return ($this->translationVisible === true && $this->translateRadioButton == 'input');
+                },
+                ['required', 'string', 'min:10', 'max:100'] 
+                ),
+        ];
+    }
+    
 
     public function mount()
     {
@@ -88,18 +127,21 @@ class SkillsForm extends Component
         $this->initTagsArray = collect($this->initTagsArray);
         $this->newTagsArray = collect(json_decode($this->tagsArray, true));
 
-        $newEntryExist = $this->newTagsArray->contains(function ($item) {
+        $localesToCheck = [app()->getLocale(), '']; // Only current locale and tags without locale should be checked for any new tag keywords
+        $newTagsArrayLocal = $this->newTagsArray->whereIn('locale', $localesToCheck);   
+
+        // Check if in filtered newTagsArrayLocal a 'locale' key not exists
+        $newEntryExist = $newTagsArrayLocal->contains(function ($item) {
             return !array_key_exists('locale', $item);
         });
 
         if ($newEntryExist) {
-            $suggestions = collect($this->suggestions);
+             $suggestions = collect($this->suggestions);
             // Retrieve new tag entries not present in suggestions
-            $newEntries = $this->newTagsArray->filter(function ($newItem) use ($suggestions) {
+            $newEntries = $newTagsArrayLocal->filter(function ($newItem) use ($suggestions) {
                 return !$suggestions->contains($newItem['value']);
             });
 
-            dd($newEntries);
             // Add a new skill modal
             if (count($newEntries) > 0) {
 
@@ -123,8 +165,8 @@ class SkillsForm extends Component
                         ];
                     })->sortBy('name')->values();
 
-                // Suggest related tags in the fallback locale and possibly based on the category of the new tag
-                $this->translationOptions = $this->relatedTag($this->newTagCategory, config('app.fallback_locale'));
+                // Suggest related tags in English and possibly based on the category of the new tag
+                $this->translationOptions = $this->relatedTag($this->newTagCategory, 'en');
 
                 $this->modalVisible = true;
 
@@ -186,7 +228,7 @@ class SkillsForm extends Component
             ->pluck('name', 'tag_id')
             ->map(function ($name, $index) {
                 return [
-                    'tag_id' => $index + 1,
+                    'tag_id' => $index, // +1 removed!
                     'name' => $name
                 ];
             })->sortBy('name')->values();
@@ -202,7 +244,7 @@ class SkillsForm extends Component
             ->pluck('name', 'tag_id')
             ->map(function ($name, $index) {
                 return [
-                    'tag_id' => $index + 1,
+                    'tag_id' => $index, // +1 removed!
                     'name' => $name
                 ];
             })->sortBy('name')->values();
@@ -225,18 +267,16 @@ class SkillsForm extends Component
 
         $owner = session('activeProfileType')::find(session('activeProfileId'));
 
-        // if ($this->tags != null) {
-        // dd($this->tagsArray);
-        $this->validate();  // 2nd validation, just before save method
+        
+        // dd('before validation');
+        $this->validate();
         $this->resetErrorBag();
+        // dd('after validation');
 
-        // Remove (untag) tags that are not read-only (only in current language).
+        // Remove (untag) tags that are not read-only (use only tags in current language).
         $untag = $this->initTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
         $untag = (implode(", ", $untag));
-        // dd($untag);
         $owner->untag($untag);
-
-        // dd($this->newTagsArray->where('readonly', '<>', true)->where('locale', app()->getLocale())->pluck('value')->toArray());
 
         // Select the new tags: only the ones in the current language as a user should always switch locale to input another language.
         $tag = $this->newTagsArray->where('readonly', '<>', true)->where('locale', app()->getLocale())->pluck('value')->toArray();
@@ -269,37 +309,32 @@ class SkillsForm extends Component
 
     public function createTag()
     {
-
         $this->validate();
+        $this->resetErrorBag();
 
         $owner = session('activeProfileType')::find(session('activeProfileId'));
         $owner->tag($this->newTag['name']);
+        $name = str_replace("-", " ",Str::slug($this->newTag['name']));  // Use the normalized name that is stored in db
+        $tag = Tag::where('name', $name)->first();
 
-        $tag = Tag::latest()->first();
 
         $locale = ['example' => $this->newTag['example']];
-        $tag->locale()->update($locale);
+        $tagLocale = $tag->locale()->update($locale);
         
         $context = [
             'category_id' => $this->newTagCategory,
             'updated_by_user' => auth()->user()->id
             ];
-        $tag->contexts()->updateOrCreate($context);
 
-
-        //! HIERZO: NU OOK TRANSLATION OPSLAAN
-
-        // $tag->tag_id = 5658 Lego spelen NL
-        // category_id = 30 Actvism & politics
-        // $tag->contexts->id = 5659
-        // $newTagTranslation = 
-
-
+        
         if ($this->translateRadioButton === 'select') {
 
-            $tag->contexts()->attach($this->selectTagTranslation);
+            // Attach an existing context (in English) to the new tag
+            // Note that the category_id and updated_by_user is not updated when selecting an existing context!
+            $tagContext = Tag::find($this->selectTagTranslation)->contexts()->first(); 
+            $tag->contexts()->attach($tagContext->id);
 
-            // Update newTagsArray with new tag for save method
+            // Update newTagsArray with the new tag for save method
             $this->newTagsArray->transform(function ($item, $key) {
                 if (isset($item['value']) && $item['value'] === $this->newTag['name']) {
                     $item['title'] = $this->newTag['example'];      //TODO replace title with example, check Tagify script ReadOnlyMix class for this?
@@ -308,23 +343,38 @@ class SkillsForm extends Component
                 return $item;
 
             }); 
-
+            
         } elseif ($this->translateRadioButton === 'input') {
                     
+            // Create a new context for the new tag
+            $tagContext = $tag->contexts()->create($context);
+
+            // Create a new (English) translation of the tag
             $owner->tag($this->inputTagTranslation['name']);
-            $tagTranslation = Tag::latest()->first();
+            $nameTranslation = str_replace("-", " ", Str::slug($this->inputTagTranslation['name']));  // Use the normalized name that is stored in db
+            $tagTranslation = Tag::where('name', $nameTranslation)->first();
 
             $locale = [
                 'example' => $this->inputTagTranslation['example'],
                 'locale' => 'en'
                 ];
-            $tagTranslation->locale()->update($locale);   
+            $tagTranslationLocale = $tagTranslation->locale()->update($locale);   
 
-            $tag->contexts()->attach($tagTranslation);
-
+            // Attach the context to the new tag
+            $tag->contexts()->attach($tagContext->id);
+            // Attach the context to the new translation tag
+            $tagTranslation->contexts()->attach($tagContext->id);
+            
+        } else {            
+        
+            // Create a new context for the new tag without translation
+            $tagContext = $tag->contexts()->create($context);
         }
 
         $this->modalVisible = false;
+        
+        $this->emit('saved');
+
     }
 
 

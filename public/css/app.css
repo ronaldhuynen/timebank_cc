@@ -20947,6 +20947,9 @@ select {
 .m-2 {
   margin: 0.5rem;
 }
+.m-6 {
+  margin: 1.5rem;
+}
 .-mx-1 {
   margin-left: -0.25rem;
   margin-right: -0.25rem;
@@ -22807,10 +22810,6 @@ select {
 }
 .tracking-widest {
   letter-spacing: 0.1em;
-}
-.\!text-gray-200 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(229 231 235 / var(--tw-text-opacity)) !important;
 }
 .\!text-transparent {
   color: transparent !important;

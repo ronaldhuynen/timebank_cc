@@ -73,9 +73,6 @@ trait TaggableWithLocale
     public function translateTagId($tagId, $toLocale)
     {
         $result = Tag::where('tag_id', $tagId)
-            // ->whereHas('locale', function ($query) use ($fromLocale) {
-            //     $query->where('locale', $fromLocale);
-            // })
         ->with(
             'contexts.tags',
             function ($q) use ($toLocale) {

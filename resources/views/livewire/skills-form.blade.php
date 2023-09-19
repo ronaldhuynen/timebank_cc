@@ -28,9 +28,9 @@
                  };" type="text"
                     placeholder='Select or create a new tag title' value="{{ $tagsArray }}">
             </div>
-            @error('newTagsArray.*')
-                <p class="col-span-6 mt-3 text-sm text-red-500">{{ $message }}</p>
-            @enderror
+            <div class="my-6 grid grid-cols-1">
+                <x-errors />
+            </div>
         </div>
 
         <div class="bg-gray-white flex items-center justify-end px-4 py-3 text-right">
@@ -118,6 +118,9 @@
                             @endif
                         </div>
                         @endif
+                    <div class="my-6 grid grid-cols-1">
+                        <x-errors />
+                    </div>
 
                 </x-slot>
 

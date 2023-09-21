@@ -2,32 +2,56 @@
     <form wire:submit.prevent="save">
 
         <!-- Skills -->
-        <div class="">
-            <x-jet-label for="tags" value="{{ __('Skills, separated by a comma') }}" />
-
+        <div>
+            <x-jet-label wire:loading.remove for="tags" value="{{ __('Your Timebanking skills') }}" />
+            <x-jet-label wire:loading for="tags" value="{{ __('Loading...') }}" />
             <div wire:ignore>
+                    
                 <input wire:ignore x-data="{ input: @entangle('tagsArray') }" x-ref="input" x-init=" tagify = new Tagify($refs.input, {
-                     pattern: /^.{0,50}$/, // max 50 characters, make sure also vaidation rule in Model is equally set
-                     maxTags: 40,
-                     autocapitalize: true,
-                     id: 'skillTags',
-                     whitelist: {{ json_encode($suggestions) }},
-                     enforceWhiteList: true,
-                     dropdown: {
-                         {{-- position: 'text',    --}}
-                         maxItems: 10, // <- maxumum allowed rendered suggestions
-                         classname: 'readonlyMix', // Foreign tags are readonly and have a distict appearance
-                         enabled: 3, // characters types to show suggestions on focus
-                         closeOnSelect: false // don't hide the dropdown when an item is selected
-                     }
-                 });
-                 $refs.input.addEventListener('change', onChange)
+                    pattern: /^.{3,80}$/, // max 100 characters, make sure also vaidation rule in Model is equally set
+                    maxTags: 40,
+                    autocapitalize: true,
+                    id: 'skillTags',
+                    whitelist: {{ json_encode($suggestions) }},
+                    enforceWhiteList: true,
+                    backspace: false,
+                    dropdown: {
+                        {{-- position: 'text',    --}}
+                        maxItems: 10, // <- maximum allowed rendered suggestions
+                        classname: 'readonlyMix', // Foreign tags are readonly and have a distict appearance
+                        enabled: 3, // characters types to show suggestions on focus
+                        closeOnSelect: false, // don't hide the dropdown when an item is selected
+                        highlightFirst: true // hightlight / suggest best match
+                    }
+                });
                 
-                 function onChange(e) {
-                     $wire.set('tagsArray', e.target.value) // true sets defer to true
-                 };" type="text"
-                    placeholder='Select or create a new tag title' value="{{ $tagsArray }}">
+                function onChange(e) {
+                    $wire.set('tagsArray', e.target.value)
+                    console.log('onChange is fired')
+                };
+
+                function onCancel(e) {
+                   tagify.removeTag(e.target.value)
+                };
+
+                function onLoaded(e) {
+                    {{-- console.log('onLoaded is fired') --}}
+                    document.querySelector('.tagify__input').focus()
+                    {{-- console.log('blur') --}}
+                    document.querySelector('.tagify__input').blur()
+                };
+
+                $refs.input.addEventListener('change', onChange)
+                window.addEventListener('load', onLoaded);
+                window.addEventListener('cancelCreateTag', onCancel);   
+                
+                " 
+                   type="text"
+                   placeholder='Select or create a new tag title' 
+                   value="{{ $tagsArray }}">
+                   
             </div>
+
             <div class="my-6 grid grid-cols-1">
                 <x-errors />
             </div>
@@ -57,7 +81,7 @@
 
                     <div class="mt-6 grid grid-cols-1 gap-6">
                         <x-input label="Skill title *" placeholder="Accurate and unique title of this skill"
-                            wire:model.defer="newTag.name" />
+                            wire:model="newTag.name" />
                     </div>
                     <div class="mt-6 grid grid-cols-1 gap-6">
                         <x-input label="Descriptive example *" placeholder="Give an example that illustrates this skill"
@@ -126,7 +150,7 @@
 
 
                 <x-slot name="footer">
-                    <x-jet-secondary-button wire:click="$toggle('modalVisible')" wire:loading.attr="disabled">
+                    <x-jet-secondary-button wire:click="cancelCreateTag()" wire:loading.attr="disabled">
                         {{ __('Annuleren') }}
                     </x-jet-secondary-button>
 
@@ -140,7 +164,9 @@
 
 
         </form>
+
         <script>
+
             document.addEventListener('DOMContentLoaded', () => {
 
                 window.livewire.on('disableSelect', () => {
@@ -162,4 +188,5 @@
 
             }); 
         </script>
+         
 </div>

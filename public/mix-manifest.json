@@ -1,9 +1,10 @@
 {
-    "/js/echo.js": "/js/echo.js?id=1b5e52e7f4c1aa3675c8d83f1b8df400",
+    "/js/echo.js": "/js/echo.js?id=94bd7c6e20cbfe6ed471640219ee4044",
     "/js/tagify.min.js": "/js/tagify.min.js?id=428a5da04f3457cf1257a9c32311ead1",
     "/js/tagify.polyfills.min.js": "/js/tagify.polyfills.min.js?id=efd173784a2c0d4bda19a0a553d553dc",
-    "/js/app.js": "/js/app.js?id=b3f12e4eb8445521fec85e89d3cd42e2",
-    "/css/app.css": "/css/app.css?id=8299ebac9089f4edd6a53346481d8082",
+    "/js/app.js": "/js/app.js?id=87d3d53b3ebcdd024a90b3285f21321b",
+    "/css/app.css": "/css/app.css?id=9ba9ee2c80b9ea0ab6e1c59860a6e07b",
+    "/css/custom_tagify.css": "/css/custom_tagify.css?id=9c08ae0e6180e72ab05d7cf1aa16eea0",
     "/css/custom_messenger.css": "/css/custom_messenger.css?id=2b76b7078941ec993ef3611723c16747",
     "/css/tagify.css": "/css/tagify.css?id=7684a4cea622ad701853c0d419140123",
     "/css/trix.css": "/css/trix.css?id=54667e76e68c34494f13a6771b0f1aae",

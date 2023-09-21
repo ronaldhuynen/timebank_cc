@@ -20947,9 +20947,6 @@ select {
 .m-2 {
   margin: 0.5rem;
 }
-.m-6 {
-  margin: 1.5rem;
-}
 .-mx-1 {
   margin-left: -0.25rem;
   margin-right: -0.25rem;
@@ -25890,4 +25887,5 @@ input[type="number"].appearance-number-none {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
 

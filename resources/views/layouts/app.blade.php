@@ -21,6 +21,8 @@
         <link rel="stylesheet" href="{{ asset('css/custom_messenger.css') }}">
         <link rel="stylesheet" href="{{ asset('css/trix.css') }}">
         <link rel="stylesheet" href="{{ asset('css/tagify.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/custom_tagify.css') }}">
+
 
         {{-- <link rel="stylesheet" href="{{ asset('css/filepond.min.css') }}">
         <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/> --}}

@@ -9,9 +9,10 @@ import tagifyMin from "@yaireo/tagify";
 
 Alpine.plugin(focus);
 
-window.Tagify = tagifyMin;
 window.createPopper = createPopper;
 window.Alpine = Alpine;
+window.Tagify = tagifyMin;      // Needs to be loaded after Alpine
+
 
 
 document.addEventListener("trix-before-initialize", () => {

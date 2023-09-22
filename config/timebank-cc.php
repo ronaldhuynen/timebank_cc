@@ -65,23 +65,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Verification
+    | Base Language
     |--------------------------------------------------------------------------
-    | Here you can set the verification error messages that will be used to
-    | verify data that will be submitted in forms.
+    | Translations are linked by their context to one base language. 
+    | 
     */
-    'messages' => [
-        'profile_user' => [
-            // 'name' =>  '',
-            // 'email' => '',
-            // 'about' => '',
-            // 'motivation' => 'error!',
-            // 'date_of_birth' => '',
-        ],
-        'file' => [
-            // 'profile_photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
-            // 'profile_photo_default' => 'app-images/new-profile.svg',
-        ],
-    ],
+    'base_language' => 'en',
+    'base_language_name' => 'English'
 
 ];

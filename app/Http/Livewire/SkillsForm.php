@@ -18,6 +18,7 @@ class SkillsForm extends Component
     public $tagsArray = [];
     public $initialIds = [];
     public $initTagsArray = [];
+    public $initTagsArrayTranslated = [];
     public $newTagsArray;
     public $suggestions = [];
 
@@ -34,7 +35,7 @@ class SkillsForm extends Component
     public $inputDisabled = true;
     public $translateRadioButton = false;
 
-    protected $listeners = ['save', 'refreshComponent' => '$refresh'];
+    protected $listeners = ['save', 'refreshComponent' => '$refresh', 'closeModal' => 'cancelCreateTag'];
 
     protected function rules()
     {
@@ -94,6 +95,7 @@ class SkillsForm extends Component
 
     public function mount()
     {
+
         $this->suggestions = (new Tag())->localTagArray(app()->getLocale());
 
         //TODO! also test with organizations!
@@ -103,6 +105,14 @@ class SkillsForm extends Component
             ->get()
             ->pluck('tag_id');
 
+        $this->initTagsArray = TaggableLocale::whereIn('taggable_tag_id', $this->initialIds)
+            ->select('taggable_tag_id', 'locale', 'example', 'updated_by_user')
+            ->get()->toArray();
+
+        ds($this->initTagsArray)->label('$initTagsArray in mount()');
+
+        //! HIERZO vertrek vanuit initial id's !!
+
         $translatedIds = collect((new Tag())->translateTagIds($this->initialIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
         $translatedTags = Tag::orderBy('name')->find($translatedIds);
 
@@ -111,20 +121,24 @@ class SkillsForm extends Component
             $locale = TaggableLocale::where('taggable_tag_id', $item->tag_id)->get();
 
             return [
+               'tag_id' => $item->tag_id,
                'value' => $item->normalized,
-               'readonly' => ($locale->first()->locale ==  App::getLocale()) ? false : true,
+               'readonly' => ($locale->first()->locale ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
                'title' =>  $locale->pluck('example')->first(),
                'locale' => $locale->pluck('locale')->first(),
                ];
         });
 
-        $this->initTagsArray = $tags->toArray();
-        $this->tagsArray = json_encode($this->initTagsArray);
+
+        $this->initTagsArrayTranslated = $tags->toArray();
+
+        $this->tagsArray = json_encode($tags->toArray());
     }
+
 
     public function updatedNewTagExample()
     {
-        if (app()->getLocale() != 'en') {
+        if (app()->getLocale() != config('timebank-cc.base_language')) {
             $this->translationVisible = true;
         }
     }
@@ -138,7 +152,6 @@ class SkillsForm extends Component
 
     public function updatedTagsArray()
     {
-        $this->initTagsArray = collect($this->initTagsArray);
         $this->newTagsArray = collect(json_decode($this->tagsArray, true));
 
         $localesToCheck = [app()->getLocale(), ''];     // Only current locale and tags without locale should be checked for any new tag keywords
@@ -150,14 +163,18 @@ class SkillsForm extends Component
             return !$suggestions->contains($newItem['value']);
         });
 
+        ds($this->newTagsArray)->label('newTagsArray');
+
+        ds($newTagsArrayLocal)->label('newTagsArrayLocal');
+
         // Add a new skill modal if there are new entries
         if (count($newEntries) > 0) {
-
-dump($newEntries);
-dump($this->newTag);
+            ds($newEntries)->label('newEntries');
             // if (!isset($this->newTag['name'])) {
-                $this->newTag['name'] = $newEntries->flatten()->first();
+            $this->newTag['name'] = $newEntries->flatten()->first();
             // }
+
+            ds($this->newTag)->label('newTag in updatedTagsArray()');
 
             $this->categoryOptions = Category::with(['translations' => function ($query) {
                 $query->where('locale', app()->getLocale())->select('id', 'category_id', 'name');
@@ -178,12 +195,22 @@ dump($this->newTag);
                 })->sortBy('name')->values();
 
             // Suggest related tags in English and possibly based on the category of the new tag
-            $this->translationOptions = $this->relatedTag($this->newTagCategory, 'en');
+            $this->translationOptions = $this->relatedTag($this->newTagCategory, config('timebank-cc.base_language'));
 
             $this->modalVisible = true;
 
         } else {
             $newEntries = false;
+        }
+    }
+
+
+    public function updatedModalVisible()
+    {
+        ds($this->modalVisible)->label('modalvisble');
+        // When clicked outside modal, reset the tag creation parameters
+        if (!$this->modalVisible) {
+            $this->cancelCreateTag();
         }
     }
 
@@ -275,43 +302,38 @@ dump($this->newTag);
         // Make sure we can count newTag for conditional validation rules
         if ($this->newTag === null) {
             $this->newTag = [];
-        } 
-        
+        }
+
         $owner = session('activeProfileType')::find(session('activeProfileId'));
 
         $this->validate();
         $this->resetErrorBag();
 
-        // Remove (untag) tags that are not read-only (use only tags in current language).
+        // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
+        $untagForeign = collect($this->initTagsArray)->where('locale', '<>', app()->getLocale())->pluck('taggable_tag_id');
+
+        ds($untagForeign)->label('$untagForeign in save()');
+
+        // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
         if (count($this->initTagsArray) > 0) {
-            // dd($this->initTagsArray);
-            $untag = collect($this->initTagsArray)->where('readonly', '<>', true)->pluck('value')->toArray();
-            // dd($untag);
-            //! bakken wordt niet geseleceerd
-            $untag = (implode(", ", $untag));
-            $owner->untag($untag);
+            $retagForeign = collect($this->initTagsArrayTranslated)->where('readonly', true)->pluck('tag_id')->toArray();
 
-            // Also untag initial tags in other locales
-            $untagForeign = Tag::whereIn('tag_id', $this->initialIds)
-            ->with(
-                'contexts.tags',
-                function ($q) {
-                    $q->whereHas('locale', function ($q) {
-                        $q->where('locale', '<>', app()->getLocale());
-                    })->select('normalized');
-                }
-            )
-            ->pluck('tag_id');
-            // dd($untagForeign);
-            //! bakken wordt geselecteerd
-            $owner->untag($untagForeign);
-
+            //! bakken wordt nu alleen geseleceerd
+            ds($retagForeign)->label('$retagForeign in save()');
+            $retagForeign = (implode(", ", $retagForeign));
+            //! bakken wordt nu wel geselecteerd ennge-untagged
+            $untagForeign = $untagForeign->diff($retagForeign);
+            ds($untagForeign)->label('$untagForeignResult in save()');
         }
+        // untag the result of the selection(s), the tags marked read-only are not untagged
+        $owner->untagById($untagForeign);
+
 
         // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
-        // $tag = $this->newTagsArray->pluck('value')->toArray();
         //! bakken wordt nu niet geselecteerd
         $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
+
+        ds($tag)->label('$tag in save()');
 
         $tag = (implode(", ", $tag));
         $owner->tag($tag);
@@ -322,14 +344,19 @@ dump($this->newTag);
 
     public function cancelCreateTag()
     {
+        info('cancelCreateTag triggered!');
         //TODO! also make sure that clicking outside model triggers this event!
+
         $this->newTag = null;
-        // $this->newTag['example'] = null;
+        $this->newTagCategory = null;
+        $this->translationVisible = false;
         $this->newTagsArray = $this->initTagsArray;
         $this->tagsArray = json_encode($this->initTagsArray);
         $this->dispatchBrowserEvent('cancelCreateTag');
+
         $this->modalVisible = false;
     }
+
 
     public function createTag()
     {
@@ -370,7 +397,7 @@ dump($this->newTag);
 
             $locale = [
                 'example' => $this->inputTagTranslation['example'],
-                'locale' => 'en'
+                'locale' => config('timebank-cc.base_language'),
                 ];
             $tagTranslationLocale = $tagTranslation->locale()->update($locale);
 
@@ -393,7 +420,7 @@ dump($this->newTag);
             return $item;
         });
 
-        
+
         $this->newTag = null;
         $this->newTagsArray = $this->initTagsArray;
         $this->tagsArray = json_encode($this->initTagsArray);

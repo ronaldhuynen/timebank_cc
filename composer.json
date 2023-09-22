@@ -43,6 +43,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.9.1",
+        "laradumps/laradumps": "^2.2",
         "laravel-lang/publisher": "^12.2",
         "laravel/sail": "^1.0.1",
         "laravel/telescope": "^4.15",

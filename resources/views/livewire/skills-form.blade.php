@@ -27,7 +27,7 @@
                 
                 function onChange(e) {
                     $wire.set('tagsArray', e.target.value)
-                    console.log('onChange is fired')
+                    {{-- console.log('onChange is fired') --}}
                 };
 
                 function onCancel(e) {
@@ -98,7 +98,7 @@
                             class="placeholder-gray-300" :options="$categoryOptions" option-label="name"
                             option-value="category_id" />
                     </div>
-                    @if (app()->getLocale() != 'en')
+                    @if (app()->getLocale() != config('timebank-cc.base_language'))
                         <div class="mt-6 grid grid-cols-1 gap-6">
                             <x-checkbox id="checkbox" label="{{ __('Attach an English translation to this skill') }}"
                                 wire:model="translationVisible" />
@@ -129,13 +129,13 @@
                                     wire:model="translateRadioButton" value="input" />
                                     <div id="input-translation">
                                 <div class="my-6 grid grid-cols-1 gap-6 pl-6">
-                                    <x-input label="" placeholder="{{ $newTag['name'] }} {{ __('in English') }}"
+                                    <x-input label="" placeholder="{{ ($newTag) ? $newTag['name'] : __('Skill title') }} {{ __('in English') }}"
                                         wire:model="inputTagTranslation.name" wire:key="nameInput" :disabled="$inputDisabled" />
                                 </div>
 
                                 <div class="mt-6 grid grid-cols-1 gap-6 pl-6">
                                     <x-input label="{{ __('Descriptive example in English') }}"
-                                        placeholder="{{ __('Give an example in English that illustrates') }} {{ $newTag['name'] }}" disabled=false
+                                        placeholder="{{ __('Give an example in English that illustrates') }} {{ ($newTag) ? $newTag['name'] : __('this skill') }}" disabled=false
                                         wire:model="inputTagTranslation.example" wire:key="exampleInput" :disabled="$inputDisabled" />
                                 </div>
                                 </div>
@@ -185,7 +185,6 @@
                     console.log('disableInput');
 
                 });
-
             }); 
         </script>
          

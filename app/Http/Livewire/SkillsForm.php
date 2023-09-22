@@ -15,7 +15,6 @@ class SkillsForm extends Component
 {
     use TaggableWithLocale;
 
-    // public $tags = '';
     public $tagsArray = [];
     public $initialIds = [];
     public $initTagsArray = [];
@@ -154,8 +153,8 @@ class SkillsForm extends Component
         // Add a new skill modal if there are new entries
         if (count($newEntries) > 0) {
 
-info($newEntries);
-info($this->newTag);
+dump($newEntries);
+dump($this->newTag);
             // if (!isset($this->newTag['name'])) {
                 $this->newTag['name'] = $newEntries->flatten()->first();
             // }

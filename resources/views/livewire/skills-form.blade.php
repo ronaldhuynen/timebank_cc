@@ -34,17 +34,22 @@
                    tagify.removeTag(e.target.value)
                 };
 
+                function onBackdropClick(e) {
+                   $wire.emit('cancelCreateTag')
+                }
+
                 function onLoaded(e) {
                     {{-- console.log('onLoaded is fired') --}}
                     document.querySelector('.tagify__input').focus()
+                    onChange(e)
                     {{-- console.log('blur') --}}
                     document.querySelector('.tagify__input').blur()
                 };
 
                 $refs.input.addEventListener('change', onChange)
                 window.addEventListener('load', onLoaded);
-                window.addEventListener('cancelCreateTag', onCancel);   
-                
+                window.addEventListener('cancelCreateTag', onCancel);
+                window.addEventListener('backdrop-click', onBackdropClick);                   
                 " 
                    type="text"
                    placeholder='Select or create a new tag title' 
@@ -150,7 +155,7 @@
 
 
                 <x-slot name="footer">
-                    <x-jet-secondary-button wire:click="cancelCreateTag()" wire:loading.attr="disabled">
+                    <x-jet-secondary-button  wire:click="cancelCreateTag()" wire:loading.attr="disabled">
                         {{ __('Annuleren') }}
                     </x-jet-secondary-button>
 

@@ -37,7 +37,7 @@ $maxWidth = [
             {{ $attributes->has('focusable') ? 'setTimeout(() => firstFocusable().focus(), 100)' : '' }}
         } else {
             document.body.classList.remove('overflow-y-hidden');
-            @this.emit('closeModal');  // This line emits the Livewire closeModal event, and it is a Timebank.cc customization
+            @this.emit('closeModal');  
         }
     })"
     x-on:close.stop="show = false"
@@ -49,12 +49,14 @@ $maxWidth = [
     class="jetstream-modal fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
     style="display: none;"
 >
-    <div x-show="show" class="fixed inset-0 transform transition-all" x-on:click="show = false" x-transition:enter="ease-out duration-300"
+    <div x-show="show" class="fixed inset-0 transform transition-all" {{--x-on:click="show = false"--}} x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100"
                     x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0">
+                    x-transition:leave-end="opacity-0"
+                    x-on:click="show = false; $dispatch('backdrop-click')" {{--  This line emits the Livewire closeModal event, and it is a Timebank.cc customization --}}
+                    >
         <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
     </div>
 

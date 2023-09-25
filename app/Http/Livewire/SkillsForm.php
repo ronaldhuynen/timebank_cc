@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Helpers\StringHelper;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\TaggableLocale;
@@ -141,11 +142,32 @@ class SkillsForm extends Component
     }
 
 
+
+    public function updatedNewTagName()
+    {
+        $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
+    }
+
+    
     public function updatedNewTagExample()
     {
+        $this->newTag['example'] = StringHelper::DutchTitleCase($this->newTag['example']);
+        
         if (app()->getLocale() != config('timebank-cc.base_language')) {
             $this->translationVisible = true;
         }
+    }
+
+
+    public function updatedInputTagTranslationName()
+    {
+        $this->inputTagTranslation['name'] = StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
+    }
+
+
+    public function updatedInputTagTranslationExample()
+    {
+        $this->inputTagTranslation['example'] = StringHelper::DutchTitleCase($this->inputTagTranslation['example']);
     }
 
 

@@ -24,8 +24,9 @@
 
 .tagify__tag {
 	transition: 0.2s ease-out;
-	pointer-events: none;
+        pointer-events: auto;
 }
+
 
 .tagify {
     --tags-disabled-bg: #F1F1F1;
@@ -34,7 +35,7 @@
     --tags-focus-border-color: #2563eb;
     --tag-border-radius: 0.375rem;
     --tag-bg: #E5E5E5;
-    --tag-hover: #D3E2E2;
+    --tag-hover: #E5E5E5;
     --tag-text-color: black;
     --tag-text-color--edit: black;
     --tag-pad: 0.5em 1.0em;

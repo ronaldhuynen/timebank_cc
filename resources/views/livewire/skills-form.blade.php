@@ -8,15 +8,15 @@
             <div wire:ignore>
                     
                 <input wire:ignore x-data="{ input: @entangle('tagsArray') }" x-ref="input" x-init=" tagify = new Tagify($refs.input, {
-                    pattern: /^.{3,80}$/, // max 100 characters, make sure also vaidation rule in Model is equally set
+                    pattern: /^.{3,80}$/, // max 80 characters, make sure also vaidation rule in Model is equally set
                     maxTags: 40,
                     autocapitalize: true,
                     id: 'skillTags',
                     whitelist: {{ json_encode($suggestions) }},
                     enforceWhiteList: true,
                     backspace: false,
+                    editTags: false,
                     dropdown: {
-                        {{-- position: 'text',    --}}
                         maxItems: 10, // <- maximum allowed rendered suggestions
                         classname: 'readonlyMix', // Foreign tags are readonly and have a distict appearance
                         enabled: 3, // characters types to show suggestions on focus
@@ -24,6 +24,8 @@
                         highlightFirst: true // hightlight / suggest best match
                     }
                 });
+
+                tagify.on('dblclick', onChange)
                 
                 function onChange(e) {
                     $wire.set('tagsArray', e.target.value)
@@ -86,15 +88,15 @@
 
                     <div class="mt-6 grid grid-cols-1 gap-6">
                         <x-input label="Skill title *" placeholder="Accurate and unique title of this skill"
-                            wire:model="newTag.name" />
+                            wire:model.lazy="newTag.name" />
                     </div>
                     <div class="mt-6 grid grid-cols-1 gap-6">
                         <x-input label="Descriptive example *" placeholder="Give an example that illustrates this skill"
-                            wire:model.defer="newTag.example" />
+                            wire:model.lazy="newTag.example" />
                     </div>
                     <div class="mt-6 grid grid-cols-1 gap-6">
                         <x-checkbox id="right-label" label="This example matches exactly the skill title *"
-                            wire:model.defer="newTag.check" />
+                            wire:model="newTag.check" />
                     </div>
 
                     <div class="mt-2 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -135,13 +137,13 @@
                                     <div id="input-translation">
                                 <div class="my-6 grid grid-cols-1 gap-6 pl-6">
                                     <x-input label="" placeholder="{{ ($newTag) ? $newTag['name'] : __('Skill title') }} {{ __('in English') }}"
-                                        wire:model="inputTagTranslation.name" wire:key="nameInput" :disabled="$inputDisabled" />
+                                        wire:model.lazy="inputTagTranslation.name" wire:key="nameInput" :disabled="$inputDisabled" />
                                 </div>
 
                                 <div class="mt-6 grid grid-cols-1 gap-6 pl-6">
                                     <x-input label="{{ __('Descriptive example in English') }}"
                                         placeholder="{{ __('Give an example in English that illustrates') }} {{ ($newTag) ? $newTag['name'] : __('this skill') }}" disabled=false
-                                        wire:model="inputTagTranslation.example" wire:key="exampleInput" :disabled="$inputDisabled" />
+                                        wire:model.lazy="inputTagTranslation.example" wire:key="exampleInput" :disabled="$inputDisabled" />
                                 </div>
                                 </div>
                             @endif
@@ -164,8 +166,6 @@
                     </x-jet-secondary-button>
                 </x-slot>
             </x-jet-dialog-modal>
-
-
 
 
         </form>

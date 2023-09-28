@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Helpers\StringHelper;
 use App\Models\Category;
+use App\Models\CategoryTranslation;
 use App\Models\Tag;
 use App\Models\TaggableLocale;
 use App\Traits\TaggableWithLocale;
@@ -96,15 +97,12 @@ class SkillsForm extends Component
 
     public function mount()
     {
-        info('Mount initializes');
-
         $suggestions = (new Tag())->localTagArray(app()->getLocale());
 
         $this->suggestions = collect($suggestions)->map(function ($value) {
             return ucfirst($value);
         });
 
-        //TODO! also test with organizations!
         $this->initialIds = session('activeProfileType')::find(session('activeProfileId'))
             ->tags()
             ->orderBy('name')
@@ -117,21 +115,26 @@ class SkillsForm extends Component
 
         ds($this->initTagsArray)->label('$initTagsArray in mount()');
 
-        $translatedIds = collect((new Tag())->translateTagIds($this->initialIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
-        $translatedTags = Tag::orderBy('name')->find($translatedIds);
+        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initialIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
+
+        ds($translatedTags)->color('blue');
 
         $tags = $translatedTags->map(function ($item, $key) {
 
-            $locale = TaggableLocale::where('taggable_tag_id', $item->tag_id)->get();
-
             return [
-               'tag_id' => $item->tag_id,
-               'value' => ucfirst($item->normalized),
-               'readonly' => ($locale->first()->locale ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
-               'title' =>  $locale->pluck('example')->first(),
-               'locale' => $locale->pluck('locale')->first(),
+                'tag_id' => $item['tag_id'],
+                'value' => $item['tag'],
+                'readonly' => ($item['locale']['locale'] ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
+                'locale' => $item['locale']['locale'],
+                'example' =>  $item['locale']['example'],
+                'category' => $item['category'],
+                'category_path' =>  $item['category_path'],
+                'title' =>  $item['category_path']      // 'title' is used by Tagify script for text that shows on hover
                ];
         });
+
+
+        ds($tags)->label('$tags in mount');
 
 
         $this->initTagsArrayTranslated = $tags->toArray();
@@ -224,9 +227,6 @@ class SkillsForm extends Component
                 })
                 ->sortBy('name')->values();
 
-// dsd($this->categoryOptions)->label('$categoryOptions in updatedTags')->color('red');
-
-
             $this->modalVisible = true;
 
         } else {
@@ -275,11 +275,6 @@ class SkillsForm extends Component
             info('with category');
 
             $related = Category::find($category)->bloodline->pluck('id');
-
-            $test = Category::find($category)->bloodline();
-
-            ds($test)->label('test')->color('green');
-
 
             $suggestions = Tag::with([
                 'locale',

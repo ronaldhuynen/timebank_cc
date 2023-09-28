@@ -2,7 +2,9 @@
 
 namespace App\Traits;
 
+use App\Helpers\StringHelper;
 use App\Models\Category;
+use App\Models\CategoryTranslation;
 use App\Models\TaggableLocale;
 use Cviebrock\EloquentTaggable\Events\ModelTagged;
 use Cviebrock\EloquentTaggable\Events\ModelUntagged;
@@ -26,8 +28,7 @@ use Illuminate\Support\Facades\App;
  */
 
 trait TaggableWithLocale
-{  
-
+{
     public function translateTagName($tagName, $fromLocale, $toLocale)
     {
         $tagName =  mb_strtolower($tagName);
@@ -43,7 +44,7 @@ trait TaggableWithLocale
                 })->select('normalized');
             }
         )
-          ->get();
+        ->get();
 
         if ($result->count() != 0) {
 
@@ -70,6 +71,110 @@ trait TaggableWithLocale
     }
 
 
+    public function translateTagNameWithContext($name, $toLocale)
+    {
+
+        $result = Tag::where('name', $name)
+            ->with([
+                'contexts.tags' => function ($query) use ($toLocale) {
+                    $query->with(['locale' => function ($query) use ($toLocale) {
+                        $query->where('locale', $toLocale)->select('taggable_tag_id', 'locale');
+                    }])
+                    ->whereHas('locale', function ($query) use ($toLocale) {
+                        $query->where('locale', $toLocale);
+                    })
+                    ->select('taggable_tags.tag_id', 'normalized');
+                },
+                'contexts.category' => function ($query) use ($toLocale) {
+                    $query->with(['translations' => function ($query) use ($toLocale) {
+                        $query->where('locale', $toLocale)->select('category_id', 'name');
+                    }])
+                    ->select('id');
+                },
+            ])
+            ->get();
+
+
+        if ($result->count() != 0) {
+
+            $result = $result->first()
+            ->contexts;
+
+            if ($result->first()) {
+
+                $tag = $result
+                        ->first()
+                        ->tags
+                        ->unique()
+                        ->values()
+                        ->flatten();
+                $category = $result
+                        ->first()
+                        ->category
+                        ->translations
+                        ->first();
+                $categoryPath = $result
+                        ->first()
+                        ->category
+                        ->ancestorsAndSelf
+                        ->sortBy('id')
+                        ->pluck('id');
+
+                $result = $tag->map(function ($item) use ($category, $categoryPath, $toLocale) {
+                    $localeItem = $item->locale ? $item->locale : null;
+                    $mapped = [
+                        'tag_id' => $item->tag_id,
+                        'tag' => StringHelper::dutchTitleCase($item->normalized),
+                        'category_id' => $category->category_id,
+                        'category' => StringHelper::dutchTitleCase($item->normalized),
+                        'category_path' => implode(
+                            ' > ',
+                            CategoryTranslation::whereIn('category_id', $categoryPath)->where('locale', $toLocale)->pluck('name')->toArray()
+                        ) . ' > ' . StringHelper::dutchTitleCase($item->normalized),
+                        'locale' => $localeItem->find($item->tag_id)
+                        ];
+                    return $mapped;
+                });
+
+            } else {
+                $result = [];
+            }
+        } else {
+            $result = [];
+        }
+        return $result;
+    }
+
+
+    //! TODO conditionally select fallback or source locale, similar method as in translateTagIdsWithContexts()
+    public function translateTagNamesWithContexts($array, $toLocale, $toFallbackLocale)
+    {
+        $collection = collect($array);
+        $translated = $collection->map(function ($item, $key) use ($toLocale, $toFallbackLocale) {
+
+            $source = $item;
+
+            $transLocale = $this->translateTagNameWithContext($source, $toLocale);
+            $transFallbackLocale = $this->translateTagNameWithContext($source, $toFallbackLocale);
+
+            if ($transLocale === $source) {
+                return  $source;
+            } elseif (count($transLocale) > 0) {
+                return  $transLocale;
+            } elseif (count($transFallbackLocale) > 0) {
+                return  $transFallbackLocale;
+            } else {
+                return $source;
+            }
+        })
+        ->flatMap(function ($innerCollection) {
+            return $innerCollection;
+        });
+
+        return $translated;
+    }
+
+
     public function translateTagId($tagId, $toLocale)
     {
         $result = Tag::where('tag_id', $tagId)
@@ -92,11 +197,11 @@ trait TaggableWithLocale
                 $result = $result
                         ->first()
                         ->tags
-                          ->pluck('pivot')
-                          ->pluck('tag_id')
-                          ->unique()
-                          ->values()
-                          ->flatten()
+                        ->pluck('pivot')
+                        ->pluck('tag_id')
+                        ->unique()
+                        ->values()
+                        ->flatten()
                 ;
             } else {
                 $result = [];
@@ -107,6 +212,66 @@ trait TaggableWithLocale
         return $result;
     }
 
+
+    public function translateTagIdWithContext($tagId, $toLocale, $toFallbackLocale)
+    {
+        $sourceLocale = TaggableLocale::where('taggable_tag_id', $tagId)->value('locale');
+
+        // Load all relevant translations in one go
+        $result = Tag::where('tag_id', $tagId)
+            ->with([
+                'contexts.tags' => function ($query) use ($toLocale, $toFallbackLocale, $sourceLocale) {
+                    $query->whereHas('locale', function ($query) use ($toLocale, $toFallbackLocale, $sourceLocale) {
+                        $query->whereIn('locale', [$toLocale, $toFallbackLocale, $sourceLocale]);
+                    })
+                    ->with(['locale' => function ($query) {
+                        $query; // Optionally refine query on locale relation here
+                    }]);
+                },
+                'contexts.category' => function ($query) use ($toLocale, $toFallbackLocale, $sourceLocale) {
+                    $query->with(['translations' => function ($query) use ($toLocale, $toFallbackLocale, $sourceLocale) {
+                        $query->whereIn('locale', [$toLocale, $toFallbackLocale, $sourceLocale])
+                            ->select('category_id', 'name', 'locale');
+                    }]);
+                }
+            ])
+            ->first();
+
+        // If no results, return an empty array
+        if (!$result || !$result->contexts->first()) {
+            return [];
+        }
+
+        $contexts = $result->contexts->first();
+
+        // Prioritize and filter the loaded translations based on the locale
+        $tag = $contexts->tags->filter(function ($tag) use ($toLocale) {
+            return optional($tag->locale)->locale == $toLocale;
+        })->first() ?? $contexts->tags->first();
+
+        // Similar approach for categories
+        $categoryTranslation = $contexts->category->translations
+            ->firstWhere('locale', $toLocale)
+            ?? $contexts->category->translations->first();
+
+        $categoryPath = $contexts->category->ancestorsAndSelf->sortBy('id')->pluck('id');
+
+        // Map and return the finalized result
+        return [
+            'tag_id' => $tag->tag_id,
+            'tag' => StringHelper::dutchTitleCase($tag->normalized),
+            'category_id' => $categoryTranslation->category_id,
+            'category' => $categoryTranslation->name,
+            'category_path' => implode(
+                ' > ',
+                CategoryTranslation::whereIn('category_id', $categoryPath)
+                    ->where('locale', $toLocale)
+                    ->pluck('name')
+                    ->toArray()
+            ) . ' > ' . StringHelper::dutchTitleCase($tag->normalized),
+            'locale' => $tag->locale
+        ];
+    }
 
 
     public function translateTagIds($array, $toLocale, $toFallbackLocale)
@@ -134,6 +299,17 @@ trait TaggableWithLocale
     }
 
 
+    public function translateTagIdsWithContexts($array, $toLocale, $toFallbackLocale)
+    {
+        $collection = collect($array);
+        $translated = $collection->map(function ($item, $key) use ($toLocale, $toFallbackLocale) {
+            $item = $this->translateTagIdWithContext($item, $toLocale, $toFallbackLocale);
+            return $item;
+            });
+
+        return $translated;
+    }
+
 
     public function localTagArray($locale)
     {
@@ -151,7 +327,7 @@ trait TaggableWithLocale
         })->pluck('normalized')->toArray();
         return implode(config('taggable.glue'), $array);
     }
-    
+
 
     /**
      * Find the tag with the given name.

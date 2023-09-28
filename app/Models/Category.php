@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\CategoryTranslation;
+use App\Models\TaggableContext;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
@@ -45,6 +46,12 @@ class Category extends Model
     public function categoryable()
     {
         return $this->morphTo();
+    }
+
+    
+    public function tagContext()
+    {
+        return $this->hasOne(TaggableContext::class);
     }
 
 }

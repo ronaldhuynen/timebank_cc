@@ -40,4 +40,10 @@ class TaggableContext extends Model
     {
         return $this->belongsToMany(Tag::class, 'taggable_locale_context', 'context_id', 'tag_id');
     }
+
+    
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

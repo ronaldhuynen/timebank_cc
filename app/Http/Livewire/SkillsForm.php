@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Helpers\StringHelper;
 use App\Models\Category;
-use App\Models\CategoryTranslation;
 use App\Models\Tag;
 use App\Models\TaggableLocale;
 use App\Traits\TaggableWithLocale;
@@ -43,9 +42,6 @@ class SkillsForm extends Component
     {
         return [
             'newTagsArray' => 'array',
-            // 'newTagsArray.*.value' => 'required|string|max:80|min:3',
-            // 'newTagsArray.*.example' => 'string|max:200',
-            // 'newTagsArray.*.locale' => 'string|max:6',
             'newTag' => 'array',
             'newTag.name' => 'sometimes|required|string|min:3|max:80',
             'newTag.example' => Rule::when(
@@ -100,7 +96,7 @@ class SkillsForm extends Component
         $suggestions = (new Tag())->localTagArray(app()->getLocale());
 
         $this->suggestions = collect($suggestions)->map(function ($value) {
-            return ucfirst($value);
+            return StringHelper::DutchTitleCase($value);
         });
 
         $this->initialIds = session('activeProfileType')::find(session('activeProfileId'))
@@ -113,11 +109,7 @@ class SkillsForm extends Component
             ->select('taggable_tag_id', 'locale', 'example', 'updated_by_user')
             ->get()->toArray();
 
-        ds($this->initTagsArray)->label('$initTagsArray in mount()');
-
         $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initialIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
-
-        ds($translatedTags)->color('blue');
 
         $tags = $translatedTags->map(function ($item, $key) {
 
@@ -134,14 +126,14 @@ class SkillsForm extends Component
         });
 
 
-        ds($tags)->label('$tags in mount');
+ds($tags)->label('$tags in mount')->color('green');
 
 
         $this->initTagsArrayTranslated = $tags->toArray();
 
         $this->tagsArray = json_encode($tags->toArray());
 
-        ds($this->tagsArray)->label('$tagsArray in Mount')->color('red');
+ds($this->tagsArray)->label('$tagsArray in Mount')->color('green');
     }
 
 
@@ -188,7 +180,7 @@ class SkillsForm extends Component
     public function updatedTagsArray()
     {
         $this->newTagsArray = collect(json_decode($this->tagsArray, true));
-        ds($this->newTagsArray)->label('$newTagsArray in updatedTagsArray')->color('red');
+ds($this->newTagsArray)->label('$newTagsArray in updatedTagsArray')->color('red');
 
         $localesToCheck = [app()->getLocale(), ''];     // Only current locale and tags without locale should be checked for any new tag keywords
         $newTagsArrayLocal = $this->newTagsArray->whereIn('locale', $localesToCheck);
@@ -234,6 +226,13 @@ class SkillsForm extends Component
         }
     }
 
+    public function updatedTranslationVisible()
+    {   
+        if ($this->translationVisible) {
+            $this->updatedNewTagCategory();
+        }
+    }
+
 
     public function updatedTranslateRadioButton()
     {
@@ -263,7 +262,6 @@ class SkillsForm extends Component
     }
 
 
-
     public function relatedTag($category, $locale = null)
     {
         if (!$locale) {
@@ -271,9 +269,7 @@ class SkillsForm extends Component
         }
 
         if ($category) {
-
-            info('with category');
-
+            // A category is selected: suggest related tags (family bloodline) within this category in $locale language
             $related = Category::find($category)->bloodline->pluck('id');
 
             $suggestions = Tag::with([
@@ -286,31 +282,31 @@ class SkillsForm extends Component
             ->whereHas('contexts', function ($query) use ($related) {
                 $query->whereIn('category_id', $related);
             })
-            ->pluck('name', 'tag_id')
+            ->pluck('normalized', 'tag_id')
             ->map(function ($name, $index) {
                 return [
                     'tag_id' => $index,
-                    'name' => ucfirst($name)
+                    'name' => StringHelper::DutchTitleCase($name)
                 ];
             })->sortBy('name')->values();
 
         } else {
-            info('no category');
+            // No category is selected: suggest all tags in $locale language
+            info('no cat selected');
             $suggestions = Tag::with([
                 'locale',
                 'contexts'
             ])
             ->whereHas('locale', function ($query) use ($locale) {
-                $query->whereIn('locale', [$locale]);
+                $query->where('locale', $locale);
             })
-            ->pluck('name', 'tag_id')
+            ->pluck('normalized', 'tag_id')
             ->map(function ($name, $index) {
                 return [
                     'tag_id' => $index,
-                    'name' => ucfirst($name)
+                    'name' => StringHelper::DutchTitleCase($name)
                 ];
             })->sortBy('name')->values();
-
         }
         return $suggestions;
     }
@@ -334,15 +330,13 @@ class SkillsForm extends Component
 
     public function createTag()
     {
-        $this->validate();
+        $this->validate();  // TODO! validate also on reg expression: no special characters like !@#%^&*()_+{}[]|\:"accents are allowed
         $this->resetErrorBag();
 
         $owner = session('activeProfileType')::find(session('activeProfileId'));
         $owner->tag($this->newTag['name']);
         $name = str_replace("-", " ", Str::slug($this->newTag['name']));  // Use the normalized name that is stored in db
-        $tag = Tag::where('name', $name)->first();
-
-
+        $tag = Tag::where('name', $name)->first();  //TODO!! and locale is app locale!
         $locale = ['example' => $this->newTag['example']];
         $tagLocale = $tag->locale()->update($locale);
 
@@ -394,14 +388,13 @@ class SkillsForm extends Component
             return $item;
         });
 
+        $this->modalVisible = false;      
+        $this->save();
 
         $this->newTag = null;
-        // $this->newTagsArray = $this->initTagsArray;
         $this->newTagsArray = null;
-        $this->tagsArray = json_encode($this->initTagsArray);
-
-        $this->modalVisible = false;
-        $this->save();
+        $this->mount();
+        $this->dispatchBrowserEvent('tagifyChange', ['tagsArray' => $this->tagsArray]);
     }
 
 

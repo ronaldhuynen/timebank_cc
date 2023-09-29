@@ -71,8 +71,16 @@ trait TaggableWithLocale
     }
 
 
-    public function translateTagNameWithContext($name, $toLocale)
-    {
+    //! TODO conditionally select fallback or source locale, similar method as in translateTagIdsWithContexts()
+    public function translateTagNameWithContext($name = null, $toLocale = null)
+    {        
+        if (!$toLocale) {
+            $toFallbackLocale = app()->getFallBackLocale();
+        }
+
+        if (!$toFallbackLocale) {
+            $toFallbackLocale = app()->getFallBackLocale();
+        }
 
         $result = Tag::where('name', $name)
             ->with([
@@ -147,8 +155,17 @@ trait TaggableWithLocale
 
 
     //! TODO conditionally select fallback or source locale, similar method as in translateTagIdsWithContexts()
-    public function translateTagNamesWithContexts($array, $toLocale, $toFallbackLocale)
+    public function translateTagNamesWithContexts($array, $toLocale = null, $toFallbackLocale = null)
     {
+        
+        if (!$toLocale) {
+            $toFallbackLocale = app()->getFallBackLocale();
+        }
+
+        if (!$toFallbackLocale) {
+            $toFallbackLocale = app()->getFallBackLocale();
+        }
+
         $collection = collect($array);
         $translated = $collection->map(function ($item, $key) use ($toLocale, $toFallbackLocale) {
 
@@ -268,14 +285,22 @@ trait TaggableWithLocale
                     ->where('locale', $toLocale)
                     ->pluck('name')
                     ->toArray()
-            ) . ' > ' . StringHelper::dutchTitleCase($tag->normalized),
+            ),
             'locale' => $tag->locale
         ];
     }
 
 
-    public function translateTagIds($array, $toLocale, $toFallbackLocale)
-    {
+    public function translateTagIds($array, $toLocale = null, $toFallbackLocale = null)
+    {        
+        if (!$toLocale) {
+            $toFallbackLocale = app()->getFallBackLocale();
+        }
+
+        if (!$toFallbackLocale) {
+            $toFallbackLocale = app()->getFallBackLocale();
+        }
+
         $collection = collect($array);
         $translated = $collection->map(function ($item, $key) use ($toLocale, $toFallbackLocale) {
 
@@ -299,8 +324,17 @@ trait TaggableWithLocale
     }
 
 
-    public function translateTagIdsWithContexts($array, $toLocale, $toFallbackLocale)
-    {
+    public function translateTagIdsWithContexts($array, $toLocale = null, $toFallbackLocale = null)
+    {     
+        
+        if (!$toLocale) {
+            $toFallbackLocale = app()->getFallBackLocale();
+        }
+  
+        if (!$toFallbackLocale) {
+            $toFallbackLocale = app()->getFallBackLocale();
+        }
+
         $collection = collect($array);
         $translated = $collection->map(function ($item, $key) use ($toLocale, $toFallbackLocale) {
             $item = $this->translateTagIdWithContext($item, $toLocale, $toFallbackLocale);

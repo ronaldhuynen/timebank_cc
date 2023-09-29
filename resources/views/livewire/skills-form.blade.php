@@ -13,7 +13,7 @@
                     autocapitalize: true,
                     id: 'skillTags',
                     whitelist: {{ json_encode($suggestions) }},
-                    enforceWhiteList: true,
+                    enforceWhiteList: false,
                     backspace: false,
                     editTags: false,
                     dropdown: {
@@ -21,15 +21,24 @@
                         classname: 'readonlyMix', // Foreign tags are readonly and have a distict appearance
                         enabled: 3, // characters types to show suggestions on focus
                         closeOnSelect: false, // don't hide the dropdown when an item is selected
-                        highlightFirst: true // hightlight / suggest best match
-                    }
+                        highlightFirst: true, // hightlight / suggest best match
+                    },
+                    {{-- texts: {
+                        empty      : "empty!",
+                        exceed     : "number of tags exceeded!",
+                        pattern    : "pattern mismatch!",
+                        duplicate  : "already exists!",
+                        notAllowed : "not allowed!"
+                    } --}}
                 });
 
                 tagify.on('dblclick', onChange)
                 
                 function onChange(e) {
+                    tagify.loading(true)
                     $wire.set('tagsArray', e.target.value)
                     {{-- console.log('onChange is fired') --}}
+                    tagify.loading(false)
                 };
 
                 function onCancel(e) {
@@ -41,11 +50,13 @@
                 }
 
                 function onLoaded(e) {
-                    {{-- console.log('onLoaded is fired') --}}
+                    tagify.loading(true)
+                    console.log('onLoaded is fired')
                     document.querySelector('.tagify__input').focus()
                     onChange(e)
                     {{-- console.log('blur') --}}
                     document.querySelector('.tagify__input').blur()
+                    tagify.loading(false)
                 };
 
                 $refs.input.addEventListener('change', onChange)
@@ -179,7 +190,7 @@
                     document.getElementById('select-translation').style.cursor = 'pointer';
                     document.getElementById('select-translation').style.pointerEvents = 'none';              
                     document.getElementById('input-translation').style.opacity = '1';
-                    console.log('disableSelect');
+                    {{-- console.log('disableSelect'); --}}
                 });
 
                 window.livewire.on('disableInput', () => {
@@ -187,8 +198,14 @@
                     document.getElementById('select-translation').style.cursor = 'default';
                     document.getElementById('select-translation').style.pointerEvents = 'auto';   
                     document.getElementById('select-translation').style.opacity = '1';
-                    console.log('disableInput');
+                    {{-- console.log('disableInput'); --}}
 
+                });
+
+                window.addEventListener('tagifyChange', function(e) {
+                    tagify.loading(true)
+                    tagify.loadOriginalValues(e.detail.tagsArray) 
+                    tagify.loading(false)
                 });
             }); 
         </script>

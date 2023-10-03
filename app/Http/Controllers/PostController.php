@@ -27,7 +27,7 @@ class PostController extends Controller
             'postable' => function ($query) {
                 $query->select(['id', 'name']);
             },
-            'category'=> function ($query) {
+            'category' => function ($query) {
                 $query->with('translations');
             },
             'translations' => function ($query) {
@@ -86,7 +86,7 @@ class PostController extends Controller
             'postable' => function ($query) {
                 $query->select(['id', 'name']);
             },
-            'category'=> function ($query) {
+            'category' => function ($query) {
                 $query->with('translations');
             },
             'meeting',
@@ -99,7 +99,7 @@ class PostController extends Controller
                     ->where(function ($query) {
                         $query->whereDate('stop', '>', now())->orWhereNull('stop');
                     });
-                } else {                    
+                } else {
                     $query
                     ->where('locale', App::getLocale());
                 }
@@ -112,7 +112,7 @@ class PostController extends Controller
             $media = Post::find($postId)->getFirstMedia('posts');
         }
 
-        
+
         if ($post->translations->count() >= 1) {
             if ($post->category->translations) {
                 $category =  $post->category->translations->where('locale', App::getLocale())->first()->name;
@@ -121,7 +121,7 @@ class PostController extends Controller
             $update = Carbon::createFromTimeStamp(strtotime($post->translations->first()->updated_at))->isoFormat('LL');
 
         } else {
-             return view('posts.not_found');
+            return view('posts.not_found');
         }
 
 

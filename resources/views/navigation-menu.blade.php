@@ -23,15 +23,15 @@
                         {{ __('Transactions') }}
                     </x-jet-nav-link>
                     @if (session('activeProfileType') == 'App\Models\User')
-                        <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
+                        <x-jet-nav-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
                         {{ __('Your Profile') }}
                         </x-jet-nav-link>
                     @elseif (session('activeProfileType') == 'App\Models\Organization')
-                        <x-jet-nav-link href="{{ route('profile-organization.show') }}" :active="request()->routeIs('profile-organization.show')">
+                        <x-jet-nav-link href="{{ route('org.show') }}" :active="request()->routeIs('org.show')">
                         {{ __('Organization profile') }}
                         </x-jet-nav-link>
                     @endif
-                    <x-jet-nav-link href="{{ route('profile-user.show') }}" :active="request()->routeIs('profile-user.show')">
+                    <x-jet-nav-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
                         {{ __('Commons') }}
                     </x-jet-nav-link>
                     @can('manage posts')

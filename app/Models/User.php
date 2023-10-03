@@ -135,7 +135,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
      */
     public function locations()
     {
-        return $this->morphToMany(Location::class, 'locationable');
+        return $this->morphToMany(Location::class, 'locationable')->withPivot('id','location_id');
     }
 
 

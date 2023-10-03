@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
-class UserController extends Controller
+class OrgController extends Controller
 {
         /**
     * Create a new controller instance.
@@ -52,9 +52,9 @@ class UserController extends Controller
     }
 
 
-    public function show($userId)
+    public function show($orgId)
     {        
-        $user = User::select([
+        $org = User::select([
             'id',
             'name',
             'profile_photo_path',
@@ -74,7 +74,7 @@ class UserController extends Controller
             'locations.cities.locale:city_id,name',
             'locations.countries.locale:country_id,name',
         ])
-        ->find($userId);
+        ->find($orgId);
 
 
         if ($user->count() >= 1) {
@@ -83,14 +83,14 @@ class UserController extends Controller
             $lastLoginDate = Carbon::createFromTimeStamp(strtotime($user->last_login_at))->isoFormat('LL');
 
         } else {
-            return view('profile-user.not_found');
+            return view('profile-org.not_found');
         }
 
 
         //TODO: add permission check
         //TODO: if 403, but has permission, redirect with message to switch profile
         //TODO: replace 403 with custom redirect page incl explanation
-        return ($user != null ? view('profile-user.show', compact(['user'])) : abort(403));
+        return ($user != null ? view('profile-org.show', compact(['org'])) : abort(403));
     }
 
     

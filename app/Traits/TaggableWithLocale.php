@@ -263,8 +263,10 @@ trait TaggableWithLocale
 
         // Prioritize and filter the loaded translations based on the locale
         $tag = $contexts->tags->filter(function ($tag) use ($toLocale) {
-            return optional($tag->locale)->locale == $toLocale;
-        })->first() ?? $contexts->tags->first();
+                return optional($tag->locale)->locale == $toLocale;
+            })->first() ?? $contexts->tags->first();
+
+        ds($tag->tag_id);
 
         // Similar approach for categories
         $categoryTranslation = $contexts->category->translations

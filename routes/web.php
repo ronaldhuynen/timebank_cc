@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\RegisterStep2Controller;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use App\Models\Tag;
@@ -32,7 +33,7 @@ Route::get('/test/broadcast', function () {
     return view('test.broadcast', compact(['user' , 'toUserId']));
 });
 // IpLocation test
-Route::get('/test/ip-location', [UserController::class, 'index']);
+Route::get('/test/ip-location', [TestController::class, 'index']);
 // Clear cache test
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -41,13 +42,13 @@ Route::get('/clear-cache', function () {
 
 
 Route::get('/delete-duplicate-tags', function () {
-   
+
     $tags = Tag::with('locale')->get();
     $tagsUnique = $tags->unique(function ($item) {
         return $item['name'].$item['locale']['locale'];
     });
     $tagsDupl = $tags->diff($tagsUnique)->toArray();
-    if ($tagsDupl == []){
+    if ($tagsDupl == []) {
         echo "No duplicate tags found.";
     } else {
         echo "These duplicate tags have been deleted: <br />";
@@ -64,22 +65,22 @@ Route::get('/delete-duplicate-tags', function () {
     }
 });
 
-        
-    // /**
-    //  * Delete all tags with duplicate name in a single locale.
-    //  * Locale records will also be removed.
-    //  *
-    //  * @return void
-    //  */
-    // public function deleteDuplicates()
-    // {
-    //     $tags = Tag::with('locale')->get();
-    //     $tagsUnique = $tags->unique(function ($item) {
-    //         return $item['name'].$item['locale']['locale'];
-    //     });
-    //     $tagsDupl = $tags->diff($tagsUnique)->pluck('name')->toArray();
-    //     return  Tag::find($tagsDupl)->delete();
-    // }
+
+// /**
+//  * Delete all tags with duplicate name in a single locale.
+//  * Locale records will also be removed.
+//  *
+//  * @return void
+//  */
+// public function deleteDuplicates()
+// {
+//     $tags = Tag::with('locale')->get();
+//     $tagsUnique = $tags->unique(function ($item) {
+//         return $item['name'].$item['locale']['locale'];
+//     });
+//     $tagsDupl = $tags->diff($tagsUnique)->pluck('name')->toArray();
+//     return  Tag::find($tagsDupl)->delete();
+// }
 
 
 
@@ -128,11 +129,26 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
                 ->name('posts.show_by_slug');
 
 
+            
+            Route::get('/user/{userId}', 'App\Http\Controllers\UserController@show')
+                ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed
+                ->name('user.show')
+                ->missing(function () {return view('user.not_found');});
 
 
-            Route::get('/user/personal-profile', 'App\Http\Controllers\ProfileUserController@show')->name('profile-user.show');
+            Route::get('/org/{orgId}', 'App\Http\Controllers\OrgController@show')
+                ->where(['orgId' => '[0-9]+'])     // Add constraint: only numbers allowed
+                ->name('org.show')
+                ->missing(function () {return view('org.not_found');});
 
-            Route::get('/org/organization-profile', 'App\Http\Controllers\ProfileOrgController@show')->name('profile-organization.show');
+                
+            Route::get('/user/edit', 'App\Http\Controllers\UserController@edit')
+                ->name('user.edit');
+
+
+            Route::get('/org/edit', 'App\Http\Controllers\OrgController@edit')
+                ->name('org.edit');
+
 
             Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
         });

@@ -5,8 +5,8 @@ namespace App\Models\Locations;
 use App\Models\Category;
 use App\Models\Locations\City;
 use App\Models\Locations\DivisionLocale;
+use App\Models\Locations\Location;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\App;
 
 class Division extends Model
@@ -71,6 +71,17 @@ class Division extends Model
     public function users()
     {
         return $this->morphedByMany(Users::class, 'divisionable', 'divisionables');
+    }
+
+
+    /**
+     * Get all related locations of the division.
+     * One-to-many.
+     * @return void
+     */
+       public function locations()
+    {
+        return $this->hasMany(Location::class);
     }
 
 

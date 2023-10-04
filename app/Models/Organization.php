@@ -80,6 +80,16 @@ class Organization extends Model implements MessengerProvider, Searchable
 
 
     /**
+     * Get all related the locations of the organization.
+     * One-to-many polymorph.
+     */
+    public function locations()
+    {
+        return $this->morphMany(Location::class, 'locatable');
+    }
+
+
+    /**
      * Rtippin Messenger:
      * Implement the MessengerProvider interface for each provider registered.
      *
@@ -165,15 +175,6 @@ class Organization extends Model implements MessengerProvider, Searchable
     public function posts()
     {
         return $this->morphMany(Post::class, 'postable');
-    }
-
-    /**
-     * Get all related the locations of the user.
-     * Many-to-many polymorphic.
-     */
-    public function locations()
-    {
-        return $this->morphToMany(Location::class, 'locationable');
     }
 
 }

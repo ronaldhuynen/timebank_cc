@@ -54,7 +54,11 @@ class UpdateProfilePhoneForm extends Component
             $phone->formatNational();
             $this->state['phone'] = $phone->formatNational();
         } else {
-            $country = User::find($this->state['id'])->locations()->with('cities')->first()->cities[0]['country_id'];
+            $country = User::find($this->state['id'])->locations()
+                ->with('city:id,country_id') // Eager load just the 'country_id' from 'city'
+                ->get() // Get the locations
+                ->pluck('city.country_id') // Extract the country_id values
+                ->toArray();
             $countries = ($this->phoneCodeOptions)->pluck('id')->toArray();
 
             if (in_array($country, $countries)) {

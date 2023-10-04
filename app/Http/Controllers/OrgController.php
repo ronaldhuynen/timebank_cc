@@ -102,7 +102,7 @@ class OrgController extends Controller
      */
     public function edit()
     {
-        return view('profile-user.edit');
+        return view('profile-org.edit');
     }
 
 

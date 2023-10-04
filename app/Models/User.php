@@ -131,42 +131,42 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
 
     /**
      * Get all related the locations of the user.
-     * Many-to-many polymorphic.
+     * One-to-many polymorph.
      */
     public function locations()
     {
-        return $this->morphToMany(Location::class, 'locationable')->withPivot('id','location_id');
+        return $this->morphMany(Location::class, 'locatable');
     }
 
 
-    /**
-     * Get all related countries of the user.
-     * Many-to-many polymorphic.
-     */
-    public function countries()
-    {
-        return $this->morphToMany(Country::class, 'countryable', 'countryables');
-    }
+    // /**
+    //  * Get all related countries of the user.
+    //  * Many-to-many polymorphic.
+    //  */
+    // public function countries()
+    // {
+    //     return $this->morphToMany(Country::class, 'countryable', 'countryables');
+    // }
 
 
-    /**
-     * Get all related cities of the user.
-     * Many-to-many polymorphic.
-     */
-    public function cities()
-    {
-        return $this->morphToMany(City::class, 'cityable', 'cityables');
-    }
+    // /**
+    //  * Get all related cities of the user.
+    //  * Many-to-many polymorphic.
+    //  */
+    // public function cities()
+    // {
+    //     return $this->morphToMany(City::class, 'cityable', 'cityables');
+    // }
 
 
-    /**
-     * Get all of the districts of the user.
-     * Many-to-many polymorphic.
-     */
-    public function districts()
-    {
-        return $this->morphToMany(District::class, 'districtable', 'districtables');
-    }
+    // /**
+    //  * Get all of the districts of the user.
+    //  * Many-to-many polymorphic.
+    //  */
+    // public function districts()
+    // {
+    //     return $this->morphToMany(District::class, 'districtable', 'districtables');
+    // }
 
 
     /**
@@ -232,7 +232,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
      */
     public function getProviderAvatarRoute(string $size = 'sm'): ?string
     {
-        // dd($this);
         return '/storage/' . $this->profile_photo_path;
     }
 

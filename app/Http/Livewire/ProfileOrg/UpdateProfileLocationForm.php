@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\ProfileUser;
+namespace App\Http\Livewire\ProfileOrg;
 
 use App\Models\Locations\City;
 use App\Models\Locations\Country;
@@ -45,9 +45,9 @@ class UpdateProfileLocationForm extends Component
     {
         $this->state = session('activeProfileType')::find(session('activeProfileId'))
             ->load([
-                'locations', 
-                'locations.country', 
-                'locations.division', 
+                'locations',
+                'locations.country',
+                'locations.division',
                 'locations.city',
                 'locations.district']);
 
@@ -153,14 +153,14 @@ class UpdateProfileLocationForm extends Component
         if (!$this->country) {
             $this->validateCountry = true;
             $this->validateDivision = $this->validateCity = false;
-        }  
+        }
         ds($this->district)->label('district in setValidationOptions');
     }
 
 
 
     public function updateProfileInformation()
-    {        
+    {
         $this->validate();
 
         // Use a transaction for creating the new user.
@@ -191,6 +191,6 @@ class UpdateProfileLocationForm extends Component
 
     public function render()
     {
-        return view('livewire.profile-user.update-profile-location-form');
+        return view('livewire.profile-org.update-profile-location-form');
     }
 }

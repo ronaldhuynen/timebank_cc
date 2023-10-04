@@ -18,8 +18,7 @@ class LocationFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'Default location',
-            'sharing_type' => 0,
+            // 'name' => 'Default location',
         ];
     }
 }

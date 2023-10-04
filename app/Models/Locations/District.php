@@ -55,8 +55,32 @@ class District extends Model
     {
         return $this->morphedByMany(User::class, 'districtable', 'districtables');
     }
+    
+    /**
+    * Get the district locale.
+    * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+    * @return void
+    */
+    public function locale()
+    {
+        return $this->hasOne(DistrictLocale::class)
+        ->where('locale', App::getLocale())
+        ->orWhere('locale', App::getFallbackLocale())
+        ->orderByRaw("CASE WHEN `locale` = ? THEN 2 ELSE 1 END ASC", App::getFallbackLocale());
+    }
 
 
+    /**
+     * Get all related locations of the division.
+     * One-to-many.
+     * @return void
+     */
+       public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
+
+    
     /**
     * Get the related city of the district.
     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.

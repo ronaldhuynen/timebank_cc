@@ -3,6 +3,7 @@
 namespace App\Models\Locations;
 
 use App\Models\Category;
+use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -22,24 +23,13 @@ class Country extends Model
 
 
     /**
-     * Return all related countryables.
-     *
+     * Get all related locations of the division.
+     * One-to-many.
      * @return void
      */
-    public function countryables()
+       public function locations()
     {
-        return $this->morphedByMany(Location::class, 'countryable');
-    }
-
-
-    /**
-     * Return all related countryables.
-     *
-     * @return void
-     */
-    public function locations()
-    {
-        return $this->morphedByMany(Location::class, 'countryable')->where('countryable_type', Location::class);
+        return $this->hasMany(Location::class);
     }
 
 
@@ -102,36 +92,14 @@ class Country extends Model
 
 
     /**
-     * Get the divisions of the country in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-     * The optional paramameter will filter the localized division names.
-     * @param string $search
+     * Get the divisions of the country.
+     * One-to-many
+     * @param string 
      * @return void
      */
-    public function divisions(string $search = '')
+    public function divisions()
     {
-        // $locale = collect(
-        //     $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
-        //         ->where('locale', App::getLocale())
-        //         ->get()
-        // )->keyBy('division_id');
-
-        // $fallback = collect(
-        //     $this->hasManyThrough(DivisionLocale::class, Division::class, 'country_id', 'division_id')
-        //         ->where('locale', App::getFallbackLocale())
-        //         ->get()
-        // )->keyBy('division_id');
-
-        // $result = $locale
-        //     ->union($fallback)
-        //     ->filter(function ($item) use ($search) {
-        //         return false !== stripos($item->name, $search);
-        //     })
-        //     ->sortBy('name');
-
-        // return $result;
-
         return $this->hasMany(Division::class);
-
     }
 
 
@@ -147,7 +115,7 @@ class Country extends Model
 
     /**
      * Get the related cities locale of the country in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-     * The optional paramameter will filter the localized city names.
+     * The optional property will filter the localized city names.
      * @return void
      */
     public function citiesLocale(string $search = '')

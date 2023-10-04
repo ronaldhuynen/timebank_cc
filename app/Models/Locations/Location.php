@@ -6,7 +6,6 @@ use App\Models\Locations\City;
 use App\Models\Locations\Country;
 use App\Models\Locations\District;
 use App\Models\Locations\Division;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,57 +14,57 @@ class Location extends Model
     use HasFactory;
 
     /**
-    * Return all related countries.
-    * Many-to-many polymorphic.
+    * Return related country.
+    * one-to-many
     * @return void
     */
-    public function countries()
+    public function country()
     {
-        return $this->morphToMany(Country::class, 'countryable');
+        return $this->belongsTo(Country::class);
     }
 
 
     /**
     * Return all related divisions.
-    * Many-to-many polymorphic.
+    * One-to-many
     * @return void
     */
-    public function divisions()
+    public function division()
     {
-        return $this->morphToMany(Division::class, 'divisionable');
+        return $this->belongsTo(Division::class);
     }
 
 
     /**
-    * Return all related cities.
-    * Many-to-many polymorphic.
+    * Return related city.
+    * One-to-many
     * @return void
     */
-    public function cities()
+    public function city()
     {
-        return $this->morphToMany(City::class, 'cityable');
+        return $this->belongsTo(City::class);
     }
 
 
     /**
-    * Return all related districts.
-    * Many-to-many polymorphic.
+    * Return related district.
+    * One-to-many
     * @return void
     */
-    public function districts()
+    public function district()
     {
-        return $this->morphToMany(District::class, 'districtable');
+        return $this->belongsTo(District::class);
     }
 
 
-        /**
-    * Return all related locationables.
-    * Many-to-many polymorphic.
+    /**
+    * Return related locatable (i.e. user or organization).
+    * One-to-many polymorph
     * @return void
     */
-    public function users()
+    public function locatable()
     {
-        return $this->morphedByMany(User::class, 'locationable');
+        return $this->morphTo();
     }
 
 }

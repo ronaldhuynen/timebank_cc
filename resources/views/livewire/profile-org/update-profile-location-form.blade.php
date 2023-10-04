@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Where are you mostly located? And what is a good place for Timebank.cc exchanges?') }}
+        {{ __('Where is your organization located? And what is a good place for Timebank.cc exchanges?') }}
     </x-slot>
 
     <x-slot name="form">

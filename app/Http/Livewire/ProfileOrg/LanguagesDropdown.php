@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\ProfileOrganization;
+namespace App\Http\Livewire\ProfileOrg;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -63,6 +63,6 @@ class LanguagesDropdown extends Component
 
     public function render()
     {
-        return view('livewire.profile-organization.languages-dropdown');
+        return view('livewire.profile-org.languages-dropdown');
     }
 }

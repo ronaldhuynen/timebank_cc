@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\ProfileOrganization;
+namespace App\Http\Livewire\ProfileOrg;
 
 use App\Models\Organization;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class UpdateProfileOrganizationForm extends Component
+class UpdateProfileOrgForm extends Component
 {
     use WithFileUploads;
     use HasProfilePhoto;
@@ -61,7 +61,7 @@ class UpdateProfileOrganizationForm extends Component
         $this->validateOnly('languages');
     }
 
-    
+
     /**
      * Validate a single field when updated.
      * This is the 1st validation method on this form.
@@ -71,7 +71,7 @@ class UpdateProfileOrganizationForm extends Component
      */
     public function updated($field)
     {
-        // if ($field = 'website') {    
+        // if ($field = 'website') {
         // $this->website = $this->addUrlScheme($this->website);
         // }
         $this->validateOnly($field);
@@ -112,8 +112,8 @@ class UpdateProfileOrganizationForm extends Component
 
         $this->organization->save();
         $this->emit('saved');
-        Session(['activeProfilePhoto'=> $this->organization->profile_photo_path ]);
-        redirect()->route('profile-organization.show');
+        Session(['activeProfilePhoto' => $this->organization->profile_photo_path ]);
+        redirect()->route('profile-org.show');
     }
 
     /**
@@ -125,12 +125,12 @@ class UpdateProfileOrganizationForm extends Component
     {
         Auth::organization()->deleteProfilePhoto();
         $this->emit('saved');
-        return redirect()->route('profile-organization.show');
+        return redirect()->route('profile-org.show');
     }
 
 
     public function render()
     {
-        return view('livewire.profile-organization.update-profile-organization-form');
+        return view('livewire.profile-org.update-profile-org-form');
     }
 }

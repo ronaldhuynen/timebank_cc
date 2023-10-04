@@ -31,15 +31,17 @@ class UserSeeder extends Seeder
             346, // Antwerp
         ];
         User::factory()->count($usersCount)
-            ->has(Location::factory())
             ->has(Account::factory()->state(['name' => 'Personal Account']))
             ->create()
             ->each(
                 function ($user) use ($cities) {
-                    DB::table('cityables')->insert([
-                            'city_id' => collect($cities)->random(),
-                            'cityable_type' => Location::class,
-                            'cityable_id' => $user->locations()->first()->id]);
+                    // Create a location with a random city_id for each user
+                    Location::factory()->create([
+                        'locatable_type' => User::class,  // This specifies the relation is with User
+                        'locatable_id' => $user->id,
+                        'city_id' => collect($cities)->random(),
+                    ]);
+
                 }
             );
     }

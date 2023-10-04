@@ -27,7 +27,7 @@
                         {{ __('Your Profile') }}
                         </x-jet-nav-link>
                     @elseif (session('activeProfileType') == 'App\Models\Organization')
-                        <x-jet-nav-link href="{{ route('org.show') }}" :active="request()->routeIs('org.show')">
+                        <x-jet-nav-link href="{{ route('org.edit') }}" :active="request()->routeIs('org.show')">
                         {{ __('Organization profile') }}
                         </x-jet-nav-link>
                     @endif

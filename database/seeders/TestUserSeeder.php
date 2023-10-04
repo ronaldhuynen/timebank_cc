@@ -22,22 +22,17 @@ class TestUserSeeder extends Seeder
 
             $user1 = User::factory()
                 ->has(Account::factory()->state(['name' => 'Personal Account']))
-                ->has(Location::factory())
+                ->has(Location::factory()->state(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]))
                 ->create([
                     'name' => 'Ronald',
                     'email' => 'ronald@test.nl',
-                    'profile_photo_path' => 'profile-photos/b1noabVz64Wj6yuejFcISJPeWFAb9v7Ju3FsFZn4.png',
+                    'profile_photo_path' => 'profile-photos/0gs4OCq7MYEiZUzXBKuNfTbD8kByYjhtjalSEZWj.png',
                     'password' => bcrypt('password'),
                     ]);
 
-            DB::table('cityables')->insert([
-                    'city_id' => 305,
-                    'cityable_type' => Location::class,
-                    'cityable_id' => $user1->locations()->first()->id]);
-
             $user2 = User::factory()
                 ->has(Account::factory()->state(['name' => 'Personal Account']))
-                ->has(Location::factory())
+                ->has(Location::factory()->state(['city_id' => 345, 'country_id' => 2]))
                 ->create([
                     'name' => 'Joeri',
                     'email' => 'joeri@test.nl',
@@ -45,14 +40,9 @@ class TestUserSeeder extends Seeder
                     'password' => bcrypt('password'),
                     ]);
 
-            DB::table('cityables')->insert([
-                    'city_id' => 345,
-                    'cityable_type' => Location::class,
-                    'cityable_id' => $user2->locations()->first()->id]);
-
             $user3 = User::factory()
                 ->has(Account::factory()->state(['name' => 'Personal Account']))
-                ->has(Location::factory())
+                ->has(Location::factory()->state(['city_id' => 330, 'division_id' => 12, 'country_id' => 1]))
                 ->create([
                     'name' => 'Sara',
                     'email' => 'sara@test.nl',
@@ -60,10 +50,6 @@ class TestUserSeeder extends Seeder
                     'password' => bcrypt('password'),
                     ]);
 
-            DB::table('cityables')->insert([
-                    'city_id' => 305,
-                    'cityable_type' => Location::class,
-                    'cityable_id' => $user3->locations()->first()->id]);
 
             $org1 = Organization::factory()
                 ->has(Account::factory()->state(['name' => 'General Account'])->state(
@@ -74,18 +60,12 @@ class TestUserSeeder extends Seeder
                 ->has(Account::factory()->state(
                     ['name' => 'General']
                 ))
-                ->has(Location::factory())
+                ->has(Location::factory()->state(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]))
                 ->create([
                     'name' => 'Timebank.cc Den Haag',
                     'email' => 'tb-den-haag@test.nl',
                     'profile_photo_path' => 'profile-photos/RMawhGXxED1wNNJDEJ7pVbBdg07LGKPAyhGL3npH.png',
                     ]);
-            
-            DB::table('cityables')->insert([
-                    'city_id' => 305,
-                    'cityable_type' => Location::class,
-                    'cityable_id' => $org1->locations()->first()->id]);
-
                     
             $org2 = Organization::factory()
                 ->has(Account::factory()->state(
@@ -103,20 +83,12 @@ class TestUserSeeder extends Seeder
                 ->has(Account::factory()->state(
                     ['name' => 'Mozartlaan']
                 ))
-                ->has(Location::factory())
+                ->has(Location::factory()->state(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]))
                 ->create([
                     'name' => 'Lekkernassuh',
                     'email' => 'lekkernassuh@test.nl',
                     'profile_photo_path' => 'profile-photos/hWcYqfdquJW7QiPnyuUtdFsrldykLFZPbR6H4qwF.jpg',
                     ]);
-
-
-
-            DB::table('cityables')->insert([
-                    'city_id' => 305,
-                    'cityable_type' => Location::class,
-                    'cityable_id' => $org2->locations()->first()->id]);
-
 
             DB::table('organization_user')->insert([
                 'organization_id' => $org1->id,

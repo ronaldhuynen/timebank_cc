@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\ProfileOrganization;
+namespace App\Http\Livewire\ProfileOrg;
 
 use Livewire\Component;
 use WireUi\Traits\Actions;
-
 
 class UpdateSocialMediaForm extends Component
 {
@@ -23,30 +22,30 @@ class UpdateSocialMediaForm extends Component
         ];
     }
 
-     /**
-     * Prepare the component.
-     *
-     * @return void
-     */
+    /**
+    * Prepare the component.
+    *
+    * @return void
+    */
     public function mount()
     {
-        
+
         $this->profile = session('activeProfileType')::find(session('activeProfileId'));
         $this->website = $this->profile['website'];
     }
 
 
-     /**
-     * Validate a single field when updated.
-     * This is the 1st validation method on this form.
-     *
-     * @param  mixed $field
-     * @return void
-     */
+    /**
+    * Validate a single field when updated.
+    * This is the 1st validation method on this form.
+    *
+    * @param  mixed $field
+    * @return void
+    */
     public function updated($field)
     {
-        if ($field = 'website') {    
-        $this->website = $this->addUrlScheme($this->website);
+        if ($field = 'website') {
+            $this->website = $this->addUrlScheme($this->website);
         }
         $this->validateOnly($field);
     }
@@ -56,7 +55,7 @@ class UpdateSocialMediaForm extends Component
         $this->emit('saved');
     }
 
-     /**
+    /**
     * Update the organization's profile contact information.
     *
     * @return void
@@ -72,8 +71,8 @@ class UpdateSocialMediaForm extends Component
     }
 
 
-    
-    function addUrlScheme($url, $scheme = 'https://')
+
+    public function addUrlScheme($url, $scheme = 'https://')
     {
         return parse_url($url, PHP_URL_SCHEME) === null ?
         $scheme . $url : $url;
@@ -82,6 +81,6 @@ class UpdateSocialMediaForm extends Component
 
     public function render()
     {
-        return view('livewire.profile-organization.update-social-media-form');
+        return view('livewire.profile-org.update-social-media-form');
     }
 }

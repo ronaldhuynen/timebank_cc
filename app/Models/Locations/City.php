@@ -99,6 +99,17 @@ class City extends Model
 
 
     /**
+     * Get all related locations of the division.
+     * One-to-many.
+     * @return void
+     */
+       public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
+
+
+    /**
      * Get the districst of the city in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
      * The optional paramameter will filter the localized district names.
      * @param string $search

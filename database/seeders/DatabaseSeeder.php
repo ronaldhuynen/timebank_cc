@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -19,23 +20,6 @@ class DatabaseSeeder extends Seeder
             $this->command->call('db:wipe');
             $this->command->call('migrate:refresh');
             $this->call([PermissionRoleSeeder::class]);
-
-            // Seed Super-Admin with user id 1
-            $admin = User::factory()->create([
-                'name' => 'Super-Admin',
-                'email' => 'admin@admin.com',
-                'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
-                'profile_photo_path' => 'app-images/profile-user-default.svg',
-            ]);
-
-            DB::table('locationables')->insert([
-                            'location_id' => 1,
-                            'locationable_type' => User::class,
-                            'locationable_id' => 1]);
-
-            $admin->assignRole('Super-Admin');
-
-
 
             $this->command->info('Database was refreshed');
             $this->call(CountriesTableSeeder::class);
@@ -55,7 +39,21 @@ class DatabaseSeeder extends Seeder
             $this->call(CategoriesTableSeeder::class);
             $this->call(CategoryTranslationsTableSeeder::class);
             $this->call(MeetingsTableSeeder::class);
-    }
+            
+            // Seed Super-Admin with user id 1
+            $admin = User::factory()->create([
+                'name' => 'Super-Admin',
+                'email' => 'admin@admin.com',
+                'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
+                'profile_photo_path' => 'app-images/profile-user-default.svg',
+            ]);
+
+            $location = new Location(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]);
+            $admin->locations()->save($location);
+
+            $admin->assignRole('Super-Admin');
+
+        }
 
         $this->call([
         TestUserSeeder::class,

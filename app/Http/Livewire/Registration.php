@@ -125,8 +125,8 @@ class Registration extends Component implements CreatesNewUsers
 
         // In case no cities or divisions for selected country are seeded in database
         if ($this->country) {            
-            $countDivisions = Country::find($this->country)->divisions()->count();
-            $countCities = Country::find($this->country)->cities()->count();
+            $countDivisions = Country::find($this->country)->division()->count();
+            $countCities = Country::find($this->country)->city()->count();
 
             if ($countDivisions > 0 && $countCities < 1) {
                 $this->validateDivision = true;
@@ -171,15 +171,15 @@ class Registration extends Component implements CreatesNewUsers
 
                 $country = new Country();
                 $country->id = $valid['country'];
-                $location->countries()->attach($country->id); // attach country to location
+                $location->country()->save($country->id); // attach country to location
                 
                 $division = new Division();
                 $division->id = $valid['division'];
-                $location->divisions()->attach($division->id); // attach division to location
+                $location->division()->save($division->id); // attach division to location
 
                 $city = new City();
                 $city->id = $valid['city'];
-                $location->cities()->attach($city->id); // attach country to location
+                $location->city()->save($city->id); // attach country to location
 
                 $account = new Account();
                 $account->name = __(config('timebank-cc.accounts.personal.name'));

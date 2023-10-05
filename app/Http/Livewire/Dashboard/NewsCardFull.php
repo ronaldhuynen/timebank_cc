@@ -29,43 +29,45 @@ class NewsCardFull extends Component
         $this->postNr = $postNr;
         $this->related = $related;
         
-        $location_id = session('activeProfileType')::find(session('activeProfileId'))->locations->all()[0]['pivot']['location_id'];
-        $location = Location::find($location_id);
+ 
+        $location = session('activeProfileType')::find(session('activeProfileId'))->locations->first->get();
 
-        if ($location->divisions->count() < 1 && $location->cities->count() < 1) {
-                $categoryable_id = Location::find($location_id)->countries->first()->id;
-                $categoryable_type = Country::class;
-                if ($related) {
-                    // Include also all other countries
-                    $categoryable_id = Country::pluck('id');
-                } else {
-                    $categoryable_id = [$categoryable_id];
-                }
+        // If no division and no city as location set
+        if (!$location->division && !$location->city) {
+            $categoryable_id = Location::find($location->id)->country->id;
+            $categoryable_type = Country::class;
+            // Include also all other countries if $related is set in view
+            if ($related) {
+                $categoryable_id = Country::pluck('id');
+            } else {
+                $categoryable_id = [$categoryable_id];
             }
-            elseif ($location->divisions->count() > 0 && $location->cities->count() < 1) {
-                $categoryable_id = Location::find($location_id)->divisions->first()->id;
-                $categoryable_type = Division::class;
-                if ($related) {
-                    // Include also parent of division (country)
-                    $categoryable_id = Division::find($categoryable_id)->parent->divisions()->pluck('id');
-                } else {
-                    $categoryable_id = [$categoryable_id];
-                }
-            } 
-            elseif ($location->cities->count() > 0) {
-                $categoryable_id = Location::find($location_id)->cities->all()[0]['pivot']['city_id'];
-                $categoryable_type = City::class;
-                if ($related) {
-                    // Include also parent of city (division or country)
-                    $categoryable_id = City::find($categoryable_id)->parent->cities()->pluck('id');
-                } else {
-                    $categoryable_id = [$categoryable_id];
-                }
-            } 
-        else {
+            // Division without city is set as location
+        } elseif ($location->division && !$location->city) {
+            $categoryable_id = Location::find($location->id)->division->id;
+            $categoryable_type = Division::class;
+            // Include also all other divisions in the same country if $related is set in view
+            if ($related) {
+                $categoryable_id = Division::find($categoryable_id)->parent->divisions->pluck('id');
+            } else {
+                $categoryable_id = [$categoryable_id];
+            }
+            // City is set as location
+        } elseif ($location->city) {
+            $categoryable_id = Location::find($location->id)->city->id;
+            $categoryable_type = City::class;
+            // Include also all other cities in the same division if $related is set in view
+            if ($related) {
+                $categoryable_id = City::find($categoryable_id)->parent->cities->pluck('id');
+            } else {
+                $categoryable_id = [$categoryable_id];
+            }
+            // No matching location is set
+        } else {
             $categoryable_id = [];
             $categoryable_type = '';
         }
+
 
         // TODO: check what happens when multiple locations per user are used!
         $post =

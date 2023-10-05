@@ -36,11 +36,12 @@
         @endif
         
     </div>
-
+    {{-- Mark postNr = 1 to view 2nd latest post or the 2nd upcoming event --}}
+    {{-- Mark related as 1 to view also for users / organizations in related locations --}}
     <livewire:dashboard.event-card-full :postNr=0 :related=1>
     <livewire:dashboard.news-card-full :postNr=0 :related=1>
     <livewire:dashboard.event-card-full :postNr=1 :related=0>
-    <livewire:dashboard.news-card-full :postNr=1 :related=0>
+    {{-- <livewire:dashboard.news-card-full :postNr=1 :related=0> --}}
 
 
 

@@ -30,7 +30,7 @@ class EventCardFull extends Component
         $this->related = $related;
 
         $location = session('activeProfileType')::find(session('activeProfileId'))->locations->first->get();
-    
+
         // If no division and no city as location set
         if (!$location->division && !$location->city) {
             $categoryable_id = Location::find($location->id)->country->id;
@@ -41,7 +41,7 @@ class EventCardFull extends Component
             } else {
                 $categoryable_id = [$categoryable_id];
             }
-        // Division without city is set as location  
+            // Division without city is set as location
         } elseif ($location->division && !$location->city) {
             $categoryable_id = Location::find($location->id)->division->id;
             $categoryable_type = Division::class;
@@ -51,7 +51,7 @@ class EventCardFull extends Component
             } else {
                 $categoryable_id = [$categoryable_id];
             }
-        // City is set as location
+            // City is set as location
         } elseif ($location->city) {
             $categoryable_id = Location::find($location->id)->city->id;
             $categoryable_type = City::class;
@@ -61,7 +61,7 @@ class EventCardFull extends Component
             } else {
                 $categoryable_id = [$categoryable_id];
             }
-        // No matching location is set
+            // No matching location is set
         } else {
             $categoryable_id = [];
             $categoryable_type = '';

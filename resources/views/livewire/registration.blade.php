@@ -34,7 +34,6 @@
                                 <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
                             <div class="mt-4" wire:init="emitLocationToChildren">
-                                <!-- TODO: Explanantion for location dropdowns -->
                                 @livewire('locations.locations-dropdown')
                                 @error('country')
                                     <p class="text-sm text-red-500">{{$message}}</p>
@@ -51,12 +50,16 @@
                       </div>
 
                       <div class="flex items-center justify-end mt-4">
-                          <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                              {{ __('Already registered?') }}
-                          </a>
-                          <x-jet-button class="ml-4">
-                              {{ __('Submit') }}
-                          </x-jet-button>
+                        @if ($waitMessage)
+                            <span>{{__('Please wait...')}}</span>
+                        @else
+                        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                            {{ __('Already registered?') }}
+                        </a>
+                        @endif
+                        <x-jet-button class="ml-4">
+                            {{ __('Submit') }}
+                        </x-jet-button>
                       </div>
 
                     </form>

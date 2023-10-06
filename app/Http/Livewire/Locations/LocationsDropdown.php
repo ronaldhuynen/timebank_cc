@@ -15,7 +15,7 @@ class LocationsDropdown extends Component
     public $division;
     public $cities = [];
     public $city;
-    public $districts =[];
+    public $districts = [];
     public $district;
 
     protected $listeners = ['countryToChildren', 'divisionToChildren', 'cityToChildren', 'districtToChildren'];
@@ -30,7 +30,7 @@ class LocationsDropdown extends Component
 
     public function divisionToChildren($value)
     {
-        $this->division = $value;        
+        $this->division = $value;
         $this->updatedDivision();
     }
 
@@ -61,9 +61,9 @@ class LocationsDropdown extends Component
         $this->emit('districtToParent', $this->district);
     }
 
-    
+
     public function updatedDivision()
-    {        
+    {
         $this->reset(['district', 'districts']);
         $this->reset(['city', 'cities']);
         if ($this->division === '') {

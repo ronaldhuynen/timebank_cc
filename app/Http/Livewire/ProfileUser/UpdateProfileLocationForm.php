@@ -110,6 +110,9 @@ class UpdateProfileLocationForm extends Component
     {
         $this->district = $value;
         $this->setValidationOptions();
+        
+ds($this->district)->label('district in DistrictToParent');
+
     }
 
 
@@ -124,6 +127,7 @@ class UpdateProfileLocationForm extends Component
 
     public function setValidationOptions()
     {
+        
         $this->validateCountry = $this->validateDivision = $this->validateCity = true;
 
         // In case no cities or divisions for selected country are seeded in database

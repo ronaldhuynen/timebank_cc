@@ -17,12 +17,12 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('transfer') }}" :active="request()->routeIs('transfer')">
-                        {{ __('Transfer') }}
+                        {{ __('Payments') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('transactions') }}" :active="request()->routeIs('transactions')">
+                    {{-- <x-jet-nav-link href="{{ route('transactions') }}" :active="request()->routeIs('transactions')">
                         {{ __('Transactions') }}
-                    </x-jet-nav-link>
-                    @if (session('activeProfileType') == 'App\Models\User')
+                    </x-jet-nav-link> --}}
+                    {{-- @if (session('activeProfileType') == 'App\Models\User')
                         <x-jet-nav-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
                         {{ __('Your Profile') }}
                         </x-jet-nav-link>
@@ -30,7 +30,7 @@
                         <x-jet-nav-link href="{{ route('org.edit') }}" :active="request()->routeIs('org.show')">
                         {{ __('Organization profile') }}
                         </x-jet-nav-link>
-                    @endif
+                    @endif --}}
                     <x-jet-nav-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
                         {{ __('Commons') }}
                     </x-jet-nav-link>
@@ -143,6 +143,18 @@
                                 <livewire:select-organization>
                             @endif
 
+                            <!---- Edit profile --->
+                           @if (session('activeProfileType') == 'App\Models\User')
+                                <x-jet-dropdown-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
+                                {{ __('Edit Profile') }}
+                                </x-jet-dropdown-link>
+                            @elseif (session('activeProfileType') == 'App\Models\Organization')
+                                <x-jet-dropdown-link href="{{ route('org.edit') }}" :active="request()->routeIs('org.show')">
+                                {{ __('Edit profile') }}
+                                </x-jet-dropdown-link>
+                            @endif
+
+
                             <!--- Messenger --->
                             <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
                                 {{ __('Messages') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_thread_count"></span>
@@ -150,8 +162,8 @@
 
 
                             <!--- Messender Friends --->
-                            <div id="pending_friends_nav" class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">
-                                <a id="click_friends_tab" href="#" class="dropdown-toggle nav-link pt-1 pb-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick="drop()">
+                            <div id="pending_friends_nav" class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">                               
+                                <a id="click_friends_tab" href="#" class="dropdown block nav-link pt-1 pb-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick="drop()">
                                     {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span>
                                 </a>
 
@@ -199,9 +211,9 @@
                                 </x-jet-dropdown-link>
                             @endif
 
-                            <div class="border-t border-gray-100"></div>
+                            <div class="border-t border-gray-200"></div>
 
-                            <!-- Authentication -->
+                            <!-- Log out -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
                                 <x-jet-dropdown-link href="{{ route('logout') }}"

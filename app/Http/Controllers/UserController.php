@@ -71,8 +71,10 @@ class UserController extends Controller
             'accounts:id,name,accountable_type,accountable_id',
             'languages:id,name,lang_code,flag',
             'socials:id,name,icon,urL_structure',
-            'locations.cities.locale:city_id,name',
-            'locations.countries.locale:country_id,name',
+            'locations.district.locale:district_id,name',
+            'locations.city.locale:city_id,name',
+            'locations.division.locale:division_id,name',
+            'locations.country.locale:country_id,name',
         ])
         ->find($userId);
 

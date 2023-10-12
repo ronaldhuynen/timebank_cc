@@ -52,10 +52,10 @@
                 function onLoaded(e) {
                     tagify.loading(true)
                     console.log('onLoaded is fired')
-                    document.querySelector('.tagify__input').focus()
+                    //document.querySelector('.tagify__input').focus()
                     onChange(e)
                     {{-- console.log('blur') --}}
-                    document.querySelector('.tagify__input').blur()
+                    //document.querySelector('.tagify__input').blur()
                     tagify.loading(false)
                 };
 

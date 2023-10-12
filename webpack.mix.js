@@ -23,7 +23,6 @@ mix.js('resources/js/echo.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css/app.css')
     .sass('node_modules/@yaireo/tagify/src/tagify.scss', 'public/css/tagify.css')
     .postCss('resources/css/app.css', 'public/css', [
-        //
     ])
     .postCss('resources/sass/custom_messenger.css', 'public/css/custom_messenger.css')
     .postCss('resources/sass/custom_tagify.css', 'public/css/custom_tagify.css')

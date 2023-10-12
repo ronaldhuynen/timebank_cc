@@ -122,9 +122,9 @@
  <div class="row my-6 relative">
     <div class="flex">
         <select wire:model="perPage" class="w-16 py-2 px-3 border border-gray-300 bg-white text-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <option value="5">5</option>
-            <option value="10">10</option>
+            <option value="20">20</option>
             <option value="50">50</option>
+            <option value="100">100</option>
         </select>
         <div class="flex-auto px-3 mt-2 text-gray-400">{{ __('results') }}</div>
     </div>

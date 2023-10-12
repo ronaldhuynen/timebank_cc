@@ -64,22 +64,25 @@ class LocationsDropdown extends Component
 
     public function updatedDivision()
     {
-        $this->reset(['district', 'districts']);
         $this->reset(['city', 'cities']);
+        $this->reset(['district', 'districts']);
         if ($this->division === '') {
             $this->division = null;
         }
         $this->emit('divisionToParent', $this->division);
         $this->emit('cityToParent', $this->city);
+        $this->emit('districtToParent', $this->district);
     }
 
 
     public function updatedCity()
     {
+        $this->reset(['district', 'districts']);
         if ($this->city === '') {
             $this->city = null;
         }
         $this->emit('cityToParent', $this->city);
+        $this->emit('districtToParent', $this->district);
     }
 
 

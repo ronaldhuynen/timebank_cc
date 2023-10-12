@@ -110,8 +110,7 @@ class UpdateProfilePersonalForm extends Component
         $this->user->save();
         $this->emit('saved');
         Session(['activeProfilePhoto'=> $this->user->profile_photo_path ]);
-        // $this->emit('refresh-navigation-menu');
-        redirect()->route('profile-user.show');
+        redirect()->route('user.edit');
     }
 
     /**

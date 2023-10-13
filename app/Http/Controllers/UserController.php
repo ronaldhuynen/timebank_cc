@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
-        /**
+    /**
     * Create a new controller instance.
     *
     * @return void
@@ -53,7 +53,7 @@ class UserController extends Controller
 
 
     public function show($userId)
-    {        
+    {
         $user = User::select([
             'id',
             'name',
@@ -75,19 +75,21 @@ class UserController extends Controller
             'locations.city.locale:city_id,name',
             'locations.division.locale:division_id,name',
             'locations.country.locale:country_id,name',
+            'likecounter'
         ])
         ->find($userId);
 
 
         if ($user->count() >= 1) {
 
-            $registerDate = Carbon::createFromTimeStamp(strtotime($user->created_at))->isoFormat('LL'); 
+            $registerDate = Carbon::createFromTimeStamp(strtotime($user->created_at))->isoFormat('LL');
             $lastLoginDate = Carbon::createFromTimeStamp(strtotime($user->last_login_at))->isoFormat('LL');
 
         } else {
             return view('profile-user.not_found');
         }
 
+        ds($user)->label('$user in UserController');
 
         //TODO: add permission check
         //TODO: if 403, but has permission, redirect with message to switch profile
@@ -95,7 +97,7 @@ class UserController extends Controller
         return ($user != null ? view('profile-user.show', compact(['user'])) : abort(403));
     }
 
-    
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -120,7 +122,7 @@ class UserController extends Controller
         //
     }
 
-    
+
     /**
      * Remove the specified resource from storage.
      *

@@ -11,6 +11,7 @@ use App\Models\Locations\Location;
 use App\Models\Organization;
 use App\Models\Post;
 use App\Traits\TaggableWithLocale;
+use Conner\Likeable\Likeable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +39,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     use HasRoles; // Spatie Permissions
     use LogsActivity; // Spatie Activity Log
     use TaggableWithLocale;
+
 
     /**
      * The attributes that are mass assignable.

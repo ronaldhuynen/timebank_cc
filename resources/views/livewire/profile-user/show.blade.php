@@ -25,7 +25,7 @@
                             <span class="rounded bg-black border-green-400 border-2 px-3 py-1 mt-2 mr-2 h-7 font-extrabold text-green-300 text-2xs">Online</span>                          
                          {{-- <span class="rounded bg-black border-green-400 border-2 px-3 py-1 mt-2 mr-2 h-7 font-extrabold text-green-300 text-2xs">Available</span> --}}
                                  
-                        @livewire('like-button', ['likecounter' => $user->Likecounter ? $user->Likecounter : null])                         
+                        {{-- @livewire('like-button', ['likecounter' => $user->Likecounter ? $user->Likecounter : null])                          --}}
 
                         </span>
 

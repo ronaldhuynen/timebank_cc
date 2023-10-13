@@ -75,7 +75,7 @@ class UserController extends Controller
             'locations.city.locale:city_id,name',
             'locations.division.locale:division_id,name',
             'locations.country.locale:country_id,name',
-            'likecounter'
+            'likes'
         ])
         ->find($userId);
 

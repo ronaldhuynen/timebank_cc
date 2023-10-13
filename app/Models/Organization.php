@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Jetstream\HasProfilePhoto;
+
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 use Spatie\Searchable\Searchable;
@@ -24,6 +25,7 @@ class Organization extends Model implements MessengerProvider, Searchable
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     // use Taggable; // Cviebrock Eloquent Taggable
     use TaggableWithLocale;
+
 
 
 

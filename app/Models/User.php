@@ -19,8 +19,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use Overtrue\LaravelLike\Traits\Likeable;
-use Overtrue\LaravelLike\Traits\Liker;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 use Spatie\Activitylog\LogOptions;
@@ -40,8 +38,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     use HasRoles; // Spatie Permissions
     use LogsActivity; // Spatie Activity Log
     use TaggableWithLocale;
-    use Liker; // Overtue Laravel-Like 
-    use Likeable; //Overtue Laravel-Like 
+
 
     /**
      * The attributes that are mass assignable.

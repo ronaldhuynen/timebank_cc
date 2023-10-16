@@ -40,6 +40,8 @@ Route::get('/clear-cache', function () {
     return "Cache is cleared";
 });
 
+//TODO: Use translated routes, see https://github.com/mcamara/laravel-localization
+
 
 Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function () {
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
@@ -81,8 +83,7 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale()], function ()
 
             Route::get('/posts/{slug}', 'App\Http\Controllers\PostController@showBySlug')
                 ->name('posts.show_by_slug');
-
-
+                
             
             Route::get('/user/{userId}', 'App\Http\Controllers\UserController@show')
                 ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed

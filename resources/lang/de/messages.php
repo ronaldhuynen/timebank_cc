@@ -21,7 +21,7 @@ return [
     'German' => 'Duits',
     'Spanish' => 'Spaans',
 
-    'Your_profile_has_received_a_star' => 'Je profiel heeft een ster ontvangen',
+    'Your_profile_has_received_a_star' => 'Dein Profil hat einen Stern erhalten',
 
 
 ];

@@ -4,16 +4,18 @@ namespace App\Providers;
 
 use App\Events\ProfileSwitchEvent;
 use App\Listeners\LoginSuccessful;
+use App\Listeners\ReactionCreatedListener;
 use App\Listeners\RedirectToDashboard;
 use App\Listeners\SendEmailNewMessage;
+use Cog\Laravel\Love\Reaction\Events\ReactionHasBeenAdded;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use RTippin\Messenger\Events\NewInviteEvent;
+// use RTippin\Messenger\Events\PushNotificationEvent;
 use RTippin\Messenger\Events\NewMessageEvent;
 use RTippin\Messenger\Events\ParticipantsAddedEvent;
-// use RTippin\Messenger\Events\PushNotificationEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,7 +29,13 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
-        Login::class => [LoginSuccessful::class],
+        Login::class => [
+            LoginSuccessful::class
+        ],
+
+        ReactionHasBeenAdded::class => [
+            ReactionCreatedListener::class
+        ],
 
         // Rtippin Messenger events:
         // ParticipantsAddedEvent::class => [

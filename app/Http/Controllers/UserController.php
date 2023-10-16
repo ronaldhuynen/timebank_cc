@@ -64,7 +64,8 @@ class UserController extends Controller
             'website',
             'phone_public_for_friends',
             'created_at',
-            'last_login_at'
+            'last_login_at',
+            'love_reactant_id'
         ])
         ->with([
             'organizations:id,name,profile_photo_path',
@@ -75,13 +76,16 @@ class UserController extends Controller
             'locations.city.locale:city_id,name',
             'locations.division.locale:division_id,name',
             'locations.country.locale:country_id,name',
-            'likes'
+            'loveReactant.reactions.reacter.reacterable',
+            // 'loveReactant.reactions.type',
+            'loveReactant.reactionCounters',
+            // 'loveReactant.reactionTotal',
         ])
         ->find($userId);
 
-
         if ($user->count() >= 1) {
 
+            $user->likedCounter =  $user->loveReactant->reactionCounters->first() ? (int)$user->loveReactant->reactionCounters->first()->weight : null;
             $registerDate = Carbon::createFromTimeStamp(strtotime($user->created_at))->isoFormat('LL');
             $lastLoginDate = Carbon::createFromTimeStamp(strtotime($user->last_login_at))->isoFormat('LL');
 

@@ -19,18 +19,6 @@
                     <x-jet-nav-link href="{{ route('transfer') }}" :active="request()->routeIs('transfer')">
                         {{ __('Payments') }}
                     </x-jet-nav-link>
-                    {{-- <x-jet-nav-link href="{{ route('transactions') }}" :active="request()->routeIs('transactions')">
-                        {{ __('Transactions') }}
-                    </x-jet-nav-link> --}}
-                    {{-- @if (session('activeProfileType') == 'App\Models\User')
-                        <x-jet-nav-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
-                        {{ __('Your Profile') }}
-                        </x-jet-nav-link>
-                    @elseif (session('activeProfileType') == 'App\Models\Organization')
-                        <x-jet-nav-link href="{{ route('org.edit') }}" :active="request()->routeIs('org.show')">
-                        {{ __('Organization profile') }}
-                        </x-jet-nav-link>
-                    @endif --}}
                     <x-jet-nav-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
                         {{ __('Commons') }}
                     </x-jet-nav-link>

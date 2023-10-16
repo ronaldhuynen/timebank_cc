@@ -11,6 +11,10 @@ use App\Models\Locations\Location;
 use App\Models\Organization;
 use App\Models\Post;
 use App\Traits\TaggableWithLocale;
+use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
+use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
+use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
+use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,7 +31,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable implements MessengerProvider, Searchable, MustVerifyEmail
+class User extends Authenticatable implements MessengerProvider, Searchable, MustVerifyEmail, ReacterableInterface, ReactableInterface
 {
     use HasApiTokens;
     use HasFactory;
@@ -38,6 +42,11 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     use HasRoles; // Spatie Permissions
     use LogsActivity; // Spatie Activity Log
     use TaggableWithLocale;
+    use Reacterable; // cybercog/laravel-love
+    use Reactable; // cybercog/laravel-love
+
+
+
 
 
     /**

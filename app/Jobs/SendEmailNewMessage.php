@@ -4,17 +4,20 @@ namespace App\Jobs;
 
 use App\Mail\NewMessageMail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class SendEmailNewMessage implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $tries = 3;
     public $backoff = [2,10,30]; // wait for 2, 10, or 30 sec before worker tries again
@@ -53,12 +56,10 @@ class SendEmailNewMessage implements ShouldQueue
         $recipients = $others->map(function ($others, $key) {
             return $others->owner_type::where('id', $others->owner_id)->select('name', 'email', 'profile_photo_path')->get();
         });
-        
+
 
         foreach ($recipients as $recipient) {
             Mail::to($recipient)->send(new NewMessageMail($this->event, $owner, $recipient));
-
-            info('Done!');
         }
     }
 }

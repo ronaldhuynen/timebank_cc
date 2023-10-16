@@ -79,9 +79,6 @@ class Show extends Component
         // Calculate Registered since
         $createdAt = Carbon::parse($this->user->created_at);
         $this->registeredSince = $createdAt->diffForHumans();
-
-
-        ds($this->user);
     }
     
     public function render()

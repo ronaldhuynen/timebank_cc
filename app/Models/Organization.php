@@ -7,24 +7,28 @@ use App\Models\Locations\Location;
 use App\Models\Post;
 use App\Models\User;
 use App\Traits\TaggableWithLocale;
-use Cviebrock\EloquentTaggable\Taggable;
+use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
+use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
+use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
+use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Jetstream\HasProfilePhoto;
-
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
-class Organization extends Model implements MessengerProvider, Searchable
+class Organization extends Model implements MessengerProvider, Searchable, ReacterableInterface, ReactableInterface
 {
     use HasFactory;
     use HasProfilePhoto;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
-    // use Taggable; // Cviebrock Eloquent Taggable
     use TaggableWithLocale;
+    use Reacterable; // cybercog/laravel-love
+    use Reactable; // cybercog/laravel-love
 
 
 

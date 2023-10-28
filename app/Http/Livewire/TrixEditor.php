@@ -33,7 +33,6 @@ class TrixEditor extends Component
     public function updatingValue($value)
     {
         $this->emit('trixEditor', $value);
-        info('updatingValue fires');
     }
 
 

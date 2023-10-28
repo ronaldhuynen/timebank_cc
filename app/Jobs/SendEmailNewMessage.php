@@ -43,13 +43,6 @@ class SendEmailNewMessage implements ShouldQueue
      */
     public function handle()
     {
-        // $seconds_ago = 2; // Minutes that a recipient did not read tha last message of a thread (conversation)
-        // $formatted_age = Carbon::now()->subMinutes($seconds_ago)->toDateTimeString();
-
-        // TODO: remove logs
-        info('Send email to participants with last_read younger than:');
-        info($this->read_before);
-
         $owner = $this->event->message->owner_type::where('id', $this->event->message->owner_id)->select('name', 'email', 'profile_photo_path')->first();
         $others = DB::table('participants')->where('thread_id', $this->event->thread->id)->where('last_read', '<', $this->read_before)->whereNotIn('owner_id', [$this->event->message->owner_id])->select('owner_type', 'owner_id', 'last_read')->get();
 

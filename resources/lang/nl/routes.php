@@ -18,7 +18,7 @@
 */
 
 
-return [
-    "dashboard"    =>  "overzicht",
-    "article"  =>  "gebruiker/{userId}",
-];
+// return [
+//     "dashboard"    =>  "overzicht",
+//     "article"  =>  "gebruiker/{userId}",
+// ];

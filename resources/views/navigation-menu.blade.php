@@ -86,7 +86,9 @@
                 <div class="block space-x-2 px-8 py-0 text-xs font-thin hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition">
                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                         <a class="text-gray-900  hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition"
-                        rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                        rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                        wire:click="changeLocale('{{ $localeCode }}')"
+                        >
                         @if($localeCode == app()->getLocale())
                         <span class="text-gray-900 font-weight-900">{{ strtoupper($localeCode) }}</span>
                         @else
@@ -94,7 +96,10 @@
                         @endif
                         </a>
                     @endforeach
+                    {{ info(Illuminate\Support\Facades\App::getLocale()) }}
                 </div>
+
+
                 <!-- Settings / Profile Dropdown -->
                 <div class="bloc  ml-3 py-0 text-s text-grey-500">
                     {{ Session('activeProfileName') }}

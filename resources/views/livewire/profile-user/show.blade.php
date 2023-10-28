@@ -39,7 +39,7 @@
 
                              <div class="">
                                  <a class="text-lg font-bold text-gray-500 underline hover:text-gray-300 dark:text-gray-500"
-                                     href="">
+                                     href="{{ $location['link'] }}">
                                      <svg aria-label="location pin icon" class="h-8 w-8 fill-current pr-2"
                                          viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                          <path fill-rule="evenodd" clip-rule="evenodd"
@@ -47,20 +47,7 @@
                                          <path fill-rule="evenodd" clip-rule="evenodd"
                                              d="M5.79417 16.5183C2.19424 13.0909 2.05438 7.3941 5.48178 3.79418C8.90918 0.194258 14.6059 0.0543983 18.2059 3.48179C21.8058 6.90919 21.9457 12.606 18.5183 16.2059L12.3124 22.7241L5.79417 16.5183ZM17.0698 14.8268L12.243 19.8965L7.17324 15.0698C4.3733 12.404 4.26452 7.9732 6.93028 5.17326C9.59603 2.37332 14.0268 2.26454 16.8268 4.93029C19.6267 7.59604 19.7355 12.0269 17.0698 14.8268Z" />
                                      </svg>
-                                     {{ $user->location }}
-                                 </a>
-                             </div>
-
-
-                             <div class="">
-                                 <a class="text-lg font-bold text-gray-500 underline hover:text-gray-300 dark:text-gray-500"
-                                     href="#">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor" class="h-8 w-8 pr-2">
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
-                                     </svg>
-                                     {{ __('Friend request') }}
+                                     {{ $location['name'] }}
                                  </a>
                              </div>
 
@@ -76,6 +63,14 @@
                                      +31 (6) 21284331
                                  </a>
                              </div>
+
+                            <div class="">
+                                <a class="text-lg font-bold text-gray-500 underline hover:text-gray-300 dark:text-gray-500" 
+                                    onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'add', provider_alias : 'user'}); 
+                                    return false;" 
+                                    href="#"><i class="fas fa-user-plus"></i><br/> 
+                                    {{ __('Friend request') }}</a>
+                            </div>
 
 
 
@@ -233,79 +228,56 @@
 
          <div class="flex flex-wrap">
              <!-- Red -->
-             <div class="w-1/2 bg-red-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Red</div>
+             <div class="w-1/2 bg-red-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Red</div>
 
              <!-- Orange -->
-             <div class="w-1/2 bg-orange-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Orange-400</div>
+             <div class="w-1/2 bg-orange-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Orange</div>
 
              <!-- Yellow -->
-             <div class="w-1/2 bg-yellow-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Yellow</div>
+             <div class="w-1/2 bg-amber-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Amber</div>
 
              <!-- Green -->
-             <div class="w-1/2 bg-green-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Green</div>
+             <div class="w-1/2 bg-yellow-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Yellow</div>
 
              <!-- Teal -->
-             <div class="w-1/2 bg-teal-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal</div>
+             <div class="w-1/2 bg-lime-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Lime</div>
 
              <!-- Blue -->
-             <div class="w-1/2 bg-blue-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue</div>
+             <div class="w-1/2 bg-green-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Green</div>
 
              <!-- Indigo -->
-             <div class="w-1/2 bg-indigo-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Indigo</div>
+             <div class="w-1/2 bg-emerald-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Emerald</div>
 
              <!-- Purple -->
-             <div class="w-1/2 bg-purple-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Purple-400</div>
+             <div class="w-1/2 bg-teal-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal</div>
 
              <!-- Pink -->
-             <div class="w-1/2 bg-pink-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink</div>
+             <div class="w-1/2 bg-cyan-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Cyan</div>
 
-             <!-- Red-300 -->
-             <div class="w-1/2 bg-red-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Red-400</div>
+             <!-- Red-400 -->
+             <div class="w-1/2 bg-sky-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Sky</div>
 
-             <!-- Orange-300 -->
-             <div class="w-1/2 bg-orange-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Orange-300</div>
+             <!-- Orange-400 -->
+             <div class="w-1/2 bg-blue-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue</div>
 
-             <!-- Yellow-300 -->
-             <div class="w-1/2 bg-yellow-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Yellow-300</div>
+             <!-- Yellow-400 -->
+             <div class="w-1/2 bg-indigo-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Indigo</div>
 
-             <!-- Green-300 -->
-             <div class="w-1/2 bg-green-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Green-400</div>
+             <!-- Green-400 -->
+             <div class="w-1/2 bg-violet-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Violet</div>
 
-             <!-- Teal-300 -->
-             <div class="w-1/2 bg-teal-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal-300</div>
+             <!-- Teal-400 -->
+             <div class="w-1/2 bg-purple-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Purple</div>
 
-             <!-- Blue-300 -->
-             <div class="w-1/2 bg-blue-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue-300</div>
+             <!-- Blue-400 -->
+             <div class="w-1/2 bg-fuchsia-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Fuchsia</div>
 
-             <!-- Indigo-300 -->
-             <div class="w-1/2 bg-indigo-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Indigo-400</div>
+             <!-- Indigo-400 -->
+             <div class="w-1/2 bg-pink-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink</div>
 
-             <!-- Purple-300 -->
-             <div class="w-1/2 bg-purple-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Purple-300</div>
 
-             <!-- Pink-300 -->
-             <div class="w-1/2 bg-pink-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink-400</div>
 
-             <!-- Lime -->
-             <div class="w-1/2 bg-lime-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Lime</div>
-
-             <!-- Cyan -->
-             <div class="w-1/2 bg-cyan-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Cyan</div>
-
-             <!-- Amber -->
-             <div class="w-1/2 bg-amber-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Amber</div>
-
-             <!-- Rose -->
-             <div class="w-1/2 bg-rose-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Rose</div>
-
-             <!-- Emerald -->
-             <div class="w-1/2 bg-emerald-300 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Emerald</div>
-
-             <!-- Teal-600 -->
-             <div class="w-1/2 bg-teal-500 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal-500</div>
-
-             <!-- Blue-600 -->
-             <div class="w-1/2 bg-blue-500 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue-500</div>
+   
          </div>
 
 

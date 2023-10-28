@@ -64,6 +64,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
         'website',
         'phone',
         'password',
+        'lang_preference',
         'last_login_at',
         'last_login_ip',
     ];
@@ -147,36 +148,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     {
         return $this->morphMany(Location::class, 'locatable');
     }
-
-
-    // /**
-    //  * Get all related countries of the user.
-    //  * Many-to-many polymorphic.
-    //  */
-    // public function countries()
-    // {
-    //     return $this->morphToMany(Country::class, 'countryable', 'countryables');
-    // }
-
-
-    // /**
-    //  * Get all related cities of the user.
-    //  * Many-to-many polymorphic.
-    //  */
-    // public function cities()
-    // {
-    //     return $this->morphToMany(City::class, 'cityable', 'cityables');
-    // }
-
-
-    // /**
-    //  * Get all of the districts of the user.
-    //  * Many-to-many polymorphic.
-    //  */
-    // public function districts()
-    // {
-    //     return $this->morphToMany(District::class, 'districtable', 'districtables');
-    // }
 
 
     /**

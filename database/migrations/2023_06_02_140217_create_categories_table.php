@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->integer('categoryable_id')->nullable(); // Link the category type to another model: city / organization / other (polymorph)
             $table->string('categoryable_type')->nullable(); // Link the category type to another model: city / organization / other (polymorph)
             $table->unsignedBigInteger('parent_id')->nullable(); // Create nested multilevel categories: id of parent category
+            $table->string('color')->nullable()->comment('css class');
             $table->timestamps();
             $table->softDeletes();
         });

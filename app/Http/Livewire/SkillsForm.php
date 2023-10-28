@@ -125,15 +125,9 @@ class SkillsForm extends Component
                ];
         });
 
-
-ds($tags)->label('$tags in mount')->color('green');
-
-
         $this->initTagsArrayTranslated = $tags->toArray();
 
         $this->tagsArray = json_encode($tags->toArray());
-
-ds($this->tagsArray)->label('$tagsArray in Mount')->color('green');
     }
 
 
@@ -180,7 +174,6 @@ ds($this->tagsArray)->label('$tagsArray in Mount')->color('green');
     public function updatedTagsArray()
     {
         $this->newTagsArray = collect(json_decode($this->tagsArray, true));
-ds($this->newTagsArray)->label('$newTagsArray in updatedTagsArray')->color('red');
 
         $localesToCheck = [app()->getLocale(), ''];     // Only current locale and tags without locale should be checked for any new tag keywords
         $newTagsArrayLocal = $this->newTagsArray->whereIn('locale', $localesToCheck);
@@ -292,7 +285,6 @@ ds($this->newTagsArray)->label('$newTagsArray in updatedTagsArray')->color('red'
 
         } else {
             // No category is selected: suggest all tags in $locale language
-            info('no cat selected');
             $suggestions = Tag::with([
                 'locale',
                 'contexts'
@@ -314,7 +306,6 @@ ds($this->newTagsArray)->label('$newTagsArray in updatedTagsArray')->color('red'
 
     public function cancelCreateTag()
     {
-        info('cancelCreateTag() fires!');
         $this->newTag = null;
         $this->newTagCategory = null;
         $this->translationVisible = false;
@@ -421,25 +412,20 @@ ds($this->newTagsArray)->label('$newTagsArray in updatedTagsArray')->color('red'
                 // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
                 $untagForeign = collect($this->initTagsArray)->pluck('taggable_tag_id');
 
-                ds($untagForeign)->label('$untagForeign in save()');
-
                 // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
                 if (count($this->initTagsArray) > 0) {
                     $retagReadOnly = collect($this->initTagsArrayTranslated)->where('readonly', true)->pluck('tag_id')->toArray();
 
-                    ds($retagReadOnly)->label('$retagReadOnly in save()');
                     $retagForeign = (implode(", ", $retagReadOnly));
                     $untagForeign = $untagForeign->diff($retagReadOnly);
                 }
                 // untag the result of the selection(s), the tags marked read-only are not untagged
                 $owner->untagById($untagForeign);
-                ds($untagForeign)->label('$untagForeignResult in save()');
 
                 // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
                 $this->newTagsArray = collect($this->newTagsArray);
                 $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
 
-                ds($tag)->label('$tag in save()');
                 $owner->tag($tag);
             }
         }

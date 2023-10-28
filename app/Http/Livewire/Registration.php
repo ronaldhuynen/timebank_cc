@@ -3,9 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Account;
-use App\Models\Locations\City;
 use App\Models\Locations\Country;
-use App\Models\Locations\Division;
 use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -84,7 +82,7 @@ class Registration extends Component implements CreatesNewUsers
             };
         }
 
-        $this->setValidationOptions();
+        $this->setValidationOptions();        
     }
 
 
@@ -179,6 +177,7 @@ class Registration extends Component implements CreatesNewUsers
                     'email' => $valid['email'],
                     'password' => Hash::make($valid['password']),
                     'profile_photo_path' => config('timebank-cc.files.profile_user.photo_new'),
+                    'lang_preference' => app()->getLocale()     // App locale is set by mcamara/laravel-localization package: set app locale according to browser language
                 ]);
 
                 $location = new Location();
@@ -187,7 +186,7 @@ class Registration extends Component implements CreatesNewUsers
                 $location->division_id = $valid['division'];
                 $location->city_id = $valid['city'];
                 $location->district_id = $valid['district'];
-                $user->locations()->save($location); // save the new location for the user     ()
+                $user->locations()->save($location); // save the new location for the user
 
                 $account = new Account();
                 $account->name = __(config('timebank-cc.accounts.personal.name'));

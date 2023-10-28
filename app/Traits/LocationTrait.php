@@ -74,8 +74,6 @@ trait LocationTrait
      */
     protected function getLocalized()
     {
-        info('localized:');
-        info($this->locale);
         return $this->locales()->where('locale', $this->locale)->first();
     }
 
@@ -90,7 +88,6 @@ trait LocationTrait
             return $this->name;
         }
         $localized = $this->getLocalized();
-        info($localized);
         return !is_null($localized) ? $localized->name : $this->name;
     }
 

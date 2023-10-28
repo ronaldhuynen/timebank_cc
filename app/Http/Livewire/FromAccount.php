@@ -31,7 +31,6 @@ class FromAccount extends Component
     {
         $this->userAccounts = $this->getUserAccounts();
         $this->emitSelf('preSelected)');
-        info('reset form on FromAccount');
     }
 
 

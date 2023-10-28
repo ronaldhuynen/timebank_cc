@@ -266,8 +266,6 @@ trait TaggableWithLocale
                 return optional($tag->locale)->locale == $toLocale;
             })->first() ?? $contexts->tags->first();
 
-        ds($tag->tag_id);
-
         // Similar approach for categories
         $categoryTranslation = $contexts->category->translations
             ->firstWhere('locale', $toLocale)

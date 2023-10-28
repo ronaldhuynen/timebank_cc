@@ -81,7 +81,6 @@ class UpdateProfilePhoneForm extends Component
      */
     public function updatedPhone()
     {
-        info($this->state['phone']);
         $this->validateOnly($this->state['phone']);
 
         if  ($this->state['phone'] != '') {

@@ -379,7 +379,6 @@ class Posts extends Component
      */
     public function trixEditor($value = null)
     {
-        info('trixEditor catch');
         $this->content = $value;
     }
 

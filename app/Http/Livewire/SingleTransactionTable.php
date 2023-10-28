@@ -22,8 +22,6 @@ class SingleTransactionTable extends Component
     public function getTransaction()
     {
         $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->findOrFail($this->transactionId);
-        info($results);
-        // dd($results->to_account_id);
 
                 $transaction[] = [
                     'trans_id' => $results->id,

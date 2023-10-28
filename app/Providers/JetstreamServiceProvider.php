@@ -52,6 +52,21 @@ class JetstreamServiceProvider extends ServiceProvider
             }
         });
 
+        // Register LoginResponse for conditional redirects in Http/Responses/LoginResponse.php
+        // This is used to load language preference after login
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LoginResponse::class,
+            \App\Http\Responses\LoginResponse::class
+        );
+
+        // Register TwofactorLoginResponse for conditional redirects in Http/Responses/LoginResponse.php
+        // This is used to load language preference after login
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\TwoFactorLoginResponse::class,
+            \App\Http\Responses\LoginResponse::class
+        );
+
+
     }
 
     /**
@@ -75,4 +90,5 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         \Illuminate\Support\Facades\Blade::component('jetstream::components.'.$component, 'jet-'.$component);
     }
+
 }

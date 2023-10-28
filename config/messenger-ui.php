@@ -41,7 +41,7 @@ return [
 'routing' => [
         'domain' => null,
         'prefix' => 'messenger',
-        'middleware' => ['web', 'auth:sanctum', 'messenger.provider'],
+        'middleware' => ['web', 'auth:sanctum', 'messenger.provider:required'],
         'invite_middleware' => ['web', 'messenger.provider'],
     ],
 ];

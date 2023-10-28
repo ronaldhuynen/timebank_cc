@@ -110,9 +110,6 @@ class UpdateProfileLocationForm extends Component
     {
         $this->district = $value;
         $this->setValidationOptions();
-        
-ds($this->district)->label('district in DistrictToParent');
-
     }
 
 

@@ -53,7 +53,8 @@ class DatabaseSeeder extends Seeder
 
             $admin->assignRole('Super-Admin');
 
-        }
+            $this->call(LoveReactionTypesTableSeeder::class);
+    }
 
         $this->call([
         TestUserSeeder::class,

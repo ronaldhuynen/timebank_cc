@@ -141,6 +141,11 @@ return [
     */
 
     'custom' => [
+        'profile_user' => [
+            'name' => [
+                'disallowed' => 'The :attribute can not contain ":word"',
+            ],
+        ],
         'country' => [
             'required_if' => 'The :attribute field is required.',
         ],
@@ -167,6 +172,10 @@ return [
     */
 
     'attributes' => [
+
+        // registration.php
+        'name' => 'Name',
+
         // update-profile-organization-form.blade.php
         // update-profile-personal-form.blade.php
         'state.about' => 'Description',

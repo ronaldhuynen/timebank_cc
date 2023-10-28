@@ -30,17 +30,5 @@ class MessengerServiceProvider extends ServiceProvider
             Organization::class
         ]);
 
-        // Set the video call driver of your choosing.
-        // Messenger::setVideoDriver(MyVideoBroker::class);
-
-        // Register bot handlers you wish to use. You can install the messenger-bots addon for ready-made handlers.
-        // MessengerBots::registerHandlers([
-        //     //
-        // ]);
-
-        // Register the packaged bots you wish to use.
-        // MessengerBots::registerPackagedBots([
-        //     //
-        // ]);
     }
 }

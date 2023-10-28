@@ -37,7 +37,25 @@ return [
 
     'rules' => [
         'profile_user' => [
-            'name' =>  'required|string|unique:users,name|min:3|max:40',
+            'name' =>  ['required','string','unique:users,name','min:3','max:40', 
+                function ($attribute, $value, $fail) {    
+                // Disallow the following words to be used inside the name:
+                    $disallowedWords = [
+                        'admin',  
+                        'superuser',
+                        'super-user',
+                        'supervisor',
+                        'timebank',
+                        'time-bank',
+                        'moderator',
+                    ];
+                    foreach ($disallowedWords as $word) {
+                        if (str_contains(strtolower($value), $word)) {
+                            $fail(trans('validation.custom.profile_user.name.disallowed', ['word' => $word]));
+                        }
+                    }   
+                },
+            ],
             'email' => 'required|email|unique:users,email|max:40',
             'password' => 'required|min:6|same:passwordConfirmation',
             'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',

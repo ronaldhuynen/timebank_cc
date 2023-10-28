@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Component;
 use Stevebauman\Location\Facades\Location as IpLocation;
@@ -41,6 +42,7 @@ class Registration extends Component implements CreatesNewUsers
     {
         return [
         'name' => config('timebank-cc.rules.profile_user.name'),
+        // 'name' => [ Rule::notIn(['admin', 'administrator'])], // Disallow 'admin' and 'administrator'
         'email' => config('timebank-cc.rules.profile_user.email'),
         'password' => config('timebank-cc.rules.profile_user.password'),
         'country' => 'required_if:validateCountry,true|integer',

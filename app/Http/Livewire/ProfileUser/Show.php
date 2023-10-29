@@ -2,15 +2,23 @@
 
 namespace App\Http\Livewire\ProfileUser;
 
+use App\Models\Friend;
+use App\Models\PendingFriend;
+use App\Models\User;
+use function PHPUnit\Framework\isFalse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
+
 use Spatie\Activitylog\Models\Activity;
 
 class Show extends Component
 {
     public $user;
-    public $location= [];
+    public $location = [];
+    public $friend;
+    public $pendingFriend;
+    public $phone;
     public $lastLoginAt;
     public $registeredSince;
     public $response;
@@ -35,7 +43,7 @@ class Show extends Component
                 $location .= $firstLocation->country->code;
             }
         }
-        
+
         // Remove trailing comma and space
         $this->location = ['name' => rtrim($location, ', ')];
 
@@ -54,15 +62,31 @@ class Show extends Component
             $latitude = $data[0]['lat'];
             $longitude = $data[0]['lon'];
 
-        // Create the OpenStreetMap URL with the coordinates
+            // Create the OpenStreetMap URL with the coordinates
             $osmUrl = "https://www.openstreetmap.org/?mlat={$latitude}&mlon={$longitude}#map=12/{$latitude}/{$longitude}";
 
-        // Generate the link in HTML
+            // Generate the link in HTML
             $this->location['link'] =  $osmUrl;
         } else {
             $this->location['link'] = "#";
         }
 
+        $this->friend = Friend::where('owner_id', session('activeProfileId'))
+            ->where('owner_type', session('activeProfileType'))
+            ->where('party_id', $this->user->id)
+            ->where('party_type', User::class)
+            ->get();
+
+        $this->pendingFriend = PendingFriend::where('sender_id', session('activeProfileId'))
+            ->where('sender_type', session('activeProfileType'))
+            ->where('recipient_id', $this->user->id)
+            ->where('recipient_type', User::class)
+            ->select('id')
+            ->get();
+
+        if ($this->user->phone_public_for_friends === 1) {
+            $this->phone = User::find($this->user->id)->phone;
+        } 
 
         // Calculate last login
         $activityLog =
@@ -80,7 +104,33 @@ class Show extends Component
         $this->registeredSince = $createdAt->diffForHumans();
     }
 
-    
+    public function friendRequest()
+    {
+        $this->pendingFriend = 
+            PendingFriend::where('sender_id', session('activeProfileId'))
+            ->where('sender_type', session('activeProfileType'))
+            ->where('recipient_id', $this->user->id)
+            ->where('recipient_type', User::class)
+            ->select('id')
+            ->get();
+
+        // $this->pendingFriend = true;
+    }
+
+    public function cancelFriendRequest()
+    {
+        $this->pendingFriend = 
+            PendingFriend::where('sender_id', session('activeProfileId'))
+            ->where('sender_type', session('activeProfileType'))
+            ->where('recipient_id', $this->user->id)
+            ->where('recipient_type', User::class)
+            ->select('id')
+            ->get();
+
+        // $this->friend = false;
+    }
+
+
     public function render()
     {
         return view('livewire.profile-user.show');

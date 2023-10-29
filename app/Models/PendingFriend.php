@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Friend extends Model
+class PendingFriend extends Model
 {
     use HasFactory;
 
-    /**
+     /**
      * @var string
      */
-    protected $table = 'friends';
+    protected $table = 'pending_friends';
 
     /**
      * @var array
      */
     protected $guarded = [];
-    
+
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -27,16 +27,15 @@ class Friend extends Model
      */
     public $incrementing = false;
 
-
-    public function owner()
+    
+    public function sender()
     {
         return $this->morphTo();
     }
 
 
-    public function party()
+    public function recipient()
     {
         return $this->morphTo();
     }
-
 }

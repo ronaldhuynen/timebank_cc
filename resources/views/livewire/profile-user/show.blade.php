@@ -12,19 +12,33 @@
              <div class="relative rounded-lg border-gray-700 bg-black border-2 px-12 py-16 shadow-xl dark:border-gray-700">
 
                  <div class="mt-3 flex justify-between">
-                     <img class="h-60 w-60 flex-shrink-0 rounded-full object-cover ring-4 ring-green-400 sm:mx-4"
-                         src="{{ Storage::url($user->profile_photo_path) }}" alt="{{ $user->name }}">
+                 @if ($isOnline)
+                    <img class="h-60 w-60 flex-shrink-0 rounded-full object-cover ring-4 ring-green-400 sm:mx-4"
+                        src="{{ Storage::url($user->profile_photo_path) }}" alt="{{ $user->name }}">
+                @elseif ($isAway)
+                    <img class="h-60 w-60 flex-shrink-0 rounded-full object-cover ring-4 ring-sky-400 sm:mx-4"
+                        src="{{ Storage::url($user->profile_photo_path) }}" alt="{{ $user->name }}">
+                @else
+                    <img class="h-60 w-60 flex-shrink-0 rounded-full object-cover ring-4 ring-gray-300 sm:mx-4"
+                        src="{{ Storage::url($user->profile_photo_path) }}" alt="{{ $user->name }}">
+                @endif
                      <div class="pl-4 sm:mx-4 sm:mt-0">
 
                          <div class="flex justify-between">
                              <h1
                                  class="text-4xl font-extrabold text-gray-100 group-hover:text-white dark:text-white ">
-                                 {{ $user->name }}</h1>
-                        <!--- Online status -->    
+                                 {{ $user->name }}
+                                 </h1>
+                        <!--- Online status -->
+                        @if ($isOnline)    
                         <span class="flex justify-between">   
-                            <span class="rounded bg-black border-green-400 border-2 px-3 py-1 mt-2 mr-2 h-7 font-extrabold text-green-300 text-2xs">Online</span>                          
-                         {{-- <span class="rounded bg-black border-green-400 border-2 px-3 py-1 mt-2 mr-2 h-7 font-extrabold text-green-300 text-2xs">Available</span> --}}
-                                 
+                            <span class="rounded bg-black border-green-400 border-2 px-3 py-1 mt-2 mr-2 h-7 font-extrabold text-green-300 text-2xs">{{ __('Online') }}</span>                          
+                        @elseif ($isAway)
+                         <span class="flex justify-between">   
+                            <span class="rounded bg-black border-sky-400 border-2 px-3 py-1 mt-2 mr-2 h-7 font-extrabold text-sky-300 text-2xs">{{ __('Online') }}</span>                          
+                        @endif 
+
+                        <!--- Like button -->        
                         @livewire('like-button', ['model' => $user, 'likedCounter' => $user->likedCounter, 'typeName' => 'Star'])                         
 
                         </span>
@@ -226,10 +240,16 @@
                              <div class="bg-gray-white flex items-center justify-end gap-8 py-3 text-right">
 
                                  <button
-                                     class="items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25">Pay</button>
+                                     class="items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25">{{ __('Pay') }}</button>
 
                                  <button
-                                     class="transition0 items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25">Contact</button>
+                                 wire:click="startMessenger"  
+                                     class="transition0 items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25">{{ __('Send Message') }}</button>
+                             
+                             
+                             
+                             
+                             
                              </div>
                          </div>
                      </div>

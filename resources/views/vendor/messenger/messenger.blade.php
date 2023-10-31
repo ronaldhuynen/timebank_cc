@@ -9,7 +9,7 @@
                     <div id="my_avatar_status">
                         <img data-toggle="tooltip" data-placement="right" title="You are {{\Illuminate\Support\Str::lower(\RTippin\Messenger\Contracts\MessengerProvider::ONLINE_STATUS[messenger()->getProvider()->getProviderOnlineStatus()])}}" class="my-global-avatar ml-1 rounded-circle medium-image avatar-is-{{\Illuminate\Support\Str::lower(\RTippin\Messenger\Contracts\MessengerProvider::ONLINE_STATUS[messenger()->getProvider()->getProviderOnlineStatus()])}}" src="{{messenger()->getProvider()->getProviderAvatarRoute()}}" />
                     </div>
-                    <span class="d-none d-md-inline h4 font-weight-bold">{{__('Conversations')}}</span>
+                    <span class="d-none d-md-inline h4 font-weight-bold">{{ __('Conversations') }}</span>
                     <div class="dropdown">
                         <button data-tooltip="tooltip" title="Messenger Options" data-placement="right" class="btn btn-lg text-secondary btn-light pt-1 pb-0 px-2 dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cogs fa-2x"></i></button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -54,7 +54,7 @@
                 <div id="drag_drop_overlay" class="drag_drop_overlay rounded text-center NS">
                     <div class="h-100 d-flex justify-content-center">
                         <div class="align-self-center h1">
-                            <span class="badge badge-pill badge-dark"><i class="fas fa-cloud-upload-alt"></i> Drop files to upload</span>
+                            <span class="badge badge-pill badge-dark"><i class="fas fa-cloud-upload-alt"></i> {{ __('Drop files to upload') }}</span>
                         </div>
                     </div>
                 </div>

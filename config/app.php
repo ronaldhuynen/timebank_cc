@@ -98,6 +98,27 @@ return [
 
     'fallback_locale' => 'en',
 
+     /*
+    |--------------------------------------------------------------------------
+    | Supported Locales
+    |--------------------------------------------------------------------------
+    |
+    | This array lists all of the locales supported by the application. If a
+    | translation key is not found for the current locale, the fallback locale
+    | will be used instead. You are free to add additional locales to this
+    | array as needed.
+    |
+    */
+
+    'locales' => [
+        'en',
+        'nl',
+        // 'de',
+        // 'fr',
+        // 'es',
+    ],
+
+
     /*
     |--------------------------------------------------------------------------
     | Faker Locale

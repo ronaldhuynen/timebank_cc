@@ -5,11 +5,10 @@ namespace App\Http\Livewire\ProfileUser;
 use App\Models\Friend;
 use App\Models\PendingFriend;
 use App\Models\User;
-use function PHPUnit\Framework\isFalse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
-
+use RTippin\Messenger\Messenger;
 use Spatie\Activitylog\Models\Activity;
 
 class Show extends Component
@@ -21,11 +20,16 @@ class Show extends Component
     public $phone;
     public $lastLoginAt;
     public $registeredSince;
-    public $response;
+    public $isOnline;
+    public $isAway;
 
+    /**
+     * The mount method is called when the component is mounted.
+     *
+     */
     public function mount()
     {
-        // Define the location name
+        // initialize the user's location
         $location = '';
         $firstLocation = $this->user->locations->first();
 
@@ -71,12 +75,14 @@ class Show extends Component
             $this->location['link'] = "#";
         }
 
+        // retrieve the friend record for the current user and the displayed user profile
         $this->friend = Friend::where('owner_id', session('activeProfileId'))
             ->where('owner_type', session('activeProfileType'))
             ->where('party_id', $this->user->id)
             ->where('party_type', User::class)
             ->get();
 
+        // retrieve the pending friend request for the current user and the displayed user profile
         $this->pendingFriend = PendingFriend::where('sender_id', session('activeProfileId'))
             ->where('sender_type', session('activeProfileType'))
             ->where('recipient_id', $this->user->id)
@@ -86,7 +92,7 @@ class Show extends Component
 
         if ($this->user->phone_public_for_friends === 1) {
             $this->phone = User::find($this->user->id)->phone;
-        } 
+        }
 
         // Calculate last login
         $activityLog =
@@ -102,35 +108,74 @@ class Show extends Component
         // Calculate Registered since
         $createdAt = Carbon::parse($this->user->created_at);
         $this->registeredSince = $createdAt->diffForHumans();
+
+        // Check online status of the user        
+        $messenger = app(Messenger::class);
+        $status = $messenger->getProviderOnlineStatus($this->user);
+
+
+        if ($status === 1) {
+            $this->isOnline = true;
+            $this->isAway = false;
+        } elseif ($status === 2) {
+            $this->isOnline = false;
+            $this->isAway = true;
+        } else {
+            $this->isOnline = false;
+            $this->isAway = false;
+        }
+
     }
 
+
+    /**
+     * Retrieve the pending friend request for the current user and the displayed user profile.
+     *
+     * @return void
+     */
     public function friendRequest()
     {
-        $this->pendingFriend = 
+        $this->pendingFriend =
             PendingFriend::where('sender_id', session('activeProfileId'))
             ->where('sender_type', session('activeProfileType'))
             ->where('recipient_id', $this->user->id)
             ->where('recipient_type', User::class)
             ->select('id')
             ->get();
-
-        // $this->pendingFriend = true;
     }
 
+
+    /**
+     * Cancel a friend request by selecting the pending friend record with the sender ID, sender type, recipient ID, and recipient type.
+     *
+     * @return void
+     */
     public function cancelFriendRequest()
     {
-        $this->pendingFriend = 
+        $this->pendingFriend =
             PendingFriend::where('sender_id', session('activeProfileId'))
             ->where('sender_type', session('activeProfileType'))
             ->where('recipient_id', $this->user->id)
             ->where('recipient_type', User::class)
             ->select('id')
             ->get();
-
-        // $this->friend = false;
     }
 
 
+    /**
+     *  Start a conversation with the user.
+     */
+    public function startMessenger()
+    {
+        return redirect('/messenger/recipient/user/' . $this->user->id);
+    }
+
+
+    /**
+     * Render the view for the ProfileUser Show component.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         return view('livewire.profile-user.show');

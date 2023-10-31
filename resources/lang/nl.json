@@ -146,6 +146,22 @@
     "Balance": "Saldo",
 
     "Commons": "Meent",
-    "Yesterday": "Gisteren"
+    "Yesterday": "Gisteren",
+
+    "Messenger": "Messenger",
+    "Chat Messanger": "Chat Messenger",
+    "Conversations": "Gesprekken",
+    "No conversations": "Geen gesprekken",
+    "Pending": "In afwachting",
+    "Sent": "Verzonden",
+    "Friend Request": "Vriendschapverzoek",
+    "Remove friend": "Verwijder vriend",
+    "Friend": "Vriend",
+    "Connecting": "Verbinden",
+    "General Settings": "Algemene instellingen",
+    "Drop files to upload": "Sleep bestanden om te uploaden",
+    "No Pending Request": "Geen verzoek in afwachting",
+    "Search conversations by name": "Zoek gesprekken op naam"
+    
 
 }

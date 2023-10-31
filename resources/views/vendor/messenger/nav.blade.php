@@ -9,7 +9,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right notify-drop bg-light" aria-labelledby="click_friends_tab">
             <div class="col-12 text-center">
-                <h6 class="font-weight-bold">Active Calls</h6>
+                <h6 class="font-weight-bold">{{ __('Active Calls') }}</h6>
                 <hr class="mt-n1 mb-2">
             </div>
             <div id="active_calls_ctnr" class="drop-content list-group">
@@ -35,8 +35,8 @@
             <div class="row">
                 <div class="col-12 pill-tab-nav">
                     <nav id="nav-friend-tabs" class="nav nav-pills flex-column flex-sm-row" role="tablist">
-                        <a class="flex-sm-fill text-sm-center nav-link h6 active" id="tab-pending" data-toggle="pill" href="#f_pending" role="tab" aria-controls="f_pending" aria-selected="true"><i class="fas fa-user-friends"></i> Pending</a>
-                        <a class="flex-sm-fill text-sm-center nav-link h6" id="tab-sent" data-toggle="pill" href="#f_sent" role="tab" aria-controls="f_sent" aria-selected="false"><i class="fas fa-user-friends"></i> Sent</a>
+                        <a class="flex-sm-fill text-sm-center nav-link h6 active" id="tab-pending" data-toggle="pill" href="#f_pending" role="tab" aria-controls="f_pending" aria-selected="true"><i class="fas fa-user-friends"></i> {{ __('Pending') }}</a>
+                        <a class="flex-sm-fill text-sm-center nav-link h6" id="tab-sent" data-toggle="pill" href="#f_sent" role="tab" aria-controls="f_sent" aria-selected="false"><i class="fas fa-user-friends"></i> {{ __('Sent') }} </a>
                     </nav>
                 </div>
             </div>
@@ -54,7 +54,7 @@
             </div>
             <div class="col-12 text-center mt-2 pb-4 pb-lg-3">
                 <hr class="mb-1 mt-0">
-                <span class="float-right"><a class="nav-search-link text-dark" href="#"><i class="fas fa-search"></i> Find Friends!</a></span>
+                <span class="float-right"><a class="nav-search-link text-dark" href="#"><i class="fas fa-search"></i>{{ __('Find Friends!') }} </a></span>
             </div>
         </div>
     </li>

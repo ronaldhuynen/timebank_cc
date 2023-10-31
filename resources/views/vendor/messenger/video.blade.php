@@ -4,7 +4,7 @@
 <div id="call_status">
     <div class="jumbotron bg-gradient-dark text-white">
         <div class="text-center">
-            <span id="call_status_msg" class="display-4">Connecting...</span>
+            <span id="call_status_msg" class="display-4">{{ __('Connecting') }}...</span>
         </div>
         <div id="call_status_body" class="text-center mt-5">
             <div class="col-12"><div class="spinner-grow text-success" role="status"></div></div>

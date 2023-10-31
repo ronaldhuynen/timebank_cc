@@ -11,6 +11,10 @@
         <!-- Scripts head -->
         <wireui:scripts />
         <script src="{{ asset('js/app.js') }}" defer></script>
+        {{-- <script src="{{ asset('js/lang.js') }}" defer></script> --}}
+                <script src="{{ route('lang.js') }}"></script>
+
+
 
         <!-- Fonts -->
         {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
@@ -36,6 +40,9 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
+        <script>
+            window.i18n = {!! json_encode(__('messages')) !!};
+        </script>
 
 
         <style>

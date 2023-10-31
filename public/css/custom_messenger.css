@@ -73,7 +73,7 @@
 }
 
 #messenger-style-overrides .avatar-is-away {
-    box-shadow: 0px 0px 0px 2px #1f2937;
+    box-shadow: 0px 0px 0px 2px #38bdf8;
     padding: 1px
 }
 
@@ -275,7 +275,7 @@
 }
 
 #messenger-style-overrides img.main-bobble-away {
-    box-shadow: 0px 0px 0px 2px #1f2937;
+    box-shadow: 0px 0px 0px 2px #38bdf8;
     padding: 1px
 }
 

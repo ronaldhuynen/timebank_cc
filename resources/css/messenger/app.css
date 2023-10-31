@@ -3764,8 +3764,8 @@ body, wrapper {
 
 .avatar-is-away {
   border-radius: 50%;
-  -webkit-box-shadow: 0 0 3px 3px #dc3545;
-          box-shadow: 0 0 3px 3px #dc3545;
+  -webkit-box-shadow: 0 0 3px 3px #38bdf8;
+          box-shadow: 0 0 3px 3px #38bdf8;
 }
 
 .shadow-warning {
@@ -4102,8 +4102,8 @@ body, wrapper {
   width: 20px;
   height: 20px;
   opacity: 0.5;
-  -webkit-box-shadow: 0 0 2px 1px #999 !important;
-          box-shadow: 0 0 2px 1px #999 !important;
+  -webkit-box-shadow: 0 0 2px 1px #38bdf8 !important;
+          box-shadow: 0 0 2px 1px #38bdf8 !important;
 }
 
 .main-bobble-offline {
@@ -4114,8 +4114,8 @@ body, wrapper {
 
 .main-bobble-away {
   border-radius: 50%;
-  -webkit-box-shadow: 0 0 6px 4px #dc3545;
-          box-shadow: 0 0 6px 4px #dc3545;
+  -webkit-box-shadow: 0 0 6px 4px #38bdf8;
+          box-shadow: 0 0 6px 4px #38bdf8;
 }
 
 .main-bobble-online {

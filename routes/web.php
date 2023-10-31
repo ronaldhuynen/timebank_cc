@@ -1,17 +1,16 @@
 <?php
 
 use App\Http\Controllers\TestController;
-use App\Http\Livewire\ProfileUser\SendFriendRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LangJsController;
 use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
 use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 use Laravel\Jetstream\Jetstream;
 use Mcamara\LaravelLocalization\LaravelLocalization;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -40,27 +39,34 @@ Route::get('/clear-cache', function () {
     return "Cache is cleared";
 });
 
+
+
+// Dynamically create routes for all available locales for the lang.js file
+// This is used to dynamically load the correct language file in the frontend (like the Chat Messenger)
+Route::get('/js/lang.js', [LangJsController::class, 'js'])->name('lang.js');
+
+
 //TODO: Use translated routes, see https://github.com/mcamara/laravel-localization
 
 Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
     'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
     ], function () {
-    /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
+        /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
 
-    Route::get('/', function () {
-        return view('welcome');
-    });
+        Route::get('/', function () {
+            return view('welcome');
+        });
 
-    // Route::post('upload', [UploadController::class, 'store']);
+        // Route::post('upload', [UploadController::class, 'store']);
 
-    //----- Protected auth verified routes -----//
-    Route::middleware([
-        'auth:sanctum',
-        config('jetstream.auth_session')
-        ,'verified'
-    ])->group(function () {
+        //----- Protected auth verified routes -----//
+        Route::middleware([
+            'auth:sanctum',
+            config('jetstream.auth_session')
+            ,'verified'
+        ])->group(function () {
             Route::group(['middleware' => ['registration-complete']], function () {
-            
+
                 Route::get('/dashboard', function () {
                     return view('dashboard');
                 })->name('dashboard');
@@ -76,12 +82,12 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                 Route::get('/fr/dashboard', function () {
                     return view('dashboard');
                 })->name('fr.dashboard');
-                                
+
                 Route::get('/es/dashboard', function () {
                     return view('dashboard');
                 })->name('es.dashboard');
 
-           
+
                 Route::get('/transfer', 'App\Http\Controllers\TransactionController@transfer')->name('transfer');
                 Route::post('/transfer', 'App\Http\Controllers\TransactionController@saveTransfer')->name('saveTransfer');
 
@@ -101,8 +107,8 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
                 Route::get('/posts/{slug}', 'App\Http\Controllers\PostController@showBySlug')
                     ->name('posts.show_by_slug');
-                    
-                
+
+
                 Route::get('/user/{userId}', 'App\Http\Controllers\UserController@show')
                     ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed
                     ->name('user.show')
@@ -114,24 +120,29 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                     ->name('org.show')
                     ->missing(function () {return view('org.not_found');});
 
-                    
+
                 Route::get('/user/edit', 'App\Http\Controllers\UserController@edit')
                     ->name('user.edit');
 
 
                 Route::get('/org/edit', 'App\Http\Controllers\OrgController@edit')
                     ->name('org.edit');
-                    
+
 
                 // Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
 
-                
+
                 Route::get('/users-overview', 'App\Http\Controllers\UserController@index')->name('users-overview');
 
 
-                    
+
                 // Route::get('/send-friend-request', SendFriendRequest::class);
 
+
+                Route::get('/user/{userId}', 'App\Http\Controllers\UserController@show')
+                                    ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed
+                                    ->name('user.show')
+                                    ->missing(function () {return view('user.not_found');});
 
 
 
@@ -183,16 +194,16 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
 
 
+            });
+
+
+            // // Route when full registration has NOT yet been completed.
+            // // See RegistrationComplete.php
+            // //Registration steps, protected with auth middleware
+            // Route::get('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'create'])
+            //     ->name('register-step2.create');
+            // Route::post('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'store'])
+            //     ->name('register-step2.post');
         });
 
-
-        // // Route when full registration has NOT yet been completed.
-        // // See RegistrationComplete.php
-        // //Registration steps, protected with auth middleware
-        // Route::get('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'create'])
-        //     ->name('register-step2.create');
-        // Route::post('/register-step2', [\App\Http\Controllers\RegisterStep2Controller::class, 'store'])
-        //     ->name('register-step2.post');
     });
-
-});

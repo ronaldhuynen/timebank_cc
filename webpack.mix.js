@@ -19,6 +19,7 @@ mix.js('resources/js/echo.js', 'public/js')
     .js('node_modules/@yaireo/tagify/dist/tagify.min.js', 'public/js')
     .js('node_modules/@yaireo/tagify/dist/tagify.polyfills.min.js', 'public/js')
     .js('resources/js/app.js', 'public/js')
+    // .js('resources/js/lang.js', 'public/js')
     // .js('resources/js/joypixels.min.js', 'public/js')            // there's a tracker cdn inside! 
     .sass('resources/sass/app.scss', 'public/css/app.css')
     .sass('node_modules/@yaireo/tagify/src/tagify.scss', 'public/css/tagify.css')

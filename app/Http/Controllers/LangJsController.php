@@ -19,7 +19,7 @@ class LangJsController extends Controller
 
         foreach ($locales as $locale) {
             $strings = File::get(resource_path("lang/{$locale}.json"));
-            ds($strings)->label('LanJsController');
+            // ds($strings)->label('LanJsController');
             $translations[$locale] = json_decode($strings, true);
         }
 

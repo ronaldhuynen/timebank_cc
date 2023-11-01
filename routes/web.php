@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\LangJsController;
 use App\Http\Controllers\TestController;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LangJsController;
 use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
 use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
@@ -40,7 +40,7 @@ Route::get('/clear-cache', function () {
 });
 
 
-
+//! TODO translate js packages
 // Dynamically create routes for all available locales for the lang.js file
 // This is used to dynamically load the correct language file in the frontend (like the Chat Messenger)
 Route::get('/js/lang.js', [LangJsController::class, 'js'])->name('lang.js');
@@ -139,11 +139,16 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                 // Route::get('/send-friend-request', SendFriendRequest::class);
 
 
+
                 Route::get('/user/{userId}', 'App\Http\Controllers\UserController@show')
                                     ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed
                                     ->name('user.show')
                                     ->missing(function () {return view('user.not_found');});
 
+
+                Route::get('/{name}', 'App\Http\Controllers\UserController@showByName')
+                                    ->name('show.by.name')
+                                    ->missing(function () {return view('user.not_found');});
 
 
 

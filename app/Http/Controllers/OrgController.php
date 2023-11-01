@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -52,9 +53,9 @@ class OrgController extends Controller
     }
 
 
-    public function show($orgId)
-    {        
-        $org = User::select([
+   public function show($orgId)
+    {
+        $org = Organization::select([
             'id',
             'name',
             'profile_photo_path',
@@ -64,33 +65,41 @@ class OrgController extends Controller
             'website',
             'phone_public_for_friends',
             'created_at',
-            'last_login_at'
+            'last_login_at',
+            'love_reactant_id'
         ])
         ->with([
-            'organizations:id,name,profile_photo_path',
+            'users:id,name,profile_photo_path',
             'accounts:id,name,accountable_type,accountable_id',
             'languages:id,name,lang_code,flag',
             'socials:id,name,icon,urL_structure',
-            'locations.cities.locale:city_id,name',
-            'locations.countries.locale:country_id,name',
+            'locations.district.locale:district_id,name',
+            'locations.city.locale:city_id,name',
+            'locations.division.locale:division_id,name',
+            'locations.country.locale:country_id,name',
+            'loveReactant.reactions.reacter.reacterable',
+            // 'loveReactant.reactions.type',
+            'loveReactant.reactionCounters',
+            // 'loveReactant.reactionTotal',
         ])
         ->find($orgId);
 
+        if ($org->count() >= 1) {
 
-        if ($user->count() >= 1) {
-
-            $registerDate = Carbon::createFromTimeStamp(strtotime($user->created_at))->isoFormat('LL'); 
-            $lastLoginDate = Carbon::createFromTimeStamp(strtotime($user->last_login_at))->isoFormat('LL');
+            $org->likedCounter =  $org->loveReactant->reactionCounters->first() ? (int)$org->loveReactant->reactionCounters->first()->weight : null;
+            $registerDate = Carbon::createFromTimeStamp(strtotime($org->created_at))->isoFormat('LL');
+            $lastLoginDate = Carbon::createFromTimeStamp(strtotime($org->last_login_at))->isoFormat('LL');
 
         } else {
-            return view('profile-org.not_found');
+            return view('profile-user.not_found');
         }
 
+        ds($org)->label('$org in OrgController');
 
         //TODO: add permission check
         //TODO: if 403, but has permission, redirect with message to switch profile
         //TODO: replace 403 with custom redirect page incl explanation
-        return ($user != null ? view('profile-org.show', compact(['org'])) : abort(403));
+        return ($org != null ? view('profile-user.show', compact(['org'])) : abort(403));
     }
 
     

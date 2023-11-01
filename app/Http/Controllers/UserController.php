@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\OrgController;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -99,6 +101,29 @@ class UserController extends Controller
         //TODO: if 403, but has permission, redirect with message to switch profile
         //TODO: replace 403 with custom redirect page incl explanation
         return ($user != null ? view('profile-user.show', compact(['user'])) : abort(403));
+    }
+
+    public function showByName($name)
+    {
+        $user = User::where('name', $name)->first();
+        if ($user) {
+            $userId = $user->id;
+        }
+
+
+        $organization = Organization::where('name', $name)->first();
+        if ($organization) {
+            $orgId = $organization->id;
+        }
+
+        if ($user) {
+            return $this->show($userId);
+        }
+
+        if ($organization) {
+            return (new OrgController())->show($orgId);
+        }
+
     }
 
 

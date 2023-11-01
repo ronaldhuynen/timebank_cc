@@ -37,7 +37,7 @@ return [
 
     'rules' => [
         'profile_user' => [
-            'name' =>  ['required','string','unique:users,name','min:3','max:40', 
+            'name' =>  ['required','string','unique:users,name','unique:organizations,name','min:3','max:40', 
                 function ($attribute, $value, $fail) {    
                 // Disallow the following words to be used inside the name:
                     $disallowedWords = [
@@ -45,9 +45,11 @@ return [
                         'superuser',
                         'super-user',
                         'supervisor',
+                        'bank',
                         'timebank',
                         'time-bank',
                         'moderator',
+                        'regulator',
                     ];
                     foreach ($disallowedWords as $word) {
                         if (str_contains(strtolower($value), $word)) {

@@ -6,6 +6,7 @@ use App\Models\Friend;
 use App\Models\PendingFriend;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use RTippin\Messenger\Messenger;
@@ -18,6 +19,7 @@ class Show extends Component
     public $friend;
     public $pendingFriend;
     public $phone;
+    public $languagesWithCompetences = [];
     public $lastLoginAt;
     public $registeredSince;
     public $isOnline;
@@ -109,7 +111,7 @@ class Show extends Component
         $createdAt = Carbon::parse($this->user->created_at);
         $this->registeredSince = $createdAt->diffForHumans();
 
-        // Check online status of the user        
+        // Check online status of the user
         $messenger = app(Messenger::class);
         $status = $messenger->getProviderOnlineStatus($this->user);
 
@@ -124,6 +126,13 @@ class Show extends Component
             $this->isOnline = false;
             $this->isAway = false;
         }
+
+        
+        $this->user->languages = $this->user->languages->map(function ($language) {
+            $language->competence_name = DB::table('language_competences')->find($language->pivot->competence)->name;
+            return $language;
+        });
+
 
     }
 

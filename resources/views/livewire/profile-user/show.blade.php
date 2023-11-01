@@ -1,14 +1,8 @@
  <div class="py-12">
      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-         {{-- <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg"> --}}
-
-
-         {{-- <div class="p-6 sm:px-20 bg-white border-b border-gray-200"> --}}
 
          <section>
-             {{-- <div class="container px-60 py-10 mx-auto"> --}}
 
-             {{-- <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 xl:grid-cols-1"> --}}
              <div class="relative rounded-lg border-gray-700 bg-black border-2 px-12 py-16 shadow-xl dark:border-gray-700">
 
                  <div class="mt-3 flex justify-between">
@@ -111,18 +105,16 @@
                      </div>
 
                  </div>
-
+                
                  <div class="mt-6 flex items-center text-gray-400 dark:text-gray-200">
-
-                     <p class="pr-2">🇳🇱</p>
-                     <p class="pr-2">Dutch, expert</p>
-                     <p class="pr-2">|</p>
-                     <p class="pr-2">🇬🇧</p>
-                     <p class="pr-2">English, expert</p>
-                     <p class="pr-2">|</p>
-                     <p class="pr-2">🇩🇪</p>
-                     <p class="pr-2">German, beginner</p>
-                 </div>
+                    @foreach($user->languages as $language)
+                        <p class="pr-2">{{ $language['flag'] }}</p>
+                        <p class="pr-2">{{ trans($language['name']) }}, {{ trans($language->competence_name) }}</p>
+                        @if (!$loop->last)
+                            <p class="pr-2">|</p>
+                        @endif
+                    @endforeach
+                </div>
 
                  <div class="mt-2 flex-wrap gap-2 sm:flex">
                      {{-- <span class="flex-shrink-0 rounded font-extrabold bg-green-400 px-3 py-1 text-green-900">Available</span> --}}

@@ -127,13 +127,15 @@ class Show extends Component
             $this->isAway = false;
         }
 
-        
+        // Create a language collection that combines user languages and their competence names
         $this->user->languages = $this->user->languages->map(function ($language) {
             $language->competence_name = DB::table('language_competences')->find($language->pivot->competence)->name;
             return $language;
         });
 
+        ds($this->user)->label('user in show');
 
+        $this->user->lang_preference = DB::table('languages')->where('lang_code', $this->user->lang_preference)->first()->name;
     }
 
 

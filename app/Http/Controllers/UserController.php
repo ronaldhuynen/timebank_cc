@@ -65,6 +65,7 @@ class UserController extends Controller
             'date_of_birth',
             'website',
             'phone_public_for_friends',
+            'lang_preference',
             'created_at',
             'last_login_at',
             'love_reactant_id'
@@ -94,8 +95,6 @@ class UserController extends Controller
         } else {
             return view('profile-user.not_found');
         }
-
-        ds($user)->label('$user in UserController');
 
         //TODO: add permission check
         //TODO: if 403, but has permission, redirect with message to switch profile

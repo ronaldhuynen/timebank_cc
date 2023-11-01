@@ -115,7 +115,9 @@
                         @endif
                     @endforeach
                 </div>
-
+                <div class="-mt-4 flex items-center text-gray-400 dark:text-gray-200">
+                     {{ trans($user->lang_preference) }} {{ __('is preferred') }}
+                </div>
                  <div class="mt-2 flex-wrap gap-2 sm:flex">
                      {{-- <span class="flex-shrink-0 rounded font-extrabold bg-green-400 px-3 py-1 text-green-900">Available</span> --}}
 

@@ -4,8 +4,10 @@ namespace App\Http\Livewire\ProfileUser;
 
 use App\Models\Friend;
 use App\Models\PendingFriend;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
@@ -20,6 +22,7 @@ class Show extends Component
     public $pendingFriend;
     public $phone;
     public $languagesWithCompetences = [];
+    public $skills; 
     public $lastLoginAt;
     public $registeredSince;
     public $isOnline;
@@ -46,8 +49,28 @@ class Show extends Component
         $this->getRegisteredSince();
 
         $this->getLanguages();
+        
+        $tagIds = $this->user->tags->pluck('tag_id');
+        
+        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
+       
+        $this->skills = $translatedTags->map(function ($item, $key) {
+            return [
+                'tag_id' => $item['tag_id'],
+                'name' => $item['tag'],
+                'foreign' => ($item['locale']['locale'] ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
+                'locale' => $item['locale']['locale'],
+                'example' =>  $item['locale']['example'],
+                'category' => $item['category'],
+                'category_path' =>  $item['category_path'],
+                'category_color'=>  $item['category_color'],
+            ];
+        });
+        $this->skills = collect($this->skills);
+
 
         ds($this->user)->label('user in show');
+        ds($this->skills)->label('skills in show');
 
     }
 
@@ -152,10 +175,10 @@ class Show extends Component
         $firstLocation = $this->user->locations->first();
 
         if ($firstLocation) {
-            if ($firstLocation->district) {
+            if ($firstLocation->city) {
                 $location .= $firstLocation->city->locale->name . ', ';
             }
-            if ($firstLocation->city) {
+            if ($firstLocation->district) {
                 $location .= $firstLocation->district->locale->name . ', ';
             }
             if ($firstLocation->division) {
@@ -223,8 +246,11 @@ class Show extends Component
             return $language;
         });
 
-        // Set the user's language preference to its name
-        $this->user->lang_preference = DB::table('languages')->where('lang_code', $this->user->lang_preference)->first()->name;
+        // Get the user's language preference (if it exists)
+        $lang_preference = DB::table('languages')->where('lang_code', $this->user->lang_preference)->first();
+        if ($lang_preference) {
+            $this->user->lang_preference = $lang_preference->name;
+        }
     }
 
 

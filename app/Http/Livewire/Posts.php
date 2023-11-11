@@ -385,7 +385,7 @@ class Posts extends Component
 
     public function updatedImage()
     {
-        info('updated image');
+        // info('updated image');
     }
 
 

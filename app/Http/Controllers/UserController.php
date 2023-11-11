@@ -74,6 +74,7 @@ class UserController extends Controller
             'organizations:id,name,profile_photo_path',
             'accounts:id,name,accountable_type,accountable_id',
             'languages:id,name,lang_code,flag',
+            'tags:tag_id',
             'socials:id,name,icon,urL_structure',
             'locations.district.locale:district_id,name',
             'locations.city.locale:city_id,name',

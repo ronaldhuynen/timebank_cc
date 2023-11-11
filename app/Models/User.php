@@ -45,10 +45,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     use Reacterable; // cybercog/laravel-love
     use Reactable; // cybercog/laravel-love
 
-
-
-
-
     /**
      * The attributes that are mass assignable.
      *

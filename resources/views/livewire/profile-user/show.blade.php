@@ -3,7 +3,7 @@
 
          <section>
 
-             <div class="relative rounded-lg border-gray-700 bg-black border-2 px-12 py-16 shadow-xl dark:border-gray-700">
+             <div class="relative rounded-lg border-gray-600 bg-black border-1 px-12 py-16 shadow-xl dark:border-gray-700">
 
                  <div class="mt-3 flex justify-between">
                  @if ($isOnline)
@@ -39,14 +39,14 @@
 
                          </div>
 
-                         <h3 class="mt-2 text-2xl text-gray-500 group-hover:text-gray-300 dark:text-gray-300">
+                         <h3 class="mt-2 text-2xl text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
                              {{ $user->motivation }}</h3>
 
                          <div
-                             class="mt-4 grid grid-cols-3 gap-1 text-gray-500 dark:text-gray-200 md:grid-cols-3 xl:grid-cols-3">
+                             class="mt-4 grid grid-cols-3 gap-1 text-gray-400 dark:text-gray-200 md:grid-cols-3 xl:grid-cols-3">
 
                              <div class="">
-                                 <a class="text-lg font-bold text-gray-500 underline hover:text-gray-300 dark:text-gray-500"
+                                 <a class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500"
                                      href="{{ $location['link'] }}">
                                      <svg aria-label="location pin icon" class="h-8 w-8 fill-current pr-2"
                                          viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,7 +61,7 @@
 
                             @if ($friend && $phone)
                             <div class="">
-                                <a class="text-lg font-bold text-gray-500 underline hover:text-gray-300 dark:text-gray-500"
+                                <a class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500"
                                     href="#">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="h-8 w-8 pr-2">
@@ -74,23 +74,22 @@
                             @endif
 
                             <div class="">
-                            {{-- {{dd($friend)}} --}}
                             @if ( count($friend) < 1 && count($pendingFriend) < 1)
                             <!-- Not a friend -->
-                                <a wire:click="friendRequest" class="text-lg font-bold text-gray-500 underline hover:text-gray-300 dark:text-gray-500" 
+                                <a wire:click="friendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
                                     onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'add', provider_alias : 'user'}); 
                                     return false;" 
                                     href="#"><i class="fas fa-user-plus"></i><br/> 
                                     {{ __('Friend request') }}</a>
                             @elseif (count($pendingFriend) > 0 )
                             <!-- Pending friend -->
-                                <a wire:click="cancelFriendRequest" class="text-lg font-bold text-gray-500 underline hover:text-gray-00 dark:text-gray-500" 
+                                <a wire:click="cancelFriendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
                                     onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'cancel', sent_friend_id : '{{ $pendingFriend->first()->id }}', provider_alias : 'user'}); return false;" href="#"><i class="fas fa-ban"></i> 
                                         <br/> 
                                         {{ __('Cancel friend request') }}</a>
                             @else
                             <!-- Is a friend -->
-                                <a wire:click="cancelFriendRequest" class="text-lg font-bold text-gray-500 underline hover:text-gray-00 dark:text-gray-500" 
+                                <a wire:click="cancelFriendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
                                     onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'remove', friend_id : '{{ $friend->first()->id }}', provider_alias : 'user'}); return false;" href="#"><i class="fas fa-user-times"></i> 
                                         <br/> 
                                         {{ __('Remove as Friend') }}</a>
@@ -100,12 +99,13 @@
 
                          </div>
 
-                         <p class="mt-4 capitalize text-gray-300 group-hover:text-gray-300 dark:text-gray-300">
+                         <p class="mt-4 capitalize text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
                              {{ $user->about }} </p>
                      </div>
 
                  </div>
                 
+                <!--- Languages -->
                  <div class="mt-6 flex items-center text-gray-400 dark:text-gray-200">
                     @foreach($user->languages as $language)
                         <p class="pr-2">{{ $language['flag'] }}</p>
@@ -115,39 +115,18 @@
                         @endif
                     @endforeach
                 </div>
+                @if($user->lang_preference)
                 <div class="-mt-4 flex items-center text-gray-400 dark:text-gray-200">
                      {{ trans($user->lang_preference) }} {{ __('is preferred') }}
                 </div>
-                 <div class="mt-2 flex-wrap gap-2 sm:flex">
-                     {{-- <span class="flex-shrink-0 rounded font-extrabold bg-green-400 px-3 py-1 text-green-900">Available</span> --}}
-
-                     {{-- <div class="mx-1 hidden flex-shrink-0 border-l-2 border-gray-200 lg:block"></div> --}}
-
-                     <span
-                         class="hidden flex-shrink-0 rounded bg-gray-500 px-2 py-1 text-gray-50 lg:block">Metalworking</span>
-                     <span class="hidden flex-shrink-0 rounded bg-gray-500 px-2 py-1 text-gray-50 lg:block">Bicycle
-                         repairs</span>
-                     <span class="hidden flex-shrink-0 rounded bg-gray-500 px-2 py-1 text-gray-50 lg:block">Small scale
-                         CNC Woodworking</span>
-                     <span class="hidden flex-shrink-0 rounded bg-gray-500 px-2 py-1 text-gray-50 lg:block">Adobe
-                         Photoshop</span>
-                     <span class="hidden flex-shrink-0 rounded bg-gray-500 px-2 py-1 text-gray-50 lg:block">3d design
-                         (Sketchup)</span>
-                     <span class="hidden flex-shrink-0 rounded bg-gray-500 px-2 py-1 text-gray-50 lg:block">Canoe Canal
-                         Cruises</span>
-                     <span class="hidden flex-shrink-0 rounded bg-gray-500 px-2 py-1 text-gray-50 lg:block">Laravel PHP
-                         framework (beginner)</span>
-                     <span class="hidden flex-shrink-0 rounded bg-blue-200 px-2 py-1 text-blue-800 lg:block">Database
-                         Management</span>
-                     <span class="hidden flex-shrink-0 rounded bg-red-200 px-2 py-1 text-red-800 lg:block">Crafts</span>
-                     <span
-                         class="hidden flex-shrink-0 rounded bg-indigo-200 px-2 py-1 text-indigo-800 lg:block">Timebank
-                         Workshops</span>
-                     <span class="hidden flex-shrink-0 rounded bg-yellow-200 px-2 py-1 text-yellow-800 lg:block">Bicycle
-                         Transportation Advice</span>
-                     <span class="hidden flex-shrink-0 rounded bg-pink-200 px-2 py-1 text-pink-800 lg:block">Exhibition
-                         Design</span>
-                 </div>
+                @endif
+                
+                <!--- Skills -->
+                <div class="mt-2 flex-wrap gap-2 sm:flex">
+                    @foreach($skills->sortBy('category_color') as $skill)
+                        <span class="flex-shrink-0 rounded bg-{{ $skill['category_color'] }} px-2 py-1 text-gray-200 lg:block" title="{{ $skill['category_path'] }}" style="cursor: default;">{{ $skill['name'] }}</span>
+                    @endforeach
+                </div>
 
                  <div class="mt-6 flex items-center font-bold text-gray-400 dark:text-gray-200 text-lg">
                      <p class="mr-12">H 82:15 received</p>
@@ -256,52 +235,52 @@
 
          <div class="flex flex-wrap">
              <!-- Red -->
-             <div class="w-1/2 bg-red-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Red</div>
+             <div class="w-1/2 bg-red-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Red</div>
 
              <!-- Orange -->
-             <div class="w-1/2 bg-orange-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Orange</div>
+             <div class="w-1/2 bg-orange-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Orange</div>
 
              <!-- Yellow -->
-             <div class="w-1/2 bg-amber-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Amber</div>
+             <div class="w-1/2 bg-amber-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Amber</div>
 
              <!-- Green -->
-             <div class="w-1/2 bg-yellow-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Yellow</div>
+             <div class="w-1/2 bg-yellow-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Yellow</div>
 
              <!-- Teal -->
-             <div class="w-1/2 bg-lime-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Lime</div>
+             <div class="w-1/2 bg-lime-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Lime</div>
 
              <!-- Blue -->
-             <div class="w-1/2 bg-green-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Green</div>
+             <div class="w-1/2 bg-green-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Green</div>
 
              <!-- Indigo -->
-             <div class="w-1/2 bg-emerald-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Emerald</div>
+             <div class="w-1/2 bg-emerald-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Emerald</div>
 
              <!-- Purple -->
-             <div class="w-1/2 bg-teal-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal</div>
+             <div class="w-1/2 bg-teal-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal</div>
 
              <!-- Pink -->
-             <div class="w-1/2 bg-cyan-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Cyan</div>
+             <div class="w-1/2 bg-cyan-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Cyan</div>
 
-             <!-- Red-400 -->
-             <div class="w-1/2 bg-sky-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Sky</div>
+             <!-- Red-800 -->
+             <div class="w-1/2 bg-sky-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Sky</div>
 
-             <!-- Orange-400 -->
-             <div class="w-1/2 bg-blue-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue</div>
+             <!-- Orange-800 -->
+             <div class="w-1/2 bg-blue-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue</div>
 
-             <!-- Yellow-400 -->
-             <div class="w-1/2 bg-indigo-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Indigo</div>
+             <!-- Yellow-800 -->
+             <div class="w-1/2 bg-indigo-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Indigo</div>
 
-             <!-- Green-400 -->
-             <div class="w-1/2 bg-violet-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Violet</div>
+             <!-- Green-800 -->
+             <div class="w-1/2 bg-violet-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Violet</div>
 
-             <!-- Teal-400 -->
-             <div class="w-1/2 bg-purple-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Purple</div>
+             <!-- Teal-800 -->
+             <div class="w-1/2 bg-purple-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Purple</div>
 
-             <!-- Blue-400 -->
-             <div class="w-1/2 bg-fuchsia-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Fuchsia</div>
+             <!-- Blue-800 -->
+             <div class="w-1/2 bg-fuchsia-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Fuchsia</div>
 
-             <!-- Indigo-400 -->
-             <div class="w-1/2 bg-pink-400 p-4 text-black sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink</div>
+             <!-- Indigo-800 -->
+             <div class="w-1/2 bg-pink-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink</div>
 
 
 

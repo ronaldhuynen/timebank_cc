@@ -272,6 +272,7 @@ trait TaggableWithLocale
             ?? $contexts->category->translations->first();
 
         $categoryPath = $contexts->category->ancestorsAndSelf->sortBy('id')->pluck('id');
+        $categoryColor = $contexts->category->ancestors->pluck('color')->first();
 
         // Map and return the finalized result
         return [
@@ -286,6 +287,7 @@ trait TaggableWithLocale
                     ->pluck('name')
                     ->toArray()
             ),
+            'category_color' => $categoryColor,
             'locale' => $tag->locale
         ];
     }
@@ -345,6 +347,13 @@ trait TaggableWithLocale
     }
 
 
+    /**
+     * Get an array of normalized tags for a given locale.
+     *
+     * @param string $locale The locale to get tags for.
+     *
+     * @return array An array of normalized tags for the given locale.
+     */
     public function localTagArray($locale)
     {
         $array = Tag::whereHas('locale', function ($query) use ($locale) {
@@ -354,6 +363,12 @@ trait TaggableWithLocale
     }
 
 
+    /**
+     * Returns a string of normalized tags for the given locale.
+     *
+     * @param string $locale The locale to filter tags by.
+     * @return string The string of normalized tags.
+     */
     public function localTagList($locale)
     {
         $array = Tag::whereHas('locale', function ($query) use ($locale) {
@@ -377,15 +392,13 @@ trait TaggableWithLocale
 
 
 
-
-
-
     /**
      * Property to control sequence on alias
      *
      * @var int
      */
     private $taggableAliasSequence = 0;
+
 
     /**
      * Boot the trait.
@@ -401,6 +414,7 @@ trait TaggableWithLocale
         });
     }
 
+    
     /**
      * Get a collection of all tags the model has.
      *

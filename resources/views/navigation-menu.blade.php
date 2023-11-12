@@ -96,7 +96,6 @@
                         @endif
                         </a>
                     @endforeach
-                    {{ info(Illuminate\Support\Facades\App::getLocale()) }}
                 </div>
 
 

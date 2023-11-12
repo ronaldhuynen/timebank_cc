@@ -8,9 +8,11 @@ use App\Models\Tag;
 use App\Models\TaggableLocale;
 use App\Traits\TaggableWithLocale;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Mcamara\LaravelLocalization\LaravelLocalization;
 
 class SkillsForm extends Component
 {
@@ -121,6 +123,7 @@ class SkillsForm extends Component
                 'example' =>  $item['locale']['example'],
                 'category' => $item['category'],
                 'category_path' =>  $item['category_path'],
+                'category_color' =>  $item['category_color'],
                 'title' =>  $item['category_path']      // 'title' is used by Tagify script for text that shows on hover
                ];
         });
@@ -220,7 +223,7 @@ class SkillsForm extends Component
     }
 
     public function updatedTranslationVisible()
-    {   
+    {
         if ($this->translationVisible) {
             $this->updatedNewTagCategory();
         }
@@ -379,7 +382,9 @@ class SkillsForm extends Component
             return $item;
         });
 
-        $this->modalVisible = false;      
+        $this->forgetCachedSkills();
+        $this->cacheSkills();
+        $this->modalVisible = false;
         $this->save();
 
         $this->newTag = null;
@@ -430,10 +435,46 @@ class SkillsForm extends Component
             }
         }
         $this->initTagsArray = [];
+        $this->forgetCachedSkills();
+        $this->cacheSkills();
         $this->emit('saved');
     }
 
 
+    public function forgetCachedSkills()
+    {
+        //  Remove cached skills for all supported locales of the active profile type.
+        $localization = new LaravelLocalization();
+        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));
+        foreach(collect($localization->getSupportedLocales())->keys() as $locale) {
+            Cache::forget('skills-'. $profileType . '-' . auth()->id() . '-lang-' . $locale);
+        }
+    }
+
+
+    public function cacheSkills()
+    {   
+        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));
+        $skillsCache = Cache::remember('skills-'. $profileType . '-' . session('activeProfileId') . '-lang-' . app()->getLocale(), 600, function () { // remember cache for 10 min (600 seconds)
+            $tagIds = session('activeProfileType')::find(session('activeProfileId'))->tags->pluck('tag_id');
+            $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
+            $skills = $translatedTags->map(function ($item, $key) {
+                return [
+                    'tag_id' => $item['tag_id'],
+                    'name' => $item['tag'],
+                    'foreign' => ($item['locale']['locale'] ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
+                    'locale' => $item['locale']['locale'],
+                    'example' =>  $item['locale']['example'],
+                    'category' => $item['category'],
+                    'category_path' =>  $item['category_path'],
+                    'category_color' =>  $item['category_color'],
+                ];
+            });
+            $skills = collect($skills);
+
+            return $skills;
+        });
+    }
 
 
     public function render()

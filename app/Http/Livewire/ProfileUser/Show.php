@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
@@ -22,7 +23,7 @@ class Show extends Component
     public $pendingFriend;
     public $phone;
     public $languagesWithCompetences = [];
-    public $skills; 
+    public $skills;
     public $lastLoginAt;
     public $registeredSince;
     public $isOnline;
@@ -49,24 +50,8 @@ class Show extends Component
         $this->getRegisteredSince();
 
         $this->getLanguages();
-        
-        $tagIds = $this->user->tags->pluck('tag_id');
-        
-        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
-       
-        $this->skills = $translatedTags->map(function ($item, $key) {
-            return [
-                'tag_id' => $item['tag_id'],
-                'name' => $item['tag'],
-                'foreign' => ($item['locale']['locale'] ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
-                'locale' => $item['locale']['locale'],
-                'example' =>  $item['locale']['example'],
-                'category' => $item['category'],
-                'category_path' =>  $item['category_path'],
-                'category_color'=>  $item['category_color'],
-            ];
-        });
-        $this->skills = collect($this->skills);
+
+        $this->getSkills();
 
 
         ds($this->user)->label('user in show');
@@ -251,6 +236,35 @@ class Show extends Component
         if ($lang_preference) {
             $this->user->lang_preference = $lang_preference->name;
         }
+    }
+
+
+    public function getSkills()
+    {        
+        $skillsCache = Cache::remember('skills-user-' . $this->user->id . '-lang-' . app()->getLocale(), 600, function () { // remember cache for 10 min (600 seconds)
+            $tagIds = $this->user->tags->pluck('tag_id');
+            $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
+            $skills = $translatedTags->map(function ($item, $key) {
+                return [
+                    'tag_id' => $item['tag_id'],
+                    'name' => $item['tag'],
+                    'foreign' => ($item['locale']['locale'] ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
+                    'readonly' => $item['locale']['locale'],
+                    'example' =>  $item['locale']['example'],
+                    'category' => $item['category'],
+                    'category_path' =>  $item['category_path'],
+                    'category_color' =>  $item['category_color'],
+                    'title' =>  $item['category_path']      // 'title' is used by Tagify script for text that shows on hover
+
+                ];
+            });
+            $skills = collect($skills);
+
+            return $skills;
+
+        });
+
+        $this->skills = $skillsCache;
     }
 
 

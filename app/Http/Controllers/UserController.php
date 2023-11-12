@@ -8,6 +8,7 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
@@ -91,8 +92,8 @@ class UserController extends Controller
 
             $user->likedCounter =  $user->loveReactant->reactionCounters->first() ? (int)$user->loveReactant->reactionCounters->first()->weight : null;
             $registerDate = Carbon::createFromTimeStamp(strtotime($user->created_at))->isoFormat('LL');
-            $lastLoginDate = Carbon::createFromTimeStamp(strtotime($user->last_login_at))->isoFormat('LL');
-
+            $lastLoginDate = Carbon::createFromTimeStamp(strtotime($user->last_login_at))->isoFormat('LL');       
+            
         } else {
             return view('profile-user.not_found');
         }

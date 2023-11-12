@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Helpers\StringHelper;
-use App\Models\Category;
 use App\Models\CategoryTranslation;
 use App\Models\TaggableLocale;
 use Cviebrock\EloquentTaggable\Events\ModelTagged;
@@ -272,7 +271,8 @@ trait TaggableWithLocale
             ?? $contexts->category->translations->first();
 
         $categoryPath = $contexts->category->ancestorsAndSelf->sortBy('id')->pluck('id');
-        $categoryColor = $contexts->category->ancestors->pluck('color')->first();
+        $categoryColor = $contexts->category->rootAncestor ? $contexts->category->rootAncestor->color : $contexts->category->color;
+
 
         // Map and return the finalized result
         return [

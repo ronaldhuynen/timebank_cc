@@ -12,7 +12,7 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     /**
      * Class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
      *
-     * This extended the Tag class of cvierock / eloquent-taggable package.
+     * This extended the Tag class of cviebrock / eloquent-taggable package.
      * It adds an one-to-many relationship to store additional tag context data in the tag_contexts table.
      * Use this extension with the trait App\Traits\TaggableWithContext.
      *
@@ -63,6 +63,8 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
 
         return $query->where('normalized', $normalized);
     }
+
+
 
 
 }

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\TaggableLocale;
 use App\Traits\TaggableWithLocale;
+use Cviebrock\EloquentTaggable\Services\TagService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -80,7 +81,7 @@ class SkillsForm extends Component
                     // Check if existing tag translation is selected
                     return ($this->translationVisible === true && $this->translateRadioButton == 'input');
                 },
-                ['required', 'string', 'max:50']
+                ['required', 'string', 'min:3', 'max:80']
             ),
             'inputTagTranslation.example' => Rule::when(
                 function ($input) {
@@ -137,12 +138,16 @@ class SkillsForm extends Component
 
     public function updatedNewTagName()
     {
-        $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
+        $this->resetErrorBag('newTag.name');
+        $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);        
+        // $latestIndex = count($this->newTagsArray) - 1;
+        // $this->newTagsArray = $this->newTagsArray->put($latestIndex, ['value' => $this->newTag['name']]);    
     }
 
 
     public function updatedNewTagExample()
     {
+        $this->resetErrorBag('newTag.example');
         $this->newTag['example'] = StringHelper::DutchTitleCase($this->newTag['example']);
 
         if (app()->getLocale() != config('timebank-cc.base_language')) {
@@ -158,12 +163,14 @@ class SkillsForm extends Component
 
     public function updatedInputTagTranslationName()
     {
+        $this->resetErrorBag('inputTagTranslation.name');
         $this->inputTagTranslation['name'] = StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
     }
 
 
     public function updatedInputTagTranslationExample()
     {
+        $this->resetErrorBag('inputTagTranslation.example');
         $this->inputTagTranslation['example'] = StringHelper::DutchTitleCase($this->inputTagTranslation['example']);
     }
 
@@ -324,16 +331,19 @@ class SkillsForm extends Component
 
     public function createTag()
     {
-        $this->validate();  // TODO! validate also on reg expression: no special characters like !@#%^&*()_+{}[]|\:"accents are allowed
+        $this->validate();
         $this->resetErrorBag();
 
         $owner = session('activeProfileType')::find(session('activeProfileId'));
         $owner->tag($this->newTag['name']);
-        $name = str_replace("-", " ", Str::slug($this->newTag['name']));  // Use the normalized name that is stored in db
-        $tag = Tag::where('name', $name)->first();  //TODO!! and locale is app locale!
+        $name = str_replace("-", " ", (new TagService)->normalize($this->newTag['name']));  // Use the normalized name that is stored in db
+
+        $tag = Tag::whereHas('locale', function ($query) {
+            $query->where('locale', app()->getLocale());
+        })->where('name', $name)->first();
+
         $locale = ['example' => $this->newTag['example']];
         $tagLocale = $tag->locale()->update($locale);
-
         $context = [
             'category_id' => $this->newTagCategory,
             'updated_by_user' => auth()->user()->id
@@ -382,15 +392,8 @@ class SkillsForm extends Component
             return $item;
         });
 
-        $this->forgetCachedSkills();
-        $this->cacheSkills();
         $this->modalVisible = false;
         $this->save();
-
-        $this->newTag = null;
-        $this->newTagsArray = null;
-        $this->mount();
-        $this->dispatchBrowserEvent('tagifyChange', ['tagsArray' => $this->tagsArray]);
     }
 
 
@@ -438,6 +441,13 @@ class SkillsForm extends Component
         $this->forgetCachedSkills();
         $this->cacheSkills();
         $this->emit('saved');
+
+        $this->newTag = null;
+        $this->newTagsArray = null;
+        $this->newTagCategory = null;
+        $this->mount();
+        $this->dispatchBrowserEvent('tagifyChange', ['tagsArray' => $this->tagsArray]);
+
     }
 
 
@@ -445,7 +455,7 @@ class SkillsForm extends Component
     {
         //  Remove cached skills for all supported locales of the active profile type.
         $localization = new LaravelLocalization();
-        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));
+        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));  // Get the profile type (user / organization) from the session and convert to lowercase
         foreach(collect($localization->getSupportedLocales())->keys() as $locale) {
             Cache::forget('skills-'. $profileType . '-' . auth()->id() . '-lang-' . $locale);
         }
@@ -453,9 +463,10 @@ class SkillsForm extends Component
 
 
     public function cacheSkills()
-    {   
-        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));
-        $skillsCache = Cache::remember('skills-'. $profileType . '-' . session('activeProfileId') . '-lang-' . app()->getLocale(), 600, function () { // remember cache for 10 min (600 seconds)
+    {
+        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType')))); // Get the profile type (user / organization) from the session and convert to lowercase
+
+        $skillsCache = Cache::remember('skills-'. $profileType . '-' . session('activeProfileId') . '-lang-' . app()->getLocale(), now()->addDays(7), function () { // remember cache for 7 days
             $tagIds = session('activeProfileType')::find(session('activeProfileId'))->tags->pluck('tag_id');
             $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
             $skills = $translatedTags->map(function ($item, $key) {
@@ -474,6 +485,8 @@ class SkillsForm extends Component
 
             return $skills;
         });
+
+        $this->tagsArray = json_encode($skillsCache->toArray());
     }
 
 

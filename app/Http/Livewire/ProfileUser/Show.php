@@ -240,8 +240,8 @@ class Show extends Component
 
 
     public function getSkills()
-    {        
-        $skillsCache = Cache::remember('skills-user-' . $this->user->id . '-lang-' . app()->getLocale(), 600, function () { // remember cache for 10 min (600 seconds)
+    {
+        $skillsCache = Cache::remember('skills-user-' . $this->user->id . '-lang-' . app()->getLocale(), now()->addDays(7), function () { // remember cache
             $tagIds = $this->user->tags->pluck('tag_id');
             $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
             $skills = $translatedTags->map(function ($item, $key) {

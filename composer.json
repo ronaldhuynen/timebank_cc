@@ -22,6 +22,7 @@
         "mcamara/laravel-localization": "^1.8",
         "mediconesystems/livewire-datatables": "^0.8.0",
         "orangehill/iseed": "^3.0",
+        "predis/predis": "^2.2",
         "propaganistas/laravel-phone": "^5.0",
         "psr/simple-cache": "^2.0",
         "pusher/pusher-php-server": "7.0.2",

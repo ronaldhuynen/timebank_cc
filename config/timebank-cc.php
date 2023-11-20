@@ -37,7 +37,7 @@ return [
 
     'rules' => [
         'profile_user' => [
-            'name' =>  ['required','string','unique:users,name','unique:organizations,name','min:3','max:40', 
+            'name' =>  ['required','string','unique:users,name','unique:organizations,name','min:3','max:40','alpha_num',
                 function ($attribute, $value, $fail) {    
                 // Disallow the following words to be used inside the name:
                     $disallowedWords = [

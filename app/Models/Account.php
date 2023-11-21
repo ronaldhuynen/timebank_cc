@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Models\Transaction;
+use App\Traits\AccountInfoTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
     use HasFactory;
+    use AccountInfoTrait;
+
 
     protected $fillable = [];
     protected $table = 'accounts';

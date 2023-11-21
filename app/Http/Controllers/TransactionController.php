@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Traits\AccountInfoTrait;
 
 class TransactionController extends Controller
 {
+    use AccountInfoTrait;
+    
     /**
     * Create a new controller instance.
     *
@@ -26,10 +29,10 @@ class TransactionController extends Controller
 
 
     public function transactions()
-    {
-        $userAccounts = $this->userAccounts();
+    {       
+        $profileAccounts = $this->getAccountsInfo();
 
-        return view('transactions.show', compact('userAccounts'));
+        return view('transactions.show', compact('profileAccounts'));
     }
 
 
@@ -51,44 +54,5 @@ class TransactionController extends Controller
         //TODO: if 403, but has permission, redirect with message to switch profile
         //TODO: replace 403 with custom redirect page incl explanation
         return ($results != null ? view('transactions.statement', compact(['transactionId'])) : abort(403));
-    }
-
-    
-    /**
-     * Get user accounts associated with the active profile. 
-     * Returns an array with account ID, name, and balance.
-     * 
-     * @return void
-     */
-    public function userAccounts()
-    {
-        $class = new (Session('activeProfileType'));
-        $activeProfile = $class->find(Session('activeProfileId'));
-        $accounts = $class->with('accounts')->find($activeProfile->id)->accounts;
-
-        $userAccounts = $accounts->map(function ($account, $key) {
-            return [
-                'id' => $account->id,
-                'name' => $account->name,
-                'balance' => $this->getBalance($account->id)
-            ];
-        });
-        return $userAccounts;
-    }
-
-
-    public function getBalance($accountId)
-    {
-        $balance = 0;
-        $transactions = Transaction::where('from_account_id', $accountId)->orWhere('to_account_id', $accountId)->select('from_account_id', 'to_account_id', 'amount')->get();
-        foreach ($transactions as $t) {
-            if ($t->to_account_id === $accountId) {
-                $balance += $t->amount;
-            } else {
-                $balance -= $t->amount;
-            }
-        }
-        //TODO store current balance in cache until it it is updated?
-        return $balance;
     }
 }

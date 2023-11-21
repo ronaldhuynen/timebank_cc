@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class FromAccount extends Component
 {
-    public $userAccounts = [];
+    public $profileAccounts = [];
     public $fromAccountId;
 
     protected $listeners = [
@@ -16,20 +16,20 @@ class FromAccount extends Component
 
     public function boot()
     {
-        $this->userAccounts = $this->getUserAccounts();
+        $this->profileAccounts = $this->getProfileAccounts();
     }
 
 
-    public function getUserAccounts()
+    public function getProfileAccounts()
     {
         $transactions = new TransactionController();
-        return  $transactions->userAccounts();
+        return  $transactions->getAccountsInfo();
     }
 
 
     public function resetForm()
     {
-        $this->userAccounts = $this->getUserAccounts();
+        $this->profileAccounts = $this->getProfileAccounts();
         $this->emitSelf('preSelected)');
     }
 
@@ -37,7 +37,7 @@ class FromAccount extends Component
 
     public function preSelected()
     {
-        $this->fromAccountId = $this->userAccounts[0]['id'];  // by default 1st account is selected
+        $this->fromAccountId = $this->profileAccounts[0]['id'];  // by default 1st account is selected
         $this->emit('fromAccountId', $this->fromAccountId);
     }
 

@@ -32,6 +32,8 @@
                     } --}}
                 });
 
+ 
+
                 tagify.on('dblclick', onChange)
                 
                 function onChange(e) {

@@ -124,7 +124,7 @@
                 <!--- Skills -->
                 <div class="mt-2 flex-wrap gap-2 sm:flex">
                     @foreach($skills->sortBy('category_color') as $skill)
-                        <span class="flex-shrink-0 rounded bg-{{ $skill['category_color'] }} px-2 py-1 text-gray-200 lg:block" title="{{ $skill['category_path'] }}" style="cursor: default;">{{ $skill['name'] }}</span>
+                        <span class="flex-shrink-0 rounded bg-{{ $skill['category_color'] . '-300' }} px-2 py-1 text-gray-900 lg:block" title="{{ $skill['category_path'] }}" style="cursor: default;">{{ $skill['name'] }}</span>
                     @endforeach
                 </div>
 
@@ -235,55 +235,106 @@
 
          <div class="flex flex-wrap">
              <!-- Red -->
-             <div class="w-1/2 bg-red-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Red</div>
+             <div class="w-1/2 bg-red-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Red-200</div>
 
              <!-- Orange -->
-             <div class="w-1/2 bg-orange-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Orange</div>
+             <div class="w-1/2 bg-orange-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Orange-200</div>
 
              <!-- Yellow -->
-             <div class="w-1/2 bg-amber-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Amber</div>
+             <div class="w-1/2 bg-amber-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Amber-200</div>
 
              <!-- Green -->
-             <div class="w-1/2 bg-yellow-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Yellow</div>
+             <div class="w-1/2 bg-yellow-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Yellow-200</div>
 
              <!-- Teal -->
-             <div class="w-1/2 bg-lime-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Lime</div>
+             <div class="w-1/2 bg-lime-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Lime-200</div>
 
              <!-- Blue -->
-             <div class="w-1/2 bg-green-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Green</div>
+             <div class="w-1/2 bg-green-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Green-200</div>
 
              <!-- Indigo -->
-             <div class="w-1/2 bg-emerald-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Emerald</div>
+             <div class="w-1/2 bg-emerald-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Emerald-200</div>
 
              <!-- Purple -->
-             <div class="w-1/2 bg-teal-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal</div>
+             <div class="w-1/2 bg-teal-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal-200</div>
 
              <!-- Pink -->
-             <div class="w-1/2 bg-cyan-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Cyan</div>
+             <div class="w-1/2 bg-cyan-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Cyan-200</div>
 
-             <!-- Red-800 -->
-             <div class="w-1/2 bg-sky-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Sky</div>
+             <!-- Red-200 -->
+             <div class="w-1/2 bg-sky-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Sky-200</div>
 
-             <!-- Orange-800 -->
-             <div class="w-1/2 bg-blue-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue</div>
+             <!-- Orange-200 -->
+             <div class="w-1/2 bg-blue-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue-200</div>
 
-             <!-- Yellow-800 -->
-             <div class="w-1/2 bg-indigo-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Indigo</div>
+             <!-- Yellow-200 -->
+             <div class="w-1/2 bg-indigo-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Indigo-200</div>
 
-             <!-- Green-800 -->
-             <div class="w-1/2 bg-violet-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Violet</div>
+             <!-- Green-200 -->
+             <div class="w-1/2 bg-violet-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Violet-200</div>
 
-             <!-- Teal-800 -->
-             <div class="w-1/2 bg-purple-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Purple</div>
+             <!-- Teal-200 -->
+             <div class="w-1/2 bg-purple-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Purple-200</div>
 
-             <!-- Blue-800 -->
-             <div class="w-1/2 bg-fuchsia-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Fuchsia</div>
+             <!-- Blue-200 -->
+             <div class="w-1/2 bg-fuchsia-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Fuchsia-200</div>
 
-             <!-- Indigo-800 -->
-             <div class="w-1/2 bg-pink-800 p-4 text-gray-200 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink</div>
+             <!-- Indigo-200 -->
+             <div class="w-1/2 bg-pink-200 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink-200</div>
 
 
 
+   
+         </div>
+
+         <div class="flex flex-wrap">
+             <!-- Red -->
+             <div class="w-1/2 bg-red-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Red-300</div>
+
+             <!-- Orange -->
+             <div class="w-1/2 bg-orange-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Orange-300</div>
+
+             <!-- Yellow -->
+             <div class="w-1/2 bg-amber-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Amber-300</div>
+
+             <!-- Green -->
+             <div class="w-1/2 bg-yellow-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Yellow-300</div>
+
+             <!-- Teal -->
+             <div class="w-1/2 bg-lime-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Lime-300</div>
+
+             <!-- Blue -->
+             <div class="w-1/2 bg-green-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Green-300</div>
+
+             <!-- Indigo -->
+             <div class="w-1/2 bg-emerald-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Emerald-300</div>
+
+             <!-- Purple -->
+             <div class="w-1/2 bg-teal-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Teal-300</div>
+
+             <!-- Pink -->
+             <div class="w-1/2 bg-cyan-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Cyan-300</div>
+
+             <!-- Red-300 -->
+             <div class="w-1/2 bg-sky-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Sky-300</div>
+
+             <!-- Orange-300 -->
+             <div class="w-1/2 bg-blue-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Blue-300</div>
+
+             <!-- Yellow-300 -->
+             <div class="w-1/2 bg-indigo-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Indigo-300</div>
+
+             <!-- Green-300 -->
+             <div class="w-1/2 bg-violet-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Violet-300</div>
+
+             <!-- Teal-300 -->
+             <div class="w-1/2 bg-purple-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Purple-300</div>
+
+             <!-- Blue-300 -->
+             <div class="w-1/2 bg-fuchsia-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Fuchsia-300</div>
+
+             <!-- Indigo-300 -->
+             <div class="w-1/2 bg-pink-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink-300</div>
    
          </div>
 

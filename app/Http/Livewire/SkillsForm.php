@@ -125,13 +125,21 @@ class SkillsForm extends Component
                 'category' => $item['category'],
                 'category_path' =>  $item['category_path'],
                 'category_color' =>  $item['category_color'],
-                'title' =>  $item['category_path']      // 'title' is used by Tagify script for text that shows on hover
+                'title' =>  $item['category_path'] ,     // 'title' is used by Tagify script for text that shows on hover
+                'style' =>  '--tag-bg:' . tailwindColorToHex($item['category_color'] . '-300') . 
+                    '; --tag-text-color:#111827' . // #111827 is gray-900 
+                    '; --tag-hover:' . tailwindColorToHex($item['category_color'] . '-200'),   // 'style' is used by Tagify script for background color, tailwindColorToHex is a helper function in app/Helpers/StyleHelper.php
                ];
         });
 
+        $tags = $tags->sortBy('category_color')->values();
+
+
         $this->initTagsArrayTranslated = $tags->toArray();
 
-        $this->tagsArray = json_encode($tags->toArray());
+        $this->tagsArray = json_encode($tags->toArray()); 
+
+        ds($this->tagsArray)->label('tagsArray');
     }
 
 
@@ -139,9 +147,9 @@ class SkillsForm extends Component
     public function updatedNewTagName()
     {
         $this->resetErrorBag('newTag.name');
-        $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);        
+        $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
         // $latestIndex = count($this->newTagsArray) - 1;
-        // $this->newTagsArray = $this->newTagsArray->put($latestIndex, ['value' => $this->newTag['name']]);    
+        // $this->newTagsArray = $this->newTagsArray->put($latestIndex, ['value' => $this->newTag['name']]);
     }
 
 
@@ -336,7 +344,7 @@ class SkillsForm extends Component
 
         $owner = session('activeProfileType')::find(session('activeProfileId'));
         $owner->tag($this->newTag['name']);
-        $name = str_replace("-", " ", (new TagService)->normalize($this->newTag['name']));  // Use the normalized name that is stored in db
+        $name = str_replace("-", " ", (new TagService())->normalize($this->newTag['name']));  // Use the normalized name that is stored in db
 
         $tag = Tag::whereHas('locale', function ($query) {
             $query->where('locale', app()->getLocale());

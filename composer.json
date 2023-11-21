@@ -67,6 +67,8 @@
         },
         "files": [
             "app/Helpers/TimeFormat.php",
+            "app/Helpers/StringHelper.php",
+            "app/Helpers/StyleHelper.php",
             "app/Overrides/Rtippin/Messenger/Http/Middleware/SetMessengerProvider.php",
             "app/Overrides/Laravel/Jetstream/Src/HasProfilePhoto.php"
         ]

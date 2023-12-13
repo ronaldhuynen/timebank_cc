@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\ProfileUser;
 
+use App\Models\Account;
 use App\Models\Friend;
 use App\Models\PendingFriend;
 use App\Models\Tag;
@@ -25,9 +26,11 @@ class Show extends Component
     public $languagesWithCompetences = [];
     public $skills;
     public $lastLoginAt;
+    public $lastExchangeAt;
     public $registeredSince;
     public $isOnline;
     public $isAway;
+    public $accountsTotals;
 
     /**
      * The mount method is called when the component is mounted.
@@ -47,11 +50,15 @@ class Show extends Component
 
         $this->getLastLogin();
 
+        $this->getLastExchangeAt();
+
         $this->getRegisteredSince();
 
         $this->getLanguages();
 
         $this->getSkills();
+
+        $this->getAccountsTotals();
 
 
         ds($this->user)->label('user in show');
@@ -286,6 +293,26 @@ class Show extends Component
         }
     }
 
+    //!!hierzo
+    public function getLastExchangeAt()
+    {
+        if ($this->accountsTotals) {            
+            if ($this->accountsTotals['lastTransferDate']) {
+                $this->lastExchangeAt = Carbon::parse($this->accountsTotals['lastTransferDate'][0])->diffForHumans();
+            } else {
+                $this->lastExchangeAt = null;   // no transfers
+            }
+        } else { 
+            // Get the accounts totals if it is not present
+            $this->getAccountsTotals();
+            if ($this->accountsTotals['lastTransferDate']) {
+                $this->lastExchangeAt = Carbon::parse($this->accountsTotals['lastTransferDate'][0])->diffForHumans();
+            } else {
+                $this->lastExchangeAt = null;   // no transfers
+            }
+        }
+    }
+
 
     /**
      * Calculates and sets the registered since date for the user.
@@ -298,7 +325,12 @@ class Show extends Component
         $this->registeredSince = $createdAt->diffForHumans();
     }
 
+    public function getAccountsTotals()
+    {
+        $this->accountsTotals = (new Account)->getAccountsTotals(User::class, $this->user->id, 365);    // count transfers since 365 days ago
+    }
 
+ 
     /**
      *  Start a conversation with the user.
      */

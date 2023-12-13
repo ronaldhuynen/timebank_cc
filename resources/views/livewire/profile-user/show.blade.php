@@ -73,37 +73,41 @@
                             </div>
                             @endif
 
-                            <div class="">
-                            @if ( count($friend) < 1 && count($pendingFriend) < 1)
-                            <!-- Not a friend -->
-                                <a wire:click="friendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
-                                    onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'add', provider_alias : 'user'}); 
-                                    return false;" 
-                                    href="#"><i class="fas fa-user-plus"></i><br/> 
-                                    {{ __('Friend request') }}</a>
-                            @elseif (count($pendingFriend) > 0 )
-                            <!-- Pending friend -->
-                                <a wire:click="cancelFriendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
-                                    onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'cancel', sent_friend_id : '{{ $pendingFriend->first()->id }}', provider_alias : 'user'}); return false;" href="#"><i class="fas fa-ban"></i> 
-                                        <br/> 
-                                        {{ __('Cancel friend request') }}</a>
-                            @else
-                            <!-- Is a friend -->
-                                <a wire:click="cancelFriendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
-                                    onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'remove', friend_id : '{{ $friend->first()->id }}', provider_alias : 'user'}); return false;" href="#"><i class="fas fa-user-times"></i> 
-                                        <br/> 
-                                        {{ __('Remove as Friend') }}</a>
+                            <!-- Friend request buttons only visible if the active profile is not the model -->
+                            @if (session('activeProfileType') === $user::class && session('activeProfileId') !== $user->id || session('activeProfileType') !== $this->user::class)   
+
+                                <div class="">
+                                    @if (count($friend) < 1 && count($pendingFriend) < 1)
+                                        <!-- Not a friend -->
+                                        <a wire:click="friendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
+                                            onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'add', provider_alias : 'user'}); 
+                                            return false;" 
+                                            href="#"><i class="fas fa-user-plus"></i><br/> 
+                                            {{ __('Friend request') }}</a>
+                                    @elseif (count($pendingFriend) > 0 )
+                                        <!-- Pending friend -->
+                                        <a wire:click="cancelFriendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
+                                            onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'cancel', sent_friend_id : '{{ $pendingFriend->first()->id }}', provider_alias : 'user'}); return false;" href="#"><i class="fas fa-ban"></i> 
+                                            <br/> 
+                                            {{ __('Cancel friend request') }}</a>
+                                    @else
+                                        <!-- Is a friend -->
+                                        <a wire:click="cancelFriendRequest" class="text-lg font-bold text-gray-400 underline hover:text-gray-100 dark:text-gray-500" 
+                                            onclick="FriendsManager.action({dropdown : true, provider_id : '{{$user->id}}', action : 'remove', friend_id : '{{ $friend->first()->id }}', provider_alias : 'user'}); return false;" href="#"><i class="fas fa-user-times"></i> 
+                                            <br/> 
+                                            {{ __('Remove as Friend') }}</a>
+                                    @endif
+                                </div>
+
                             @endif
-                            </div>
 
 
                          </div>
-
-                         <p class="mt-4 capitalize text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
-                             {{ $user->about }} </p>
-                     </div>
-
+                    </div>
                  </div>
+
+                    <p class="mt-4 text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
+                         {{ $user->about }} </p>
                 
                 <!--- Languages -->
                  <div class="mt-6 flex items-center text-gray-400 dark:text-gray-200">
@@ -127,13 +131,12 @@
                         <span class="flex-shrink-0 rounded bg-{{ $skill['category_color'] . '-300' }} px-2 py-1 text-gray-900 lg:block" title="{{ $skill['category_path'] }}" style="cursor: default;">{{ $skill['name'] }}</span>
                     @endforeach
                 </div>
-
-                 <div class="mt-6 flex items-center font-bold text-gray-400 dark:text-gray-200 text-lg">
-                     <p class="mr-12">H 82:15 received</p>
-                     <p class="mr-12">H 76:30 payed</p>
-                     <p class="mr-12">34 exchanges</p>
+                <div class="mt-6 flex items-center text-xl text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
+                    <p class="mr-12">{{ tbFormat($accountsTotals['sumBalances']) }} {{ __('available') }}</p>
+                     <p class="mr-12">{{ $accountsTotals['transfersReceived'] }} {{__('exchanges received last year')}}</p>
+                     <p class="mr-12">{{ $accountsTotals['transfersGiven'] }} {{__('exchanges given last year')}}</p>
                  </div>
-                 <div class="text-gray-400 text-lg">
+                 <div class="text-gray-400">
                      @if ($lastLoginAt)
                          <div>
                              {{ __('Last login') . ': ' . $lastLoginAt }}
@@ -142,7 +145,11 @@
                          <div>
                              <div>
                      @endif
-                     <div>Last exchange: 5 weeks ago</div>
+                     @if ($lastExchangeAt)
+                         <div>
+                             {{ __('Last exchange') . ': ' . $lastExchangeAt }}
+                         </div>
+                    @endif
                      <div>{{ __('Registered since') . ': ' . $registeredSince }}</div>
 
                 </div>

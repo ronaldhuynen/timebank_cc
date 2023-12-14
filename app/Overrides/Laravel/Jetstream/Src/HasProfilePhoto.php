@@ -78,7 +78,7 @@ trait HasProfilePhoto
      */
     protected function defaultProfilePhotoUrl()
     {
-        if (session('profileactiveProfileType') == Organization::class) {
+        if (session('activeProfileType') == Organization::class) {
             return config('timebank-cc.files.profile_organization.photo_default');
         } else {
             return config('timebank-cc.files.profile_user.photo_default');

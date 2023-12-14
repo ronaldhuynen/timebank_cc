@@ -76,7 +76,7 @@
 
         <!--- Languages -->
         <div class="col-span-6 sm:col-span-4">
-            @livewire('profile-org.languages-dropdown')
+            @livewire('profile-org.languages-dropdown', ['languages' => $languages])
             <x-jet-input-error for="languages" class="mt-2" />
         </div>
 

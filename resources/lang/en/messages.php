@@ -21,6 +21,9 @@ return [
     'German' => 'German',
     'Spanish' => 'Spanish',
 
+    'good' => 'good',
+    'limited' => 'limited',
+
     'Your_profile_has_received_a_star' => 'Your profile received a star',
 
 

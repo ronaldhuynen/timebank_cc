@@ -19,6 +19,7 @@ use Spatie\Activitylog\Models\Activity;
 class Show extends Component
 {
     public $user;
+    public $showAboutFullText = false;
     public $location = [];
     public $friend;
     public $pendingFriend;
@@ -61,8 +62,8 @@ class Show extends Component
         $this->getAccountsTotals();
 
 
-        ds($this->user)->label('user in show');
-        ds($this->skills)->label('skills in show');
+        // ds($this->user)->label('user in show');
+        // ds($this->skills)->label('skills in show');
 
     }
 
@@ -225,6 +226,12 @@ class Show extends Component
     }
 
 
+    public function toggleAboutText()
+    {
+        $this->showAboutFullText = !$this->showAboutFullText;
+    }
+
+
     /**
      * Retrieve the user's languages and their language competence.
      *
@@ -293,7 +300,12 @@ class Show extends Component
         }
     }
 
-    //!!hierzo
+
+    /**
+     * Get the last exchange date for the user's profile.
+     *
+     * @return void
+     */
     public function getLastExchangeAt()
     {
         if ($this->accountsTotals) {            

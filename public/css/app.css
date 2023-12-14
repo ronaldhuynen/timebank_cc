@@ -20852,6 +20852,9 @@ select {
 .pointer-events-auto {
   pointer-events: auto;
 }
+.visible {
+  visibility: visible;
+}
 .collapse {
   visibility: collapse;
 }
@@ -21473,6 +21476,10 @@ select {
   --tw-scale-y: .95;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.scale-x-\[-1\] {
+  --tw-scale-x: -1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -21867,6 +21874,9 @@ select {
 .border-l-4 {
   border-left-width: 4px;
 }
+.border-r {
+  border-right-width: 1px;
+}
 .border-r-0 {
   border-right-width: 0px;
 }
@@ -21875,9 +21885,6 @@ select {
 }
 .border-t-0 {
   border-top-width: 0px;
-}
-.border-r {
-  border-right-width: 1px;
 }
 .border-solid {
   border-style: solid;
@@ -22913,9 +22920,6 @@ select {
 }
 .uppercase {
   text-transform: uppercase;
-}
-.capitalize {
-  text-transform: capitalize;
 }
 .leading-10 {
   line-height: 2.5rem;

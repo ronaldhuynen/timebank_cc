@@ -102,13 +102,56 @@
                             @endif
 
 
-                         </div>
+                        </div>
                     </div>
-                 </div>
+                </div>
 
-                    <p class="mt-4 text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
-                         {{ $user->about }} </p>
+                <!-- About -->
+                <!-- Note that we need Alpine to show/hide the full text as Livewire 2 loses track of trans() keys in subsequent request. These are uses to translate the $languages properties  -->
                 
+                @if ($user->about && strlen($user->about) > 300 )
+                <div x-data="{ showAboutFullText: false }">
+                    <p class="mt-4 text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
+                        <span x-show="!showAboutFullText">
+                            {{ Illuminate\Support\Str::limit($user->about ?? '', 300) }}
+                        </span>
+                        <span x-show="showAboutFullText">
+                            {{ $user->about ?? '' }}
+                        </span>
+                        <a href="#" @click.prevent="showAboutFullText = !showAboutFullText"
+                         class="text-sm text-gray-300 underline transition-colors duration-100 hover:text-gray-100 hover:underline dark:text-gray-400 dark:hover:text-gray-100">
+                
+                            <span x-show="!showAboutFullText" class="underline inline-flex items-center">{{__('Read more')}}...
+                             <svg class="mx-1 h-4 w-4 rtl:-scale-x-100" fill="currentColor" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                 <path fill-rule="evenodd"
+                                     d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                     clip-rule="evenodd"></path>
+                             </svg>
+                             </span>
+                            
+                            <span x-show="showAboutFullText" class="underline inline-flex items-center">
+                                <svg class="mx-1 h-4 w-4 transform scale-x-[-1]" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                {{__('Show less')}}...
+                             </span>
+                        </a>
+                    </p>
+                </div>
+                @else 
+                <div>
+                                    <p class="mt-4 text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
+
+                    {{ $user->about ?? '' }}
+                    </p>
+                </div>  
+                @endif
+
+                            
                 <!--- Languages -->
                  <div class="mt-6 flex items-center text-gray-400 dark:text-gray-200">
                     @foreach($user->languages as $language)
@@ -238,6 +281,10 @@
 
          </section>
 
+        
+        
+{{--         
+        <!--- Skill color examples, uncomment for  Laravel Mix to compile all skill colors! -->
          <div class="mt-24"></div>
 
          <div class="flex flex-wrap">
@@ -343,7 +390,7 @@
              <!-- Indigo-300 -->
              <div class="w-1/2 bg-pink-300 p-4 text-gray-900 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">Pink-300</div>
    
-         </div>
+         </div> --}}
 
 
 

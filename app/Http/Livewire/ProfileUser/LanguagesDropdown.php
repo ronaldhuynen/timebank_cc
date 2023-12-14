@@ -12,14 +12,14 @@ class LanguagesDropdown extends Component
     public $langSelected = [];
     public $langSelectedOptions = [];
     public $langOptions;
-
+    public $languages;
 
     /**
      * Prepare the component.
      *
      * @return void
      */
-    public function mount()
+    public function mount($languages)
     {
         // Create a language options collection that combines all language and competence options
         $langOptions = DB::table('languages')->get(['id','name']);
@@ -34,21 +34,10 @@ class LanguagesDropdown extends Component
             ];
         });
 
-        // Create an array of the (pre)selected language options
-
-$this->langSelected = session('activeProfileType')::find(session('activeProfileId'))->languages;
-        $this->langSelected = $this->langSelected->map(function ($language, $key) {
-            $competence = DB::table('language_competences')->find($language->pivot->competence);
-            $langSelected = collect($this->langOptions)->where('name', trans($language->name) . ' - ' . trans($competence->name));
-            return [
-                $langSelected->keys()
-            ];
-        });
-        $this->langSelected = $this->langSelected->flatten();
-
-        // Create a selected language collection that holds the selected languages with their selected competences
-        $this->langSelectedOptions = collect($this->langOptions)->whereIn('id', $this->langSelected);
+        $this->langSelectedOptions = $languages;
+        $this->langSelected = $this->langSelectedOptions->pluck('id');
     }
+
 
     /**
      * When component is updated, create a selected language collection that holds the selected languages with their selected competences

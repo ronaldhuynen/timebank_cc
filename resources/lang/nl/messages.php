@@ -21,6 +21,9 @@ return [
     'German' => 'Duits',
     'Spanish' => 'Spaans',
 
+    'good' => 'goed',
+    'limited' => 'beperkt',
+
     'Your_profile_has_received_a_star' => 'Je profiel heeft een ster ontvangen',
 
 

@@ -40,7 +40,22 @@ class Organization extends Model implements MessengerProvider, Searchable, React
      */
     protected $hidden = [
         'email',
-        'password',
+    ];
+
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'profile_photo_path',
+        'about',
+        'motivation',
+        'website',
+        'phone',
     ];
 
 

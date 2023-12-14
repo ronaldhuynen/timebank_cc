@@ -37,7 +37,7 @@ class UpdateProfileOrgForm extends Component
             'state.motivation' => 'required|string|max:200',  //TODO: check max with legacy cyclos data
             'languages' => 'required',
             'languages.id' => 'integer',
-            // 'website' => 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+            'website' => 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
         ];
     }
 
@@ -51,7 +51,7 @@ class UpdateProfileOrgForm extends Component
     public function mount()
     {
         $this->state = Organization::find(session('activeProfileId'))->toArray();
-        // $this->website = $this->state['website'];
+        $this->website = $this->state['website'];
         $this->organization = Organization::find(session('activeProfileId'));
         $this->organization['profile_photo_url'] = url(Storage::url($this->organization->profile_photo_path));
         
@@ -130,8 +130,7 @@ class UpdateProfileOrgForm extends Component
 
         $this->organization->about = $this->state['about'];
         $this->organization->motivation = $this->state['motivation'];
-        $this->organization->website =  str_replace(['http://', 'https://', ], '', $this->state['website']);
-
+        $this->organization->website =  str_replace(['http://', 'https://', ], '', $this->website);
 
         if (isset($this->languages)) {
 

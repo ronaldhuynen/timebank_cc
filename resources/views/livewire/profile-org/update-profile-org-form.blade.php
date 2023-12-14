@@ -63,7 +63,6 @@
             <x-jet-input-error for="about" class="mt-2" />
         </div>
 
-
         <!-- Motivation -->
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
@@ -78,6 +77,16 @@
         <div class="col-span-6 sm:col-span-4">
             @livewire('profile-org.languages-dropdown', ['languages' => $languages])
             <x-jet-input-error for="languages" class="mt-2" />
+        </div>
+
+        <!-- Website -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="website" value="{{ __('Organization Website') }}" />
+            <x-input
+                placeholder="website.org"
+                wire:model.lazy="website"
+                class="placeholder-gray-300"
+            />
         </div>
 
     </x-slot>

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
 use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
+use Laravel\Jetstream\Http\Livewire\NavigationMenu;
 use Laravel\Jetstream\Jetstream;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 
@@ -44,6 +45,11 @@ Route::get('/clear-cache', function () {
 // Dynamically create routes for all available locales for the lang.js file
 // This is used to dynamically load the correct language file in the frontend (like the Chat Messenger)
 Route::get('/js/lang.js', [LangJsController::class, 'js'])->name('lang.js');
+
+
+
+Route::post('/change-locale', [NavigationMenu::class, 'change'])->name('change-locale');
+
 
 
 //TODO: Use translated routes, see https://github.com/mcamara/laravel-localization

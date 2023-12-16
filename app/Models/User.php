@@ -4,9 +4,6 @@ namespace App\Models;
 
 use App\Models\Account;
 use App\Models\Language;
-use App\Models\Locations\City;
-use App\Models\Locations\Country;
-use App\Models\Locations\District;
 use App\Models\Locations\Location;
 use App\Models\Organization;
 use App\Models\Post;

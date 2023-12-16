@@ -176,8 +176,16 @@
                 </div>
                 <div class="mt-6 flex items-center text-xl text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
                     <p class="mr-12">{{ tbFormat($accountsTotals['sumBalances']) }} {{ __('available') }}</p>
-                     <p class="mr-12">{{ $accountsTotals['transfersReceived'] }} {{__('exchanges received last year')}}</p>
-                     <p class="mr-12">{{ $accountsTotals['transfersGiven'] }} {{__('exchanges given last year')}}</p>
+                    @if ($accountsTotals['transfersReceived'] === 1)
+                            <p class="mr-12">{{ $accountsTotals['transfersReceived'] }} {{__('exchange received past year')}}</p>
+                    @else
+                     <p class="mr-12">{{ $accountsTotals['transfersReceived'] }} {{__('exchanges received past year')}}</p>
+                    @endif
+                    @if($accountsTotals['transfersGiven'] === 1)
+                        <p class="mr-12">{{ $accountsTotals['transfersGiven'] }} {{__('exchange given past year')}}</p>
+                    @else
+                     <p class="mr-12">{{ $accountsTotals['transfersGiven'] }} {{__('exchanges given past year')}}</p>
+                    @endif
                  </div>
                  <div class="text-gray-400">
                      @if ($lastLoginAt)

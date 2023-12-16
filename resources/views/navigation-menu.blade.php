@@ -83,20 +83,24 @@
                 @endif
 
                 <!-- Language selector ---->
+                <!-- This changes the session('locale') and by the Middleware StoreUserLangPreference this locale 
+                is stored as the lang_preference in the user table 
+                -->
                 <div class="block space-x-2 px-8 py-0 text-xs font-thin hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition">
                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                        <a class="text-gray-900  hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition"
-                        rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
-                        wire:click="changeLocale('{{ $localeCode }}')"
-                        >
-                        @if($localeCode == app()->getLocale())
-                        <span class="text-gray-900 font-weight-900">{{ strtoupper($localeCode) }}</span>
-                        @else
-                        <span class="text-gray-400"> {{ strtoupper($localeCode) }}
-                        @endif
+                <a class="text-gray-900  hover:text-gray-700 focus:text-gray-700 focus:border-gray-300 transition"
+                    rel="alternate" hreflang="{{ $localeCode }}" 
+                    href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                >
+                            @if($localeCode == app()->getLocale())
+                                <span class="text-gray-900 font-weight-900">{{ strtoupper($localeCode) }}</span>
+                            @else
+                                <span class="text-gray-400"> {{ strtoupper($localeCode) }}
+                            @endif
                         </a>
                     @endforeach
                 </div>
+
 
 
                 <!-- Settings / Profile Dropdown -->

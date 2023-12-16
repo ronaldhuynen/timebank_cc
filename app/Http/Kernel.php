@@ -38,6 +38,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \RTippin\Messenger\Http\Middleware\SetMessengerProvider::class,
+            \App\Http\Middleware\StoreUserLangPreference::class,
+
         ],
 
         'api' => [

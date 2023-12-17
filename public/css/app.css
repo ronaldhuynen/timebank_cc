@@ -21177,6 +21177,21 @@ select {
 .mt-8 {
   margin-top: 2rem;
 }
+.mr-0 {
+  margin-right: 0px;
+}
+.-mr-12 {
+  margin-right: -3rem;
+}
+.-mr-16 {
+  margin-right: -4rem;
+}
+.-mr-20 {
+  margin-right: -5rem;
+}
+.-mr-24 {
+  margin-right: -6rem;
+}
 .block {
   display: block;
 }
@@ -22839,6 +22854,9 @@ select {
 }
 .pt-8 {
   padding-top: 2rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 .text-left {
   text-align: left;

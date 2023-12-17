@@ -26,6 +26,32 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Public / Private settings
+    |--------------------------------------------------------------------------
+    |
+    | The default account properties that will be set into the database when new accounts are created.
+    | The balance limits are in minutes.
+    */
+
+    'account_info' => [
+        'personal' => [
+            'balance_public' =>  true,
+        ],
+        'organization' => [
+            'balance_public' =>  true,
+        ],
+        'account_totals' => [
+            'sumBalances_public' => false,
+            'countTransfersSince' => 365,   // days ago
+            'countTransfersSince_humanReadable' => 'past year',   // Short description of countTransfersSince in base language: must have translation key!
+            'countTransfers_public' => true,
+            'countTransfersReceived_public' => true,
+            'countTransfersGiven_public' => true,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Verification rules and file size limits
     |--------------------------------------------------------------------------
     | Here you can set the verification rules that will be used to verify data

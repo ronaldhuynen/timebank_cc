@@ -24,6 +24,8 @@ return [
     'good' => 'goed',
     'limited' => 'beperkt',
 
+    'past year' => 'afgelopen jaar',
+
     'Your_profile_has_received_a_star' => 'Je profiel heeft een ster ontvangen',
 
 

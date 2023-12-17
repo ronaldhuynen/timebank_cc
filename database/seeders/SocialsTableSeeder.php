@@ -42,8 +42,8 @@ class SocialsTableSeeder extends Seeder
             2 =>
             array (
                 'id' => 3,
-                'name' => 'Twitter',
-                'icon' => 'app-images/twitter.svg',
+                'name' => 'X',
+                'icon' => 'app-images/x.svg',
                 'url_structure' => 'https://twitter.com/',
                 'created_at' => NULL,
                 'updated_at' => NULL,

@@ -341,7 +341,7 @@ class Show extends Component
      */
     public function getAccountsTotals()
     {
-        $this->accountsTotals = (new Account)->getAccountsTotals(User::class, $this->user->id, 365);    // count transfers since 365 days ago
+        $this->accountsTotals = (new Account)->getAccountsTotals(User::class, $this->user->id, config('timebank-cc.account_info.account_totals.countTransfersSince'));
     }
 
 

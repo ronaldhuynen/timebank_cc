@@ -150,19 +150,42 @@
                      <span class="flex-shrink-0 rounded bg-{{ $skill['category_color'] . '-300' }} px-2 py-1 text-gray-900 lg:block" title="{{ $skill['category_path'] }}" style="cursor: default;">{{ $skill['name'] }}</span>
                      @endforeach
                  </div>
+
+
+                 <!--- Account & transfer info -->
                  <div class="mt-6 flex items-center text-xl text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
-                     <p class="mr-12">{{ tbFormat($accountsTotals['sumBalances']) }} {{ __('available') }}</p>
-                     @if ($accountsTotals['transfersReceived'] === 1)
-                     <p class="mr-12">{{ $accountsTotals['transfersReceived'] }} {{__('exchange received past year')}}</p>
-                     @else
-                     <p class="mr-12">{{ $accountsTotals['transfersReceived'] }} {{__('exchanges received past year')}}</p>
-                     @endif
-                     @if($accountsTotals['transfersGiven'] === 1)
-                     <p class="mr-12">{{ $accountsTotals['transfersGiven'] }} {{__('exchange given past year')}}</p>
-                     @else
-                     <p class="mr-12">{{ $accountsTotals['transfersGiven'] }} {{__('exchanges given past year')}}</p>
-                     @endif
+                    @if(config('timebank-cc.account_info.account_totals.sumBalances_public'))
+                        <p class="mr-12">{{ tbFormat($accountsTotals['sumBalances']) }} {{ __('available') }}</p>                 
+                    @endif
+
+                    @if(config('timebank-cc.account_info.account_totals.countTransfers_public'))
+                        @if(!config('timebank-cc.account_info.account_totals.sumBalances_public'))
+                            <div class=" text-gray-400 text-sm">
+                                <p class="-mr-24 pb-1">{{ __('Exchanges') }}</p><br><br>
+                            </div>
+                        @endif
+                        @if(config('timebank-cc.account_info.account_totals.countTransfersReceived_public'))
+                            @if ($accountsTotals['transfersReceived'] === 1)
+                            <p class="mr-12">{{ $accountsTotals['transfersReceived'] }} {{__('× received') . ' ' . trans((config('timebank-cc.account_info.account_totals.countTransfersSince_humanReadable'))) }}</p>
+                            @else
+                            <p class="mr-12">{{ $accountsTotals['transfersReceived'] }} {{__('× received') . ' ' . trans((config('timebank-cc.account_info.account_totals.countTransfersSince_humanReadable'))) }}</p>
+                            @endif
+                        @endif
+                        @if(config('timebank-cc.account_info.account_totals.countTransfersGiven_public'))
+                            @if($accountsTotals['transfersGiven'] === 1)
+                            <p class="mr-12">{{ $accountsTotals['transfersGiven'] }} {{__('× given') . ' ' . trans((config('timebank-cc.account_info.account_totals.countTransfersSince_humanReadable'))) }}</p>
+                            @else
+                            <p class="mr-12">{{ $accountsTotals['transfersGiven'] }} {{__('× given') . ' ' . trans((config('timebank-cc.account_info.account_totals.countTransfersSince_humanReadable'))) }}</p>
+                            @endif
+                        @endif
+                        @if(!config('timebank-cc.account_info.account_totals.countTransfersReceived_public') && !config('timebank-cc.account_info.account_totals.countTransfersGiven_public'))
+                            <p class="mr-12">{{ $accountsTotals['transfersReceived'] + $accountsTotals['transfersGiven'] }} {{__('×') . ' ' . trans((config('timebank-cc.account_info.account_totals.countTransfersSince_humanReadable'))) }}</p>
+                        @endif
+                    @endif
                  </div>
+
+
+                 <!--- Last login, last exchange, registered since -->
                  <div class="text-gray-400">
                      @if ($lastLoginAt)
                      <div>
@@ -182,6 +205,7 @@
                          </div>
 
                         <!--- Social media -->
+                        @if($socials && count($socials) > 0)
                         <div class="mt-6 flex items-center text-gray-400 dark:text-gray-200">
                             {{ __('Social media accounts') }}
                         </div>
@@ -197,6 +221,7 @@
                             </a>
                             @endforeach
                         </div>
+                        @endif
 
 
                          <!-- Action buttons -->

@@ -67,7 +67,6 @@
 
     "Organization profile": "Organisatie profiel",
 
-
     "Mobile phone number": "Mobiele telefoon",
     "Mobile phone (visible public for friends)": "Mobiele telefoon (zichtaar voor vrienden)",
 
@@ -161,7 +160,19 @@
     "General Settings": "Algemene instellingen",
     "Drop files to upload": "Sleep bestanden om te uploaden",
     "No Pending Request": "Geen verzoek in afwachting",
-    "Search conversations by name": "Zoek gesprekken op naam"
+    "Search conversations by name": "Zoek gesprekken op naam",
     
+    "is preferred": "heeft de voorkeur",
+    "Exchanges": "Uitwisselingen",
+    "available": "beschikbaar",
+    "× received": "× ontvangen",
+    "× given": "× gegeven",
 
+    "past 10 years": "afgelopen 10 jaar",
+    "past 5 years": "afgelopen 5 jaar",
+    "past year": "afgelopen jaar",
+    "past quarter": "afgelopen kwartaal",
+    "past month": "afgelopen maand",
+    "past week": "afgelopen week",
+    "sinds yesterday": "sinds gisteren"
 }

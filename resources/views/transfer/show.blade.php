@@ -18,9 +18,7 @@
                     </div>
                 </div>
                 <div class="mt-0 md:mt-0 md:col-span-2 ">
-
-                    <livewire:transfer>
-
+                    <livewire:transfer :toHolderName="$name">
                 </div>
             </div>
         </div>

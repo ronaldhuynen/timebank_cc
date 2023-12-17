@@ -19,7 +19,7 @@
 
 
                     <!--- To Account --->
-                    <livewire:to-account>
+                    <livewire:to-account :toHolderName="$toHolderName">
                         @if ($requiredError && !isset($result))
                         <div class="text-sm text-red-700 mb-3" role="alert">
                             {{ __('This field is required') }}

@@ -244,6 +244,11 @@ class Show extends Component
     }
 
 
+    /**
+     * Retrieves the skills of this user.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getSkills()
     {
         $skillsCache = Cache::remember('skills-user-' . $this->user->id . '-lang-' . app()->getLocale(), now()->addDays(7), function () { // remember cache
@@ -340,12 +345,28 @@ class Show extends Component
     }
 
 
+    /**
+     * Retrieves the social media accounts associated with this user.
+     *
+     * @return void
+     */
     public function getSocials()
     {
         $this->socials = $this->user->socials()->orderBy('sociables.updated_at', 'desc')->get();
     }
 
+
+    /**
+     * Redirects to the payment page to this user.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function payButton()
+    {
+        return redirect()->route('pay.to.name', ['name' => $this->user->name]);
+    }
  
+
     /**
      *  Start a conversation with the user.
      */

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
 use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
-use Laravel\Jetstream\Http\Livewire\NavigationMenu;
 use Laravel\Jetstream\Jetstream;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 
@@ -89,8 +88,15 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                 })->name('es.dashboard');
 
 
+                //TODO: change 'transfer' route to 'pay' route? Easier to remember
+
                 Route::get('/transfer', 'App\Http\Controllers\TransactionController@transfer')->name('transfer');
                 Route::post('/transfer', 'App\Http\Controllers\TransactionController@saveTransfer')->name('saveTransfer');
+
+                Route::get('/pay/{name}', 'App\Http\Controllers\TransactionController@payToName')
+                                    ->name('pay.to.name')
+                                    ->missing(function () {return view('transfer.profile_not_found');});
+
 
                 Route::get('/transactions', 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
 
@@ -140,7 +146,6 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                 // Route::get('/send-friend-request', SendFriendRequest::class);
 
 
-
                 Route::get('/user/{userId}', 'App\Http\Controllers\UserController@show')
                                     ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed
                                     ->name('user.show')
@@ -150,9 +155,6 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                 Route::get('/{name}', 'App\Http\Controllers\UserController@showByName')
                                     ->name('show.by.name')
                                     ->missing(function () {return view('user.not_found');});
-
-
-
 
 
 

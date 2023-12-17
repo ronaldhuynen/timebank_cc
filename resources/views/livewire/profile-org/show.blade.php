@@ -1,3 +1,5 @@
+<!--- TODO: add organisation profile view! -->
+
 <x-jet-form-section>
     <x-slot name="title">
         {{ __('Show profile') }}

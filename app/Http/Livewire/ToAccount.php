@@ -26,6 +26,15 @@ class ToAccount extends Component
     ];
 
 
+    public function mount($toHolderName = null)
+    {
+        if ($toHolderName) {            
+            $this->showDropdown = true;
+            $this->updatedSearch($toHolderName);
+            $this->search = $toHolderName;
+        }
+    }
+
     public function checkValidation()
     {
         $this->emit('toAccountValidation');
@@ -46,6 +55,14 @@ class ToAccount extends Component
     public function fromAccountId($fromAccount)
     {
         $this->fromAccountId = $fromAccount;
+    }
+
+    public function toHolderName($toHolderName)
+    {
+        // $this->showDropdown = true;
+        // $this->search = $toHolderName;
+        // $this->showDropdown = true;
+        $this->updatedSearch($toHolderName);
     }
 
 
@@ -69,7 +86,7 @@ class ToAccount extends Component
      * @param  mixed $newValue
      * @return void
      */
-    public function updatedSearch($newValue)
+    public function updatedSearch()
     {
         $this->showDropdown = true;
         $excludeAccount = $this->fromAccountId;
@@ -81,7 +98,6 @@ class ToAccount extends Component
             })
             ->orWhere('name', 'like', '%' . $search . '%')
             ->get();
-        $photo = 
         $mappedAccounts = $accounts->map(function ($account, $key) {
             return [
                 'accountId' => $account->id,
@@ -100,6 +116,9 @@ class ToAccount extends Component
 
     public function render()
     {
+        
+$this->updatedSearch($this->search);
+
         return view('livewire.to-account');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Organization;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Traits\AccountInfoTrait;
 
 class TransactionController extends Controller
@@ -25,6 +27,16 @@ class TransactionController extends Controller
         return view(
             'transfer.show',
         );
+    }
+
+
+    public function payToName($name)
+    {
+        //TODO: add permission check
+        //TODO: if 403, but has permission, redirect with message to switch profile
+        //TODO: replace 403 with custom redirect page incl explanation
+        return ($name != null ? view('transfer.show', compact(['name'])) : abort(403));
+
     }
 
 

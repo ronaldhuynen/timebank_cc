@@ -63,9 +63,9 @@ class OrgController extends Controller
             'motivation',
             'date_of_birth',
             'website',
-            'phone_public_for_friends',
+            // 'phone_public_for_friends',
             'created_at',
-            'last_login_at',
+            // 'last_login_at',
             'love_reactant_id'
         ])
         ->with([
@@ -91,15 +91,13 @@ class OrgController extends Controller
             $lastLoginDate = Carbon::createFromTimeStamp(strtotime($org->last_login_at))->isoFormat('LL');
 
         } else {
-            return view('profile-user.not_found');
+            return view('profile-org.not_found');
         }
-
-        ds($org)->label('$org in OrgController');
 
         //TODO: add permission check
         //TODO: if 403, but has permission, redirect with message to switch profile
         //TODO: replace 403 with custom redirect page incl explanation
-        return ($org != null ? view('profile-user.show', compact(['org'])) : abort(403));
+        return ($org != null ? view('profile-org.show', compact(['org'])) : abort(403));
     }
 
     

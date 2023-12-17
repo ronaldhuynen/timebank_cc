@@ -21526,6 +21526,9 @@ select {
 .cursor-pointer {
   cursor: pointer;
 }
+.cursor-auto {
+  cursor: auto;
+}
 .select-none {
   -webkit-user-select: none;
      -moz-user-select: none;

@@ -22,7 +22,7 @@
             autocomplete="off">
 
             @if (strlen($search) > 2)
-            <ul class="absolute z-50 bg-white border border-gray-300 w-full shadow-lg rounded-md mt-0 text-gray-900 text-sm">
+            <ul class="cursor-default absolute z-50 bg-white border border-gray-300 w-full shadow-lg rounded-md mt-0 text-gray-900 text-sm">
                 @forelse ($searchResults as $result)
                 <li>
                     <a wire:click="toAccountSelected({{ $result['accountId'] }})" class="flex items-center px-2 py-2 hover:bg-gray-100">
@@ -59,17 +59,18 @@
                 type="search" 
                 autocomplete="off">
 
-            <div class=" w-full pl-0 pr-3 py-2 mt-2 border border-gray-300 rounded-md leading-5 shadow-sm bg-white focus:outline-none focus:placeholder-gray-300 focus:border-indigo-300 focus:shadow-outline-blue sm:text-sm transition duration-150 ease-in-out">
-               <div class="flex items-center px-2 py-2">
-                <img src="{{ $toHolderPhoto }}" class="w-10 rounded-full">
-                <div class="ml-4 leading-tight">
-                    <div wire:model="toHolderName" class="font-semibold">
-                        {{ $toHolderName }}
+            <div class="cursor-default w-full pl-0 pr-3 py-2 mt-2 border border-gray-300 rounded-md leading-5 shadow-sm bg-white focus:outline-none focus:placeholder-gray-300 focus:border-indigo-300 focus:shadow-outline-blue sm:text-sm transition duration-150 ease-in-out">
+                <!-- Add cursor-default class here -->
+                <div class="flex items-center px-2 py-2">
+                    <img src="{{ $toHolderPhoto }}" class="w-10 rounded-full">
+                    <div class="ml-4 leading-tight">
+                        <div wire:model="toHolderName" class="font-semibold">
+                            {{ $toHolderName }}
+                        </div>
+                        <div wire:model="toAccountName" class="text-gray-600">
+                            {{ $toAccountName }}
+                        </div>
                     </div>
-                    <div wire:model="toAccountName" class="text-gray-600">
-                        {{ $toAccountName }}
-                    </div>
-                </div>
                 </div>
             </div>
         @endif

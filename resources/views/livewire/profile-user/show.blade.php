@@ -180,47 +180,37 @@
                              <div>{{ __('Registered since') . ': ' . $registeredSince }}</div>
 
                          </div>
-                         <div>
 
-                             <div class="mt-6 sm:mx-4 sm:mt-0">
+                        <!--- Social media -->
+                        <div class="mt-6 flex items-center text-gray-400 dark:text-gray-200">
+                            {{ __('Social media accounts') }}
+                        </div>
+                        <div class="mt-2 flex-wrap sm:flex">
+                            @foreach($socials as $value)
+                            <a href="{{ (str_starts_with($value->pivot->user_on_social, 'https://') ? $value->pivot->user_on_social :
+                                str_replace('#', $value->pivot->server_of_social, $value->url_structure)  . $value->pivot->user_on_social )}}" target="_blank" class="mx-2 text-gray-300 hover:text-gray-100 group-hover:text-white dark:text-gray-300 dark:hover:text-gray-300" aria-label="{{ $value->name }}">
+                                <img 
+                                    src="{{  Storage::url($value->icon) }}" 
+                                    alt="{{ $value->name }}" 
+                                    title="{{ $user->name . ' on ' . $value->name }}" 
+                                    class="h-8 w-8 invert opacity-75 hover:opacity-100" />
+                            </a>
+                            @endforeach
+                        </div>
+
+
+                         <!-- Action buttons -->
+                         <div class="">
+                             <div class="bg-gray-white flex items-center justify-end gap-8 py-3 text-right">
+                                 <button class="items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25"
+                                    wire:click="payButton">
+                                    {{ __('Pay') }}
+                                 </button>
+                                 <button wire:click="startMessenger" class="transition0 items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25">
+                                    {{ __('Send Message') }}
+                                 </button>
                              </div>
-                             <p class="mt-4 text-gray-300 group-hover:text-gray-300 dark:text-gray-300">
-                                 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                 pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                 mollit
-                                 anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                 aliquip ex ea commodo consequat.
-                                 <a href="#" class="flex transform items-center text-sm text-gray-300 underline transition-colors duration-100 hover:text-gray-100 hover:underline dark:text-gray-400 dark:hover:text-gray-100">
-                                     <span>Read more...</span>
-                                     <svg class="mx-1 h-4 w-4 rtl:-scale-x-100" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                         <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                     </svg>
-                                 </a>
-                             </p>
-
-
-                             <!--- Social media -->
-                             <div class="item-center mt-8 flex justify-between">
-                                 @foreach($socials as $value)
-                                 <div class="flex">
-                                     <a href="{{ (str_starts_with($value->pivot->user_on_social, 'https://') ? $value->pivot->user_on_social :
-                                    str_replace('#', $value->pivot->server_of_social, $value->url_structure)  . $value->pivot->user_on_social )}}" target="_blank" class="mx-2 text-gray-300 hover:text-gray-100 group-hover:text-white dark:text-gray-300 dark:hover:text-gray-300" aria-label="{{ $value->name }}">
-                                         <img src="{{  Storage::url($value->icon) }}" alt="{{ $value->name }}" class="h-10 w-10 invert opacity-75 hover:opacity-100" />
-                                     </a>
-                                     @endforeach
-                                 </div>
-                             </div>
-
-                                                       
                          </div>
-
-   <div class="">
-                                 <div class="bg-gray-white flex items-center justify-end gap-8 py-3 text-right">
-                                     <button class="items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25">{{ __('Pay') }}</button>
-                                     <button wire:click="startMessenger" class="transition0 items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25">{{ __('Send Message') }}</button>
-                                 </div>
-                             </div>
-
 
                      </div>
 

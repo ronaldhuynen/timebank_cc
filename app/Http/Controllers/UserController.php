@@ -8,7 +8,6 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {

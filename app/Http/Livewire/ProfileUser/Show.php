@@ -32,6 +32,7 @@ class Show extends Component
     public $isOnline;
     public $isAway;
     public $accountsTotals;
+    public $socials;
 
     /**
      * The mount method is called when the component is mounted.
@@ -40,27 +41,17 @@ class Show extends Component
     public function mount()
     {
         $this->getOnlineStatus();
-
         $this->getLocation();
-
         $this->getFriend();
-
         $this->getPendingFriend();
-
         $this->getPhone();
-
         $this->getLastLogin();
-
         $this->getLastExchangeAt();
-
         $this->getRegisteredSince();
-
         $this->getLanguages();
-
         $this->getSkills();
-
         $this->getAccountsTotals();
-
+        $this->getSocials();
 
         // ds($this->user)->label('user in show');
         // ds($this->skills)->label('skills in show');
@@ -337,9 +328,21 @@ class Show extends Component
         $this->registeredSince = $createdAt->diffForHumans();
     }
 
+
+    /**
+     * Retrieves the totals of the user's accounts.
+     * This method calls the `getAccountsTotals` method of the `Account` model to calculate the totals of the user's accounts.
+     *
+     */
     public function getAccountsTotals()
     {
         $this->accountsTotals = (new Account)->getAccountsTotals(User::class, $this->user->id, 365);    // count transfers since 365 days ago
+    }
+
+
+    public function getSocials()
+    {
+        $this->socials = $this->user->socials()->orderBy('sociables.updated_at', 'desc')->get();
     }
 
  
@@ -348,7 +351,7 @@ class Show extends Component
      */
     public function startMessenger()
     {
-        return redirect('/messenger/recipient/user/' . $this->user->id);
+        redirect('/messenger/recipient/user/' . $this->user->id);
     }
 
 

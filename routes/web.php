@@ -47,11 +47,6 @@ Route::get('/clear-cache', function () {
 Route::get('/js/lang.js', [LangJsController::class, 'js'])->name('lang.js');
 
 
-
-Route::post('/change-locale', [NavigationMenu::class, 'change'])->name('change-locale');
-
-
-
 //TODO: Use translated routes, see https://github.com/mcamara/laravel-localization
 
 Route::group(['prefix' => (new LaravelLocalization())->setLocale(),

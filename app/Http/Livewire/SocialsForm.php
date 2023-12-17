@@ -27,8 +27,13 @@ class SocialsForm extends Component
     public function mount()
     {
         $this->socialsOptions = Social::select("*")->orderBy("name")->get();
+        $this->getSocials();
     }
 
+    public function getSocials()
+    {
+        $this->socials = session('activeProfileType')::find(session('activeProfileId'))->socials;
+    }
 
     public function store()
     {
@@ -48,6 +53,7 @@ class SocialsForm extends Component
            ]);
         session()->flash('message', __('Saved'));
         $this->resetInputFields();
+        $this->getSocials();
     }
 
 
@@ -86,10 +92,8 @@ class SocialsForm extends Component
                 'server_of_social' => str_replace('@', '', $this->serverOfSocial),
                 'updated_at' => Carbon::now(),
             ]);
-            // session()->flash('message', __('Saved'));
             
             $this->emitUp('emitSaved');
-
             $this->resetInputFields();
         }
     }
@@ -106,8 +110,7 @@ class SocialsForm extends Component
 
     public function render()
     {
-        $this->socials = session('activeProfileType')::find(session('activeProfileId'))->socials()->orderBy('sociables.updated_at','desc')->get();  
-        // dd($this->socials);      
+        $this->getSocials();
         return view('livewire.socials-form');
     }
 }

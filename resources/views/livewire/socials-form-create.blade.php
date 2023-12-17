@@ -13,11 +13,17 @@
     </div>
 
     <div class="grid grid-cols-1 gap-6 mt-3 mb-3 md:grid-cols-2">
-        <x-input wire:model="userOnSocial" label="{{ __('Your username on social medium') }}" placeholder="AccountName or URL addres" prefix="@ " class="placeholder-gray-300"/>
         @if(App\Models\Social::find($socialsOptionSelected))
+            @if(App\Models\Social::find($socialsOptionSelected)->url_structure === '')
+            <x-input wire:model="userOnSocial" label="{{ __('Link to your page on social medium') }}" placeholder="Link or URL addres" prefix=" " class="placeholder-gray-300"/>
+            @else
+
+        <x-input wire:model="userOnSocial" label="{{ __('Your username on social medium') }}" placeholder="Account Name" prefix="@ " class="placeholder-gray-300"/>
             @if(Str::contains(App\Models\Social::find($socialsOptionSelected)->url_structure, '#'))
             <x-input wire:model="serverOfSocial" label="Server of social" placeholder="Server name" prefix="@ " />
             @endif
+            @endif
+
         @endif
     </div>
 

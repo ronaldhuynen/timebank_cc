@@ -139,6 +139,16 @@ class SocialsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
+            12 =>
+            array (
+                'id' => 13,
+                'name' => 'Flickr',
+                'icon' => 'app-images/flickr.svg',
+                'url_structure' => 'https://flickr.com/',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+                'deleted_at' => NULL,
+            ),
         ));
 
 

@@ -24,18 +24,13 @@ class TransactionsTable extends Component
         'fromAccountId',
     ];
 
-
-    public function clear()
+    public function updatedSearch()
     {
-        $this->search = '';
-        $this->resetPage();
-    }
-
-
-    public function updatingSearch()
-    {
+        if (($this->search) == '') {
+            $this->searchState = false;    
+        } else {
         $this->searchState = true;
-        $this->resetPage();
+        }
     }
 
 
@@ -73,7 +68,12 @@ class TransactionsTable extends Component
         $balance = 0;
         $accountId = $this->fromAccountId;
 
-        //TODO: Zoeken op amount mogelijk maken!
+        
+        // Check if $search contains a time format
+        if (preg_match('/(\d{1,4}:\d{2})/', $search, $matches)) {
+            // Convert $search using tbFormat() helper function
+            $searchAmount = dbFormat($matches[0]);
+        }
 
         if ($this->searchState === false) {
             $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
@@ -91,7 +91,7 @@ class TransactionsTable extends Component
                         'amount' => $ct->amount,
                         'type' => 'Credit',
                         'account_from' => $ct->from_account_id,
-                        'account_name' => $ct->accountFrom->name,
+                        'account_from_name' => $ct->accountFrom->name,
                         'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
                         'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
                         'description' => $ct->description,
@@ -106,7 +106,7 @@ class TransactionsTable extends Component
                         'amount' => $dt->amount,
                         'type' => 'Debit',
                         'account_to' => $dt->to_account_id,
-                        'account_name' => $dt->accountTo->name,
+                        'account_to_name' => $dt->accountTo->name,
                         'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
                         'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
                         'description' => $dt->description,
@@ -130,24 +130,45 @@ class TransactionsTable extends Component
                 $state[] = $s;
             }
             $transactions = $state;
-        } else {
+        } elseif ($search) {
             // $searchState is true
-            $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
-            ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-            ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-            ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
-            })
-            ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
-            })
-            ->get();
+
+            if (isset($searchAmount)) {
+                // $search contains a time format
+                $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+                ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+                ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+                ->orWhereHas('accountTo.accountable', function ($query) use ($search, $searchAmount) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhere('amount', 'like', '%' . $searchAmount . '%');
+    
+                })
+                ->orWhereHas('accountFrom.accountable', function ($query) use ($search, $searchAmount) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhere('amount', 'like', '%' . $searchAmount . '%');
+                })
+                ->get();
+            } else {
+                // $search does not contain a time format
+                $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+                ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+                ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
+                ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+                })
+                ->get();
+            }
+
 
 
             if ($this->fromDate == null) {
-                // $this->fromDate = Carbon::now()->subDays(365)->toDateString();
                 $this->fromDate = '';
             }
             if ($this->toDate == null) {

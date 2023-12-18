@@ -13,15 +13,13 @@ use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
-use Spatie\Searchable\Searchable;
-use Spatie\Searchable\SearchResult;
 
-class Organization extends Model implements MessengerProvider, Searchable, ReacterableInterface, ReactableInterface
+class Organization extends Model implements MessengerProvider, ReacterableInterface, ReactableInterface
 {
     use HasFactory;
     use HasProfilePhoto;
@@ -29,8 +27,7 @@ class Organization extends Model implements MessengerProvider, Searchable, React
     use TaggableWithLocale;
     use Reacterable; // cybercog/laravel-love
     use Reactable; // cybercog/laravel-love
-
-
+    use Searchable; // laravel/scout with ElasticSearch
 
 
     /**
@@ -57,6 +54,16 @@ class Organization extends Model implements MessengerProvider, Searchable, React
         'website',
         'phone',
     ];
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'organizations_index';
+    }
 
 
     /**
@@ -153,7 +160,7 @@ class Organization extends Model implements MessengerProvider, Searchable, React
 
     /**
      * Rtippin Messenger:
-     * Nessenger avator / profile photo location.
+     * Messenger avator / profile photo location.
      *
      * @return string
      */
@@ -178,24 +185,12 @@ class Organization extends Model implements MessengerProvider, Searchable, React
 
 
     /**
-     * Spatie Laravel-Searchable.
-     *
-     * @return SearchResult
-     */
-    public function getSearchResult(): SearchResult
-    {
-        return new \Spatie\Searchable\SearchResult(
-            $this,
-            $this->name,
-        );
-    }
-
-    /**
      * Get all of the Organization's posts.
      */
     public function posts()
     {
         return $this->morphMany(Post::class, 'postable');
     }
+
 
 }

@@ -87,9 +87,7 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                     return view('dashboard');
                 })->name('es.dashboard');
 
-
-                //TODO: change 'transfer' route to 'pay' route? Easier to remember
-
+                //TODO: change 'transfer' route to 'pay' route? Easier for users to remember
                 Route::get('/transfer', 'App\Http\Controllers\TransactionController@transfer')->name('transfer');
                 Route::post('/transfer', 'App\Http\Controllers\TransactionController@saveTransfer')->name('saveTransfer');
 

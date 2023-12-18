@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Searchable\Searchable;
-use Spatie\Searchable\SearchResult;
+use Laravel\Scout\Searchable;
 
-class Transaction extends Model implements Searchable
+class Transaction extends Model
 {
     use HasFactory;
+    use Searchable; // laravel/scout with ElasticSearch
+
 
     /**
      * The table associated with the model.
@@ -18,6 +19,17 @@ class Transaction extends Model implements Searchable
      * @var string
      */
     protected $table = 'transactions';
+
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'transactions_index';
+    }
 
 
     public function accountFrom()
@@ -35,15 +47,5 @@ class Transaction extends Model implements Searchable
         return $this->belongsTo(User::class, 'creator_user_id');
     }
 
-
-    // Spatie Laravel-Searchable
-    public function getSearchResult(): SearchResult
-    {
-         return new \Spatie\Searchable\SearchResult(
-            $this,
-            $this->amount,
-            $this->description,
-         );
-     }
 
 }

@@ -2,7 +2,7 @@
 
     <div class="flex space-x-12">
         <div class="flex-none w-2/4 my-6">
-            <x-input wire:model="search" right-icon="search" label="{{ __('Search keywords') }}" placeholder="Name, email, description, amount..." :clearable="true" class="placeholder-gray-300 text-gray-900 text-sm" />
+            <x-input wire:model="search" right-icon="search" label="{{ __('Search transactions') }}" placeholder="Name, description or amount" :clearable="true" class="placeholder-gray-300 text-gray-900 text-sm" />
 
         </div>
         <div class="flex-auto my-6 z-50">
@@ -77,7 +77,11 @@
                                 {{ $transaction['relation'] }}
                             </p>
                             <p class="text-gray-500 whitespace-no-wrap">
-                                {{ $transaction['account_name'] }}
+                                @if(isset($transaction['account_to_name']))
+                                   {{ $transaction['account_to_name'] }}
+                                @else
+                                   {{ $transaction['account_from_name'] }}
+                                @endif
                             </p>
                      </div>
                  </div>

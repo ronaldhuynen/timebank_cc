@@ -190,7 +190,7 @@ return [
          * Package Service Providers...
          */
         Stevebauman\Location\LocationServiceProvider::class,
-
+        Matchish\ScoutElasticSearch\ElasticSearchServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -20,15 +20,14 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
-use Spatie\Searchable\Searchable;
-use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable implements MessengerProvider, Searchable, MustVerifyEmail, ReacterableInterface, ReactableInterface
+class User extends Authenticatable implements MessengerProvider, MustVerifyEmail, ReacterableInterface, ReactableInterface
 {
     use HasApiTokens;
     use HasFactory;
@@ -41,6 +40,7 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     use TaggableWithLocale;
     use Reacterable; // cybercog/laravel-love
     use Reactable; // cybercog/laravel-love
+    use Searchable; // laravel/scout with ElasticSearch
 
     /**
      * The attributes that are mass assignable.
@@ -84,6 +84,16 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
         'email_verified_at' => 'datetime',
     ];
 
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'users_index';
+    }
 
     /**
      * Get the user's profile.
@@ -165,7 +175,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     {
         return [
             'alias' => 'user',
-            'searchable' => true,
             'friendable' => true,
             'devices' => true,
             'default_avatar' => public_path('vendor/messenger/images/users.png'),
@@ -222,19 +231,6 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     }
 
 
-    /**
-     * Spatie Laravel-Searchable.
-     *
-     * @return SearchResult
-     */
-    public function getSearchResult(): SearchResult
-    {
-        return new \Spatie\Searchable\SearchResult(
-            $this,
-            $this->name,
-        );
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -258,4 +254,5 @@ class User extends Authenticatable implements MessengerProvider, Searchable, Mus
     {
         return $this->morphMany(Post::class, 'postable');
     }
+
 }

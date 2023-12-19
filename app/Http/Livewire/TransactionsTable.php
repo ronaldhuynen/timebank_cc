@@ -72,7 +72,9 @@ class TransactionsTable extends Component
         // Check if $search contains a time format
         if (preg_match('/(\d{1,4}:\d{2})/', $search, $matches)) {
             // Convert $search using tbFormat() helper function
-            $searchAmount = dbFormat($matches[0]);
+            $searchAmount = dbFormat($matches[0]);            
+            // Remove the time-format part from $search
+            $search = str_replace($matches[0], '', $search);
         }
 
         if ($this->searchState === false) {
@@ -130,40 +132,24 @@ class TransactionsTable extends Component
                 $state[] = $s;
             }
             $transactions = $state;
-        } elseif ($search) {
+        } elseif ($search || isset($searchAmount)) {
             // $searchState is true
 
             if (isset($searchAmount)) {
                 // $search contains a time format
-                $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
-                ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-                ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-                ->orWhereHas('accountTo.accountable', function ($query) use ($search, $searchAmount) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%')
-                    ->orWhere('amount', 'like', '%' . $searchAmount . '%');
-    
-                })
-                ->orWhereHas('accountFrom.accountable', function ($query) use ($search, $searchAmount) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%')
-                    ->orWhere('amount', 'like', '%' . $searchAmount . '%');
-                })
-                ->get();
+                $search = rtrim(trim($search), ':');
+                if (strlen($search) > 0) {
+                $searchQuery = $search . ' AND ' . $searchAmount;
+                } else{
+                    $searchQuery = 'amount:' . $searchAmount;	//
+                }
+                $searchResults = Transaction::search($searchQuery)->get(); // Scout search
+
             } else {
                 // $search does not contain a time format
-                $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
-                ->where([['to_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-                ->orWhere([['from_account_id', $accountId],['description', 'like', '%' . $search . '%']])
-                ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%');
-                })
-                ->get();
+                $search = rtrim(trim($search), ':');
+                $searchQuery = $search . '~1';
+                $searchResults = Transaction::search($searchQuery)->get(); // Scout search
             }
 
 

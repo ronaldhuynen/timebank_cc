@@ -140,7 +140,8 @@ class TransactionsTable extends Component
             // $searchState is true
 
             // Remove special characters that conflict with Elesticsearch query from $search
-            $search = str_replace([';', '(',')', '[', ']', '{', '}', '*', '&', '<', '>', '%', '&', '#', '~', ':', '!'], '', $search);
+
+            $search = preg_replace('/[^a-zA-Z0-9\s]/', '', $search);
 
             if (isset($searchAmount)) {
                 // $search contains a time format

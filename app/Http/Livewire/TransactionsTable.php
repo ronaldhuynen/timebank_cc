@@ -158,11 +158,20 @@ class TransactionsTable extends Component
                 $searchQuery = $search . '~';
             }
             
-            info('$searchQuery: ' . $searchQuery);
             if (strlen($searchQuery) > 1) {     // Because we use the fuzzy search character '~', we need to check if $searchQuery is > 1
-                $searchResults = Transaction::search($searchQuery)->get(); // Scout search
+                $searchResults = Transaction::search($searchQuery)
+                ->query(function ($query) use ($accountId) {
+                    $query->where('to_account_id', $accountId)
+                    ->orWhere('from_account_id', $accountId);
+                })
+                ->get(); // Scout search
             } else {
-                $searchResults = Transaction::search('*')->get(); // Scout search
+                $searchResults = Transaction::search('*')
+                ->query(function ($query) use ($accountId) {
+                    $query->where('to_account_id', $accountId)
+                    ->orWhere('from_account_id', $accountId);
+                })
+                ->get(); // Scout search
             }
 
 

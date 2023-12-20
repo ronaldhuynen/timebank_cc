@@ -2,10 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Account;
+use App\Models\Organization;
 use App\Models\Transaction;
+use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Matchish\ScoutElasticSearch\MixedSearch;
 
 class TransactionsTable extends Component
 {
@@ -135,23 +139,30 @@ class TransactionsTable extends Component
         } elseif ($search || isset($searchAmount)) {
             // $searchState is true
 
+            // Remove special characters that conflict with Elesticsearch query from $search
+            $search = str_replace([';', '(',')', '[', ']', '{', '}', '*', '&', '<', '>', '%', '&', '#', '~', ':', '!'], '', $search);
+
             if (isset($searchAmount)) {
                 // $search contains a time format
-                $search = rtrim(trim($search), ':');
+               
                 if (strlen($search) > 0) {
-                $searchQuery = $search . ' AND ' . $searchAmount;
+                $searchQuery = $search . '~ AND ' . $searchAmount;
                 } else{
                     $searchQuery = 'amount:' . $searchAmount;	//
                 }
-                $searchResults = Transaction::search($searchQuery)->get(); // Scout search
-
+                
             } else {
                 // $search does not contain a time format
-                $search = rtrim(trim($search), ':');
-                $searchQuery = $search . '~1';
-                $searchResults = Transaction::search($searchQuery)->get(); // Scout search
+                
+                $searchQuery = $search . '~';
             }
-
+            
+            info('$searchQuery: ' . $searchQuery);
+            if (strlen($searchQuery) > 1) {     // Because we use the fuzzy search character '~', we need to check if $searchQuery is > 1
+                $searchResults = Transaction::search($searchQuery)->get(); // Scout search
+            } else {
+                $searchResults = Transaction::search('*')->get(); // Scout search
+            }
 
 
             if ($this->fromDate == null) {
@@ -162,7 +173,6 @@ class TransactionsTable extends Component
             }
 
             $results = $searchResults->whereBetween('created_at', [$this->fromDate, $this->toDate]);
-
             foreach ($results as $t) {
                 if ($t->to_account_id === $accountId) {
                     // Credit transfer

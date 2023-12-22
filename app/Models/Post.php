@@ -8,6 +8,7 @@ use App\Models\Meeting;
 use App\Models\PostTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -18,9 +19,58 @@ class Post extends Model implements HasMedia
     use HasFactory;
     use BelongsToThrough;
     use InteractsWithMedia;
+    use Searchable; // laravel/scout with ElasticSearch
+
 
 
     protected $fillable = ['postable_id', 'postable_type',  'category_id'];
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'posts_index';
+    }
+
+    
+    /**
+     * Convert the transaction model to a searchable array.
+     *
+     * @return array
+     */
+    public function toSearchableArray()    
+    {
+        return [
+            'id' => $this->id,
+
+            'postable' => [
+                'id' => $this->postable ? $this->postable->id : '',
+                'name' => $this->postable ? $this->postable->name : '',
+            ],
+
+            'translations' => $this->translations->map(function ($translation) {    // map() as translations is a collection
+
+                return [
+                    'id' => $translation ? $translation->id : '',
+                    'title' => $translation ? $translation->title : '',
+                    'excerpt' => $translation ? $translation->excerpt : '',
+                    'content' => $translation ? $translation->content : '',
+                ];
+            }),
+
+            'category' => $this->category ? [
+                'id' => $this->category->id,
+                'names' => $this->category->translations->map(function ($translation) {   // map() as translations is a collection
+                    return $translation->name;
+                })->toArray(),
+            ] : [],
+        ];
+    }
+
+
 
     /**
      * Get the creator of the post (i.e. user or organization).

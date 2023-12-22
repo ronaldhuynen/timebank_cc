@@ -75,7 +75,7 @@
                         <!-- Row buttons -->
                         <td class="whitespace-no-wrap border-b border-white align-middle text-sm leading-5">
                             <a class="mb-2 hidden font-bold text-gray-900 sm:block"
-                                href="{{ url($translation->locale . '/posts/' . $translation->slug) }}"
+                                href="{{ url($translation->locale . '/post/' . $translation->slug) }}"
                                 target="_blank">
                                 <x-icon name="external-link" class="h-5 w-5" /><a>
                         </td>

@@ -105,13 +105,13 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
                 Route::get('/posts/manage', 'App\Http\Controllers\PostController@admin')->name('posts.manage');
 
-                Route::get('/posts/{postId}', 'App\Http\Controllers\PostController@showById')
+                Route::get('/post/{postId}', 'App\Http\Controllers\PostController@showById')
                     ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed
-                    ->name('posts.show_by_id')
-                    ->missing(function () {return view('posts.not_found');});
+                    ->name('post.show_by_id')
+                    ->missing(function () {return view('post.not_found');});
 
-                Route::get('/posts/{slug}', 'App\Http\Controllers\PostController@showBySlug')
-                    ->name('posts.show_by_slug');
+                Route::get('/post/{slug}', 'App\Http\Controllers\PostController@showBySlug')
+                    ->name('post.show_by_slug');
 
 
                 Route::get('/user/{userId}', 'App\Http\Controllers\UserController@show')

@@ -84,7 +84,6 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-
     /**
      * Get the index name for the model.
      *
@@ -94,6 +93,45 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
     {
         return 'users_index';
     }
+
+    /**
+     * Convert the transaction model to a searchable array.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'about' => $this->about, 
+            'motivation' => $this->motivation,
+            'last_login_at' => $this->last_login_at,
+            'lang_preference' => $this->lang_preference,
+
+            'languages' => $this->languages->map(function ($language) { // map() as languages is a collection
+                return [
+                    'id' => $language->id,
+                    'name' => $language->name,
+                    'lang_code' => $language->lang_code,
+                ];
+            }),
+
+            'locations' => $this->locations->map(function ($location) { // map() as locations is a collection
+                return [
+                    'id' => $location->id,
+                    'district' => $location->district ? $location->district->locale->name : '',
+                    'city' => $location->city ? $location->city->translations->map(function ($translation) {   // map() as translations is a collection
+                        return $translation->name;
+                        })->toArray() : [],
+                    'division' => $location->division ? $location->division->locale->name : '',
+                    'country' => $location->country ? $location->country->locale->name : '',
+                ];
+            }),
+
+        ];
+    }
+    
 
     /**
      * Get the user's profile.
@@ -253,6 +291,15 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
     public function posts()
     {
         return $this->morphMany(Post::class, 'postable');
+    }
+
+
+    /**
+     * Get all of the User's posts.
+     */
+    public function categories()
+    {
+        return $this->morphMany(Category::class, 'categoryable');
     }
 
 }

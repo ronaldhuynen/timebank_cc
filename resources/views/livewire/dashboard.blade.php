@@ -13,6 +13,11 @@
             <div>
             @livewire('skills-form')
         </div>
+
+                </div>
+                <div>
+                    @livewire('main-search-bar')
+                </div>
         </div>
 
         @else

@@ -22,7 +22,7 @@
                             </span>
                             <div class="flex justify-end">
                                 <a class="hidden font-bold text-white sm:block"
-                                    href="{{ route('posts.show_by_slug', [$post->slug]) }}">{{ __('Read more') }}
+                                    href="{{ route('post.show_by_slug', [$post->slug]) }}">{{ __('Read more') }}
                                 </a>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="ml-2 h-6 w-6">

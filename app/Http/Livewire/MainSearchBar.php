@@ -43,7 +43,7 @@ class MainSearchBar extends Component
                 'locations.division',
                 'locations.country',
                 'tags.contexts.tags.name',
-                'tags.contexts.categories.name',
+                'tags.contexts.categories.translations.name',
 
             ], $search, ['fuzziness' => 2]);
             $body->addQuery($multiMatchQuery);

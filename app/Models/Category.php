@@ -35,7 +35,13 @@ class Category extends Model
     {
         return $this->hasMany(CategoryTranslation::class);
     }
+    
+    public function related()
+    {
+        
+        return $this->ancestorsAndSelf()->get();
 
+    }
 
 
     /**

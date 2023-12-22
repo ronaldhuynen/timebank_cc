@@ -6,6 +6,7 @@ use App\Models\TaggableContext;
 use App\Models\TaggableLocale;
 use App\Traits\TaggableWithLocale;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
 
@@ -20,12 +21,37 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
 {
     use HasFactory;
     use TaggableWithLocale;
-
-
+    use Searchable; // laravel/scout with ElasticSearch
 
     protected $table = 'taggable_tags';
-
     protected $primaryKey = 'tag_id';
+
+    
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'tags_index';
+    }
+
+
+    //  /**
+    //  * Convert this model to a searchable array.
+    //  *
+    //  * @return array
+    //  */
+    // public function toSearchableArray()
+    // {
+    //     return [
+    //         'tag_id' => $this->id,
+    //         'name' => $this->name,
+    //         'tags' => $this->tags ? $this->locale->example : '',
+    //     ];
+    // }
+    
 
 
 

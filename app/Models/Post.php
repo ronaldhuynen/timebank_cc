@@ -37,7 +37,7 @@ class Post extends Model implements HasMedia
 
     
     /**
-     * Convert the transaction model to a searchable array.
+     * Convert the this model to a searchable array.
      *
      * @return array
      */

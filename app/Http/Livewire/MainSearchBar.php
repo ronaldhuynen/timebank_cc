@@ -6,11 +6,8 @@ use Elastic\Elasticsearch\Client;
 use Livewire\Component;
 use Matchish\ScoutElasticSearch\MixedSearch;
 use ONGR\ElasticsearchDSL\Highlight\Highlight;
-use ONGR\ElasticsearchDSL\Query\Compound\FunctionScoreQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MultiMatchQuery;
-use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Search;
-use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
 class MainSearchBar extends Component
 {
@@ -39,34 +36,44 @@ class MainSearchBar extends Component
                 'translations.excerpt',
                 'translations.content',
                 'category.names',
+                'name',
                 'about',
-                'motivation',
+                'locations.district',
+                'locations.city',
+                'locations.division',
+                'locations.country',
+                'tags.contexts.tags.name',
+                'tags.contexts.categories.name',
 
             ], $search, ['fuzziness' => 2]);
-            $functionScoreQuery = new FunctionScoreQuery($multiMatchQuery);
-            $functionScoreQuery->addWeightFunction(100, new TermQuery('__class_name', 'App\Models\Post'));
-            $body->addQuery($functionScoreQuery);
-            $body->setSize(100);   
-            $body->addSort(new FieldSort('_score', 'DESC')); 
+            $body->addQuery($multiMatchQuery);
+            $body->setSize(100);
 
             return $client->search(['index' => [
                 'posts_index',
-                'users_index', 
-                'organizations_index', 
+                'users_index',
+                'organizations_index',
                 ], 'body' => $body->toArray()])->asArray();
         })->raw();
 
         $results = $rawOutput['hits']['hits'];
 
         $extractedData = array_map(function ($result) {
+            $score = $result['_score'];
+            if ($result['_source']['__class_name'] === 'App\Models\Post') {
+                $score *= 1.5; // Apply multiplier to the score if the model is a Post
+            }
             return [
                 'id' => $result['_source']['id'],
                 'model' => $result['_source']['__class_name'],
-                'score' => $result['_score'],
+                'score' => $score,
             ];
         }, $results);
 
-        $this->emit('resultsUpdated', $extractedData);
+        // Sort the extracted data by score in descending order
+        $extractedData = collect($extractedData)->sortByDesc('score')->all();
+
+        //$this->emit('resultsUpdated', $extractedData);
 
         $this->results = $extractedData;
     }

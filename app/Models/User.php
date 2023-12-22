@@ -95,7 +95,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
     }
 
     /**
-     * Convert the transaction model to a searchable array.
+     * Convert this model to a searchable array.
      *
      * @return array
      */
@@ -104,7 +104,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'about' => $this->about, 
+            'about' => $this->about,
             'motivation' => $this->motivation,
             'last_login_at' => $this->last_login_at,
             'lang_preference' => $this->lang_preference,
@@ -123,15 +123,38 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
                     'district' => $location->district ? $location->district->locale->name : '',
                     'city' => $location->city ? $location->city->translations->map(function ($translation) {   // map() as translations is a collection
                         return $translation->name;
-                        })->toArray() : [],
+                    })->toArray() : [],
                     'division' => $location->division ? $location->division->locale->name : '',
                     'country' => $location->country ? $location->country->locale->name : '',
                 ];
             }),
 
+           'tags' => $this->tags->map(function ($tag) {
+               return [
+                   'contexts' => $tag->contexts
+                        ->map(function ($context) {
+                            return [
+                                'tags' => $context->tags->map(function ($tag) {
+                                    return [
+                                        'name' => $tag->name,
+                                    ];
+                                }),
+
+                                'categories' => Category::with(['translations' => function ($query) { $query->select('category_id', 'name');}])
+                                    ->find([ $context->category->ancestorsAndSelf()->get()->flatMap(function ($related) {
+                                        $categoryPath = explode('.', $related->path);
+                                        return $categoryPath;
+                                    })
+                                    ->unique()->values()->toArray()
+                                    ]),
+                            ];
+                        }),
+
+                    ];
+           })
         ];
     }
-    
+
 
     /**
      * Get the user's profile.

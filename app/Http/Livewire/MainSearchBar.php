@@ -6,7 +6,10 @@ use Elastic\Elasticsearch\Client;
 use Livewire\Component;
 use Matchish\ScoutElasticSearch\MixedSearch;
 use ONGR\ElasticsearchDSL\Highlight\Highlight;
+use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
+use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MultiMatchQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\FuzzyQuery;
 use ONGR\ElasticsearchDSL\Search;
 
 class MainSearchBar extends Component
@@ -21,40 +24,48 @@ class MainSearchBar extends Component
     }
 
     public function updatedSearch()
-    {
-        $search = $this->search;
+{
+    $search = $this->search;
+    
+    if (strlen($search) > 1) {     // Because we use the fuzzy search character '~', we need to check if $searchQuery is > 1
+    // Remove special characters that conflict with Elesticsearch query from $search
+    $search = preg_replace('/[^a-zA-Z0-9\s]/', '', $search);
+    // Add fuzzy search character '~' to $search
+    $search = $search . '~';
+    }
 
-        $rawOutput = MixedSearch::search($search, function (Client $client, Search $body) use ($search) {
-            $highlight = new Highlight();
-            $highlight->addField('translations.title');
-            $body->addHighlight($highlight);
+    $rawOutput = MixedSearch::search($search, function (Client $client, Search $body) use ($search) {
+        $body->setSource(['id', '__class_name', '_score']);
 
-            $body->setSource(['id', '__class_name', '_score']);
+        $fields = [
+            'translations.title',
+            'translations.excerpt',
+            'translations.content',
+            'category.names',
+            'name',
+            'about',
+            'locations.district',
+            'locations.city',
+            'locations.division',
+            'locations.country',
+            'tags.contexts.tags.name',
+            'tags.contexts.categories.translations.name',
+        ];
 
-            $multiMatchQuery = new MultiMatchQuery([
-                'translations.title',
-                'translations.excerpt',
-                'translations.content',
-                'category.names',
-                'name',
-                'about',
-                'locations.district',
-                'locations.city',
-                'locations.division',
-                'locations.country',
-                'tags.contexts.tags.name',
-                'tags.contexts.categories.translations.name',
+        $boolQuery = new BoolQuery();
+        foreach ($fields as $field) {
+            $matchQuery = new MatchQuery($field, $search, ['fuzziness' => 2]);
+            $boolQuery->add($matchQuery, BoolQuery::SHOULD);
+        }
+        $body->addQuery($boolQuery);
+        $body->setSize(100);    // get max results
 
-            ], $search, ['fuzziness' => 2]);
-            $body->addQuery($multiMatchQuery);
-            $body->setSize(100);
-
-            return $client->search(['index' => [
-                'posts_index',
-                'users_index',
-                'organizations_index',
-                ], 'body' => $body->toArray()])->asArray();
-        })->raw();
+        return $client->search(['index' => [
+            'posts_index',
+            'users_index',
+            'organizations_index',
+            ], 'body' => $body->toArray()])->asArray();
+    })->raw();
 
         $results = $rawOutput['hits']['hits'];
 

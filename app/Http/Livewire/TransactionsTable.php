@@ -31,9 +31,9 @@ class TransactionsTable extends Component
     public function updatedSearch()
     {
         if (($this->search) == '') {
-            $this->searchState = false;    
+            $this->searchState = false;
         } else {
-        $this->searchState = true;
+            $this->searchState = true;
         }
     }
 
@@ -52,10 +52,10 @@ class TransactionsTable extends Component
     }
 
 
-   public function updatingPerPage()
-   {
+    public function updatingPerPage()
+    {
         $this->resetPage();
-   }
+    }
 
 
     public function fromAccountId($fromAccount)
@@ -72,11 +72,11 @@ class TransactionsTable extends Component
         $balance = 0;
         $accountId = $this->fromAccountId;
 
-        
+
         // Check if $search contains a time format
         if (preg_match('/(\d{1,4}:\d{2})/', $search, $matches)) {
             // Convert $search using tbFormat() helper function
-            $searchAmount = dbFormat($matches[0]);            
+            $searchAmount = dbFormat($matches[0]);
             // Remove the time-format part from $search
             $search = str_replace($matches[0], '', $search);
         }
@@ -119,7 +119,6 @@ class TransactionsTable extends Component
                     ];
                 }
 
-            
             }
 
             $transactions = collect($transactions)->sortBy('datetime');
@@ -140,24 +139,23 @@ class TransactionsTable extends Component
             // $searchState is true
 
             // Remove special characters that conflict with Elesticsearch query from $search
-
             $search = preg_replace('/[^a-zA-Z0-9\s]/', '', $search);
 
             if (isset($searchAmount)) {
                 // $search contains a time format
-               
+
                 if (strlen($search) > 0) {
-                $searchQuery = $search . '~ AND ' . $searchAmount;
-                } else{
+                    $searchQuery = $search . '~ AND ' . $searchAmount;
+                } else {
                     $searchQuery = 'amount:' . $searchAmount;	//
                 }
-                
+
             } else {
                 // $search does not contain a time format
-                
+
                 $searchQuery = $search . '~';
             }
-            
+
             if (strlen($searchQuery) > 1) {     // Because we use the fuzzy search character '~', we need to check if $searchQuery is > 1
                 $searchResults = Transaction::search($searchQuery)
                 ->query(function ($query) use ($accountId) {

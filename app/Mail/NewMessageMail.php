@@ -5,13 +5,8 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use RTippin\Messenger\Events\NewMessageEvent;
 
 class NewMessageMail extends Mailable //implements ShouldQueue  // ShouldQueue here creates the class as a background job
 {
@@ -26,18 +21,9 @@ class NewMessageMail extends Mailable //implements ShouldQueue  // ShouldQueue h
      */
     public function __construct($event, $owner, $recipient)
     {
-
-        // TODO: remove debug logs
-        // Log::debug('Owner:');
-        // Log::debug($owner);
-        // info('Send to recipient:');
-        // info($recipient);
-
-        // info($event->thread);
-
         return $this
             ->from('messages@timebank_2.cc', 'Timebank.cc Messenger')      // Optional: set alternative from data, other than the global one.
-            ->subject($event->thread->subject . __(' has an update') )
+            ->subject($event->thread->subject . __(' has an update'))
             ->markdown('emails.messages.new')
             ->with([
                 'event' => $event,

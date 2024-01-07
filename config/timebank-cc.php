@@ -117,6 +117,25 @@ return [
     | 
     */
     'base_language' => 'en',
-    'base_language_name' => 'English'
+    'base_language_name' => 'English',
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Search settings
+    |--------------------------------------------------------------------------
+    | Configuration of search ranking and fuzziness. 
+    | Weight: multiplier for the score of the search result. 0 is no match, 2.0 doubles the score.
+    | Fuzziness: 'AUTO' (default), 1, 2, 3, 4, etc positions of fuzziness.
+    | 
+    */
+    'main_search_bar' => [
+        'weight' => [
+            'users' =>  1.0,
+            'organizations' => 1.0,
+            'posts' => 0,
+            'tags' => 1.0,
+        ],
+        'fuzziness' => 'AUTO',
+    ],
 ];

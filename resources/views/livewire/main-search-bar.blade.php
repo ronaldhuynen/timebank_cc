@@ -30,9 +30,15 @@
                 </td>
                 <td>{{ $result['id'] }}</td>
                 <td>{{ $result['score'] }}</td>
-                <td>{!! $result['highlight'] !!}</td>
+                <td>
+                TODO: format html in controller to escape xss vulnerabilities and to sort relevance of highlight
+                    @foreach($result['highlight'] as $highlight)
+                    {!! $highlight !!} <br>
+                    @endforeach
+                </td>
             </tr>
             @endforeach
         </tbody>
+        Results: <span class="font-extrabold italic"> {{ count($results) }} </span>
     </table>
 </div>

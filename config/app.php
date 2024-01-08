@@ -191,6 +191,7 @@ return [
          */
         Stevebauman\Location\LocationServiceProvider::class,
         Matchish\ScoutElasticSearch\ElasticSearchServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -38,20 +38,21 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     }
 
 
-    //  /**
-    //  * Convert this model to a searchable array.
-    //  *
-    //  * @return array
-    //  */
-    // public function toSearchableArray()
-    // {
-    //     return [
-    //         'tag_id' => $this->id,
-    //         'name' => $this->name,
-    //         'tags' => $this->tags ? $this->locale->example : '',
-    //     ];
-    // }
-    
+    /**
+     * Get the value used to index the model.
+     */
+    public function getScoutKey(): mixed
+    {
+        return $this->tag_id;
+    }
+ 
+    /**
+     * Get the key name used to index the model.
+     */
+    public function getScoutKeyName(): mixed
+    {
+        return 'tag_id';
+    }
 
 
 

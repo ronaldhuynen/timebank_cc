@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\SearchIndexController;
 use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
             $this->call(CategoriesTableSeeder::class);
             $this->call(CategoryTranslationsTableSeeder::class);
             $this->call(MeetingsTableSeeder::class);
-            
+
             // Seed Super-Admin with user id 1
             $admin = User::factory()->create([
                 'name' => 'Super-Admin',
@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
             $admin->assignRole('Super-Admin');
 
             $this->call(LoveReactionTypesTableSeeder::class);
-    }
+        }
 
         $this->call([
         TestUserSeeder::class,
@@ -69,7 +69,10 @@ class DatabaseSeeder extends Seeder
             $this->call(TaggableContextsTableSeeder::class);
             $this->call(TaggableLocaleContextTableSeeder::class);
         }
-        $this->command->info('Super-Admin user: admin@admin.com');
+
+        if($this->command->confirm('Do you want to (re-) create the Elasticsearch index? (This removes all existing data stored in the current index!)')) {
+            $elasticsearchService = new SearchIndexController();
+        }
         $this->command->info('Super-Admin password: SecurePassword');
         $this->command->info('All other users have password: password');
 

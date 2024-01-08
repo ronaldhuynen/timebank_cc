@@ -101,6 +101,15 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
      */
     public function toSearchableArray()
     {
+        // Prepare eager loaded relationships
+        $this->load('languages', 
+                    'locations.district.locale', 
+                    'locations.city.translations', 
+                    'locations.division.locale', 
+                    'locations.country.locale', 
+                    'tags.contexts.tags', 
+                    'tags.contexts.category.ancestorsAndSelf');
+
         return [
             'id' => $this->id,
             'name' => $this->name,

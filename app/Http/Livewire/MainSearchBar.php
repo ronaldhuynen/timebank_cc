@@ -24,7 +24,7 @@ class MainSearchBar extends Component
     }
 
     public function updatedSearch()
-{
+    {
     $search = $this->search;
     
     if (strlen($search) > 1) {     // Because we use the fuzzy search character '~', we need to check if $searchQuery is > 1
@@ -58,6 +58,16 @@ class MainSearchBar extends Component
             $boolQuery->add($matchQuery, BoolQuery::SHOULD);
         }
         $body->addQuery($boolQuery);
+
+    
+        $highlight = new Highlight();
+        foreach ($fields as $field) {
+            $highlight->addField($field);
+        }
+        $body->addHighlight($highlight);
+
+
+
         $body->setSize(100);    // get max results
 
         return $client->search(['index' => [
@@ -68,6 +78,7 @@ class MainSearchBar extends Component
     })->raw();
 
         $results = $rawOutput['hits']['hits'];
+        info($results);
 
         $extractedData = array_map(function ($result) {
             $score = $result['_score'];
@@ -78,14 +89,15 @@ class MainSearchBar extends Component
                 'id' => $result['_source']['id'],
                 'model' => $result['_source']['__class_name'],
                 'score' => $score,
-            ];
+                'highlight' => $result['highlight'][array_key_first($result['highlight'])][0] ?? null,
+            ];  
         }, $results);
 
         // Sort the extracted data by score in descending order
         $extractedData = collect($extractedData)->sortByDesc('score')->all();
-
         //$this->emit('resultsUpdated', $extractedData);
 
+        
         $this->results = $extractedData;
     }
 }

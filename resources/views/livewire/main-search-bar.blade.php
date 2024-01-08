@@ -10,6 +10,7 @@
                 <th>Model</th>
                 <th>ID</th>
                 <th>Score</th>
+                <th>Highlight</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,7 @@
                 </td>
                 <td>{{ $result['id'] }}</td>
                 <td>{{ $result['score'] }}</td>
+                <td>{!! $result['highlight'] !!}</td>
             </tr>
             @endforeach
         </tbody>

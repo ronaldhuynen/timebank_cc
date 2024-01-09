@@ -31,7 +31,7 @@
                 <td>{{ $result['id'] }}</td>
                 <td>{{ $result['score'] }}</td>
                 <td>
-                TODO: format html in controller to escape xss vulnerabilities and to sort relevance of highlight
+                {{-- TODO: format html in controller to escape xss vulnerabilities and to sort relevance of highlight by exclsuing words that are not in the search query --}}
                     @foreach($result['highlight'] as $highlight)
                     {!! $highlight !!} <br>
                     @endforeach

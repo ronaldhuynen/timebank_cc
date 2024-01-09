@@ -84,7 +84,7 @@ class Registration extends Component implements CreatesNewUsers
             };
         }
 
-        $this->setValidationOptions();        
+        $this->setValidationOptions();
     }
 
 
@@ -173,7 +173,7 @@ class Registration extends Component implements CreatesNewUsers
         try {
             // Use a transaction for creating the new user
             DB::transaction(function () use ($valid): void {
-                
+
                 $user = User::create([
                     'name' => $valid['name'],
                     'email' => $valid['email'],
@@ -221,7 +221,7 @@ class Registration extends Component implements CreatesNewUsers
             $this->waitMessage = false;
 
             // WireUI notification
-            // TODO: create event to send error notification to admin
+            // TODO!: create event to send error notification to admin
             $this->notification([
             'title' => __('Registration failed!'),
             'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),

@@ -10,14 +10,18 @@ use App\Traits\TaggableWithLocale;
 use Cviebrock\EloquentTaggable\Services\TagService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Mcamara\LaravelLocalization\LaravelLocalization;
+use Throwable;
+use WireUi\Traits\Actions;
 
 class SkillsForm extends Component
 {
     use TaggableWithLocale;
+    use Actions;
 
     public $tagsArray = [];
     public $initialIds = [];
@@ -126,8 +130,8 @@ class SkillsForm extends Component
                 'category_path' =>  $item['category_path'],
                 'category_color' =>  $item['category_color'],
                 'title' =>  $item['category_path'] ,     // 'title' is used by Tagify script for text that shows on hover
-                'style' =>  '--tag-bg:' . tailwindColorToHex($item['category_color'] . '-300') . 
-                    '; --tag-text-color:#111827' . // #111827 is gray-900 
+                'style' =>  '--tag-bg:' . tailwindColorToHex($item['category_color'] . '-300') .
+                    '; --tag-text-color:#111827' . // #111827 is gray-900
                     '; --tag-hover:' . tailwindColorToHex($item['category_color'] . '-200'),   // 'style' is used by Tagify script for background color, tailwindColorToHex is a helper function in app/Helpers/StyleHelper.php
                ];
         });
@@ -137,7 +141,7 @@ class SkillsForm extends Component
 
         $this->initTagsArrayTranslated = $tags->toArray();
 
-        $this->tagsArray = json_encode($tags->toArray()); 
+        $this->tagsArray = json_encode($tags->toArray());
 
         ds($this->tagsArray)->label('tagsArray');
     }
@@ -412,37 +416,60 @@ class SkillsForm extends Component
      */
     public function save()
     {
+
         if ($this->newTagsArray) {
             if (count($this->newTagsArray) > 0) {
 
-                // Make sure we can count newTag for conditional validation rules
-                if ($this->newTag === null) {
-                    $this->newTag = [];
+                try {
+                    // Use a transaction for saving skill tags
+                    DB::transaction(function () {
+                        // Make sure we can count newTag for conditional validation rules
+                        if ($this->newTag === null) {
+                            $this->newTag = [];
+                        }
+
+                        $owner = session('activeProfileType')::find(session('activeProfileId'));
+
+                        $this->validate();
+                        $this->resetErrorBag();
+
+                        // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
+                        $untagForeign = collect($this->initTagsArray)->pluck('taggable_tag_id');
+
+                        // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
+                        if (count($this->initTagsArray) > 0) {
+                            $retagReadOnly = collect($this->initTagsArrayTranslated)->where('readonly', true)->pluck('tag_id')->toArray();
+
+                            $retagForeign = (implode(", ", $retagReadOnly));
+                            $untagForeign = $untagForeign->diff($retagReadOnly);
+                        }
+                        // untag the result of the selection(s), the tags marked read-only are not untagged
+                        $owner->untagById($untagForeign);
+
+                        // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
+                        $this->newTagsArray = collect($this->newTagsArray);
+                        $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
+
+                        $owner->tag($tag);
+                                                
+                        // WireUI notification
+                        $this->notification()->success(
+                            $title = __('Your have updated your skills successfully!'),
+                        );
+                    });
+                    // end of transaction
+
+                } catch (Throwable $e) {
+
+                    // WireUI notification
+                    // TODO!: create event to send error notification to admin
+                    $this->notification([
+                    'title' => __('Update failed!'),
+                    'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
+                    'icon' => 'error',
+                    'timeout' => 100000
+                    ]);
                 }
-
-                $owner = session('activeProfileType')::find(session('activeProfileId'));
-
-                $this->validate();
-                $this->resetErrorBag();
-
-                // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
-                $untagForeign = collect($this->initTagsArray)->pluck('taggable_tag_id');
-
-                // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
-                if (count($this->initTagsArray) > 0) {
-                    $retagReadOnly = collect($this->initTagsArrayTranslated)->where('readonly', true)->pluck('tag_id')->toArray();
-
-                    $retagForeign = (implode(", ", $retagReadOnly));
-                    $untagForeign = $untagForeign->diff($retagReadOnly);
-                }
-                // untag the result of the selection(s), the tags marked read-only are not untagged
-                $owner->untagById($untagForeign);
-
-                // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
-                $this->newTagsArray = collect($this->newTagsArray);
-                $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
-
-                $owner->tag($tag);
             }
         }
         $this->initTagsArray = [];

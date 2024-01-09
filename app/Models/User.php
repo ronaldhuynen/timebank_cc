@@ -108,7 +108,8 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
                     'locations.division.locale', 
                     'locations.country.locale', 
                     'tags.contexts.tags', 
-                    'tags.contexts.category.ancestorsAndSelf');
+                    'tags.contexts.category.ancestorsAndSelf',
+                    'tags.locale');
 
         return [
             'id' => $this->id,
@@ -139,17 +140,18 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
             }),
 
            'tags' => $this->tags->map(function ($tag) {
-               return [
+               return [                                
+                                    
                    'contexts' => $tag->contexts
                         ->map(function ($context) {
                             return [
                                 'tags' => $context->tags->map(function ($tag) {
                                     return [
                                         'name' => $tag->name,
+                                        'locale' => $tag->locale->locale,
                                     ];
                                 }),
-
-                                'categories' => Category::with(['translations' => function ($query) { $query->select('category_id', 'name');}])
+                                'categories' => Category::with(['translations' => function ($query) { $query->select('category_id', 'locale', 'name');}])
                                     ->find([ $context->category->ancestorsAndSelf()->get()->flatMap(function ($related) {
                                         $categoryPath = explode('.', $related->path);
                                         return $categoryPath;

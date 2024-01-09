@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "atomescrochus/laravel-string-similarities": "^2.1",
         "beyondcode/laravel-websockets": "^1.12",
         "cviebrock/eloquent-sluggable": "^9.0",
         "cviebrock/eloquent-taggable": "^9.0",

@@ -11,7 +11,10 @@ use ONGR\ElasticsearchDSL\Highlight\Highlight;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MultiMatchQuery;
+use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\FuzzyQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\WildcardQuery;
 use ONGR\ElasticsearchDSL\Search;
 
 class MainSearchBar extends Component
@@ -59,42 +62,62 @@ class MainSearchBar extends Component
                 'locations.division',
                 'locations.country',
                 'tags.contexts.tags.name',
+                'tags.contexts.tags.locale',
                 'tags.contexts.categories.translations.name',
-                'tags.locale.locale'
             ];
 
             $boostedFields = [
                 'name' => 1.3,
-                'tags.contexts.categories.translations.name' => 1.1,
-                'tags.contexts.tags.name' => 2.5,
-                // Add more fields here...
+                'tags.contexts.categories.translations.name' => 0.5,
+                'tags.contexts.tags.name' => 1.5,
             ];
 
             $boolQuery = new BoolQuery();
+
+
+           
+            // Add match query for each field
+            foreach ($fields as $field) {
+                $matchQuery = new MatchQuery($field, $search, [
+                    'operator' => 'and',
+                ]);
+                $boolQuery->add($matchQuery, BoolQuery::SHOULD);
+            }
+
+
 
             // Construct fields parameter with boosts
             $fieldsWithBoosts = [];
             foreach ($fields as $field) {
                 $fieldsWithBoosts[] = isset($boostedFields[$field]) ? $field . '^' . $boostedFields[$field] : $field;
             }
-
             $multiMatchQuery = new MultiMatchQuery($fieldsWithBoosts, $search, [
                 'type' => 'best_fields',
-                'fuzziness' => 'AUTO', //config('timebank-cc.main_search_bar.fuzziness'),
+                'fuzziness' => '1', //config('timebank-cc.main_search_bar.fuzziness'),
                 // 'prefix_length' => 1, //characters at the beginning of the word that must match
-                'max_expansions' => 50, //maximum number of terms to which the query will expand
-                'minimum_should_match' => 2
+                'max_expansions' => 10, //maximum number of terms to which the query will expand
             ]);
-
             $boolQuery->add($multiMatchQuery, BoolQuery::SHOULD);
             $body->addQuery($boolQuery);
+            
+            
+
+
+// $nestedQuery = new NestedQuery(
+//     'tags.contexts.tags',
+//     new MatchQuery('locale', 'nl')
+// );
+// $boolQuery->add($nestedQuery, BoolQuery::FILTER);
+// $body->addQuery($boolQuery);
+
+
 
             $highlight = new Highlight();
             foreach ($fields as $field) {
                 $highlight->addField($field, [
-                    'fragment_size' => 10,
+                    'fragment_size' => 30, //max character length of the fragment
                     'fragmenter' => 'simple',
-                    'number_of_fragments' => 5,
+                    'number_of_fragments' => 5, //max number of fragments to return
                     'pre_tags' => [$pre_tags],
                     'post_tags' => [$post_tags],
                 ]);
@@ -104,6 +127,7 @@ class MainSearchBar extends Component
 
             $body->setSize(100);    // get max results
 
+            //TODO: define model index names in config file
             return $client->search(['index' => [
                 'posts_index',
                 'users_index',
@@ -112,24 +136,21 @@ class MainSearchBar extends Component
         })->raw();
 
         $results = $rawOutput['hits']['hits'];
-        info($results);
-
         $extractedData = array_map(function ($result) use ($search, $pre_tags, $post_tags) {
 
-
-            $score = $result['_score'];
-            if ($result['_source']['__class_name'] === 'App\Models\Post') {
-                $score *= 1.3; // Apply multiplier to the score if the model is a Post
-            }
-
             $highlight = $result['highlight'][array_key_first($result['highlight'])] ?? null;
-            info($highlight);
 
             // Sort the highlight fragments by relevance
             if ($highlight !== null) {
-                $searchWithTags = $pre_tags . $search . $post_tags;
+
+                $highlightClean = collect($highlight)
+                    ->mapWithKeys(function ($fragment, $key) use ($pre_tags, $post_tags) {
+                        return [$key => Str::replaceFirst($pre_tags, '', Str::replaceLast($post_tags, '', $fragment))];
+                    })
+                    ->all();
+
                 $comparison = new Compare();
-                usort($highlight, function ($a, $b) use ($search, $searchWithTags, $comparison) {
+                uasort($highlightClean, function ($a, $b) use ($search, $comparison) {
                     // Check for a partial match with the search string
                     $partialMatchA = strpos($a, $search) !== false;
                     $partialMatchB = strpos($b, $search) !== false;
@@ -142,27 +163,31 @@ class MainSearchBar extends Component
                     }
 
                     // Calculate the Jaro-Winkler distance of each fragment to the search string
-                    $distanceA = $comparison->jaroWinkler($searchWithTags, $a);
-                    $distanceB = $comparison->jaroWinkler($searchWithTags, $b);
+                    $distanceA = $comparison->jaroWinkler($search, $a);
+                    $distanceB = $comparison->jaroWinkler($search, $b);
 
                     // Sort in ascending order of distance
-                    return $distanceA <=> $distanceB;
+                    return $distanceB <=> $distanceA;
                 });
             }
 
+            // Sort the highlight in the order of the keys of the sorted highlightClean array
+            $sortedKeys = array_keys($highlightClean);
+            $sortedHighlight = array_map(function ($key) use ($highlight) {
+                return $highlight[$key];
+            }, $sortedKeys);
 
             return [
                 'id' => $result['_source']['id'],
                 'model' => $result['_source']['__class_name'],
-                'score' => $score,
-                'highlight' => $highlight,
+                'score' => $result['_score'],
+                'highlight' =>  $sortedHighlight,
             ];
+
         }, $results);
 
         // Sort the extracted data by score in descending order
         $extractedData = collect($extractedData)->sortByDesc('score')->all();
-        //$this->emit('resultsUpdated', $extractedData);
-
 
         $this->results = $extractedData;
     }

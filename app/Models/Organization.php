@@ -66,6 +66,81 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
     }
 
 
+     /**
+     * Convert this model to a searchable array.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        // Prepare eager loaded relationships
+        $this->load('languages', 
+                    'locations.district.locale', 
+                    'locations.city.translations', 
+                    'locations.division.locale', 
+                    'locations.country.locale', 
+                    // 'tags.contexts.tags', 
+                    // 'tags.contexts.tags.locale',
+                    // 'tags.contexts.category.ancestorsAndSelf',
+                    // 'tags.locale'
+                );
+
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'about' => $this->about,
+            'motivation' => $this->motivation,
+            'last_login_at' => $this->last_login_at,
+            'lang_preference' => $this->lang_preference,
+
+            'languages' => $this->languages->map(function ($language) { // map() as languages is a collection
+                return [
+                    'id' => $language->id,
+                    'name' => $language->name,
+                    'lang_code' => $language->lang_code,
+                ];
+            }),
+
+            'locations' => $this->locations->map(function ($location) { // map() as locations is a collection
+                return [
+                    'id' => $location->id,
+                    'district' => $location->district ? $location->district->locale->name : '',
+                    'city' => $location->city ? $location->city->translations->map(function ($translation) {   // map() as translations is a collection
+                        return $translation->name;
+                    })->toArray() : [],
+                    'division' => $location->division ? $location->division->locale->name : '',
+                    'country' => $location->country ? $location->country->locale->name : '',
+                ];
+            }),
+
+        //    'tags' => $this->tags->map(function ($tag) {
+        //        return [                                
+                                    
+        //            'contexts' => $tag->contexts
+        //                 ->map(function ($context) {
+        //                     return [
+        //                         'tags' => $context->tags->map(function ($tag) {
+        //                             return [
+        //                                 'name' => StringHelper::DutchTitleCase($tag->normalized),
+        //                                 'locale' => $tag->locale->locale,
+        //                             ];
+        //                         }),
+        //                         'categories' => Category::with(['translations' => function ($query) { $query->select('category_id', 'locale', 'name');}])
+        //                             ->find([ $context->category->ancestorsAndSelf()->get()->flatMap(function ($related) {
+        //                                 $categoryPath = explode('.', $related->path);
+        //                                 return $categoryPath;
+        //                             })
+        //                             ->unique()->values()->toArray()
+        //                             ]),
+        //                     ];
+        //                 }),
+
+        //             ];
+        //    })
+        ];
+    }
+
+
     /**
      * Get all of the organization's accounts.
      * One-to-many polymorphic.

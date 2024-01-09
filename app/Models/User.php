@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\StringHelper;
 use App\Models\Account;
 use App\Models\Language;
 use App\Models\Locations\Location;
@@ -108,8 +109,9 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
                     'locations.division.locale', 
                     'locations.country.locale', 
                     'tags.contexts.tags', 
+                    'tags.contexts.tags.locale',
                     'tags.contexts.category.ancestorsAndSelf',
-                    'tags.locale');
+                );
 
         return [
             'id' => $this->id,
@@ -141,13 +143,12 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
 
            'tags' => $this->tags->map(function ($tag) {
                return [                                
-                                    
                    'contexts' => $tag->contexts
                         ->map(function ($context) {
                             return [
                                 'tags' => $context->tags->map(function ($tag) {
                                     return [
-                                        'name' => $tag->name,
+                                        'name' => StringHelper::DutchTitleCase($tag->normalized),
                                         'locale' => $tag->locale->locale,
                                     ];
                                 }),

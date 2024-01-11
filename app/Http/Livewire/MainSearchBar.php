@@ -55,6 +55,7 @@ class MainSearchBar extends Component
             $fields = [
                 
                 //TODO: make a user setting to enable multi-language search
+                //TODO: check stopwords in all languages
                 'post_translations.title_'. app()->getLocale(),
                 'post_translations.excerpt_'. app()->getLocale(),
                 'post_translations.content_'. app()->getLocale(),
@@ -66,12 +67,12 @@ class MainSearchBar extends Component
                 'locations.division',
                 'locations.country',
                 'tags.contexts.tags.name_'. app()->getLocale(),
-                'tags.contexts.categories.translations.name_'. app()->getLocale(),
+                'tags.contexts.categories.name_'. app()->getLocale(),
             ];
 
             $boostedFields = [
                 'name' => 1.3,
-                'tags.contexts.categories.translations.name' => 0.5,
+                'tags.contexts.categories.name' => 0.5,
                 'tags.contexts.tags.name' => 1.5,
             ];
 
@@ -110,7 +111,7 @@ class MainSearchBar extends Component
                     'post_tags' => [$post_tags],
                     // 'require_field_match' => false,
                     // 'type' => 'fvh', // use Fast Vector Highlighter
-                    // 'matched_fields' => [$field, "tags.contexts.tags.locale"], // match this field and the nested field
+                    // 'matched_fields' => [$field,  'tags.contexts.categories.translations.name_'. app()->getLocale()], // match this field and the nested field
                 ]);
             }
             $body->addHighlight($highlight);

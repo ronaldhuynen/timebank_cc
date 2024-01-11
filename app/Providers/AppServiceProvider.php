@@ -16,8 +16,11 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function register()
-    {
-        //
+    {        
+        $this->app->bind(
+            'Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate',
+            'app\Overrides\Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate'
+        );
     }
 
     /**

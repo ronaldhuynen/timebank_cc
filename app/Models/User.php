@@ -103,17 +103,27 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
     public function toSearchableArray()
     {
         // Prepare eager loaded relationships
-        $this->load('languages', 
-                    'locations.district.locale', 
-                    'locations.city.translations', 
-                    'locations.division.locale', 
-                    'locations.country.locale', 
-                    'tags.contexts.tags', 
-                    'tags.contexts.tags.locale',
-                    'tags.contexts.category.ancestorsAndSelf',
-                );
+        $this->load(
+            'languages',
+            'locations.district.locale',
+            'locations.city.translations',
+            'locations.division.locale',
+            'locations.country.locale',
+            'tags.contexts.tags',
+            'tags.contexts.tags.locale',
+            'tags.contexts.category.ancestorsAndSelf',
+        );
 
         return [
+
+
+// 'tag_locales' => $this->tags->flatMap(function ($tag) {
+//     return $tag->contexts->flatMap(function ($context) {
+//         return $context->tags->pluck('locale')->toArray();
+//     });
+// })->toArray(),
+
+
             'id' => $this->id,
             'name' => $this->name,
             'about' => $this->about,
@@ -140,16 +150,16 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
                     'country' => $location->country ? $location->country->locale->name : '',
                 ];
             }),
-
-           'tags' => $this->tags->map(function ($tag) {
-               return [                                
-                   'contexts' => $tag->contexts
+            
+            'tags' => $this->tags->map(function ($tag) {
+                return [
+                    'contexts' => $tag->contexts
                         ->map(function ($context) {
                             return [
                                 'tags' => $context->tags->map(function ($tag) {
+                                    // Include the locale in the field name for tags
                                     return [
-                                        'name' => StringHelper::DutchTitleCase($tag->normalized),
-                                        'locale' => $tag->locale->locale,
+                                        'name_' . $tag->locale->locale => StringHelper::DutchTitleCase($tag->normalized),
                                     ];
                                 }),
                                 'categories' => Category::with(['translations' => function ($query) { $query->select('category_id', 'locale', 'name');}])
@@ -158,12 +168,16 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
                                         return $categoryPath;
                                     })
                                     ->unique()->values()->toArray()
-                                    ]),
+                                    ])->map(function ($category) {
+                                        // Include the locale in the field name for categories
+                                        return $category->translations->mapWithKeys(function ($translation) {
+                                            return ['name_' . $translation->locale => $translation->name];
+                                        });
+                                    }),
                             ];
                         }),
-
-                    ];
-           })
+                ];
+            })
         ];
     }
 

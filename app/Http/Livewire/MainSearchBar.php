@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\User;
+use App\Overrides\Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate;
 use Atomescrochus\StringSimilarities\Compare;
 use Elastic\Elasticsearch\Client;
 use Illuminate\Support\Str;
@@ -51,19 +53,20 @@ class MainSearchBar extends Component
             $body->setSource(['id', '__class_name', '_score']);
 
             $fields = [
-                'translations.title',
-                'translations.excerpt',
-                'translations.content',
-                'category.names',
+                
+                //TODO: make a user setting to enable multi-language search
+                'post_translations.title_'. app()->getLocale(),
+                'post_translations.excerpt_'. app()->getLocale(),
+                'post_translations.content_'. app()->getLocale(),
+                'post_category.names_'. app()->getLocale(),
                 'name',
                 'about',
                 'locations.district',
                 'locations.city',
                 'locations.division',
                 'locations.country',
-                'tags.contexts.tags.name',
-                'tags.contexts.tags.locale',
-                'tags.contexts.categories.translations.name',
+                'tags.contexts.tags.name_'. app()->getLocale(),
+                'tags.contexts.categories.translations.name_'. app()->getLocale(),
             ];
 
             $boostedFields = [
@@ -74,8 +77,6 @@ class MainSearchBar extends Component
 
             $boolQuery = new BoolQuery();
 
-
-           
             // Add match query for each field
             foreach ($fields as $field) {
                 $matchQuery = new MatchQuery($field, $search, [
@@ -83,8 +84,6 @@ class MainSearchBar extends Component
                 ]);
                 $boolQuery->add($matchQuery, BoolQuery::SHOULD);
             }
-
-
 
             // Construct fields parameter with boosts
             $fieldsWithBoosts = [];
@@ -99,17 +98,6 @@ class MainSearchBar extends Component
             ]);
             $boolQuery->add($multiMatchQuery, BoolQuery::SHOULD);
             $body->addQuery($boolQuery);
-            
-            
-
-
-// $nestedQuery = new NestedQuery(
-//     'tags.contexts.tags',
-//     new MatchQuery('locale', 'nl')
-// );
-// $boolQuery->add($nestedQuery, BoolQuery::FILTER);
-// $body->addQuery($boolQuery);
-
 
 
             $highlight = new Highlight();
@@ -120,11 +108,14 @@ class MainSearchBar extends Component
                     'number_of_fragments' => 5, //max number of fragments to return
                     'pre_tags' => [$pre_tags],
                     'post_tags' => [$post_tags],
+                    // 'require_field_match' => false,
+                    // 'type' => 'fvh', // use Fast Vector Highlighter
+                    // 'matched_fields' => [$field, "tags.contexts.tags.locale"], // match this field and the nested field
                 ]);
             }
             $body->addHighlight($highlight);
 
-
+            //TODO: define max results in config file
             $body->setSize(100);    // get max results
 
             //TODO: define model index names in config file
@@ -133,7 +124,22 @@ class MainSearchBar extends Component
                 'users_index',
                 'organizations_index',
                 ], 'body' => $body->toArray()])->asArray();
-        })->raw();
+        })
+        ->raw();
+
+        info($rawOutput);
+
+
+        // $callback = function ($query) {
+        //     $query->with('tags.contexts.tags.locale')->get();
+        // };
+        // $iterator = new EloquentHitsIteratorAggregate($rawOutput, $callback);
+        // info(collect($iterator));
+        // $hitsIterator = new EloquentHitsIteratorAggregate($rawOutput);
+        // foreach ($hitsIterator as $model) {
+        //     info($model);
+        // }
+
 
         $results = $rawOutput['hits']['hits'];
         $extractedData = array_map(function ($result) use ($search, $pre_tags, $post_tags) {

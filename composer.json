@@ -60,7 +60,8 @@
     "autoload": {
         "exclude-from-classmap": [
         "vendor/rtippin/messenger/src/Http/Middleware/SetMessengerProvider.php",
-        "vendor/laravel/jetstream/src/HasProfilePhoto.php"
+        "vendor/laravel/jetstream/src/HasProfilePhoto.php",
+        "vendor/matchish/laravel-scout-elasticsearch/src/ElasticSearch/EloquentHitsIteratorAggregate.php"
         ],
         "psr-4": {
             "App\\": "app/",
@@ -72,7 +73,8 @@
             "app/Helpers/StringHelper.php",
             "app/Helpers/StyleHelper.php",
             "app/Overrides/Rtippin/Messenger/Http/Middleware/SetMessengerProvider.php",
-            "app/Overrides/Laravel/Jetstream/Src/HasProfilePhoto.php"
+            "app/Overrides/Laravel/Jetstream/Src/HasProfilePhoto.php",
+            "app/Overrides/Matchish/ScoutElasticSearch/ElasticSearch/EloquentHitsIteratorAggregate.php"
         ]
     },
     "autoload-dev": {

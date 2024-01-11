@@ -51,20 +51,20 @@ class Post extends Model implements HasMedia
                 'name' => $this->postable ? $this->postable->name : '',
             ],
 
-            'translations' => $this->translations->map(function ($translation) {    // map() as translations is a collection
-
+            'post_translations' => $this->translations->mapWithKeys(function ($translation) {
+                // mapWithKeys() as translations is a collection
                 return [
-                    'id' => $translation ? $translation->id : '',
-                    'title' => $translation ? $translation->title : '',
-                    'excerpt' => $translation ? $translation->excerpt : '',
-                    'content' => $translation ? $translation->content : '',
+                    'title_' . $translation->locale => $translation->title,
+                    'excerpt_' . $translation->locale => $translation->excerpt,
+                    'content_' . $translation->locale => $translation->content,
                 ];
-            }),
+            })->toArray(),
 
-            'category' => $this->category ? [
+            'post_category' => $this->category ? [
                 'id' => $this->category->id,
-                'names' => $this->category->translations->map(function ($translation) {   // map() as translations is a collection
-                    return $translation->name;
+                'names' => $this->category->translations->mapWithKeys(function ($translation) {
+                    // Include the locale in the field name for categories
+                    return ['name_' . $translation->locale => $translation->name];
                 })->toArray(),
             ] : [],
         ];

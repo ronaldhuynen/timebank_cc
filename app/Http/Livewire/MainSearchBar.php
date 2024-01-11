@@ -59,7 +59,7 @@ class MainSearchBar extends Component
                 'post_translations.title_'. app()->getLocale(),
                 'post_translations.excerpt_'. app()->getLocale(),
                 'post_translations.content_'. app()->getLocale(),
-                'post_category.names_'. app()->getLocale(),
+                'post_category.name_'. app()->getLocale(),
                 'name',
                 'about',
                 'locations.district',
@@ -93,7 +93,7 @@ class MainSearchBar extends Component
             }
             $multiMatchQuery = new MultiMatchQuery($fieldsWithBoosts, $search, [
                 'type' => 'best_fields',
-                'fuzziness' => '1', //config('timebank-cc.main_search_bar.fuzziness'),
+                'fuzziness' => '0', //config('timebank-cc.main_search_bar.fuzziness'),
                 // 'prefix_length' => 1, //characters at the beginning of the word that must match
                 'max_expansions' => 10, //maximum number of terms to which the query will expand
             ]);

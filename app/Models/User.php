@@ -116,18 +116,21 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
 
         return [
 
-
-// 'tag_locales' => $this->tags->flatMap(function ($tag) {
-//     return $tag->contexts->flatMap(function ($context) {
-//         return $context->tags->pluck('locale')->toArray();
-//     });
-// })->toArray(),
-
-
             'id' => $this->id,
             'name' => $this->name,
-            'about' => $this->about,
-            'motivation' => $this->motivation,
+            
+            //TODO: Update to multilang database structure in future
+            'about_nl' => $this->about,
+            'about_en' => $this->about,
+            'about_fr' => $this->about,
+            'about_de' => $this->about,
+            'about_es' => $this->about,
+            'motivation_nl' => $this->motivation,
+            'motivation_en' => $this->motivation,
+            'motivation_fr' => $this->motivation,
+            'motivation_de' => $this->motivation,
+            'motivation_es' => $this->motivation,
+
             'last_login_at' => $this->last_login_at,
             'lang_preference' => $this->lang_preference,
 

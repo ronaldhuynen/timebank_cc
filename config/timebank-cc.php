@@ -138,7 +138,7 @@ return [
             'type' => 'best_fields', // 'best_fields', 'most_fields', 'cross_fields', 'phrase', 'phrase_prefix'
             'fuzziness' => 'AUTO', // 'AUTO' or a number between 0 and 2
             'prefix_length' => 0, //characters at the beginning of the word that must match
-            'fragment_size' => 30, //The size of the highlighted fragment in characters. 
+            'fragment_size' => 50, //The size of the highlighted fragment in characters. 
             'fragmenter' => 'simple', // 'simple' or 'span'
             'number_of_fragments' => 5, // The maximum number of fragments to return. If the number of fragments is set to 0, no fragments are returned. Instead, the entire field contents are highlighted and returned.
             'pre-tags'  => '<span class="font-extrabold italic">', // HTML tags to wrap around highlighted text

@@ -314,26 +314,6 @@ return [
                             'type' => 'stop',
                             'stopwords' => '_spanish_',
                         ],
-                        'dutch_stemmer' => [
-                            'type' => 'stemmer',
-                            'language' => 'dutch',
-                        ],
-                        'english_stemmer' => [
-                            'type' => 'stemmer',
-                            'language' => 'english',
-                        ],
-                        'french_stemmer' => [
-                            'type' => 'stemmer',
-                            'language' => 'french',
-                        ],
-                        'german_stemmer' => [
-                            'type' => 'stemmer',
-                            'language' => 'german',
-                        ],
-                        'spanish_stemmer' => [
-                            'type' => 'stemmer',
-                            'language' => 'spanish',
-                        ],
                     ],
 
                     'analyzer' => [
@@ -351,7 +331,6 @@ return [
                                 'lowercase',
                                 'custom_keyword_marker',
                                 'dutch_stop',
-                              //  'dutch_stemmer',  // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                         'analyzer_en' => [
@@ -360,7 +339,6 @@ return [
                                 'lowercase',
                                 'custom_keyword_marker',
                                 'english_stop',
-                                // 'english_stemmer', // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                         'analyzer_fr' => [
@@ -369,7 +347,6 @@ return [
                                 'lowercase',
                                 'custom_keyword_marker',
                                 'french_stop',
-                                // 'french_stemmer', // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                         'analyzer_de' => [
@@ -378,7 +355,6 @@ return [
                                 'lowercase',
                                 'custom_keyword_marker',
                                 'german_stop',
-                                // 'german_stemmer', // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                         'analyzer_es' => [
@@ -387,7 +363,6 @@ return [
                             'filter' => [
                                 'lowercase',
                                 'spanish_stop',
-                                // 'spanish_stemmer', // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                     ],

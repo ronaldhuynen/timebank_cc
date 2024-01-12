@@ -21,7 +21,7 @@
             <button wire:click="showSearchResults('{{ $search }}')">{{ __('Search') }}</button>
         </div>
 
-        @if (strlen($search) > 3 )
+        @if (strlen($search) > 2 )
         <ul x-show="open" class="cursor-pointer absolute z-50 bg-white border border-gray-300 w-full shadow-lg rounded-md text-gray-900 text-sm">
             @forelse ($suggestions as $suggestion)
             <li>
@@ -29,7 +29,7 @@
                 <div class="m-2">
                     <ul class="font-semibold text-gray-900">
                         @if ($suggestion)
-                        <a wire:click="showSearchResults('{{ $suggestion }}')" class="flex items-center px-1 py-1">{{ $suggestion }}</a>
+                        <a wire:click="showSearchResults('{{ $suggestion }}')" class="flex items-center px-1 py-1">{{ \Illuminate\Support\Str::limit($suggestion, 45, '...') }}</a>
                         @else
                         {{ __('No results found') }}
                         @endif

@@ -8,6 +8,7 @@ use Livewire\Component;
 use Matchish\ScoutElasticSearch\MixedSearch;
 use ONGR\ElasticsearchDSL\Highlight\Highlight;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
+use ONGR\ElasticsearchDSL\Query\FullText\MatchPhrasePrefixQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MultiMatchQuery;
 use ONGR\ElasticsearchDSL\Search;
@@ -38,7 +39,7 @@ class MainSearchBar extends Component
             $search = rtrim($search);
 
             // Add fuzzy search character '~' to $search
-            $search = $search . '*';
+            $search = $search . '* ';
         }
 
         $rawOutput = MixedSearch::search($search, function (Client $client, Search $body) use ($search) {
@@ -89,6 +90,13 @@ class MainSearchBar extends Component
             ]);
             $boolQuery->add($multiMatchQuery, BoolQuery::SHOULD);
             $body->addQuery($boolQuery);
+
+            
+            // Add match_phrase_prefix query for each field for partial matching
+            foreach ($fields as $field) {
+                $matchPhrasePrefixQuery = new MatchPhrasePrefixQuery($field, $search);
+                $boolQuery->add($matchPhrasePrefixQuery, BoolQuery::SHOULD);
+            }
 
 
             $highlight = new Highlight();

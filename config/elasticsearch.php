@@ -248,6 +248,10 @@ return [
                 'number_of_replicas' => 0,
                 'analysis' => [
                     'filter' => [
+                        'custom_keyword_marker' => [ // Exclude these keywords from stemming and stopwords
+                            'type' => 'keyword_marker',
+                            'keywords' => ["Den Haag", "The Hague", "La Haye", "Den Haag", "La Haya"], 
+                        ],
                         'locations_stop' => [
                             'type' => 'stop',
                             'stopwords' => [
@@ -310,6 +314,26 @@ return [
                             'type' => 'stop',
                             'stopwords' => '_spanish_',
                         ],
+                        'dutch_stemmer' => [
+                            'type' => 'stemmer',
+                            'language' => 'dutch',
+                        ],
+                        'english_stemmer' => [
+                            'type' => 'stemmer',
+                            'language' => 'english',
+                        ],
+                        'french_stemmer' => [
+                            'type' => 'stemmer',
+                            'language' => 'french',
+                        ],
+                        'german_stemmer' => [
+                            'type' => 'stemmer',
+                            'language' => 'german',
+                        ],
+                        'spanish_stemmer' => [
+                            'type' => 'stemmer',
+                            'language' => 'spanish',
+                        ],
                     ],
 
                     'analyzer' => [
@@ -317,6 +341,7 @@ return [
                             'tokenizer' => 'standard',
                             'filter' => [
                                 'lowercase',
+                                'custom_keyword_marker',
                                 'locations_stop',
                             ],
                         ],
@@ -324,35 +349,45 @@ return [
                             'tokenizer' => 'standard',
                             'filter' => [
                                 'lowercase',
+                                'custom_keyword_marker',
                                 'dutch_stop',
+                              //  'dutch_stemmer',  // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                         'analyzer_en' => [
                             'tokenizer' => 'standard',
                             'filter' => [
                                 'lowercase',
+                                'custom_keyword_marker',
                                 'english_stop',
+                                // 'english_stemmer', // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                         'analyzer_fr' => [
                             'tokenizer' => 'standard',
                             'filter' => [
                                 'lowercase',
+                                'custom_keyword_marker',
                                 'french_stop',
+                                // 'french_stemmer', // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                         'analyzer_de' => [
                             'tokenizer' => 'standard',
                             'filter' => [
                                 'lowercase',
+                                'custom_keyword_marker',
                                 'german_stop',
+                                // 'german_stemmer', // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                         'analyzer_es' => [
                             'tokenizer' => 'standard',
+                            'custom_keyword_marker',
                             'filter' => [
                                 'lowercase',
                                 'spanish_stop',
+                                // 'spanish_stemmer', // TODO: check if this is needed, in small dataset it seems to give worse results
                             ],
                         ],
                     ],

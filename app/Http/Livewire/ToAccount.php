@@ -28,12 +28,13 @@ class ToAccount extends Component
 
     public function mount($toHolderName = null)
     {
-        if ($toHolderName) {            
+        if ($toHolderName) {
             $this->showDropdown = true;
             $this->updatedSearch($toHolderName);
             $this->search = $toHolderName;
         }
     }
+
 
     public function checkValidation()
     {
@@ -57,11 +58,9 @@ class ToAccount extends Component
         $this->fromAccountId = $fromAccount;
     }
 
+
     public function toHolderName($toHolderName)
     {
-        // $this->showDropdown = true;
-        // $this->search = $toHolderName;
-        // $this->showDropdown = true;
         $this->updatedSearch($toHolderName);
     }
 
@@ -116,9 +115,7 @@ class ToAccount extends Component
 
     public function render()
     {
-        
-$this->updatedSearch($this->search);
-
+        $this->updatedSearch($this->search);
         return view('livewire.to-account');
     }
 }

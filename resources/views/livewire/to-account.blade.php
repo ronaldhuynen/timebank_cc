@@ -1,4 +1,4 @@
-<div x-data class="max-w-md mt-4">
+<div x-data="{ open: false }" class="max-w-md mt-4">
 
     <label for="toAccount" class="my-2 block text-sm font-medium text-gray-900"> {{ __('To account') }}</label>
 
@@ -16,13 +16,15 @@
             <input
             wire:model.debounce.300ms="search"
             x-on:blur="$wire.checkValidation()"
+            x-on:focus="open = true"
+            x-on:click.away="open = false"
             class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm leading-5 bg-white placeholder-gray-300 focus:placeholder-gray-700 focus:border-indigo-300 sm:text-sm transition duration-150 ease-in-out"
-            placeholder="{{ __('Search name, email or account') }}"
+            placeholder="{{ __('Search name or account') }}"
             type="search"
             autocomplete="off">
 
             @if (strlen($search) > 2)
-            <ul class="cursor-default absolute z-50 bg-white border border-gray-300 w-full shadow-lg rounded-md mt-0 text-gray-900 text-sm">
+            <ul x-show="open" class="cursor-default absolute z-50 bg-white border border-gray-300 w-full shadow-lg rounded-md mt-0 text-gray-900 text-sm">
                 @forelse ($searchResults as $result)
                 <li>
                     <a wire:click="toAccountSelected({{ $result['accountId'] }})" class="flex items-center px-2 py-2 hover:bg-gray-100">
@@ -32,7 +34,7 @@
                                 @if (array_key_exists('holderName', $result))
                                 {{ $result['holderName'] }}
                                 @else
-                                {{ __('No accoount holder found') }}
+                                {{ __('No account holder found') }}
                                 @endif
                             </div>
                             <div class="text-gray-600">

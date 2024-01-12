@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Overrides\Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate;
 use Elastic\Elasticsearch\Client;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Matchish\ScoutElasticSearch\MixedSearch;
 use ONGR\ElasticsearchDSL\Highlight\Highlight;
@@ -16,7 +15,10 @@ use ONGR\ElasticsearchDSL\Search;
 class MainSearchBar extends Component
 {
     public $search;
+    public $suggestions = [];
+    public $fetchedResults = [];
     public $results = [];
+    public $showResults = false;
 
 
     public function render()
@@ -128,11 +130,12 @@ class MainSearchBar extends Component
 
             $highlight = $result['highlight'][array_key_first($result['highlight'])] ?? null;
 
+
             // Clean the highlight from the pre- and post-tags for sorting the results
             if ($highlight !== null) {
                 $highlightClean = collect($highlight)
                     ->mapWithKeys(function ($fragment, $key) {
-                        return [$key => Str::replaceFirst(config('timebank-cc.main_search_bar.pre-tags'), '', Str::replaceLast(config('timebank-cc.main_search_bar.post-tags'), '', $fragment))];
+                        return [$key => strip_tags($fragment)];
                     })
                     ->all();
             }
@@ -143,18 +146,31 @@ class MainSearchBar extends Component
                 return $highlight[$key];
             }, $sortedKeys);
 
+            $suggest = (array_values(array_unique($highlightClean)));
+
             return [
                 'id' => $result['_source']['id'],
                 'model' => $result['_source']['__class_name'],
                 'score' => $result['_score'],
                 'highlight' =>  $sortedHighlight,
+                'suggest' => $suggest
             ];
 
         }, $results);
 
         // Sort the extracted data by score in descending order
         $extractedData = collect($extractedData)->sortByDesc('score')->all();
+        
 
-        $this->results = $extractedData;
+        $suggestions = collect($extractedData)->pluck('suggest')->flatten()->unique();
+        $this->suggestions = $suggestions->take(config('timebank-cc.main_search_bar.suggestions'));
+        $this->fetchedResults = $extractedData;
+    }
+
+    public function showSearchResults($value)
+    {
+        $this->search = $value;
+        $this->results = $this->fetchedResults;
+        $this->showResults = true;
     }
 }

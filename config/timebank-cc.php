@@ -149,7 +149,8 @@ return [
             'posts_index',
             'users_index',
             'users_index',
-        ]
+        ],
+        'suggestions' => 5, // max number of suggestions to show in search bar
     ],
 
 ];

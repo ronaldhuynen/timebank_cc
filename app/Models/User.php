@@ -118,7 +118,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
 
             'id' => $this->id,
             'name' => $this->name,
-            
+
             //TODO: Update to multilang database structure in future
             'about_nl' => $this->about,
             'about_en' => $this->about,
@@ -153,7 +153,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
                     'country' => $location->country ? $location->country->locale->name : '',
                 ];
             }),
-            
+
             'tags' => $this->tags->map(function ($tag) {
                 return [
                     'contexts' => $tag->contexts

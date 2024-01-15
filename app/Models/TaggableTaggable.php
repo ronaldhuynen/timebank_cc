@@ -13,7 +13,7 @@ class TaggableTaggable extends Model
     public static function boot() 
     {
         Static::updating(function() {
-            // Cache::forget('skills-user' . $this->user->id . '-lang' . app()->getLocale());
+        //
         });
     }
 

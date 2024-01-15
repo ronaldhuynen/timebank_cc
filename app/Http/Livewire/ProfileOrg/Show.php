@@ -8,6 +8,8 @@ class Show extends Component
 {
     public function render()
     {
+        //TODO! Adapt from ProfileUser/Show.php
+
         return view('livewire.profile-org.show');
     }
 }

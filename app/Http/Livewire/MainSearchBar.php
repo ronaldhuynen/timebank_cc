@@ -12,6 +12,7 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchPhrasePrefixQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MultiMatchQuery;
 use ONGR\ElasticsearchDSL\Search;
+use RTippin\Messenger\Messenger;
 
 class MainSearchBar extends Component
 {
@@ -47,19 +48,20 @@ class MainSearchBar extends Component
 
             $fields = [
                 //TODO: make a user setting to enable multi-language search or check languages table of user?
-                'post_translations.title_'. app()->getLocale(),
-                'post_translations.excerpt_'. app()->getLocale(),
-                'post_translations.content_'. app()->getLocale(),
-                'post_category.name_'. app()->getLocale(),
+                'post_translations.title_' . app()->getLocale(),
+                'post_translations.excerpt_' . app()->getLocale(),
+                'post_translations.content_' . app()->getLocale(),
+                'post_category.name_' . app()->getLocale(),
+                'postable.name',
                 'name',
-                'about_'. app()->getLocale(),
-                'motivation_'. app()->getLocale(),
+                'about_' . app()->getLocale(),
+                'motivation_' . app()->getLocale(),
                 'locations.district',
                 'locations.city',
                 'locations.division',
                 'locations.country',
-                'tags.contexts.tags.name_'. app()->getLocale(),
-                'tags.contexts.categories.name_'. app()->getLocale(),
+                'tags.contexts.tags.name_' . app()->getLocale(),
+                'tags.contexts.categories.name_' . app()->getLocale(),
             ];
 
             $boostedFields = [
@@ -91,7 +93,7 @@ class MainSearchBar extends Component
             $boolQuery->add($multiMatchQuery, BoolQuery::SHOULD);
             $body->addQuery($boolQuery);
 
-            
+
             // Add match_phrase_prefix query for each field for partial matching
             foreach ($fields as $field) {
                 $matchPhrasePrefixQuery = new MatchPhrasePrefixQuery($field, $search);
@@ -113,28 +115,123 @@ class MainSearchBar extends Component
             $body->addHighlight($highlight);
 
             //TODO: define max results in config file
-            $body->setSize(100);    // get max results
+            $body->setSize(50);    // get max results
 
             return $client->search(['index' => config('timebank-cc.main_search_bar.model_indices'), 'body' => $body->toArray()])->asArray();
         })
-        ->raw();
+            ->raw();
 
-        info($rawOutput);
+        $callback = function ($query) {
+            $query;
+        };
+
+        $cardData = [];
+        $hitsIterator = new EloquentHitsIteratorAggregate($rawOutput, $callback);
+        foreach ($hitsIterator as $model) {
+            $type = get_class($model);
+
+            if ($type === 'App\Models\User' || $type === 'App\Models\Organization') {
+                $model->load([
+                        'locations.city.translations' => function ($query) {
+                            $query->where('locale', app()->getLocale())
+                                ->select('city_id', 'name');
+                        },
+                    ])
+                    ->select('id', 'name', 'profile_photo_path')
+                    ->first();
+
+                $firstLocation = $model->locations->first();    //TODO: Update method when multiple locations have been implemented!
+                 // Construct location string, e.g. 'Den Haag, Segbroek, Zuid-Holland, NL'
+                 // and the short version, e.g. Den Haag, Zuid-Holland'
+                $location = '';
+                if ($firstLocation) {
+                    if ($firstLocation->city) {
+                        $city = $firstLocation->city->locale->name;
+                        $location = $city;
+                        $locationShort = $city;
+                    } 
+                    if ($firstLocation->district) {
+                        $district = $firstLocation->district->locale->name;
+                        $city ? $location = $city . ' ' . $district : $location = $district;
+                    }
+                    if ($firstLocation->division) {
+                        $division = $firstLocation->division->locale->name;
+                        $city || $district ? $location = $location . ', ' . $division : $location = $division;
+                    }
+                    if ($firstLocation->country) {
+                        $country = $firstLocation->country->code;
+                        $city || $district || $division ? $location = $location . ', ' . $country : $location = $country;
+                    }
+                }
+                // Check online status of the user
+                $messenger = app(Messenger::class);
+                $messengerStatus = $messenger->getProviderOnlineStatus($model);
+
+                if ($messengerStatus === 1) {
+                    $status = 'online';
+                } elseif ($messengerStatus === 2) {
+                    $status = 'away';
+                } else {
+                    $status = 'offline';
+                }
+                    
+
+                $cardData [] = [
+                    'title' => $model->name,
+                    'subtitle' => $model->motivation,
+                    'photo' => $model->profile_photo_path,
+                    'location_short' => $locationShort,
+                    'location' => $location,
+                    'status' => $status,
+                ];
+            }
+
+            if ($type === 'App\Models\Post') {
+                $model->load([
+                        'postable',
+                        'category.translations' => function ($query) {
+                            $query->where('locale', app()->getLocale());
+                        },
+                        'translations' => function ($query) {
+                            $query->where('locale', app()->getLocale());
+                        },
+                    ])->first();
 
 
-        // $callback = function ($query) {
-        //     $query->with('tags.contexts.tags.locale')->get();
-        // };
-        // $iterator = new EloquentHitsIteratorAggregate($rawOutput, $callback);
-        // info(collect($iterator));
-        // $hitsIterator = new EloquentHitsIteratorAggregate($rawOutput);
-        // foreach ($hitsIterator as $model) {
-        //     info($model);
-        // }
+                
+                $cardData [] = [
+                    'title' => $model->title,
+                    'subtitle' => $model->excerpt,
+                    'photo' => '',
+                    'location_short' => '',
+                    'location' => '',
+                    'status' => '',
+                ];
+
+            }
 
 
-        $results = $rawOutput['hits']['hits'];
-        $extractedData = array_map(function ($result) use ($search) {
+            info('model: ' . json_encode($model, JSON_PRETTY_PRINT));
+
+
+        }
+
+
+        info('cardData: ' . json_encode($cardData, JSON_PRETTY_PRINT));
+        info('rawOutput: ' . json_encode($rawOutput, JSON_PRETTY_PRINT));
+
+        $rawData = $rawOutput['hits']['hits'];
+
+
+        $results = array_map(function ($rawItem, $cardItem) {
+            return array_merge($rawItem, $cardItem);
+        }, $rawData, $cardData);
+
+
+        info('results: ' . json_encode($results, JSON_PRETTY_PRINT));
+
+
+        $extractedData = array_map(function ($result) use ($cardData) {
 
             $highlight = $result['highlight'][array_key_first($result['highlight'])] ?? null;
 
@@ -161,14 +258,19 @@ class MainSearchBar extends Component
                 'model' => $result['_source']['__class_name'],
                 'score' => $result['_score'],
                 'highlight' =>  $sortedHighlight,
-                'suggest' => $suggest
+                'suggest' => $suggest,
+                'title' => $result['title'],
+                'subtitle' => $result['subtitle'],
+                'photo' => $result['photo'],
+                'location_short' => $result['location_short'],
+                'location' => $result['location'],
+                'status' => $result['status'],
             ];
-
         }, $results);
 
         // Sort the extracted data by score in descending order
         $extractedData = collect($extractedData)->sortByDesc('score')->all();
-        
+
 
         $suggestions = collect($extractedData)->pluck('suggest')->flatten()->unique();
         $this->suggestions = $suggestions->take(config('timebank-cc.main_search_bar.suggestions'));
@@ -179,6 +281,12 @@ class MainSearchBar extends Component
     {
         $this->search = $value;
         $this->results = $this->fetchedResults;
-        $this->showResults = true;
+        // $this->showResults = true;
+
+
+        // Flash the results to the session, so it can be retrieved in the SearchController
+        session()->flash('results', $this->results);
+
+        return redirect()->route('search.show');
     }
 }

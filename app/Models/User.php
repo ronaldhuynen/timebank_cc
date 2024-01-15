@@ -54,7 +54,6 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         'profile_photo_path',
         'about',
         'motivation',
-        'date_of_birth',
         'website',
         'phone',
         'password',
@@ -70,10 +69,15 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
      */
     protected $hidden = [
         'email',
+        'date_of_birth',
+        'phone',
         'password',
         'remember_token',
+        'email_verified_at',
+        'two_factor_confirmed_at',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'last_login_ip',
     ];
 
     /**
@@ -174,7 +178,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
                                     ])->map(function ($category) {
                                         // Include the locale in the field name for categories
                                         return $category->translations->mapWithKeys(function ($translation) {
-                                            return ['name_' . $translation->locale => $translation->name];
+                                            return ['name_' . $translation->locale => StringHelper::DutchTitleCase($translation->name)];
                                         });
                                     }),
                             ];

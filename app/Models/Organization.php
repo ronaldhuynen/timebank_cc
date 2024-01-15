@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\StringHelper;
 use App\Models\Language;
 use App\Models\Locations\Location;
 use App\Models\Post;
@@ -55,6 +56,7 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
         'phone',
     ];
 
+    
     /**
      * Get the index name for the model.
      *
@@ -74,22 +76,34 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
     public function toSearchableArray()
     {
         // Prepare eager loaded relationships
-        $this->load('languages', 
-                    'locations.district.locale', 
-                    'locations.city.translations', 
-                    'locations.division.locale', 
-                    'locations.country.locale', 
-                    // 'tags.contexts.tags', 
-                    // 'tags.contexts.tags.locale',
-                    // 'tags.contexts.category.ancestorsAndSelf',
-                    // 'tags.locale'
-                );
+        $this->load(
+            'languages',
+            'locations.district.locale',
+            'locations.city.translations',
+            'locations.division.locale',
+            'locations.country.locale',
+            'tags.contexts.tags',
+            'tags.contexts.tags.locale',
+            'tags.contexts.category.ancestorsAndSelf',
+        );
 
         return [
+
             'id' => $this->id,
             'name' => $this->name,
-            'about' => $this->about,
-            'motivation' => $this->motivation,
+
+            //TODO: Update to multilang database structure in future
+            'about_nl' => $this->about,
+            'about_en' => $this->about,
+            'about_fr' => $this->about,
+            'about_de' => $this->about,
+            'about_es' => $this->about,
+            'motivation_nl' => $this->motivation,
+            'motivation_en' => $this->motivation,
+            'motivation_fr' => $this->motivation,
+            'motivation_de' => $this->motivation,
+            'motivation_es' => $this->motivation,
+
             'last_login_at' => $this->last_login_at,
             'lang_preference' => $this->lang_preference,
 
@@ -113,30 +127,33 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
                 ];
             }),
 
-        //    'tags' => $this->tags->map(function ($tag) {
-        //        return [                                
-                                    
-        //            'contexts' => $tag->contexts
-        //                 ->map(function ($context) {
-        //                     return [
-        //                         'tags' => $context->tags->map(function ($tag) {
-        //                             return [
-        //                                 'name' => StringHelper::DutchTitleCase($tag->normalized),
-        //                                 'locale' => $tag->locale->locale,
-        //                             ];
-        //                         }),
-        //                         'categories' => Category::with(['translations' => function ($query) { $query->select('category_id', 'locale', 'name');}])
-        //                             ->find([ $context->category->ancestorsAndSelf()->get()->flatMap(function ($related) {
-        //                                 $categoryPath = explode('.', $related->path);
-        //                                 return $categoryPath;
-        //                             })
-        //                             ->unique()->values()->toArray()
-        //                             ]),
-        //                     ];
-        //                 }),
-
-        //             ];
-        //    })
+            'tags' => $this->tags->map(function ($tag) {
+                return [
+                    'contexts' => $tag->contexts
+                        ->map(function ($context) {
+                            return [
+                                'tags' => $context->tags->map(function ($tag) {
+                                    // Include the locale in the field name for tags
+                                    return [
+                                        'name_' . $tag->locale->locale => StringHelper::DutchTitleCase($tag->normalized),
+                                    ];
+                                }),
+                                'categories' => Category::with(['translations' => function ($query) { $query->select('category_id', 'locale', 'name');}])
+                                    ->find([ $context->category->ancestorsAndSelf()->get()->flatMap(function ($related) {
+                                        $categoryPath = explode('.', $related->path);
+                                        return $categoryPath;
+                                    })
+                                    ->unique()->values()->toArray()
+                                    ])->map(function ($category) {
+                                        // Include the locale in the field name for categories
+                                        return $category->translations->mapWithKeys(function ($translation) {
+                                            return ['name_' . $translation->locale => StringHelper::DutchTitleCase($translation->name)];
+                                        });
+                                    }),
+                            ];
+                        }),
+                ];
+            })
         ];
     }
 

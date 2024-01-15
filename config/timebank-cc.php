@@ -131,8 +131,8 @@ return [
     'main_search_bar' => [
         'boosted_fields' => [   // fields with a boost factor, 1,0 neutral, 1,5 boosted, 0,5 penalized
             'name' =>  1.3,
-            'tags' => 0.5,
-            'categories' => 1.5,
+            'tags' => 1,
+            'categories' => 1,
         ],
         'search' => [
             'type' => 'best_fields', // 'best_fields', 'most_fields', 'cross_fields', 'phrase', 'phrase_prefix'
@@ -141,14 +141,14 @@ return [
             'fragment_size' => 50, //The size of the highlighted fragment in characters. 
             'fragmenter' => 'simple', // 'simple' or 'span'
             'number_of_fragments' => 5, // The maximum number of fragments to return. If the number of fragments is set to 0, no fragments are returned. Instead, the entire field contents are highlighted and returned.
-            'pre-tags'  => '<span class="font-extrabold italic">', // HTML tags to wrap around highlighted text
+            'pre-tags'  => '<span class="font-black italic">', // HTML tags to wrap around highlighted text
             'post-tags' => '</span>', // HTML tags to wrap around highlighted text
             'order' => 'score', // 'score' or 'none', the order of the fragments
         ],
         'model_indices' => [   // Elasticsearch indices that will be searched (defined in Models and imported by Scout)
             'posts_index',
             'users_index',
-            'users_index',
+            'organizations_index',
         ],
         'suggestions' => 5, // max number of suggestions to show in search bar
     ],

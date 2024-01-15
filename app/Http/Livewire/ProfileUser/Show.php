@@ -52,10 +52,6 @@ class Show extends Component
         $this->getSkills();
         $this->getAccountsTotals();
         $this->getSocials();
-
-        // ds($this->user)->label('user in show');
-        // ds($this->skills)->label('skills in show');
-
     }
 
 
@@ -158,20 +154,27 @@ class Show extends Component
         $location = '';
         $firstLocation = $this->user->locations->first();
 
+
         if ($firstLocation) {
             if ($firstLocation->city) {
-                $location .= $firstLocation->city->locale->name . ', ';
+                $city = $firstLocation->city->locale->name;
+                $location = $city;
+                $locationShort = $city;
             }
             if ($firstLocation->district) {
-                $location .= $firstLocation->district->locale->name . ', ';
+                $district = $firstLocation->district->locale->name;
+                $city ? $location = $city . ' ' . $district : $location = $district;
             }
             if ($firstLocation->division) {
-                $location .= $firstLocation->division->locale->name . ', ';
+                $division = $firstLocation->division->locale->name;
+                $city || $district ? $location = $location . ', ' . $division : $location = $division;
             }
             if ($firstLocation->country) {
-                $location .= $firstLocation->country->code;
+                $country = $firstLocation->country->code;
+                $city || $district || $division ? $location = $location . ', ' . $country : $location = $country;
             }
         }
+
 
         // Remove trailing comma and space
         $this->location = ['name' => rtrim($location, ', ')];
@@ -304,13 +307,13 @@ class Show extends Component
      */
     public function getLastExchangeAt()
     {
-        if ($this->accountsTotals) {            
+        if ($this->accountsTotals) {
             if ($this->accountsTotals['lastTransferDate']) {
                 $this->lastExchangeAt = Carbon::parse($this->accountsTotals['lastTransferDate'][0])->diffForHumans();
             } else {
                 $this->lastExchangeAt = null;   // no transfers
             }
-        } else { 
+        } else {
             // Get the accounts totals if it is not present
             $this->getAccountsTotals();
             if ($this->accountsTotals['lastTransferDate']) {
@@ -341,7 +344,7 @@ class Show extends Component
      */
     public function getAccountsTotals()
     {
-        $this->accountsTotals = (new Account)->getAccountsTotals(User::class, $this->user->id, config('timebank-cc.account_info.account_totals.countTransfersSince'));
+        $this->accountsTotals = (new Account())->getAccountsTotals(User::class, $this->user->id, config('timebank-cc.account_info.account_totals.countTransfersSince'));
     }
 
 
@@ -365,7 +368,7 @@ class Show extends Component
     {
         return redirect()->route('pay.to.name', ['name' => $this->user->name]);
     }
- 
+
 
     /**
      *  Start a conversation with the user.

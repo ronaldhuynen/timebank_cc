@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\StringHelper;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Meeting;
@@ -64,7 +65,7 @@ class Post extends Model implements HasMedia
                 'id' => $this->category->id,
                 'names' => $this->category->translations->mapWithKeys(function ($translation) {
                     // Include the locale in the field name for categories
-                    return ['name_' . $translation->locale => $translation->name];
+                    return ['name_' . $translation->locale => StringHelper::DutchTitleCase($translation->name)];
                 })->toArray(),
             ] : [],
         ];

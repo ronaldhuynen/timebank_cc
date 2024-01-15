@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LangJsController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
@@ -149,10 +150,19 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                                     ->name('user.show')
                                     ->missing(function () {return view('user.not_found');});
 
+                                    
+                Route::get('/search', [SearchController::class, 'show'])->name('search.show');
 
+
+                // This route should always be the last route in the file! 
+                // It will catch all routes that are not defined above as a {name} route.
                 Route::get('/{name}', 'App\Http\Controllers\UserController@showByName')
                                     ->name('show.by.name')
                                     ->missing(function () {return view('user.not_found');});
+
+
+
+
 
 
 

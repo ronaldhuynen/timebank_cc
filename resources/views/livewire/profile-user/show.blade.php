@@ -121,7 +121,6 @@
                  @else
                  <div>
                      <p class="mt-4 text-gray-300 group-hover:text-gray-100 dark:text-gray-300">
-
                          {{ $user->about ?? '' }}
                      </p>
                  </div>

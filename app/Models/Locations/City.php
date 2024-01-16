@@ -27,6 +27,24 @@ class City extends Model
 
 
     /**
+     * Accessor:
+     * Get the city locale.
+     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function getLocaleAttribute()
+    {
+        return $this->hasMany(CityLocale::class)
+            ->where(function ($query) {
+                $query->where('locale', App::getLocale())
+                    ->orWhere('locale', App::getFallbackLocale());
+            })
+            ->orderByRaw("(CASE WHEN locale = ? THEN 1 WHEN locale = ? THEN 2 END)", [App::getLocale(), App::getFallbackLocale()])
+            ->first();
+    }
+
+    /**
     * Return all available locales of the city.
     *
     * @return void
@@ -36,19 +54,6 @@ class City extends Model
         return $this->hasMany(CityLocale::class, 'city_id');
     }
 
-
-    /**
-    * Get the city locale.
-    * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-    * @return void
-    */
-    public function locale()
-    {
-        return $this->hasOne(CityLocale::class)
-        ->where('locale', App::getLocale())
-        ->orWhere('locale', App::getFallbackLocale())
-        ->orderByRaw("CASE WHEN `locale` = ? THEN 2 ELSE 1 END ASC", App::getFallbackLocale());
-    }
 
 
     /**
@@ -103,7 +108,7 @@ class City extends Model
      * One-to-many.
      * @return void
      */
-       public function locations()
+    public function locations()
     {
         return $this->hasMany(Location::class);
     }

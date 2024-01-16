@@ -19,6 +19,25 @@ class District extends Model
 
 
     /**
+     * Accessor:
+     * Get the district locale.
+     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function getLocaleAttribute()
+    {
+        return $this->hasMany(DistrictLocale::class)
+            ->where(function ($query) {
+                $query->where('locale', App::getLocale())
+                    ->orWhere('locale', App::getFallbackLocale());
+            })
+            ->orderByRaw("(CASE WHEN locale = ? THEN 1 WHEN locale = ? THEN 2 END)", [App::getLocale(), App::getFallbackLocale()])
+            ->first();
+    }
+
+
+    /**
     * Return all available locales of the district.
     *
     * @return void
@@ -40,7 +59,7 @@ class District extends Model
             ->where('locale', App::getLocale());
         if ($result->count() === 0) {
             $result = $this->hasMany(DistrictLocale::class, 'district_id')
-                ->where('locale',  App::getFallbackLocale());
+                ->where('locale', App::getFallbackLocale());
         }
         return $result;
     }
@@ -55,19 +74,6 @@ class District extends Model
     {
         return $this->morphedByMany(User::class, 'districtable', 'districtables');
     }
-    
-    /**
-    * Get the district locale.
-    * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-    * @return void
-    */
-    public function locale()
-    {
-        return $this->hasOne(DistrictLocale::class)
-        ->where('locale', App::getLocale())
-        ->orWhere('locale', App::getFallbackLocale())
-        ->orderByRaw("CASE WHEN `locale` = ? THEN 2 ELSE 1 END ASC", App::getFallbackLocale());
-    }
 
 
     /**
@@ -75,12 +81,12 @@ class District extends Model
      * One-to-many.
      * @return void
      */
-       public function locations()
+    public function locations()
     {
         return $this->hasMany(Location::class);
     }
 
-    
+
     /**
     * Get the related city of the district.
     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.

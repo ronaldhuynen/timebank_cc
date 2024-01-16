@@ -21,6 +21,24 @@ class Country extends Model
     public $timestamps = false;
 
 
+    /**
+     * Accessor:
+     * Get the country locale.
+     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function getLocaleAttribute()
+    {
+        return $this->hasMany(CountryLocale::class)
+            ->where(function ($query) {
+                $query->where('locale', App::getLocale())
+                    ->orWhere('locale', App::getFallbackLocale());
+            })
+            ->orderByRaw("(CASE WHEN locale = ? THEN 1 WHEN locale = ? THEN 2 END)", [App::getLocale(), App::getFallbackLocale()])
+            ->first();
+    }
+
 
     /**
      * Get all related locations of the division.
@@ -47,26 +65,6 @@ class Country extends Model
     public function translationExists()
     {
         return $this->hasOne(CountryLocale::class, 'country_id')->where('locale', App::getLocale())->exists();
-    }
-
-    /**
-     * Get the country locale.
-     * In the App::getLocale language, or if not exists, in the App::getFallbackLocale language.
-     * @return void
-     */
-    public function locale()
-    {
-        // Groot leermoment: relaties altijd zonder ->get() ->first() etc zodat deze geschakeld kunnen worden!
-        // Groot leermoment: gebruik bij CountryLocale een hasOne relatie ondanks dat er meerdere hasMany vertalingen zijn.
-        // Want zo kun je binair kiezen tussen App::getLocale en indien niet aanwezig de App::getFallbackLocal !!
-        // Groot leermoment: prioriteit tussen de FallbackLocale en de Locale wordt met de orderByRaw query bepaald.
-        // Sorten op 'name' wordt als laatste gedaan op de collectie in de blade view !
-        return $this->hasOne(CountryLocale::class, 'country_id')
-        ->where('locale', App::getLocale())
-        ->orWhere('locale', App::getFallbackLocale())
-        // ALWAYS use placeholder in raw queries to prevent SQL injections!
-        // The placeholder ? holds the second parameter of the orderByRaw query. Which is App::getFallbackLocale().
-        ->orderByRaw("CASE WHEN `locale` = ? THEN 2 ELSE 1 END ASC", App::getFallbackLocale());
     }
 
 

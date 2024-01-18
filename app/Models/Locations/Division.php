@@ -31,25 +31,6 @@ class Division extends Model
         return $this->hasMany(DivisionLocale::class, 'division_id');
     }
 
-
-    /**
-     * Accessor:
-     * Get the division locale.
-     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function getLocaleAttribute()
-    {
-        return $this->hasMany(DivisionLocale::class)
-            ->where(function ($query) {
-                $query->where('locale', App::getLocale())
-                    ->orWhere('locale', App::getFallbackLocale());
-            })
-            ->orderByRaw("(CASE WHEN locale = ? THEN 1 WHEN locale = ? THEN 2 END)", [App::getLocale(), App::getFallbackLocale()])
-            ->first();
-    }
-
     
     /**
      * Get the local division name.

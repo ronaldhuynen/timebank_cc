@@ -124,15 +124,15 @@ class LocationsDropdown extends Component
 
         if (!empty($this->country)) {
             $country = Country::find($this->country);
-            $this->divisions = Division::with(['locale'])->where('country_id', $this->country)->get();
-            $this->cities = City::with(['locale'])->where('country_id', $this->country)->get();
+            $this->divisions = Division::with(['translations'])->where('country_id', $this->country)->get();
+            $this->cities = City::with(['translations'])->where('country_id', $this->country)->get();
         }
 
         if (!empty($this->city)) {
-            $this->districts = District::with(['locale'])->where('city_id', $this->city)->get();
+            $this->districts = District::with(['translations'])->where('city_id', $this->city)->get();
         }
 
-        $countries = Country::with(['locale'])->get();
+        $countries = Country::with(['translations'])->get();
 
         return view('livewire.locations.locations-dropdown', compact(['countries']));
     }

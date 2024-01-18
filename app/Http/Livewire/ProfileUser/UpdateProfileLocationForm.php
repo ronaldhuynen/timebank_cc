@@ -44,7 +44,7 @@ class UpdateProfileLocationForm extends Component
     {
         $this->state = session('activeProfileType')::find(session('activeProfileId'))
             ->load([
-                'locations',
+                // 'locations',
                 'locations.country',
                 'locations.division',
                 'locations.city',
@@ -162,7 +162,7 @@ class UpdateProfileLocationForm extends Component
     {
         $this->validate();
 
-        // Use a transaction for creating the new user.
+        // Use a transaction.
         DB::transaction(function (): void {
 
             // For now we only use a single location. In the future this can become an array of locations.

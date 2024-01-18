@@ -2,6 +2,7 @@
 
 namespace App\Models\Locations;
 
+use App\Models\Scopes\LocalizeScope;
 use Illuminate\Database\Eloquent\Model;
 
 class DivisionLocale extends Model
@@ -13,6 +14,12 @@ class DivisionLocale extends Model
      */
     public $timestamps = false;
 
+    
+    protected static function booted()
+    {
+        // Scope a query to only include country locales that match the current application locale or fallback locale.
+        static::addGlobalScope(new LocalizeScope);
+    }
 
     public function division()
     {

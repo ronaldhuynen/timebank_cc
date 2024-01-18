@@ -19,25 +19,6 @@ class District extends Model
 
 
     /**
-     * Accessor:
-     * Get the district locale.
-     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function getLocaleAttribute()
-    {
-        return $this->hasMany(DistrictLocale::class)
-            ->where(function ($query) {
-                $query->where('locale', App::getLocale())
-                    ->orWhere('locale', App::getFallbackLocale());
-            })
-            ->orderByRaw("(CASE WHEN locale = ? THEN 1 WHEN locale = ? THEN 2 END)", [App::getLocale(), App::getFallbackLocale()])
-            ->first();
-    }
-
-
-    /**
     * Return all available locales of the district.
     *
     * @return void

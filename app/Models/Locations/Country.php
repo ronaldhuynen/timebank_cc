@@ -22,25 +22,6 @@ class Country extends Model
 
 
     /**
-     * Accessor:
-     * Get the country locale.
-     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function getLocaleAttribute()
-    {
-        return $this->hasMany(CountryLocale::class)
-            ->where(function ($query) {
-                $query->where('locale', App::getLocale())
-                    ->orWhere('locale', App::getFallbackLocale());
-            })
-            ->orderByRaw("(CASE WHEN locale = ? THEN 1 WHEN locale = ? THEN 2 END)", [App::getLocale(), App::getFallbackLocale()])
-            ->first();
-    }
-
-
-    /**
      * Get all related locations of the division.
      * One-to-many.
      * @return void

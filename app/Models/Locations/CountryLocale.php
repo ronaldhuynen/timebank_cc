@@ -2,6 +2,7 @@
 
 namespace App\Models\Locations;
 
+use App\Models\Scopes\LocalizeScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
@@ -17,8 +18,10 @@ class CountryLocale extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(fn ($query) => $query->orderBy('name'));
+        // Scope a query to only include country locales that match the current application locale or fallback locale.
+        static::addGlobalScope(new LocalizeScope);
     }
+
 
     public function country()
     {

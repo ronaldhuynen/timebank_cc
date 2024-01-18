@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Locations\City;
 use App\Overrides\Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate;
 use Elastic\Elasticsearch\Client;
 use Livewire\Component;
@@ -132,37 +133,56 @@ class MainSearchBar extends Component
 
             if ($type === 'App\Models\User' || $type === 'App\Models\Organization') {
                 $model->load([
-                        'locations.city.translations' => function ($query) {
-                            $query->where('locale', app()->getLocale())
-                                ->select('city_id', 'name');
-                        },
-                    ])
-                    ->select('id', 'name', 'profile_photo_path')
-                    ->first();
+                    'locations.district.translations',
+                    'locations.city.translations',
+                    'locations.division.translations',
+                    'locations.country.translations',
+                ])
+                ->select('id', 'name', 'profile_photo_path');
 
-                $firstLocation = $model->locations->first();    //TODO: Update method when multiple locations have been implemented!
-                 // Construct location string, e.g. 'Den Haag, Segbroek, Zuid-Holland, NL'
-                 // and the short version, e.g. Den Haag, Zuid-Holland'
-                $location = '';
+                $firstLocation = $model->locations->first();  // TODO: Update this method when we have multiple locations for users and organizations
+                 
+                // Construct location strings 
                 if ($firstLocation) {
+
+                    $city = null;
+                    $district = null;
+                    $division = null;
+                    $locationShort = null;
+                    $location = '';
+
                     if ($firstLocation->city) {
                         $city = $firstLocation->city->locale->name;
-                        $location = $city;
-                        $locationShort = $city;
-                    } 
+                    }
                     if ($firstLocation->district) {
                         $district = $firstLocation->district->locale->name;
-                        $city ? $location = $city . ' ' . $district : $location = $district;
                     }
                     if ($firstLocation->division) {
                         $division = $firstLocation->division->locale->name;
-                        $city || $district ? $location = $location . ', ' . $division : $location = $division;
+                    }
+                    if (!$firstLocation->division && $city != null) {
+                        $cityId = $firstLocation->city->id;
+                        $division = City::find($cityId)->division->locale->name;
                     }
                     if ($firstLocation->country) {
                         $country = $firstLocation->country->code;
-                        $city || $district || $division ? $location = $location . ', ' . $country : $location = $country;
+                    }
+
+                    if ($city) {
+                        $locationShort = $city . ', ' . $division;
+                        if ($district) {
+                            $location = $city . ' ' . $district . ', ' . $division . ', ' . $country;
+                        } else {
+                            $location = $city . ', ' . $division . ', ' . $country;
+                        }
+                    } else {
+                        if ($country && !$city) {
+                            $division ? $locationShort = $division . ', ' . $country : $locationShort = $country;
+                            $division ? $location = $division . ', ' . $country : $location = $country;
+                        }
                     }
                 }
+
                 // Check online status of the user
                 $messenger = app(Messenger::class);
                 $messengerStatus = $messenger->getProviderOnlineStatus($model);
@@ -174,7 +194,7 @@ class MainSearchBar extends Component
                 } else {
                     $status = 'offline';
                 }
-                    
+
 
                 $cardData [] = [
                     'title' => $model->name,
@@ -198,7 +218,7 @@ class MainSearchBar extends Component
                     ])->first();
 
 
-                
+
                 $cardData [] = [
                     'title' => $model->title,
                     'subtitle' => $model->excerpt,

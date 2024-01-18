@@ -13,6 +13,8 @@ class Location extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'country_id', 'division_id', 'city_id', 'district_id'];
+
     /**
     * Return related country.
     * one-to-many

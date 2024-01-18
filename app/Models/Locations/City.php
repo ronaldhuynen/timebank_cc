@@ -27,24 +27,6 @@ class City extends Model
 
 
     /**
-     * Accessor:
-     * Get the city locale.
-     * In the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function getLocaleAttribute()
-    {
-        return $this->hasMany(CityLocale::class)
-            ->where(function ($query) {
-                $query->where('locale', App::getLocale())
-                    ->orWhere('locale', App::getFallbackLocale());
-            })
-            ->orderByRaw("(CASE WHEN locale = ? THEN 1 WHEN locale = ? THEN 2 END)", [App::getLocale(), App::getFallbackLocale()])
-            ->first();
-    }
-
-    /**
     * Return all available locales of the city.
     *
     * @return void

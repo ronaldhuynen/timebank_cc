@@ -2,6 +2,7 @@
 
 namespace App\Models\Locations;
 
+use App\Models\Scopes\LocalizeScope;
 use Illuminate\Database\Eloquent\Model;
 
 class DistrictLocale extends Model
@@ -12,6 +13,13 @@ class DistrictLocale extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    
+    protected static function booted()
+    {
+        // Scope a query to only include country locales that match the current application locale or fallback locale.
+        static::addGlobalScope(new LocalizeScope);
+    }
 
 
     public function district()

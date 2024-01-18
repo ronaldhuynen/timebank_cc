@@ -152,17 +152,17 @@ class MainSearchBar extends Component
                     $location = '';
 
                     if ($firstLocation->city) {
-                        $city = $firstLocation->city->locale->name;
+                        $city = $firstLocation->city->translations->first()->name;
                     }
                     if ($firstLocation->district) {
-                        $district = $firstLocation->district->locale->name;
+                        $district = $firstLocation->district->translations->first()->name;
                     }
                     if ($firstLocation->division) {
-                        $division = $firstLocation->division->locale->name;
+                        $division = $firstLocation->division->translations->first()->name;
                     }
                     if (!$firstLocation->division && $city != null) {
                         $cityId = $firstLocation->city->id;
-                        $division = City::find($cityId)->division->locale->name;
+                        $division = City::find($cityId)->division->translations->first()->name;
                     }
                     if ($firstLocation->country) {
                         $country = $firstLocation->country->code;

@@ -157,16 +157,16 @@ class Show extends Component
 
         if ($firstLocation) {
             if ($firstLocation->city) {
-                $city = $firstLocation->city->locale->name;
+                $city = $firstLocation->city->translations->first()->name;
                 $location = $city;
                 $locationShort = $city;
             }
             if ($firstLocation->district) {
-                $district = $firstLocation->district->locale->name;
+                $district = $firstLocation->district->translations->first()->name;
                 $city ? $location = $city . ' ' . $district : $location = $district;
             }
             if ($firstLocation->division) {
-                $division = $firstLocation->division->locale->name;
+                $division = $firstLocation->division->translations->first()->name;
                 $city || $district ? $location = $location . ', ' . $division : $location = $division;
             }
             if ($firstLocation->country) {

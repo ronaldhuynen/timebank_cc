@@ -12,7 +12,6 @@ class Show extends Component
 
     public function render()
     {
-        info($this->results);
         return view('livewire.search.show', ['results' => $this->results]);
     }
 }

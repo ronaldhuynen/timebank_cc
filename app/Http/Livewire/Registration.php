@@ -42,7 +42,6 @@ class Registration extends Component implements CreatesNewUsers
     {
         return [
         'name' => config('timebank-cc.rules.profile_user.name'),
-        // 'name' => [ Rule::notIn(['admin', 'administrator'])], // Disallow 'admin' and 'administrator'
         'email' => config('timebank-cc.rules.profile_user.email'),
         'password' => config('timebank-cc.rules.profile_user.password'),
         'country' => 'required_if:validateCountry,true|integer',

@@ -178,7 +178,8 @@ return [
 
         // update-profile-organization-form.blade.php
         // update-profile-personal-form.blade.php
-        'state.about' => 'Description',
+        'state.about' => 'Introduction',
+        'state.about_short' => 'Short intro',
         'state.motivation' => 'Motivation',
         'language' => 'Language',
         'state.date_of_birth' => 'Date of birth',

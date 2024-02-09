@@ -63,6 +63,16 @@
             <x-jet-input-error for="about" class="mt-2" />
         </div>
 
+        <!-- Very short intro -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-textarea 
+                wire:model.debounce.500ms="state.about_short" 
+                label="{{ __('Introduction in one sentence')}} *" 
+                placeholder="{{ __('I.e. your goal or slogan') }}" 
+                class="placeholder-gray-300"/>
+            <x-jet-input-error for="about" class="mt-2" />
+        </div>
+
         <!-- Motivation -->
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 

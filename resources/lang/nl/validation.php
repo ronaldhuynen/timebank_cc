@@ -175,11 +175,12 @@ return [
 
         // registration.php
         'name' => 'Naam',
-        
+
         // update-profile-organization-form.blade.php
         // update-profile-personal-form.blade.php
-        'state.about' => 'Omschrijving', 
-        'state.motivation' => 'Motivatie',   
+        'state.about' => 'Introductie',
+        'state.about_short' => 'Korte introductie',
+        'state.motivation' => 'Motivatie',
         'languages' => 'Taal-selectie',
         'state.date_of_birth' => 'Geboortedatum',
         'socialsOptionSelected' => 'Social Media',

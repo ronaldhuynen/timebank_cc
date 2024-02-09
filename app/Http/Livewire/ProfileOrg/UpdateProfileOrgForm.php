@@ -34,6 +34,7 @@ class UpdateProfileOrgForm extends Component
         return [
             'photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',
             'state.about' => 'required|string|max:900',   //TODO: check max with legacy cyclos data
+            'state.about_short' => 'required|string|max:150',   //TODO: check max with legacy cyclos data
             'state.motivation' => 'required|string|max:200',  //TODO: check max with legacy cyclos data
             'languages' => 'required',
             'languages.id' => 'integer',
@@ -105,8 +106,6 @@ class UpdateProfileOrgForm extends Component
      */
     public function updated($field)
     {
-        info('Updated field: ' . $field);
-
         if ($field = 'website') {    
         // $this->website = $this->addUrlScheme($this->website);
         }
@@ -129,6 +128,7 @@ class UpdateProfileOrgForm extends Component
         $this->validate();  // 2nd validation, just before save method
 
         $this->organization->about = $this->state['about'];
+        $this->organization->about_short = $this->state['about_short'];
         $this->organization->motivation = $this->state['motivation'];
         $this->organization->website =  str_replace(['http://', 'https://', ], '', $this->website);
 

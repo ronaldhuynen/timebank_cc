@@ -21,6 +21,7 @@ class CreateOrganizationsTable extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
 
             $table->text('about')->nullable();
+            $table->string('about_short', 150)->nullable();
             $table->text('motivation')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('website')->nullable();

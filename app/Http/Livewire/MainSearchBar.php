@@ -55,7 +55,7 @@ class MainSearchBar extends Component
                 'post_category.name_' . app()->getLocale(),
                 'postable.name',
                 'name',
-                'about_' . app()->getLocale(),
+                'about_short' . app()->getLocale(),
                 'motivation_' . app()->getLocale(),
                 'locations.district',
                 'locations.city',
@@ -148,6 +148,7 @@ class MainSearchBar extends Component
                     $city = null;
                     $district = null;
                     $division = null;
+                    $country = null;
                     $locationShort = null;
                     $location = '';
 
@@ -198,7 +199,7 @@ class MainSearchBar extends Component
 
                 $cardData [] = [
                     'title' => $model->name,
-                    'subtitle' => $model->motivation,
+                    'subtitle' => $model->about_short,
                     'photo' => $model->profile_photo_path,
                     'location_short' => $locationShort,
                     'location' => $location,

@@ -53,6 +53,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         'email',
         'profile_photo_path',
         'about',
+        'about_short',
         'motivation',
         'website',
         'phone',
@@ -69,7 +70,6 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
      */
     protected $hidden = [
         'email',
-        'date_of_birth',
         'phone',
         'password',
         'remember_token',
@@ -109,10 +109,10 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         // Prepare eager loaded relationships
         $this->load(
             'languages',
-            'locations.district.locale',
+            'locations.district.translations',
             'locations.city.translations',
-            'locations.division.locale',
-            'locations.country.locale',
+            'locations.division.translations',
+            'locations.country.translations',
             'tags.contexts.tags',
             'tags.contexts.tags.locale',
             'tags.contexts.category.ancestorsAndSelf',
@@ -123,12 +123,17 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
             'id' => $this->id,
             'name' => $this->name,
 
-            //TODO: Update to multilang database structure in future
+            //TODO: Update to multilang database structure in future, this ElasticSearch index is already prepared for it
             'about_nl' => $this->about,
             'about_en' => $this->about,
             'about_fr' => $this->about,
             'about_de' => $this->about,
             'about_es' => $this->about,
+            'about_short_nl' => $this->about_short,
+            'about_short_en' => $this->about_short,
+            'about_short_fr' => $this->about_short,
+            'about_short_de' => $this->about_short,
+            'about_short_es' => $this->about_short,
             'motivation_nl' => $this->motivation,
             'motivation_en' => $this->motivation,
             'motivation_fr' => $this->motivation,
@@ -149,12 +154,18 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
             'locations' => $this->locations->map(function ($location) { // map() as locations is a collection
                 return [
                     'id' => $location->id,
-                    'district' => $location->district ? $location->district->locale->name : '',
+                    'district' => $location->district ? $location->district->translations->map(function ($translation) {   // map() as translations is a collection
+                        return $translation->name;
+                    })->toArray() : [],
                     'city' => $location->city ? $location->city->translations->map(function ($translation) {   // map() as translations is a collection
                         return $translation->name;
                     })->toArray() : [],
-                    'division' => $location->division ? $location->division->locale->name : '',
-                    'country' => $location->country ? $location->country->locale->name : '',
+                    'division' => $location->division ? $location->division->translations->map(function ($translation) {   // map() as translations is a collection
+                        return $translation->name;
+                    })->toArray() : [],
+                    'country' => $location->country ? $location->country->translations->map(function ($translation) {   // map() as translations is a collection
+                        return $translation->name;
+                    })->toArray() : [],
                 ];
             }),
 

@@ -50,7 +50,6 @@
         "laradumps/laradumps": "^2.2",
         "laravel-lang/publisher": "^12.2",
         "laravel/sail": "^1.0.1",
-        "laravel/telescope": "^4.15",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.0",
         "panique/laravel-sass": "dev-master",

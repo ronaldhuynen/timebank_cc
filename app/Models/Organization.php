@@ -56,7 +56,7 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
         'phone',
     ];
 
-    
+
     /**
      * Get the index name for the model.
      *
@@ -68,11 +68,11 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
     }
 
 
-     /**
-     * Convert this model to a searchable array.
-     *
-     * @return array
-     */
+    /**
+    * Convert this model to a searchable array.
+    *
+    * @return array
+    */
     public function toSearchableArray()
     {
         // Prepare eager loaded relationships
@@ -98,6 +98,11 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
             'about_fr' => $this->about,
             'about_de' => $this->about,
             'about_es' => $this->about,
+            'about_short_nl' => $this->about_short,
+            'about_short_en' => $this->about_short,
+            'about_short_fr' => $this->about_short,
+            'about_short_de' => $this->about_short,
+            'about_short_es' => $this->about_short,
             'motivation_nl' => $this->motivation,
             'motivation_en' => $this->motivation,
             'motivation_fr' => $this->motivation,

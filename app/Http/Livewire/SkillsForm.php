@@ -138,12 +138,12 @@ class SkillsForm extends Component
 
         $tags = $tags->sortBy('category_color')->values();
 
-
         $this->initTagsArrayTranslated = $tags->toArray();
-
+        
         $this->tagsArray = json_encode($tags->toArray());
 
-        ds($this->tagsArray)->label('tagsArray');
+        $this->dispatchBrowserEvent('load'); //! HIERZO
+
     }
 
 
@@ -152,8 +152,6 @@ class SkillsForm extends Component
     {
         $this->resetErrorBag('newTag.name');
         $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
-        // $latestIndex = count($this->newTagsArray) - 1;
-        // $this->newTagsArray = $this->newTagsArray->put($latestIndex, ['value' => $this->newTag['name']]);
     }
 
 
@@ -364,7 +362,7 @@ class SkillsForm extends Component
 
         if ($this->translateRadioButton === 'select') {
 
-            // Attach an existing context (in English) to the new tag
+            // Attach an existing context in the base language to the new tag. See config('timebank-cc.base_language') 
             // Note that the category_id and updated_by_user is not updated when selecting an existing context!
             $tagContext = Tag::find($this->selectTagTranslation)->contexts()->first();
             $tag->contexts()->attach($tagContext->id);

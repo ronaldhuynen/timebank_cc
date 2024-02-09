@@ -1,7 +1,6 @@
 <x-jet-form-section submit="updateProfilePersonalForm">
     <x-slot name="title">
         {{ __('Personal') }}
-            {{ info(config('timebank-cc.rules.profile_user.profile_photo')) }}
 
     </x-slot>
 
@@ -58,12 +57,21 @@
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
                 wire:model.debounce.500ms="state.about" 
-                label="{{ __('Please introduce yourself')}} *" 
-                placeholder="{{ __('Short intro or background info') }}" 
+                label="{{ __('Please introduce yourself')}}" 
+                placeholder="{{ __('Relevant background info about you') }}" 
                 class="placeholder-gray-300"/>
             <x-jet-input-error for="about" class="mt-2" />
         </div>
 
+        <!-- Very short intro -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-textarea 
+                wire:model.debounce.500ms="state.about_short" 
+                label="{{ __('Introduction in one sentence')}} *" 
+                placeholder="{{ __('Someone who is interested in... ') }}" 
+                class="placeholder-gray-300"/>
+            <x-jet-input-error for="about" class="mt-2" />
+        </div>
 
         <!-- Motivation -->
         <div class="col-span-6 sm:col-span-4">

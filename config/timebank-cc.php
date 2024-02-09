@@ -63,11 +63,12 @@ return [
 
     'rules' => [
         'profile_user' => [
-            'name' =>  ['required','string','unique:users,name','unique:organizations,name','min:3','max:40','alpha_num',
+            'name' =>  ['required', 'string', 'unique:users,name', 'unique:organizations,name', 'min:3', 'max:40',
                 function ($attribute, $value, $fail) {
                     // Disallow the following words to be used inside the name:
                     $disallowedWords = [
                         'admin',
+                        'administrator',
                         'superuser',
                         'super-user',
                         'supervisor',
@@ -83,7 +84,9 @@ return [
                         }
                     }
                 },
+                'regex:/^[a-zA-Z0-9-_ ]+$/', // only letters, numbers, spaces, dashes and underscores
             ],
+        
             'email' => 'required|email|unique:users,email|max:40',
             'password' => 'required|min:6|same:passwordConfirmation',
             'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',
@@ -114,6 +117,8 @@ return [
     | Base Language
     |--------------------------------------------------------------------------
     | Translations are linked by their context to one base language.
+    |
+    | IMPORTANT: This language is also used as fallback locale, therefore all names, titles, terms, etc. must be at least in this language. 
     |
     */
     'base_language' => 'en',

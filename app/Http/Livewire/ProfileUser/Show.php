@@ -252,6 +252,7 @@ class Show extends Component
      *
      * @return \Illuminate\Support\Collection
      */
+    //TODO! This will set the skill Cache, and not get the skills from cache! FIX THIS!
     public function getSkills()
     {
         $skillsCache = Cache::remember('skills-user-' . $this->user->id . '-lang-' . app()->getLocale(), now()->addDays(7), function () { // remember cache

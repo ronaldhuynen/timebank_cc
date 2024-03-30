@@ -16,6 +16,7 @@ class TransactionSeeder extends Seeder
     public function run()
     {
         // Seed test transaction_types
+        // TODO! List these types in the transaction page!
         DB::table('transaction_types')->insert([
             ['name' => 'Work'],
             ['name' => 'Gift'],
@@ -24,7 +25,7 @@ class TransactionSeeder extends Seeder
             ['name' => 'Currency removal']
         ]);
 
-        $transCount = max((int)$this->command->ask('How many transactions would you like?', 1000), 1);
-        Transaction::factory()->count($transCount)->create();
+        //$transCount = max((int)$this->command->ask('How many transactions would you like?', 1000), 1);
+        //Transaction::factory()->count($transCount)->create();
     }
 }

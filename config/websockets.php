@@ -30,7 +30,7 @@ return [
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,
             'enable_client_messages' => false,
-            'enable_statistics' => true,
+            'enable_statistics' => true,    // TODO: disable statistics for production
         ],
     ],
 
@@ -68,6 +68,7 @@ return [
      * the chance to add your own middleware to this list or change any of
      * the existing middleware. Or, you can simply stick with this list.
      */
+    // TODO restrict laravel-websockets statistics to admin only
     'middleware' => [
         'web',
         Authorize::class,
@@ -96,7 +97,8 @@ return [
          * When the clean-command is executed, all recorded statistics older than
          * the number of days specified here will be deleted.
          */
-        'delete_statistics_older_than_days' => 60,
+        // TODO: for producttion with statistics: create a job that runs php artisan websockets:clean to actual execute the clean command
+        'delete_statistics_older_than_days' => 30,
 
         /*
          * Use an DNS resolver to make the requests to the statistics logger

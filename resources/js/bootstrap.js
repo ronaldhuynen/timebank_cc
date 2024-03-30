@@ -1,5 +1,3 @@
-// console.log('bootstrap.js is loaded');
-
 window._ = require('lodash');
 
 /**

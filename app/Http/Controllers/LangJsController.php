@@ -25,7 +25,7 @@ class LangJsController extends Controller
 
         $js = "window.i18n = " . json_encode($translations) . ";";
         $response = response($js, 200);
-        $response->header('Content-Type', 'text/javascript');
+        $response->header('Content-Type', 'application/javascript');
         return $response;
     }
 }

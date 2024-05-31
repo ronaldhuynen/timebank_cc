@@ -133,6 +133,7 @@
         <div class="flex-auto px-3 mt-2 text-gray-400">{{ __('results') }}</div>
     </div>
     <div class="absolute right-0">
+        {{-- TODO! Remove livewire.datatables and use the default pagination! No need for datatables package with many dependecies (maatwerk/excel) only for pagination?--}}
         {{ $transactions->links('livewire.datatables.tailwind-pagination') }}
     </div>
  </div>

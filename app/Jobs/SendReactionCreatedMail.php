@@ -14,7 +14,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-
 class SendReactionCreatedMail implements ShouldQueue
 {
     use Dispatchable;
@@ -24,7 +23,7 @@ class SendReactionCreatedMail implements ShouldQueue
 
 
     public $tries = 3;
-    public $backoff = [5,10,30]; // wait for 2, 10, or 30 sec before worker tries again
+    public $backoff = [5,10,30]; // wait for 5, 10, or 30 sec before worker tries again
     public $reaction;
 
     /**

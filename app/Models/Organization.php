@@ -123,12 +123,18 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
             'locations' => $this->locations->map(function ($location) { // map() as locations is a collection
                 return [
                     'id' => $location->id,
-                    'district' => $location->district ? $location->district->locale->name : '',
+                    'district' => $location->district ? $location->district->translations->map(function ($translation) {   // map() as translations is a collection
+                        return $translation->name;
+                    })->toArray() : [],
                     'city' => $location->city ? $location->city->translations->map(function ($translation) {   // map() as translations is a collection
                         return $translation->name;
                     })->toArray() : [],
-                    'division' => $location->division ? $location->division->locale->name : '',
-                    'country' => $location->country ? $location->country->locale->name : '',
+                    'division' => $location->division ? $location->division->translations->map(function ($translation) {   // map() as translations is a collection
+                        return $translation->name;
+                    })->toArray() : [],
+                    'country' => $location->country ? $location->country->translations->map(function ($translation) {   // map() as translations is a collection
+                        return $translation->name;
+                    })->toArray() : [],
                 ];
             }),
 
@@ -160,6 +166,16 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
                 ];
             })
         ];
+    }
+
+
+    /**
+     * Get the organization's profile.
+     * One-to-one
+     */
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
     }
 
 
@@ -289,5 +305,13 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
         return $this->morphMany(Post::class, 'postable');
     }
 
+
+    /**
+     * Get all of the Organization's posts.
+     */
+    public function categories()
+    {
+        return $this->morphMany(Category::class, 'categoryable');
+    }
 
 }

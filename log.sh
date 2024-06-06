@@ -29,7 +29,7 @@ if [ "$clear_log" = "Y" ] || [ "$clear_log" = "y" ]; then
     
     # Clear the log and append the date and time it was cleared
     echo "" > storage/logs/laravel.log
-    echo "[ Log cleared at: $(date) ]" >> storage/logs/laravel.log
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] LOG CLEARED" >> storage/logs/laravel.log
     echo "" >> storage/logs/laravel.log
 
 fi

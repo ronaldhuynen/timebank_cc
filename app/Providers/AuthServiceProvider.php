@@ -23,8 +23,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
-
         // Spatie Laravel-Permissions:
         // Implicitly grant "Super-Admin" role all permission checks using can()
         Gate::before(function ($user, $ability) {

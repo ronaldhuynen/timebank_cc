@@ -30,7 +30,7 @@ return [
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,
             'enable_client_messages' => false,
-            'enable_statistics' => true,    // TODO: disable statistics for production
+            'enable_statistics' => true,    // TODO: disable statistics for production or set middleware to admin only
         ],
     ],
 

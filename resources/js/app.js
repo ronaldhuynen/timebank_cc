@@ -64,11 +64,7 @@ document.addEventListener("trix-before-initialize", () => {
     </div>
     `;
     }
-
-
-
 })
-
 
 Alpine.start();
 

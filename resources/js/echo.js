@@ -1,3 +1,4 @@
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -25,6 +26,7 @@ let laravelEcho = new Echo({
     wsHost: process.env.MIX_PUSHER_HOST,
     wsPort: process.env.MIX_PUSHER_PORT,
     wssPort: process.env.MIX_PUSHER_PORT,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     forceTLS: false,
     encrypted: true,
     disableStats: true,

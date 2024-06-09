@@ -16,7 +16,7 @@ mix.setResourceRoot('../');
 
 
 mix.js('resources/js/echo.js', 'public/js')
-    .js('node_modules/@yaireo/tagify/dist/tagify.min.js', 'public/js')
+    .js('node_modules/@yaireo/tagify/dist/tagify.js', 'public/js')
     .js('node_modules/@yaireo/tagify/dist/tagify.polyfills.min.js', 'public/js')
     .js('resources/js/app.js', 'public/js')
     // .js('resources/js/lang.js', 'public/js')

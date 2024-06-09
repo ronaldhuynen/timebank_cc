@@ -55,6 +55,7 @@ class ProfileSwitchEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
+        ds('profileSwitchEvent broadcastOn');
         return new PrivateChannel('switch-profile.' . $this->activeProfile['userId']);
     }
 }

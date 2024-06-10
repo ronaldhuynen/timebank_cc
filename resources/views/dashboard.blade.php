@@ -9,6 +9,7 @@
         </h2>
     </x-slot>
 
+    {{-- Show the notification message that profile has been switched --}}
     @if(Session::has('success'))
         <livewire:notify-switch-profile>
     @endif

@@ -36,11 +36,11 @@ return [
             'secret' => env('PUSHER_APP_SECRET'),
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                //'encrypted' => true,  // Set to true when using https as scheme.
-                'host' => '127.0.0.1',  //Because we're using the real Pusher host, we need to set the host to localhost for the Laravel WebSockets server.
-                'port' => env('WEBSOCKET_PORT', 6001),
-                'scheme' => 'http',
+                'host' => env('PUSHER_HOST'),
+                'port' => env('PUSHER_PORT', 6001),
+                'scheme' => env('PUSHER_SCHEME', 'http'),
+                'encrypted' => false,  // Set to true when using https as scheme.
+                // 'useTLS' => false,   // Set to true when using SSL, but make sure scheme in .env is set to HTTP.
             ],
         ],
 

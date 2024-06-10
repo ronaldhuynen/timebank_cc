@@ -5,33 +5,31 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "atomescrochus/laravel-string-similarities": "^2.1",
-        "beyondcode/laravel-websockets": "^1.14",
-        "cviebrock/eloquent-sluggable": "^9.0",
-        "cviebrock/eloquent-taggable": "^9.0",
-        "cybercog/laravel-love": "^9.0",
-        "fruitcake/laravel-cors": "^2.0",
-        "graham-campbell/markdown": "^14.0",
+        "cviebrock/eloquent-sluggable": "^10.0",
+        "cviebrock/eloquent-taggable": "^10.0",
+        "cybercog/laravel-love": "^10.0",
+        "graham-campbell/markdown": "^15.2",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^10.0",
         "laravel/jetstream": "^2.9",
-        "laravel/sanctum": "^2.11",
+        "laravel/sanctum": "^3.2",
         "laravel/scout": "^10.6",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.5",
         "maatwebsite/excel": "^3.1",
         "matchish/laravel-scout-elasticsearch": "^7.5",
         "mcamara/laravel-localization": "^1.8",
-        "mediconesystems/livewire-datatables": "^0.8.0",
+        "mediconesystems/livewire-datatables": "^0.10.0",
         "nette/schema": "^1.2",
         "orangehill/iseed": "^3.0",
         "predis/predis": "^2.2",
         "propaganistas/laravel-phone": "^5.0",
-        "psr/simple-cache": "^2.0",
+        "psr/simple-cache": "^1.0",
         "pusher/pusher-php-server": "7.0.2",
         "rawilk/laravel-form-components": "^8.1",
-        "rtippin/messenger": "^1.21",
+        "rtippin/messenger": "^1.22",
         "rtippin/messenger-ui": "^2.6",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-activitylog": "^4.7",
@@ -40,22 +38,21 @@
         "spatie/laravel-web-tinker": "^1.8",
         "staudenmeir/belongs-to-through": "^2.5",
         "staudenmeir/eloquent-has-many-deep": "^1.7",
-        "staudenmeir/laravel-adjacency-list": "^1.0",
+        "staudenmeir/laravel-adjacency-list": "^1.13",
         "stevebauman/location": "^6.6",
         "victorybiz/laravel-simple-select": "^1.4",
-        "wireui/wireui": "^1.17"
+        "wireui/wireui": "1.17.10"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.9.1",
         "laradumps/laradumps": "^2.2",
-        "laravel-lang/publisher": "^12.2",
+        "laravel-lang/publisher": "^16.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.0",
         "panique/laravel-sass": "dev-master",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "exclude-from-classmap": [
@@ -110,6 +107,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

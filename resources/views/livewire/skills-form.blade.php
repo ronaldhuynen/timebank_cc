@@ -8,7 +8,7 @@
                 <x-jet-label wire:loading for="tags" value="{{ __('Loading...') }}" />
                 <div wire:ignore>
 
-                    <input wire:ignore x-data="{ input: @entangle('tagsArray') }" x-ref="input" x-init=" tagify = new Tagify($refs.input, {
+                    <input id="tags" wire:ignore x-data="{ input: @entangle('tagsArray') }" x-ref="input" x-init=" tagify = new Tagify($refs.input, {
                          pattern: /^.{3,80}$/, // max 80 characters, make sure also vaidation rule in Model is equally set
                          maxTags: 40,
                          autocapitalize: true,
@@ -54,7 +54,6 @@
                     
                      function onLoaded(e) {
                          tagify.loading(true)
-                         console.log('onLoaded is fired')
                     
                          //document.querySelector('.tagify__input').focus()
                          onChange(e)

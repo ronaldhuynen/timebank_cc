@@ -117,8 +117,8 @@
         </div>
 
         <!-- Scripts body-->
-        <script src="{{ mix('js/echo.js') }}"></script>
         @livewireScripts
+        <script src="{{ mix('js/echo.js') }}"></script>
         @stack('modals')
         {{-- @stack('scripts') --}}
         @yield('scripts_body')
@@ -130,7 +130,7 @@
 
 
 
-        <!-- ProfileSwitchEvent --->
+        <!-- Debug section for Events --->
         {{-- <script>
         console.log('Inside app.blade.php');
             window.Pusher.logToConsole = false;

@@ -1,0 +1,83 @@
+{
+    "search.useIgnoreFiles": false,
+    "cSpell.words": [
+        "Livewire",
+        "Organisation",
+        "organisations"
+    ],
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        ".history": true,
+        ".vscode": true,
+        ".gitattributes": true
+    },
+    "explorerExclude.backup": {},
+    "LaravelExtraIntellisense.customValidationRules": {
+
+    },
+    "vue.codeActions.enabled": false,
+    "zenView.zenPaths": [
+        {
+            "name": "storage",
+            "path": "/home/r/Websites/timebank_cc_2/public/storage"
+        }
+    ],
+    "better-comments.highlightPlainText": true,
+    "better-comments.tags": [
+
+        {
+            "tag": "!",
+            "color": "#FF2D00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "?",
+            "color": "#3498DB",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "//",
+            "color": "#474747",
+            "strikethrough": true,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "todo",
+            "color": "#FF8C00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "*",
+            "color": "#98C379",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        }
+    ],
+    "editor.inlineSuggest.suppressSuggestions": false,
+    "editor.quickSuggestions": {
+        "comments": "on"
+    }
+}

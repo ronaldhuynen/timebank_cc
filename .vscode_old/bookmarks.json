@@ -1,0 +1,19 @@
+{
+	"files": [
+		{
+			"path": "app/Models/Profile.php",
+			"bookmarks": [
+				{
+					"line": 12,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 26,
+					"column": 4,
+					"label": ""
+				}
+			]
+		}
+	]
+}

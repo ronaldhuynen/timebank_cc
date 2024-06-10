@@ -1,14 +1,35 @@
 {
-    "debug": true,
-    "port": 6001,
-    "appManager.array.apps": [
+    "apps": [
         {
             "id": "app-id",
             "key": "app-key",
             "secret": "app-secret",
-            "enabled": true,
+            "maxConnections": null,
             "enableClientMessages": true,
-            ]
+            "enableStatistics": true,
+            "maxBackendEventsPerSecond": 10,
+            "maxClientEventsPerSecond": 10
         }
-    ]
+    ],
+    "sslCertPath": "",
+    "sslKeyPath": "",
+    "port": 6001,
+    "host": "localhost",
+    "verifyPeer": false,
+    "allowedOrigins": [
+        "*"
+    ],
+    "allowedOriginPatterns": [],
+    "allowedHeaders": [
+        "Origin",
+        "Content-Type",
+        "X-Auth-Token",
+        "X-Requested-With",
+        "Accept",
+        "Authorization",
+        "X-CSRF-TOKEN",
+        "X-Socket-Id",
+        "X-Echo-Event"
+    ],
+    "maxRequestSize": "1mb"
 }

@@ -17,5 +17,10 @@ class BroadcastServiceProvider extends ServiceProvider
         Broadcast::routes();
 
         require base_path('routes/channels.php');
+        
+        Broadcast::channel('switch-profile', function ($user) {
+            return $user; // Or whatever authentication logic you have
+        });
+
     }
 }

@@ -7,6 +7,8 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## DO NOT INSTALL, THIS REPO IS NOT READY FOR DEPLOYMENT
+
 ## Important Development commands:
 
 php artisan servers           // Start development server at 127.0.0.
@@ -30,4 +32,117 @@ Laravel Jetsream: MIT
 AlpineJs Alpine: MIT
 Rtippin Messenger: MIT
 Beyondcode Websockets: MIT
+
+## SERVER INSTALLATION
+
+# Debian 12 with Apache2, Php, mariaDB, Phpmyadmin, Webmin, Composer
+
+As described on:
+https://www.howtoforge.com/tutorial/debian-minimal-server/
+https://www.howtoforge.com/how-to-install-webmin-on-debian-12/
+https://kifarunix.com/install-phpmyadmin-on-debian-12/
+https://www.howtoforge.com/how-to-install-laravel-on-debian-12/ (without laravel and virtual host setup)
+
+Extra:
+sudo ufw allow 80/tcp comment 'accept HTTP connections'
+sudo ufw allow 443/tcp comment 'accept HTTPS connections'
+
+Passwords are locally stored in keepass database:  dev.timebank.cc
+
+Create unix dev user that installs the laravel app (in this example). 
+
+
+# Set Laravel file permissions
+
+sudo apt install acl
+sudo usermod -aG "www-data" "dev"
+sudo find -L "/var/www/timebank_cc_dev" -type d -not -path "*/vendor/*" -not -path "*/	node_modules/*" -exec setfacl --default -m g::rwX {} \;
+sudo find -L "/var/www/timebank_cc_dev" -type f -not -path "*/vendor/*" -not -path "*/node_modules/*" -exec chmod 664 {} \;
+sudo find -L "/var/www/timebank_cc_dev" -type f -not -path "*/vendor/*" -not -path "*/node_modules/*" -exec chown "dev":"www-data" {} \;
+sudo find -L "/var/www/timebank_cc_dev" -type d -not -path "*/vendor/*" -not -path "*/node_modules/*" -exec chmod 2775 {} \;
+sudo find -L "/var/www/timebank_cc_dev" -type d -not -path "*/vendor/*" -not -path "*/node_modules/*" -exec chown "dev":"www-data" {} \;
+
+As decribed on:
+https://deploy-laravel.com/laravel-file-permissions
+
+
+
+# Redis, Phpmyadmin, npm installed and Timebank_cc repo from Github
+
+
+Redis installation with secure password
+Phpmyadmin with custom virtual host:
+sudo nano /etc/apache2/conf-available/phpmyadmin.conf
+	Alias /admin/phpmyadmin /usr/share/phpmyadmin
+
+sudo apt install npm
+sudo -u dev git pull https://github.com/ronaldhuynen/timebank_cc.git /var/www/timebank_cc_dev
+sudo -u dev npm install
+sudo -u dev npm run dev
+sudo -u dev php artisan db:seed
+
+As described on:
+https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-22-04
+https://kifarunix.com/install-phpmyadmin-on-debian-12/
+
+
+# Timedatectl, Htop, Elasticsearch
+
+Set Internet time server:
+sudo apt-get update
+sudo apt-get install ntp
+sudo systemctl start ntp
+timedatectl set-timezone Europe/Amsterdam
+date
+
+Install htop to monitor resources:
+sudo apt install htop
+
+Install Let's Encrypt certificate for apache and update virtual host file:https://www.linuxcapable.com/how-to-secure-apache-with-lets-encrypt-on-debian-linux/
+
+Install Elasticsearch:
+https://www.linuxcapable.com/how-to-install-elasticsearch-8-on-debian-linux/
+sudo apt install elasticsearch
+Note password for elasticsearch superuser (elastic)!
+
+sudo nano /etc/elasticsearch/elasticsearch.yml
+Comment out ssl configs
+Locally no ssl certificate is needed (laravel and elasticsearch on same server).
+Test elasticsearch nodes:
+curl -X GET "localhost:9200/_nodes/stats/jvm?pretty" -u elastic:password
+(change password)
+Check elasticsearch index:
+curl -X GET "localhost:9200/_cat/indices?v=true&s=index" -u elastic:password
+(change password)
+
+Update laravel .env with elasticsearch variables and password:
+nano .env
+
+ELASTICSEARCH_HOST=localhost:9200
+ELASTICSEARCH_USER=elastic
+ELASTICSEARCH_PASSWORD=password
+
+Import indexes in elasticsearch:
+systemctl stop /etc/systemd/system/timebank_cc_dev-queue-worker.service
+php artisan scout:import
+Check the import by running the queue worker manually:
+php artisan queue:work
+Note that this requires a lot of memory and cpu! Check with htop command.
+
+When all jobs are done start the queue using the systemctl service
+systemctl start /etc/systemd/system/timebank_cc_dev-queue-worker.service
+(Note that systemd has already a queue worker running in background in /etc/systemd/system/timebank_cc_dev-queue-worker.service)
+
+
+
+## Install Soketi websocket server
+
+https://docs.soketi.app/getting-started/installation/cli-installation
+
+Install Soketi, using npm globally (-g):
+sudo npm install -g @soketi/soketi
+
+
+
+
 

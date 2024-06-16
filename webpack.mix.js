@@ -14,7 +14,6 @@ const mix = require('laravel-mix');
 mix.setPublicPath('public');
 mix.setResourceRoot('../');
 
-
 mix.js('resources/js/echo.js', 'public/js')
     .js('node_modules/@yaireo/tagify/dist/tagify.js', 'public/js')
     .js('node_modules/@yaireo/tagify/dist/tagify.polyfills.min.js', 'public/js')

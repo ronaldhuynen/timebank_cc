@@ -7,7 +7,6 @@
     "require": {
         "php": "^8.0",
         "atomescrochus/laravel-string-similarities": "^2.1",
-        "beyondcode/laravel-websockets": "^1.14",
         "cviebrock/eloquent-sluggable": "^10.0",
         "cviebrock/eloquent-taggable": "^10.0",
         "cybercog/laravel-love": "^10.0",

@@ -78,10 +78,10 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
         // Prepare eager loaded relationships
         $this->load(
             'languages',
-            'locations.district.locale',
+            'locations.district.translations',
             'locations.city.translations',
-            'locations.division.locale',
-            'locations.country.locale',
+            'locations.division.translations',
+            'locations.country.translations',
             'tags.contexts.tags',
             'tags.contexts.tags.locale',
             'tags.contexts.category.ancestorsAndSelf',

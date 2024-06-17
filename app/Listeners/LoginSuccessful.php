@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\ProfileSwitchEvent;
 use App\Models\User;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -29,14 +30,27 @@ class LoginSuccessful
      */
     public function handle(Login $event)
     {
+        
+        $user = Auth::user();
+
         Session::flash('login-success', 'Hello ' . $event->user->name . ', welcome back!');
 
         Session([
-            'activeProfileType' => User::class,
-            'activeProfileId' => Auth::user()->id,
-            'activeProfileName'=> Auth::user()->name,
-            'activeProfilePhoto'=> Auth::user()->profile_photo_path
-        ]);
+                'activeProfileType' => User::class,
+                'activeProfileId' => $user->id,
+                'activeProfileName' => $user->name,
+                'activeProfilePhoto' => $user->profile_photo_path
+            ]);
+
+        $activeProfile = [
+                    'userId' => $user->id,
+                    'type' => Session('activeProfileType'),
+                    'id' => Session('activeProfileId'),
+                    'name' => Session('activeProfileName'),
+                    'photo' => Session('activeProfilePhoto')
+                ];
+
+        event(new ProfileSwitchEvent($activeProfile));
 
     }
 }

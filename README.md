@@ -1,3 +1,9 @@
+## TODO !
+- After login send profileSwitchEvent in case another browser has a session which is logged with same use but different profile
+- Websocket sends full profile of user, limit to type, id, name, profile img
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">

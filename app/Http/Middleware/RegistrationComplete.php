@@ -16,13 +16,6 @@ class RegistrationComplete
      */
     public function handle(Request $request, Closure $next)
     {
-        // // Define here the conditions for when full registration has NOT yet been completed.
-        // // Users with only auth middleware will be redirected to the incomplete steps of the registration forms.
-        // // Users with all required steps complete will get next to auth also access to registration-complete middleware.
-        // if (is_null(auth()->user()->about)
-        //     && is_null(auth()->user()->motivation)) {
-        //     return redirect()->route('register-step2.create');
-        // }
         return $next($request);
     }
 }

@@ -12,11 +12,11 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    // wsHost: process.env.MIX_PUSHER_HOST,
-    // wsPort: process.env.MIX_PUSHER_PORT,
-    // wssPort: process.env.MIX_PUSHER_PORT,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    key: process.env.MIX_REVERB_APP_KEY,
+    wsHost: process.env.MIX_REVERB_HOST,
+    wsPort: process.env.MIX_REVERB_PORT,
+    wssPort: process.env.MIX_REVERB_PORT,
+    //cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     forceTLS: false,
     encrypted: false,
     disableStats: true,

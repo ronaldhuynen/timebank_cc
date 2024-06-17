@@ -1,5 +1,4 @@
 ## TODO !
-- After login send profileSwitchEvent in case another browser has a session which is logged with same use but different profile
 - Websocket sends full profile of user, limit to type, id, name, profile img
 
 

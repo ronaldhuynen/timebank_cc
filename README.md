@@ -1,3 +1,9 @@
+## TODO !
+- After login send profileSwitchEvent in case another browser has a session which is logged with same use but different profile
+- Websocket sends full profile of user, limit to type, id, name, profile img
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
@@ -143,6 +149,34 @@ Install Soketi, using npm globally (-g):
 sudo npm install -g @soketi/soketi
 
 
+
+
+## Set File Permission on server (Pusher-websocket-server working on server)
+
+Before git clone command in /var/www/:
+sudo mkdir timebank_cc_dev
+sudo chown -R dev:www-data timebank_cc_dev
+sudo -u www-data git clone https://github.com/ronaldhuynen/timebank_cc
+cd timebank_cc_dev
+sudo -w www-data composer install
+sudo -u www-data npm install
+
+
+Set permissions and ownerships. 
+See: https://dev.to/imranpollob/mastering-file-and-folder-permissions-in-laravel-applications-4imm 
+and: https://laraveltuts.com/how-to-set-up-file-permissions-for-laravel-10/
+
+find /var/www/timebank_cc_dev -type d -exec chmod 755 {} \;
+find /var/www/timebank_cc_dev -type f -exec chmod 644 {} \;
+sudo chmod -R 775 storage
+sudo chmod -R 775 bootstrap/cache
+sudo chmod -R 755 public
+sudo chown www-data:www-data storage
+sudo chown www-data:www-data public
+sudo chown -R www-data:www-data bootstrap
+sudo chown -R www-data:www-data public
+sudo chown -R www-data:www-data storage
+sudo -u www-data npm run dev
 
 
 

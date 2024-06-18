@@ -51,6 +51,8 @@ https://www.howtoforge.com/how-to-install-laravel-on-debian-12/ (without laravel
 Extra:
 sudo ufw allow 80/tcp comment 'accept HTTP connections'
 sudo ufw allow 443/tcp comment 'accept HTTPS connections'
+sudo ufw allow 6001 comment 'accept Websocket connections'
+
 
 Passwords are locally stored in keepass database:  dev.timebank.cc
 
@@ -140,16 +142,6 @@ systemctl start /etc/systemd/system/timebank_cc_dev-queue-worker.service
 
 
 
-## Install Soketi websocket server
-
-https://docs.soketi.app/getting-started/installation/cli-installation
-
-Install Soketi, using npm globally (-g):
-sudo npm install -g @soketi/soketi
-
-
-
-
 ## Set File Permission on server (Pusher-websocket-server working on server)
 
 Before git clone command in /var/www/:
@@ -178,4 +170,32 @@ sudo chown -R www-data:www-data storage
 sudo -u www-data npm run dev
 
 
+## Setup Laravel Reverb
+Allow connections on port 6001:
+sudo ufw allow 6001 comment 'accept Websocket connections'
 
+create a systemd service for the Reverb server:
+sudo nano /etc/systemd/system/timebank_cc_dev-websockets.service
+
+----
+
+
+[Unit]
+Description=Laravel Websockets Server
+
+[Service]
+ExecStart=/usr/bin/php artisan reverb:start --port=6001
+WorkingDirectory=/var/www/timebank_cc_dev
+User=www-data
+Group=www-data
+Restart=always
+RestartSec=3
+SyslogIdentifier=timebank_cc_dev-websockets
+LimitNOFILE=10000
+
+[Install]
+WantedBy=multi-user.target
+
+----
+sudo systemctl daemon-reload
+sudo systemctl restart timebank_cc_dev-websockets.service

@@ -16,11 +16,11 @@ window.Echo = new Echo({
     wsHost: process.env.MIX_REVERB_HOST,
     wsPort: process.env.MIX_REVERB_PORT,
     wssPort: process.env.MIX_REVERB_PORT,
-    //cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     forceTLS: false,
     encrypted: false,
     disableStats: true,
     enabledTransports: ['ws', 'wss'],
-    
+
 });
 

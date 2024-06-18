@@ -8,7 +8,7 @@ class LoginResponse implements LoginResponseContract
 {
     public function toResponse($request)
     {
-        // Conditional redirect based on lang_preference 
+        // Conditional redirect based on lang_preference
         return $request->wantsJson()
                     ? response()->json(['two_factor' => false])
                     : redirect()->intended(

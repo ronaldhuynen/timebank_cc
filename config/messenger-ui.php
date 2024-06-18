@@ -17,11 +17,11 @@ return [
     |
     */
     'websocket' => [
-        'pusher' => false,
-        'host' => 'localhost',
+        'pusher' => env('MESSENGER_PUSHER'),
+        'host' => env('PUSHER_HOST'),
         'auth_endpoint' => env('MESSENGER_SOCKET_AUTH_ENDPOINT', '/api/broadcasting/auth'),
-        'key' => 'aj7hptmqiercfnc5cpwu',
-        'port' => 8080,
+        'key' => env('PUSHER_APP_KEY'),
+        'port' => env('PUSHER_PORT'),
         'use_tls' => env('MESSENGER_SOCKET_TLS', false),
     ],
 
@@ -37,7 +37,7 @@ return [
     | setup/defined your laravel apps broadcast driver.
     |
     */
-'routing' => [
+    'routing' => [
         'domain' => null,
         'prefix' => 'messenger',
         'middleware' => ['web', 'auth:sanctum', 'messenger.provider:required'],

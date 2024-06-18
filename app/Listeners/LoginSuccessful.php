@@ -30,7 +30,7 @@ class LoginSuccessful
      */
     public function handle(Login $event)
     {
-        
+
         $user = Auth::user();
 
         Session::flash('login-success', 'Hello ' . $event->user->name . ', welcome back!');

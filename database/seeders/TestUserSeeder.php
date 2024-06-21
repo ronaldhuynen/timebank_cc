@@ -66,7 +66,7 @@ class TestUserSeeder extends Seeder
                     'email' => 'tb-den-haag@test.nl',
                     'profile_photo_path' => 'profile-photos/RMawhGXxED1wNNJDEJ7pVbBdg07LGKPAyhGL3npH.png',
                     ]);
-                    
+
             $org2 = Organization::factory()
                 ->has(Account::factory()->state(
                     ['name' => 'Algemeen']

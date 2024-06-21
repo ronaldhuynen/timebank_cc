@@ -31,35 +31,37 @@ class EventCardFull extends Component
 
         $location = session('activeProfileType')::find(session('activeProfileId'))->locations->first->get();
 
-        // If no division and no city as location set
-        if (!$location || (!$location->division && !$location->city)) {
-            $categoryable_id = Location::find($location->id)->country->id;
-            $categoryable_type = Country::class;
-            // Include also all other countries if $related is set in view
-            if ($related) {
-                $categoryable_id = Country::pluck('id');
-            } else {
-                $categoryable_id = [$categoryable_id];
-            }
-            // Division without city is set as location
-        } elseif ($location && $location->division && !$location->city) {
-            $categoryable_id = Location::find($location->id)->division->id;
-            $categoryable_type = Division::class;
-            // Include also all other divisions in the same country if $related is set in view
-            if ($related) {
-                $categoryable_id = Division::find($categoryable_id)->parent->divisions->pluck('id');
-            } else {
-                $categoryable_id = [$categoryable_id];
-            }
-            // City is set as location
-        } elseif ($location && $location->city) {
-            $categoryable_id = Location::find($location->id)->city->id;
-            $categoryable_type = City::class;
-            // Include also all other cities in the same division if $related is set in view
-            if ($related) {
-                $categoryable_id = City::find($categoryable_id)->parent->cities->pluck('id');
-            } else {
-                $categoryable_id = [$categoryable_id];
+        if ($location) {
+            // If no division and no city as location set
+            if (!$location || (!$location->division && !$location->city)) {
+                $categoryable_id = Location::find($location->id)->country->id;
+                $categoryable_type = Country::class;
+                // Include also all other countries if $related is set in view
+                if ($related) {
+                    $categoryable_id = Country::pluck('id');
+                } else {
+                    $categoryable_id = [$categoryable_id];
+                }
+                // Division without city is set as location
+            } elseif ($location && $location->division && !$location->city) {
+                $categoryable_id = Location::find($location->id)->division->id;
+                $categoryable_type = Division::class;
+                // Include also all other divisions in the same country if $related is set in view
+                if ($related) {
+                    $categoryable_id = Division::find($categoryable_id)->parent->divisions->pluck('id');
+                } else {
+                    $categoryable_id = [$categoryable_id];
+                }
+                // City is set as location
+            } elseif ($location && $location->city) {
+                $categoryable_id = Location::find($location->id)->city->id;
+                $categoryable_type = City::class;
+                // Include also all other cities in the same division if $related is set in view
+                if ($related) {
+                    $categoryable_id = City::find($categoryable_id)->parent->cities->pluck('id');
+                } else {
+                    $categoryable_id = [$categoryable_id];
+                }
             }
             // No matching location is set
         } else {

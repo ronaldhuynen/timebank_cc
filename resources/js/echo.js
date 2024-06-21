@@ -14,13 +14,11 @@ window.Echo = new Echo({
     broadcaster: 'reverb',
     key: process.env.MIX_REVERB_APP_KEY,
     wsHost: process.env.MIX_REVERB_HOST,
-    wsPort: process.env.MIX_REVERB_PORT,
-    wssPort: process.env.MIX_REVERB_PORT,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    forceTLS: false,
-    encrypted: false,
-    disableStats: true,
+    wsPort: process.env.MIX_REVERB_PORT ?? 80,
+    wssPort: process.env.MIX_REVERB_PORT ?? 433,
+    wsPath: process.env.MIX_REVERB_PATH ?? "/",
+    forceTLS: (process.env.MIX_REVERB_SCHEME ?? "https") === "https",
     enabledTransports: ['ws', 'wss'],
-
 });
+
 

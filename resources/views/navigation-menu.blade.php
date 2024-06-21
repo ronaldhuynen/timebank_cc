@@ -133,6 +133,7 @@
                     </x-slot>
 
                     <x-slot name="content">
+                    {{-- ?? --}}
 
                         <!---- Switch Profile --->
                         @if (App\Models\User::with('organizations')->find(Auth::user()->id)->organizations->find(1) != null)
@@ -188,10 +189,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-12 text-center mt-2 pb-4 pb-lg-3">
-                                        <hr class="mb-1 mt-0">
-                                        <span class="float-right"><a class="nav-search-link text-dark" href="{{ route('messenger.portal') }}"><i class="fas fa-search"></i> Find Friends!</a></span>
-                                </div> --}}
                             </div>
             </div>
 
@@ -260,15 +257,75 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
-                <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Settings') }}
-                </x-jet-responsive-nav-link>
+                {{-- ?? --}}
+
+                    <!---- Switch Profile --->
+                    @if (App\Models\User::with('organizations')->find(Auth::user()->id)->organizations->find(1) != null)
+                    <livewire:select-organization>
+                    @endif
+
+                    <!---- Edit profile --->
+                    @if (session('activeProfileType') == 'App\Models\User')
+                    <x-jet-dropdown-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
+                        {{ __('Edit Profile') }}
+                    </x-jet-dropdown-link>
+                    @elseif (session('activeProfileType') == 'App\Models\Organization')
+                    <x-jet-dropdown-link href="{{ route('org.edit') }}" :active="request()->routeIs('org.show')">
+                        {{ __('Edit profile') }}
+                    </x-jet-dropdown-link>
+                    @endif
+
+                            <!--- Messenger --->
+                            <x-jet-dropdown-link href="{{ route('messenger.portal') }}">
+                                {{ __('Messages') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_thread_count"></span>
+                            </x-jet-dropdown-link>
+
+
+                            <!--- Messender Friends --->
+                            <div id="pending_friends_nav" class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">
+                                <a id="click_friends_tab" href="#" class="dropdown block nav-link pt-1 pb-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick="drop()">
+                                    {{ __('Friends') }} <span class="badge badge-pill badge-danger mr-n2" id="nav_friends_count"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right notify-drop bg-light" aria-labelledby="click_friends_tab">
+                                    <div class="row">
+                                        <div class="col-12 pill-tab-nav">
+                                            <nav id="nav-friend-tabs" class="nav nav-pills flex-column flex-sm-row" role="tablist">
+                                                <a class="flex-sm-fill text-sm-center nav-link h6 active" id="tab-pending" data-toggle="pill" href="#f_pending" role="tab" aria-controls="f_pending" aria-selected="true"><i class="fas fa-user-friends"></i> Pending</a>
+                                                <a class="flex-sm-fill text-sm-center nav-link h6" id="tab-sent" data-toggle="pill" href="#f_sent" role="tab" aria-controls="f_sent" aria-selected="false"><i class="fas fa-user-friends"></i> Sent</a>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                    <div class="tab-content">
+                                        <div id="f_pending" class="tab-pane fade show active">
+                                            <div id="pending_friends_ctnr" class="drop-content list-group">
+                                                <div class="col-12 text-center">
+                                                    <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="f_sent" class="tab-pane fade">
+                                            <div id="sent_friends_ctnr" class="drop-content list-group">
+                                                <div class="col-12 text-center">
+                                                    <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+            </div>
+
+            <!---- Settings --->
+            <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                {{ __('Settings') }}
+            </x-jet-dropdown-link>
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                 <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
                     {{ __('API Tokens') }}
                 </x-jet-responsive-nav-link>
                 @endif
+
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}" x-data>

@@ -1,5 +1,5 @@
 ## TODO !
-- Websocket sends full profile of user, limit to type, id, name, profile img
+- Check Redis security: use a password etc!
 
 
 
@@ -51,14 +51,17 @@ https://www.howtoforge.com/how-to-install-laravel-on-debian-12/ (without laravel
 Extra:
 sudo ufw allow 80/tcp comment 'accept HTTP connections'
 sudo ufw allow 443/tcp comment 'accept HTTPS connections'
+sudo ufw allow 6001 comment 'accept Websocket connections'
+
 
 Passwords are locally stored in keepass database:  dev.timebank.cc
 
-Create unix dev user that installs the laravel app (in this example). 
+Create unix dev user that installs the laravel app (in this example).
 
 
 # Set Laravel file permissions
 
+(not sure of this is needed / correct)
 sudo apt install acl
 sudo usermod -aG "www-data" "dev"
 sudo find -L "/var/www/timebank_cc_dev" -type d -not -path "*/vendor/*" -not -path "*/	node_modules/*" -exec setfacl --default -m g::rwX {} \;
@@ -81,17 +84,50 @@ sudo nano /etc/apache2/conf-available/phpmyadmin.conf
 	Alias /admin/phpmyadmin /usr/share/phpmyadmin
 
 sudo apt install npm
-sudo -u dev git pull https://github.com/ronaldhuynen/timebank_cc.git /var/www/timebank_cc_dev
-sudo -u dev npm install
-sudo -u dev npm run dev
-sudo -u dev php artisan db:seed
+sudo -u www-data git pull https://github.com/ronaldhuynen/timebank_cc.git /var/www/timebank_cc_dev
+sudo -u www-data npm install
+sudo -u www-data npm run dev
+sudo -u www-data php artisan db:seed
+sudo -u www-data php artisan storage:link
+sudo -u www-data db:seed
 
 As described on:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-22-04
 https://kifarunix.com/install-phpmyadmin-on-debian-12/
 
 
-# Timedatectl, Htop, Elasticsearch
+# Setup systemd queue worker service
+sudo nano /etc/systemd/system/dev.timebank.cc-queue.service
+
+----
+
+
+[Unit]
+Description=Timebank.cc Queue Worker
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Restart=always
+WorkingDirectory=/var/www/timebank_cc_dev
+ExecStart=/usr/bin/php artisan queue:work --sleep=3 --tries=5
+SyslogIdentifier=dev.timebank.cc-queue
+
+[Install]
+WantedBy=multi-user.target
+
+
+----
+sudo systemctl daemon-reload
+sudo systemctl enable dev.timebank.cc-queue.service
+sudo systemctl start dev.timebank.cc-queue.service
+sudo systemctl status dev.timebank.cc-queue.service
+
+
+
+
+# Timedatectl, Htop, Letsencrypt certificate, Elasticsearch
 
 Set Internet time server:
 sudo apt-get update
@@ -128,27 +164,25 @@ ELASTICSEARCH_USER=elastic
 ELASTICSEARCH_PASSWORD=password
 
 Import indexes in elasticsearch:
-systemctl stop /etc/systemd/system/timebank_cc_dev-queue-worker.service
+systemctl stop disable.timebank.cc-queue
+systemctl stop dev.timebank.cc-queue
 php artisan scout:import
 Check the import by running the queue worker manually:
 php artisan queue:work
 Note that this requires a lot of memory and cpu! Check with htop command.
 
 When all jobs are done start the queue using the systemctl service
-systemctl start /etc/systemd/system/timebank_cc_dev-queue-worker.service
-(Note that systemd has already a queue worker running in background in /etc/systemd/system/timebank_cc_dev-queue-worker.service)
+systemctl enable dev.timebank.cc-queue
+systemctl start dev.timebank.cc-queue
+systemctl status dev.timebank.cc-queue
 
-
-
-## Install Soketi websocket server
-
-https://docs.soketi.app/getting-started/installation/cli-installation
-
-Install Soketi, using npm globally (-g):
-sudo npm install -g @soketi/soketi
-
-
-
+If all runs well, make sure the set restart options in elastic systemd:
+sudo nano /usr/lib/systemd/system/elasticsearch.service
+Restart=always
+RestartSec=60
+sudo systemctl daemon-reload
+sudo systemctl restart elasticsearch
+sudo systemctl status elasticsearch
 
 ## Set File Permission on server (Pusher-websocket-server working on server)
 
@@ -161,8 +195,8 @@ sudo -w www-data composer install
 sudo -u www-data npm install
 
 
-Set permissions and ownerships. 
-See: https://dev.to/imranpollob/mastering-file-and-folder-permissions-in-laravel-applications-4imm 
+Set permissions and ownerships.
+See: https://dev.to/imranpollob/mastering-file-and-folder-permissions-in-laravel-applications-4imm
 and: https://laraveltuts.com/how-to-set-up-file-permissions-for-laravel-10/
 
 find /var/www/timebank_cc_dev -type d -exec chmod 755 {} \;
@@ -176,6 +210,169 @@ sudo chown -R www-data:www-data bootstrap
 sudo chown -R www-data:www-data public
 sudo chown -R www-data:www-data storage
 sudo -u www-data npm run dev
+
+
+
+## Setup Laravel Reverb
+
+# Increase nr of open files as each websocket connection will be represented by a file.
+sudo nano /etc/security/limits.conf
+* soft nofile 4096
+* hard nofile 4096
+Log out/in to take effect:
+sudo su
+sudo su dev
+ulimit -n
+
+# Reverb will automatically switch to an ext-event, ext-ev, or ext-uv powered loop when available. All of these PHP extensions are available for install via PECL:
+
+sudo nano /etc/php/8.2/cli/php.ini
+Add / uncomment under extension:
+extension=sockets.so
+extension=event.so
+sudo nano /etc/php/8.2/apache2/php.ini
+Add / uncomment under extension:
+extension=sockets.so
+extension=event.so
+sudo nano /etc/php/8.2/apache2/conf.d/20-sockets.ini
+Comment out, so sockets will not be loaded twice:
+; extension=sockets.so
+sudo nano /etc/php/8.2/cli/conf.d/20-sockets.ini
+Comment out, so sockets will not be loaded twice:
+; extension=sockets.so
+sudo service apache2 restart
+Verify if event extension is loaded:
+php -i | grep -i "event"
+
+
+# Allow connections on port 6001:
+sudo ufw allow 6001 comment 'accept Websocket connections'
+
+
+## Create a subdomain ws.timebank.cc for websocket server
+https://davidpolanco.com/blog/how-to-add-subdomains-to-apache2-web-server/
+sudo nano /etc/apache2/sites-enabled/ws.timebank.cc.conf
+<VirtualHost *:80>
+        ServerName ws.timebank.cc
+        ServerAlias ws.timebank.cc
+        ServerAdmin admin@timebank.cc
+
+        DocumentRoot /var/www/ws.timebank.cc/public
+        DirectoryIndex index.php index.html index.htm
+
+        <Directory /var/www/ws.timebank.cc/public/>
+            Require all granted
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride all
+            Order allow,deny
+            allow from all
+            Require all granted
+        </Directory>
+
+        Alias /log/ "/var/log/"
+        <Directory "/var/log/">
+            Options Indexes MultiViews FollowSymLinks
+            AllowOverride None
+            Order deny,allow
+            Deny from all
+            Allow from all
+            Require all granted
+        </Directory>
+
+RewriteEngine on
+RewriteCond %{SERVER_NAME} =ws.timebank.cc
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>
+sudo systemctl restart apache2
+
+
+# Get a certificate from Letsencrypt
+https://www.digitalocean.com/community/tutorials/how-to-set-up-let-s-encrypt-certificates-for-multiple-apache-virtual-hosts-on-ubuntu-14-04
+sudo certbot --apache -d ws.timebank.cc
+
+# Update Apache Virtual Host for wss://ws.timebank.cc
+sudo nano /etc/apache2/sites-enabled/ws.timebank.cc.conf
+
+<VirtualHost *:443>
+
+        ServerName ws.timebank.cc
+        ServerAlias ws.timebank.cc
+        ServerAdmin admin@timebank.cc
+
+        ProxyPreserveHost On
+        ProxyRequests Off
+
+        # Handle WebSocket connections in Laravel
+        ProxyPass "/app" "wss://localhost:6001/app"
+        ProxyPassReverse "/app" "wss://localhost:6001/app"
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile      /etc/letsencrypt/live/ws.timebank.cc/fullchain.pem
+        SSLCertificateKeyFile   /etc/letsencrypt/live/ws.timebank.cc/privkey.pem
+
+</VirtualHost>
+sudo systemctl restart apache2
+
+
+# Setup Reverb websocket server
+ sudo -u www-data nano /var/www/timebank_cc_dev/config/reverb.php 
+
+
+'reverb' => [
+            'host' => env('REVERB_SERVER_HOST', '0.0.0.0'),
+            'port' => env('REVERB_SERVER_PORT', 8080),
+            'hostname' => env('REVERB_HOST'),
+            'options' => [
+                'tls' => [
+                        'local_cert' => '/etc/letsencrypt/live/ws.timebank.cc/fullchain.pe>
+                        'local_pk' => '/etc/letsencrypt/live/ws.timebank.cc/privkey.pem', >
+                        'verify_peer' => false,
+                        ],
+            ],
+....
+
+
+Compile assets after editing:
+sudo www-data npm run dev
+
+# Test wss websocket connection:
+Note that we must start the reverb server as root, because it should be able to access the certificates!
+sudo -u root php artisan reverb:start --port=6001 --debug
+sudo echo | openssl s_client -connect ws.timebank.cc:6001
+
+# Create a systemd service for the Reverb server:
+sudo nano ws.timebank.cc-websockets.service
+
+----
+
+
+[Unit]
+Description=Laravel Websockets Server
+
+[Service]
+ExecStart=/usr/bin/php artisan reverb:start --port=6001
+WorkingDirectory=/var/www/timebank_cc_dev
+User=root
+Group=root
+Restart=always
+RestartSec=3
+SyslogIdentifier=timebank.cc-websockets
+LimitNOFILE=10000
+
+[Install]
+WantedBy=multi-user.target
+
+----
+sudo systemctl daemon-reload
+sudo systemctl enable ws.timebank.cc-websockets.service
+sudo systemctl start ws.timebank.cc-websockets.service
+sudo systemctl status ws.timebank.cc-websockets.service
+And test the messenger and the profile switch event in Laravel
+
+
 
 
 

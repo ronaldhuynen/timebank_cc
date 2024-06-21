@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             // Seed Super-Admin with user id 1
             $admin = User::factory()->create([
                 'name' => 'Super-Admin',
-                'email' => 'admin@admin.com',
+                'email' => 'admin@test.nl',
                 'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
                 'profile_photo_path' => 'app-images/profile-user-default.svg',
             ]);
@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
         TransactionSeeder::class,
         ]);
 
-        if ($this->command->confirm('Do you want to seed test tags?')) {
+        if ($this->command->confirm('Do you want to seed the sample tags?')) {
             $this->call(TaggableTagsTableSeeder::class);
             $this->call(TaggableLocalesTableSeeder::class);
             $this->call(TaggableContextsTableSeeder::class);

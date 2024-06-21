@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
         if($this->command->confirm('Do you want to (re-) create the Elasticsearch index? (This removes all existing data stored in the current index!)')) {
             $elasticsearchService = new SearchIndexController();
         }
-        $this->command->info('Super-Admin password: SecurePassword');
+        $this->command->info('Super-Admin email and password: admin@test.nl, SecurePassword');
         $this->command->info('All other users have password: password');
 
     }

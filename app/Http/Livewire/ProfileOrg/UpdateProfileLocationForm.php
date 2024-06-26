@@ -51,36 +51,39 @@ class UpdateProfileLocationForm extends Component
                 'locations.city',
                 'locations.district']);
 
-        if ($this->state->locations->first()->country) {
-            // For now we only use a single location. In the future this can become an array of locations.
-            $this->country = $this->state->locations->first()->country->id;
-            $this->emit('countryToChildren', $this->country);
-        }
+        if (!$this->state->location->first()) {
 
-
-        if ($this->state->locations->first()->division) {
-            // For now we only use a single location. In the future this can become an array of locations.
-            $this->division = $this->state->locations->first()->division->id;
-        }
-
-
-        if ($this->state->locations->first()->city) {
-            // For now we only use a single location. In the future this can become an array of locations.
-            $this->city = $this->state->locations->first()->city->id;
-
-            // In case a location has a city without a country in the db:
-            if (!$this->state->locations->first()->country) {
-                $this->country = City::find($this->city)->country_id;
+            if ($this->state->locations->first()->country) {
+                // For now we only use a single location. In the future this can become an array of locations.
+                $this->country = $this->state->locations->first()->country->id;
+                $this->emit('countryToChildren', $this->country);
             }
-        }
 
-        if ($this->state->locations->first()->district) {
-            // For now we only use a single location. In the future this can become an array of locations.
-            $this->district = $this->state->locations->first()->district->id;
 
-            // In case a location has a district without a city in the db:
-            if (!$this->state->locations->first()->city) {
-                $this->city = District::find($this->district)->city_id;
+            if ($this->state->locations->first()->division) {
+                // For now we only use a single location. In the future this can become an array of locations.
+                $this->division = $this->state->locations->first()->division->id;
+            }
+
+
+            if ($this->state->locations->first()->city) {
+                // For now we only use a single location. In the future this can become an array of locations.
+                $this->city = $this->state->locations->first()->city->id;
+
+                // In case a location has a city without a country in the db:
+                if (!$this->state->locations->first()->country) {
+                    $this->country = City::find($this->city)->country_id;
+                }
+            }
+
+            if ($this->state->locations->first()->district) {
+                // For now we only use a single location. In the future this can become an array of locations.
+                $this->district = $this->state->locations->first()->district->id;
+
+                // In case a location has a district without a city in the db:
+                if (!$this->state->locations->first()->city) {
+                    $this->city = District::find($this->district)->city_id;
+                }
             }
         }
     }

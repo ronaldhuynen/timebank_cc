@@ -197,7 +197,7 @@ class Registration extends Component implements CreatesNewUsers
 
                 // TODO: Attach Messenger when profile has been further completed
                 // TODO: Check if this is needed, and where this also is being done?
-                // // Attach (Rtippin Messenger) Provider:
+                //  Attach (Rtippin Messenger) Provider:
                 // Messenger::getProviderMessenger($user);
 
                 // WireUI notification

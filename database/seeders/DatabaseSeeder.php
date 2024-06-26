@@ -6,6 +6,7 @@ use App\Http\Controllers\SearchIndexController;
 use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,9 +20,14 @@ class DatabaseSeeder extends Seeder
         if ($this->command->confirm('Do you want to refresh the database? This removes all existing data stored in the current database!')) {
             $this->command->call('db:wipe');
             $this->command->call('migrate:refresh');
-            $this->call([PermissionRoleSeeder::class]);
-
             $this->command->info('Database was refreshed');
+
+            // Remove all files in the "profile-photos" directory
+            Storage::disk('public')->deleteDirectory('profile-photos');
+            Storage::disk('public')->makeDirectory('profile-photos');
+            $this->command->info('All files in "profile-photos" have been removed.');
+
+            $this->call([PermissionRoleSeeder::class]);
             $this->call(CountriesTableSeeder::class);
             $this->call(CountryLocalesTableSeeder::class);
             $this->call(DivisionsTableSeeder::class);
@@ -43,6 +49,7 @@ class DatabaseSeeder extends Seeder
             // Seed Super-Admin with user id 1
             $admin = User::factory()->create([
                 'name' => 'Super-Admin',
+                'full_name' => 'Super Administrator',
                 'email' => 'admin@test.nl',
                 'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
                 'profile_photo_path' => 'app-images/profile-user-default.svg',

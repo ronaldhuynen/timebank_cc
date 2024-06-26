@@ -77,6 +77,8 @@ return [
                         'time-bank',
                         'moderator',
                         'regulator',
+                        'belastingdienst',
+                        'tax-office',
                     ];
                     foreach ($disallowedWords as $word) {
                         if (str_contains(strtolower($value), $word)) {
@@ -86,7 +88,7 @@ return [
                 },
                 'regex:/^[a-zA-Z0-9-_ ]+$/', // only letters, numbers, spaces, dashes and underscores
             ],
-        
+
             'email' => 'required|email|unique:users,email|max:40',
             'password' => 'required|min:6|same:passwordConfirmation',
             'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',
@@ -118,7 +120,7 @@ return [
     |--------------------------------------------------------------------------
     | Translations are linked by their context to one base language.
     |
-    | IMPORTANT: This language is also used as fallback locale, therefore all names, titles, terms, etc. must be at least in this language. 
+    | IMPORTANT: This language is also used as fallback locale, therefore all names, titles, terms, etc. must be at least in this language.
     |
     */
     'base_language' => 'en',
@@ -143,7 +145,7 @@ return [
             'type' => 'best_fields', // 'best_fields', 'most_fields', 'cross_fields', 'phrase', 'phrase_prefix'
             'fuzziness' => 'AUTO', // 'AUTO' or a number between 0 and 2
             'prefix_length' => 0, //characters at the beginning of the word that must match
-            'fragment_size' => 50, //The size of the highlighted fragment in characters. 
+            'fragment_size' => 50, //The size of the highlighted fragment in characters.
             'fragmenter' => 'simple', // 'simple' or 'span'
             'number_of_fragments' => 5, // The maximum number of fragments to return. If the number of fragments is set to 0, no fragments are returned. Instead, the entire field contents are highlighted and returned.
             'pre-tags'  => '<span class="font-black italic">', // HTML tags to wrap around highlighted text

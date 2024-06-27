@@ -15,24 +15,24 @@ return new class () extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('full_name');
             $table->string('email', 191)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile_photo_path', 2048)->nullable();
-
             $table->text('about')->nullable();
             $table->string('about_short', 150)->nullable();
             $table->text('motivation')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('website')->nullable();
-
             $table->string('phone', 20)->nullable();
             $table->boolean('phone_public_for_friends')->default(0);
-
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
-            $table->bigInteger('cyclos_id')->unique()->nullable();
+            $table->integer('cyclos_id')->unique()->nullable();
+            $table->string('cyclos_salt', 32)->nullable();
             $table->timestamps();
+            $table->date('inactive_at')->nullable();
             $table->softDeletes();
         });
     }

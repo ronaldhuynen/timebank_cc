@@ -16,8 +16,8 @@ class CreateAccountsTable extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->integer('limit_min');
-            $table->integer('limit_max');
+            $table->integer('limit_min')->nullable();
+            $table->integer('limit_max')->nullable();
             $table->string('accountable_type');
             $table->unsignedBigInteger('accountable_id');
             $table->timestamps();

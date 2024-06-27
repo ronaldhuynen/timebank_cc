@@ -25,6 +25,7 @@ class TestUserSeeder extends Seeder
                 ->has(Location::factory()->state(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]))
                 ->create([
                     'name' => 'Ronald',
+                    'full_name' => 'Ronald Huynen',
                     'email' => 'ronald@test.nl',
                     'profile_photo_path' => 'profile-photos/0gs4OCq7MYEiZUzXBKuNfTbD8kByYjhtjalSEZWj.png',
                     'password' => bcrypt('password'),
@@ -35,6 +36,7 @@ class TestUserSeeder extends Seeder
                 ->has(Location::factory()->state(['city_id' => 345, 'country_id' => 2]))
                 ->create([
                     'name' => 'Joeri',
+                    'full_name' => 'Joeri Oudshoorn',
                     'email' => 'joeri@test.nl',
                     'profile_photo_path' => 'profile-photos/yhFDKOsyWMr6PkCEd34SK6I3kz2T0YZ3AXMD2PRr.png',
                     'password' => bcrypt('password'),
@@ -45,6 +47,7 @@ class TestUserSeeder extends Seeder
                 ->has(Location::factory()->state(['city_id' => 330, 'division_id' => 12, 'country_id' => 1]))
                 ->create([
                     'name' => 'Sara',
+                    'full_name' => 'Sara Pape Garcia',
                     'email' => 'sara@test.nl',
                     'profile_photo_path' => 'profile-photos/UJWh03bKULqtOAvQQh36cJJ4NwjZvTcBWPmL9vzm.png',
                     'password' => bcrypt('password'),

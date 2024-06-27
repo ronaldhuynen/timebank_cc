@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 use App\Http\Controllers\SearchIndexController;
+use App\Models\Bank;
 use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,9 +21,14 @@ class DatabaseSeeder extends Seeder
         if ($this->command->confirm('Do you want to refresh the database? This removes all existing data stored in the current database!')) {
             $this->command->call('db:wipe');
             $this->command->call('migrate:refresh');
-            $this->call([PermissionRoleSeeder::class]);
-
             $this->command->info('Database was refreshed');
+
+            // Remove all files in the "profile-photos" directory
+            Storage::disk('public')->deleteDirectory('profile-photos');
+            Storage::disk('public')->makeDirectory('profile-photos');
+            $this->command->info('All files in "profile-photos" have been removed.');
+
+            $this->call(PermissionRoleSeeder::class);
             $this->call(CountriesTableSeeder::class);
             $this->call(CountryLocalesTableSeeder::class);
             $this->call(DivisionsTableSeeder::class);
@@ -43,13 +50,27 @@ class DatabaseSeeder extends Seeder
             // Seed Super-Admin with user id 1
             $admin = User::factory()->create([
                 'name' => 'Super-Admin',
+                'full_name' => 'Super Administrator',
                 'email' => 'admin@test.nl',
                 'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
                 'profile_photo_path' => 'app-images/profile-user-default.svg',
             ]);
 
+
+            // Seed Source-Bank with bank id 1
+            $bank = Bank::factory()->create([
+                'name' => 'Timebank.cc',
+                'email' => 'info@timebank.cc',
+                'profile_photo_path' => 'app-images/profile-user-default.svg',
+            ]);
+                
+
+
+
             $location = new Location(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]);
             $admin->locations()->save($location);
+            $bank->save();
+
 
             $admin->assignRole('Super-Admin');
 
@@ -63,7 +84,7 @@ class DatabaseSeeder extends Seeder
         TransactionSeeder::class,
         ]);
 
-        if ($this->command->confirm('Do you want to seed the sample tags?')) {
+        if ($this->command->confirm('Do you want to seed the AI generated tags?')) {
             $this->call(TaggableTagsTableSeeder::class);
             $this->call(TaggableLocalesTableSeeder::class);
             $this->call(TaggableContextsTableSeeder::class);

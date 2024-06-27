@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $usersCount = max((int)$this->command->ask('How many users would you like?', 200), 0);
+        $usersCount = max((int)$this->command->ask('How many fake users would you like?', 200), 0);
         $cities = [
             305, // The Hague is used more frequent
             305, // The Hague

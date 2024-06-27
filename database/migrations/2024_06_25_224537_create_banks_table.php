@@ -22,6 +22,7 @@ return new class () extends Migration {
             $table->boolean('phone_public')->default(0);
             $table->integer('cyclos_id')->unique()->nullable();
             $table->timestamps();
+            $table->date('inactive_at')->nullable();
             $table->softDeletes();
         });
     }

@@ -304,7 +304,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
                 $query->orWhere('name', 'LIKE', "%{$item}%")
-                ->orWhere('email', 'LIKE', "%{$item}%");
+                ->orWhere('full_name', 'LIKE', "%{$item}%");
             }
         });
     }

@@ -97,26 +97,14 @@ php artisan migrate:cyclos_users
 Cyclos account types:
 1 = Debit account
 2 = Community account
-4 = Voucher account (not used)
-4 = Organization account (not used??)
+3 = Voucher account (not used)
+4 = Organization account (not used)
 5 = Work account users
 6 = Gift account users
 7 = Project account projects
 
+In Cyclos, a User owning a Work Account, could change into a Project and then it would own a Project Account, and vice versa.
+In the Cyclos db these both accounts remain to exist. However their member_status would change between A and I (active and inactive). The only difference between the account types is the owner permission group and the upper and lower credit limits. Therefore this historic data does not need to be migrated into Laravel. During the migration the current permission group (user or organization) decides the height of the Laravel account limits. Only currently active accounts are migrated: users get 2 accounts (work and a gift) and organizations a single (project) account.
 
-```sql
-INSERT INTO timebank_cc_2.accounts (name, account_type_id, accountable_type, accountable_id, created_at, updated_at, limit_min, limit_max)
-SELECT
-    a.owner_name AS name,
-    a.type_id AS account_type_id,
-    'App\\Models\\User' AS accountable_type,
-    u.id AS accountable_id, -- Replacing with users.id where cyclos_id matches
-    a.creation_date AS created_at,
-    a.last_closing_date AS updated_at,
-    0 AS limit_min,
-    12000 AS limit_max
-FROM timebank_2024_06_11.accounts a
-JOIN timebank_cc_2.users u ON a.member_id = u.cyclos_id -- Join condition
-WHERE a.type_id = 5;
-```
+
 

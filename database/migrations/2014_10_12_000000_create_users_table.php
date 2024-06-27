@@ -32,6 +32,7 @@ return new class () extends Migration {
             $table->integer('cyclos_id')->unique()->nullable();
             $table->string('cyclos_salt', 32)->nullable();
             $table->timestamps();
+            $table->date('inactive_at')->nullable();
             $table->softDeletes();
         });
     }

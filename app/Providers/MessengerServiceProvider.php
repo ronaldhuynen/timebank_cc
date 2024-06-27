@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Bank;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
@@ -27,7 +28,8 @@ class MessengerServiceProvider extends ServiceProvider
         // Register all provider models you wish to use in messenger.
         Messenger::registerProviders([
             User::class,
-            Organization::class
+            Organization::class,
+            Bank::class
         ]);
 
     }

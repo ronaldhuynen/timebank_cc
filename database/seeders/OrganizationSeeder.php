@@ -16,7 +16,7 @@ class OrganizationSeeder extends Seeder
      */
     public function run()
     {
-        $orgCount = max((int)$this->command->ask('How many organizations would you like?', 10), 1);
+        $orgCount = max((int)$this->command->ask('How many fake organizations would you like?', 10), 0);
         Organization::factory()->count($orgCount)
             ->has(Account::factory()->count(3)->state(new Sequence(
                 ['name' => 'Organization Account'],

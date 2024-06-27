@@ -1,5 +1,7 @@
 # TODO
 
+- make bank and organization default profile photo 
+- make bank also a messenger providerye
 - csv export transaction overview (LN
 - qr code payment / transfer descr etc in url)
 
@@ -8,8 +10,8 @@
 - Keep username?  Login: username òf email, username zonder @. Elk uniek en samen uniek. Interface: username voorrang, dan name : Joeri45 (Joeri Oudshoorn)
 - Duplicates in name field? Contact 47 users to remove duplicated
 - Laravel user can change email? Username and name can not be changed.
-- Keep Gift Accounts? Yes, but add is_removed logic. Can be showed in transaction overview (special checkbox)
-- Convert locations? Ask users?
+- Keep Gift Accounts? Yes, but add is_closed logic. Can be showed in historic transaction overview (special checkbox)
+- Convert locations? Set bulk manually without too much work.
 
 
 Account:

@@ -7,11 +7,11 @@
 
    <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
         @livewire('profile-organization.update-profile-organization-form')
-        <x-jet-section-border />
+        <x-section-border />
         <x-profile-organization.skills />
-        <x-jet-section-border />
+        <x-section-border />
         @livewire('profile-organization.update-profile-location-form')
-        <x-jet-section-border />
+        <x-section-border />
         @livewire('profile-organization.update-social-media-form')
     </div>
 

@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateProfilePhone">
+<x-form-section submit="updateProfilePhone">
     <x-slot name="title">
         {{ __('Mobile phone number') }}
     </x-slot>
@@ -12,7 +12,7 @@
 
         <!-- Phone -->
         <div class="col-span-6  -mb-6" wire:init="phonecodeInit">
-        <x-jet-label for="phone" value="{{ __('Mobile phone') }}" />
+        <x-label for="phone" value="{{ __('Mobile phone') }}" />
         </div>
             <div class="col-span-1">
                 <x-native-select
@@ -44,12 +44,12 @@
 
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-action-message class="mr-3" on="saved">
             {{ __('Saved') }}
-        </x-jet-action-message>
+        </x-action-message>
 
-        <x-jet-button wire:loading.attr="disabled">
+        <x-button wire:loading.attr="disabled">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
-</x-jet-form-section>
+</x-form-section>

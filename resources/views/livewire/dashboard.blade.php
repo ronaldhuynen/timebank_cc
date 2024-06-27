@@ -8,7 +8,7 @@
 
         <div class="grid grid-cols-1 text-xs text-gray-500">
             <div class="my-12">
-                <x-jet-application-logo class="block h-12 w-auto" />
+                <x-application-logo class="block h-12 w-auto" />
                                            </div>
             <div>
              @livewire('skills-form')
@@ -23,7 +23,7 @@
         {{ __('First login session') }}
     </div>
     <div>
-        <x-jet-application-logo class="block h-12 w-auto" />
+        <x-application-logo class="block h-12 w-auto" />
     </div>
 
     <div class="mt-8 text-2xl">

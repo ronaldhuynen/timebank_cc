@@ -1,6 +1,6 @@
 <!--- TODO: add organisation profile view! -->
 
-<x-jet-form-section>
+<x-form-section>
     <x-slot name="title">
         {{ __('Show profile') }}
     </x-slot>
@@ -16,4 +16,4 @@
         
     </x-slot>
 
-</x-jet-form-section>
+</x-form-section>

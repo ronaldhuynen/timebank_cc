@@ -1,4 +1,4 @@
-<x-jet-form-section submit="update">
+<x-form-section submit="update">
     <x-slot name="title">
         {{ __('Social media and website') }}
     </x-slot>
@@ -12,12 +12,12 @@
         <!--- Social media -->
         <div class="col-span-6 sm:col-span-4">
             @livewire('socials-form')
-            <x-jet-input-error for="socials" class="mt-2" />
+            <x-input-error for="socials" class="mt-2" />
         </div>
 
         <!-- Website -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="website" value="{{ __('Organization Website') }}" />
+            <x-label for="website" value="{{ __('Organization Website') }}" />
             <x-input
                 placeholder="website.org"
                 wire:model.lazy="website"
@@ -28,13 +28,13 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-action-message class="mr-3" on="saved">
             {{ __('Saved') }}
-        </x-jet-action-message>
+        </x-action-message>
 
-        <x-jet-button wire:loading.attr="disabled">
+        <x-button wire:loading.attr="disabled">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
-</x-jet-form-section>
+</x-form-section>
 

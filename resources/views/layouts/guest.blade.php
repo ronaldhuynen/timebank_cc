@@ -23,8 +23,8 @@
 
     </head>
     <body>
-        <x-jet-banner />
-        <x-jet-toaster />
+        <x-banner />
+        <x-toaster />
         <x-notifications />
 
         <div class="font-sans text-gray-900 antialiased">

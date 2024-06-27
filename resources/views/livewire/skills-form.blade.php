@@ -4,8 +4,8 @@
 
             <!-- Skills -->
             <div>
-                <x-jet-label wire:loading.remove for="tags" value="{{ __('Your Timebanking skills') }}" />
-                <x-jet-label wire:loading for="tags" value="{{ __('Loading...') }}" />
+                <x-label wire:loading.remove for="tags" value="{{ __('Your Timebanking skills') }}" />
+                <x-label wire:loading for="tags" value="{{ __('Loading...') }}" />
                 <div wire:ignore>
 
                     <input id="tags" wire:ignore x-data="{ input: @entangle('tagsArray') }" x-ref="input" x-init=" tagify = new Tagify($refs.input, {
@@ -78,13 +78,13 @@
             </div>
 
             <div class="bg-gray-white flex items-center justify-end px-4 py-3 text-right">
-                <x-jet-action-message class="mr-3" on="saved">
+                <x-action-message class="mr-3" on="saved">
                     {{ __('Saved') }}
-                </x-jet-action-message>
+                </x-action-message>
 
-                <x-jet-button wire:loading.attr="disabled" wire:click="$emit('save')">
+                <x-button wire:loading.attr="disabled" wire:click="$emit('save')">
                     {{ __('Save') }}
-                </x-jet-button>
+                </x-button>
             </div>
 
 
@@ -92,7 +92,7 @@
             <!---- New Tag Modal ---->
             <form wire:submit.prevent="createtag">
 
-                <x-jet-dialog-modal wire:model="modalVisible">
+                <x-dialog-modal wire:model="modalVisible">
                     <x-slot name="title">
                         {{ __('Add a new skill to Timebank.cc') }}
                     </x-slot>
@@ -177,15 +177,15 @@
 
 
     <x-slot name="footer">
-        <x-jet-secondary-button wire:click="cancelCreateTag()" wire:loading.attr="disabled">
+        <x-secondary-button wire:click="cancelCreateTag()" wire:loading.attr="disabled">
             {{ __('Annuleren') }}
-        </x-jet-secondary-button>
+        </x-secondary-button>
 
-        <x-jet-secondary-button class="ml-3" wire:click="createTag()" wire:loading.attr="disabled">
+        <x-secondary-button class="ml-3" wire:click="createTag()" wire:loading.attr="disabled">
             {{ __('Opslaan') }}
-        </x-jet-secondary-button>
+        </x-secondary-button>
     </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
 
     </form>

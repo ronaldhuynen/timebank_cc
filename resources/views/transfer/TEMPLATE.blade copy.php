@@ -102,12 +102,12 @@
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-white text-right sm:px-6">
-                        <x-jet-button>
+                        <x-button>
                             <div wire:loading class="spinner-border spinner-border-sm" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                             {{ __('Save') }}
-                        </x-jet-button>
+                        </x-button>
                     </div>
 
                 </div>
@@ -181,12 +181,12 @@
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-white text-right sm:px-6">
-                        <x-jet-button>
+                        <x-button>
                             <div wire:loading class="spinner-border spinner-border-sm" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                             {{ __('Save') }}
-                        </x-jet-button>
+                        </x-button>
                     </div>
                 </div>
             </form>
@@ -264,12 +264,12 @@
                         </fieldset>
                     </div>
                     <div class="px-4 py-3 bg-white text-right sm:px-6">
-                        <x-jet-button>
+                        <x-button>
                             <div wire:loading class="spinner-border spinner-border-sm" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                             {{ __('Save') }}
-                        </x-jet-button>
+                        </x-button>
                     </div>
                 </div>
             </form>

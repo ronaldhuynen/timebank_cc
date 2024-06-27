@@ -107,7 +107,7 @@
 
 
     <!---- Confirmation Modal ---->
-    <x-jet-dialog-modal wire:model="qrModalVisible">
+    <x-dialog-modal wire:model="qrModalVisible">
 
         <x-slot name="title">
         </x-slot>
@@ -133,6 +133,6 @@
 
         <x-slot name="footer">
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>
 

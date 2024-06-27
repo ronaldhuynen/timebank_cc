@@ -38,15 +38,15 @@
             </div>
         </div>
     <div class="text-right">
-        <x-jet-button>
+        <x-button>
             {{ __('Pay') }}
-        </x-jet-button>
+        </x-button>
     </div>
 </div>
 
 
     <!----Transfer limit error Modal ---->
-    <x-jet-dialog-modal wire:model="modalErrorVisible">
+    <x-dialog-modal wire:model="modalErrorVisible">
         <x-slot name="title">
         </x-slot>
 
@@ -54,16 +54,16 @@
             {{ $limitError }}
         </x-slot>
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('modalErrorVisible')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('modalErrorVisible')" wire:loading.attr="disabled">
                 {{ __('Back') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
 
 
     <!---- Confirmation Modal ---->
-    <x-jet-dialog-modal wire:model="modalVisible">
+    <x-dialog-modal wire:model="modalVisible">
         <x-slot name="title">
         </x-slot>
 
@@ -71,15 +71,15 @@
             {{ __('Transfer ') . $amount . __(' to the ') . $toAccountName . __(' of ') . $toHolderName . '?' }}
         </x-slot>
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('modalVisible')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('modalVisible')" wire:loading.attr="disabled">
                 {{ __('No') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-secondary-button class="ml-3" wire:click="doTransfer()" wire:loading.attr="disabled">
+            <x-secondary-button class="ml-3" wire:click="doTransfer()" wire:loading.attr="disabled">
                 {{ __('Yes') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
 
 </form>

@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateProfilePersonalForm">
+<x-form-section submit="updateProfilePersonalForm">
     <x-slot name="title">
         {{ __('Personal') }}
 
@@ -25,7 +25,7 @@
                                     reader.readAsDataURL($refs.photo.files[0]);
                             " />
 
-                <x-jet-label for="photo" value="{{ __('Profile Photo') }}" />
+                <x-label for="photo" value="{{ __('Profile Photo') }}" />
 
                 <!-- Current Profile Photo -->
                 <div class="mt-3 mb-3" x-show="! photoPreview">
@@ -39,17 +39,17 @@
                     </span>
                 </div>
 
-                <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                     {{ __('Change Photo') }}
-                </x-jet-secondary-button>
+                </x-secondary-button>
 
                 @if ($this->user->profile_photo_path)
-                    <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto" x-on:click.prevent="">
+                    <x-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto" x-on:click.prevent="">
                         {{ __('Delete Photo') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                 @endif
 
-                <x-jet-input-error for="photo" class="mt-2" />
+                <x-input-error for="photo" class="mt-2" />
             </div>
         @endif
 
@@ -60,7 +60,7 @@
                 label="{{ __('Please introduce yourself')}}" 
                 placeholder="{{ __('Relevant background info about you') }}" 
                 class="placeholder-gray-300"/>
-            <x-jet-input-error for="about" class="mt-2" />
+            <x-input-error for="about" class="mt-2" />
         </div>
 
         <!-- Very short intro -->
@@ -70,7 +70,7 @@
                 label="{{ __('Introduction in one sentence')}} *" 
                 placeholder="{{ __('Someone who is interested in... ') }}" 
                 class="placeholder-gray-300"/>
-            <x-jet-input-error for="about" class="mt-2" />
+            <x-input-error for="about" class="mt-2" />
         </div>
 
         <!-- Motivation -->
@@ -80,19 +80,19 @@
                 label="{{ __('Why are you Timbanker?') }} *" 
                 placeholder="{{__('Just trying out or serious about a new value system?')}}" 
                 class="placeholder-gray-300"/>
-            <x-jet-input-error for="motivation" class="mt-2" />
+            <x-input-error for="motivation" class="mt-2" />
         </div>
 
         <!--- Languages -->
         <div class="col-span-6 sm:col-span-4">
             @livewire('profile-user.languages-dropdown', ['languages' => $languages])
-            <x-jet-input-error for="languages" class="mt-2" />
+            <x-input-error for="languages" class="mt-2" />
         </div>
 
         <!--- Social media -->
         <div class="col-span-6 sm:col-span-4">
             @livewire('socials-form')
-            <x-jet-input-error for="socials" class="mt-2" />
+            <x-input-error for="socials" class="mt-2" />
         </div>
 
 
@@ -111,14 +111,14 @@
                     :min="now()->subYears(120)"
                     class="placeholder-gray-300"
                 />
-                <x-jet-input-error for="date_of_birth" class="mt-2" />
+                <x-input-error for="date_of_birth" class="mt-2" />
             </div>
         </div>
 
 
         <!-- Website -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="website" value="{{ __('My Website') }}" />
+            <x-label for="website" value="{{ __('My Website') }}" />
             <x-input
                 placeholder="website.org"
                 wire:model.lazy="website"
@@ -131,13 +131,13 @@
     <x-errors />
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-action-message class="mr-3" on="saved">
             {{ __('Saved') }}
-        </x-jet-action-message>
+        </x-action-message>
 
-        <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+        <x-button wire:loading.attr="disabled" wire:target="photo">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
-</x-jet-form-section>
+</x-form-section>
 

@@ -6,29 +6,29 @@
 
                             <div class="mt-4">
                                 <!-- TODO: Pubic username or real name?? Use placeholder or label to clarify -->
-                                <x-jet-label for="name" value="{{ __('Name') }}" />
-                                <x-jet-input wire:model.lazy="name" name="name" type="text" required autofocus autocomplete="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"/>
+                                <x-label for="name" value="{{ __('Name') }}" />
+                                <x-input wire:model.lazy="name" name="name" type="text" required autofocus autocomplete="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"/>
                             </div>
                             @error('name')
                                 <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
 
                             <div class="mt-4">
-                                <x-jet-label for="email" value="{{ __('Email') }}" />
-                                <x-jet-input wire:model.lazy="email" name="email" type="email" required class="block mt-1 w-full" :value="old('email')"/>
+                                <x-label for="email" value="{{ __('Email') }}" />
+                                <x-input wire:model.lazy="email" name="email" type="email" required class="block mt-1 w-full" :value="old('email')"/>
                             </div>
                             @error('email')
                                 <p class="text-sm text-red-500">{{$message}}</p>
                             @enderror
 
                             <div class="mt-4">
-                                <x-jet-label for="password" value="{{ __('Password') }}" />
-                                <x-jet-input wire:model.lazy="password" name="password" type="password" autocomplete="new-password" required class="block mt-1 w-full"/>
+                                <x-label for="password" value="{{ __('Password') }}" />
+                                <x-input wire:model.lazy="password" name="password" type="password" autocomplete="new-password" required class="block mt-1 w-full"/>
                             </div>
 
                             <div class="mt-4">
-                                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                                <x-jet-input wire:model.lazy="passwordConfirmation" name="passwordConfirmation" type="password" required class="block mt-1 w-full"/>
+                                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                                <x-input wire:model.lazy="passwordConfirmation" name="passwordConfirmation" type="password" required class="block mt-1 w-full"/>
                             </div>
                             @error('password')
                                 <p class="text-sm text-red-500">{{$message}}</p>
@@ -57,9 +57,9 @@
                             {{ __('Already registered?') }}
                         </a>
                         @endif
-                        <x-jet-button class="ml-4">
+                        <x-button class="ml-4">
                             {{ __('Submit') }}
-                        </x-jet-button>
+                        </x-button>
                       </div>
 
                     </form>

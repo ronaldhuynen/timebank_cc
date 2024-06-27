@@ -95,8 +95,8 @@
     </head>
     <body class="font-sans antialiased" id="messenger-style-overrides">
 
-        <x-jet-banner />
-        <x-jet-toaster />
+        <x-banner />
+        <x-toaster />
 
         <div class="min-h-screen bg-gray-100">
             @livewire('navigation-menu')

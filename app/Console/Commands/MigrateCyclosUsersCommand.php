@@ -18,7 +18,7 @@ class MigrateCyclosUsersCommand extends Command
         $sourceDb = $this->ask('Enter the name of the source database');
         $destinationDb = env('DB_DATABASE');
 
-        
+
         // Active Users (group_id 5)
         DB::beginTransaction();
 
@@ -48,18 +48,18 @@ class MigrateCyclosUsersCommand extends Command
                     password = VALUES(password), 
                     last_login_at = VALUES(last_login_at);
                         ");
-                DB::commit();
-                $this->info("Users: $activeUsers");
-                $this->info("Users migration completed successfully.");
+            DB::commit();
+            $this->info("Users: $activeUsers");
+            $this->info("Users migration completed successfully.");
 
-            } catch (\Exception $e) {
-                DB::rollBack();
-                $this->error('Users migration failed: ' . $e->getMessage());
-            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->error('Users migration failed: ' . $e->getMessage());
+        }
 
 
 
-        
+
         // Inactive Users (group_id 6)
         DB::beginTransaction();
 
@@ -103,7 +103,7 @@ class MigrateCyclosUsersCommand extends Command
 
 
 
-        
+
         //Removed Users (cyclos group_id 8):
         DB::beginTransaction();
 
@@ -146,7 +146,7 @@ class MigrateCyclosUsersCommand extends Command
 
 
 
-        
+
         //Local Bank (Level I) (Cyclos group_id 13)
         DB::beginTransaction();
 
@@ -177,7 +177,7 @@ class MigrateCyclosUsersCommand extends Command
         }
 
 
-        
+
         //Organizations (cyclos group_id 14)
         DB::beginTransaction();
 
@@ -209,7 +209,7 @@ class MigrateCyclosUsersCommand extends Command
 
 
 
-         //Local Bank (Level I) (Cyclos group_id 13)
+        //Local Bank (Level I) (Cyclos group_id 13)
         DB::beginTransaction();
 
         try {
@@ -275,7 +275,7 @@ class MigrateCyclosUsersCommand extends Command
         DB::beginTransaction();
 
         try {
-           
+
             $total_images = 0;
 
             // Select images with the lowest order_number for each member_id.
@@ -302,14 +302,14 @@ class MigrateCyclosUsersCommand extends Command
                 DB::table($destinationDb . '.banks')
                     ->where('cyclos_id', $image->id)
                     ->update(['profile_photo_path' => $path]);
-            }                        
+            }
             // Records without profile photo
             DB::table($destinationDb . '.banks')
                 ->whereNull('profile_photo_path')
                 ->update(['profile_photo_path' => 'app-images/profile-user-default.svg']);
             $total_images += $images->count();
             $this->info('Banks: ' . $images->count() . ' images');
-            
+
 
 
 
@@ -332,7 +332,7 @@ class MigrateCyclosUsersCommand extends Command
                 DB::table($destinationDb . '.users')
                     ->where('cyclos_id', $image->id)
                     ->update(['profile_photo_path' => $path]);
-            }            
+            }
             // Records without profile photo
             DB::table($destinationDb . '.users')
                 ->whereNull('profile_photo_path')
@@ -359,7 +359,7 @@ class MigrateCyclosUsersCommand extends Command
                 DB::table($destinationDb . '.organizations')
                     ->where('cyclos_id', $image->id)
                     ->update(['profile_photo_path' => $path]);
-            }            
+            }
             // Records without profile photo
             DB::table($destinationDb . '.organizations')
                 ->whereNull('profile_photo_path')
@@ -377,7 +377,7 @@ class MigrateCyclosUsersCommand extends Command
 
 
         // Migrate Accounts
-   
+
         // Debit Account (cyclos type_id 1)
         DB::beginTransaction();
 
@@ -403,7 +403,7 @@ class MigrateCyclosUsersCommand extends Command
             $this->error('Debit account failed: ' . $e->getMessage());
         }
 
-        
+
         // Community Account (cyclos type_id 2)
         DB::beginTransaction();
 
@@ -517,65 +517,65 @@ class MigrateCyclosUsersCommand extends Command
 
 
 
-        // Register laravel-love models 
-        $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // Optionally, check if the command was successful
-        if ($exitCode === 0) {
-            $this->info('Laravel-love Reacters registered: Users');
-        } else {
-            $this->error('Laravel-love Reacters registration failed: Users');
-        }
+        // // Register laravel-love models
+        // $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // // Optionally, check if the command was successful
+        // if ($exitCode === 0) {
+        //     $this->info('Laravel-love Reacters registered: Users');
+        // } else {
+        //     $this->error('Laravel-love Reacters registration failed: Users');
+        // }
 
-        $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // Optionally, check if the command was successful
-        if ($exitCode === 0) {
-            $this->info('Laravel-love Reacters registered: Organizations');
-        } else {
-            $this->error('Laravel-love Reacters registration failed: Organizations');
-        }
-
-        
-        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // Optionally, check if the command was successful
-        if ($exitCode === 0) {
-            $this->info('Laravel-love Reactants registered: Users');
-        } else {
-            $this->error('Laravel-love Reactants registration failed.');
-        }
-        
-        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // Optionally, check if the command was successful
-        if ($exitCode === 0) {
-            $this->info('Laravel-love Reactants registered: Organizations');
-        } else {
-            $this->error('Laravel-love Reactants registration failed: Orgnaizations');
-        }
-
-        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // Optionally, check if the command was successful
-        if ($exitCode === 0) {
-            $this->info('Laravel-love Reactants registered: Organizations');
-        } else {
-            $this->error('Laravel-love Reactants registration failed: Organizations');
-        }
-        
-        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Bank'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // Optionally, check if the command was successful
-        if ($exitCode === 0) {
-            $this->info('Laravel-love Reactants registered: Banks');
-        } else {
-            $this->error('Laravel-love Reactants registration failed.');
-        }
+        // $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // // Optionally, check if the command was successful
+        // if ($exitCode === 0) {
+        //     $this->info('Laravel-love Reacters registered: Organizations');
+        // } else {
+        //     $this->error('Laravel-love Reacters registration failed: Organizations');
+        // }
 
 
-        // Attach Messenger profiles
-        $exitCode = Artisan::call('messenger:attach:messengers', [], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // Optionally, check if the command was successful
-        if ($exitCode === 0) {
-            $this->info('Rtippin Messenger providers registered.');
-        } else {
-            $this->error('Rtippin Messenger providers registration failed');
-    }
+        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // // Optionally, check if the command was successful
+        // if ($exitCode === 0) {
+        //     $this->info('Laravel-love Reactants registered: Users');
+        // } else {
+        //     $this->error('Laravel-love Reactants registration failed.');
+        // }
+
+        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // // Optionally, check if the command was successful
+        // if ($exitCode === 0) {
+        //     $this->info('Laravel-love Reactants registered: Organizations');
+        // } else {
+        //     $this->error('Laravel-love Reactants registration failed: Organizations');
+        // }
+
+        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // // Optionally, check if the command was successful
+        // if ($exitCode === 0) {
+        //     $this->info('Laravel-love Reactants registered: Organizations');
+        // } else {
+        //     $this->error('Laravel-love Reactants registration failed: Organizations');
+        // }
+
+        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Bank'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // // Optionally, check if the command was successful
+        // if ($exitCode === 0) {
+        //     $this->info('Laravel-love Reactants registered: Banks');
+        // } else {
+        //     $this->error('Laravel-love Reactants registration failed.');
+        // }
+
+
+        // // Attach Messenger profiles
+        // $exitCode = Artisan::call('messenger:attach:messengers', [], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // // Optionally, check if the command was successful
+        // if ($exitCode === 0) {
+        //     $this->info('Rtippin Messenger providers registered.');
+        // } else {
+        //     $this->error('Rtippin Messenger providers registration failed');
+        // }
 
         $this->warn('Do not run this migration again without refreshing the database and deleting all files in storage/app/public/profile-photo\'s');
     }

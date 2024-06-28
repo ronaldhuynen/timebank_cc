@@ -10,17 +10,21 @@ return [
     | The default account properties that will be set into the database when new accounts are created.
     | The balance limits are in minutes.
     */
-
     'accounts' => [
-        'personal' => [
+        'user' => [
             'name' =>  'Personal Account',
             'limit_min' => 0,
-            'limit_max' => 6000,
+            'limit_max' => 6000, // 100 H
         ],
         'organization' => [
             'name' => 'Organization Account',
             'limit_min' => 0,
-            'limit_max' => 18000,
+            'limit_max' => 6000, // 100 H, default value,  manually set organizations with a big turn-over to a higher limit
+        ],
+        'bank' => [
+            'name' => 'Organization Account',
+            'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
+            'limit_max' => 600000, //  10,000 H
         ],
     ],
 

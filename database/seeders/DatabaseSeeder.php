@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
             $this->call(CategoriesTableSeeder::class);
             $this->call(CategoryTranslationsTableSeeder::class);
             $this->call(MeetingsTableSeeder::class);
+            $this->call(LoveReactionTypesTableSeeder::class);
 
             // Seed Super-Admin with user id 1
             $admin = User::factory()->create([
@@ -55,26 +56,21 @@ class DatabaseSeeder extends Seeder
                 'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
                 'profile_photo_path' => 'app-images/profile-user-default.svg',
             ]);
+            
+            $location = new Location(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]);
+            $admin->locations()->save($location);
+            $admin->assignRole('Super-Admin');
 
-
+            
             // Seed Source-Bank with bank id 1
             $bank = Bank::factory()->create([
                 'name' => 'Timebank.cc',
+                'full_name' => 'Timebank.cc Source Bank',
                 'email' => 'info@timebank.cc',
+                'password' => bcrypt('SecurePassword'),  // Super-Admin password: 'SecurePassword'
                 'profile_photo_path' => 'app-images/profile-user-default.svg',
             ]);
-                
-
-
-
-            $location = new Location(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]);
-            $admin->locations()->save($location);
             $bank->save();
-
-
-            $admin->assignRole('Super-Admin');
-
-            $this->call(LoveReactionTypesTableSeeder::class);
         }
 
         $this->call([

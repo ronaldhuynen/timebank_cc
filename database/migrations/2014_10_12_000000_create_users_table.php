@@ -30,7 +30,9 @@ return new class () extends Migration {
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->integer('cyclos_id')->unique()->nullable();
-            $table->string('cyclos_salt', 32)->nullable();
+            $table->string('cyclos_salt', 32)->nullable();            
+            $table->integer('limit_min')->nullable();
+            $table->integer('limit_max')->nullable();
             $table->timestamps();
             $table->date('inactive_at')->nullable();
             $table->softDeletes();

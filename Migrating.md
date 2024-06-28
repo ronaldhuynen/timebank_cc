@@ -8,17 +8,6 @@ UPDATE members
 SET email = CONCAT(id, '@test.nl');
 ```
 
-
-# Collation:
-If you want 'Géraldine' and 'Geraldine' to be considered as unique, you should use a binary collation like `utf8mb4_bin` or a case-sensitive, accent-sensitive collation like `utf8mb4_cs_as`.
-Oiginal cyclos database needs this distinction, but uses an older collation type: utf8mb3_general_ci
-that does not support emoji's.
-
-Recommended collation Laravel database:
-utf8mb4_bin
-This is already set in config/database.php
-
-
 # Remove view from export before importing into laravel database:
 sed '/^\/\*!50001 CREATE/,/^\/\*!50001 DELIMITER/d' /path/to/your_file.sql > /path/to/clean_file.sql
 mysql -u username -p database_name < /path/to/clean_file.sql

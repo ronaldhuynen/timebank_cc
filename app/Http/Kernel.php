@@ -39,7 +39,6 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \RTippin\Messenger\Http\Middleware\SetMessengerProvider::class,
             \App\Http\Middleware\StoreUserLangPreference::class,
-
         ],
 
         'api' => [

@@ -37,8 +37,6 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-
-
         Fortify::verifyEmailView(fn () => view('auth.verify-email'));
 
 
@@ -52,23 +50,31 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-        // Rehash Cyclos salted sha256 passwords on first login
+
+        // Custom Fortify auth method to auth migrated users from cyclos with original cyclos hash (with salt)
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
-            info('Attempting to authenticate user with email: ' . $request->email);
-            if ($user && Hash::check($request->password, $user->password)) {
-                // Check if the password needs rehashing (i.e., it's not using bcrypt).
+            if ($user) {
                 if (!empty($user->cyclos_salt)) {
-                    
-                    info('Password needs rehasjing');
-                    // Rehash the password.
-                    $user->password = Hash::make($request->password);
-                    $user->cyclos_salt = null; // Assuming this indicates the password has been migrated.
-                    $user->save();
+                    // If cyclos_salt is not empty, use cyclos auth hash
+                    info('Auth attempt on original cyclos password using: ' . $request->email . '');
+                    $saltedHash = $user->cyclos_salt . $request->password;
+                    $hashedInputPassword = hash("sha256", $saltedHash);
+                    if (strtolower($hashedInputPassword) === strtolower($user->password)) {
+                        // Rehash to Laravel hash and remove salt
+                        $user->password = Hash::make($request->password);
+                        $user->cyclos_salt = null;
+                        $user->save();
+                        info('Auth success, cyclos password is rehashed for next login');
+                        return $user;
+                    }
                 }
-                return $user;
+
+                // Fallback to Laravel's default hash check if cyclos_salt is empty or SHA256 check fails
+                if (Hash::check($request->password, $user->password)) {
+                    return $user;
+                }
             }
         });
-
     }
 }

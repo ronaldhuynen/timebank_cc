@@ -15,7 +15,8 @@ class MigrateCyclosUsersCommand extends Command
     public function handle()
     {
         // Ask for database names
-        $sourceDb = $this->ask('Enter the name of the source database');
+        // $sourceDb = $this->ask('Enter the name of the source database');
+        $sourceDb = 'timebank_2024_06_11';
         $destinationDb = env('DB_DATABASE');
 
 
@@ -24,12 +25,13 @@ class MigrateCyclosUsersCommand extends Command
 
         try {
             $activeUsers = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, created_at, updated_at, name, cyclos_salt, password, last_login_at)
+                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, email_verified_at, created_at, updated_at, name, cyclos_salt, password, last_login_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     m.name AS full_name, 
                     m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at,
                     u.username AS name, 
                     u.salt, 
@@ -41,6 +43,7 @@ class MigrateCyclosUsersCommand extends Command
                 ON DUPLICATE KEY UPDATE 
                     full_name = VALUES(full_name),      
                     email = VALUES(email), 
+                    email_verified_at = VALUES(email_verified_at), 
                     created_at = VALUES(created_at), 
                     updated_at = NOW(),
                     name = VALUES(name), 
@@ -66,12 +69,13 @@ class MigrateCyclosUsersCommand extends Command
         try {
             $inActiveUsers = DB::affectingStatement("
                                     
-                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, created_at, updated_at, name, cyclos_salt, password, last_login_at, inactive_at)
+                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, email_verified_at, created_at, updated_at, name, cyclos_salt, password, last_login_at, inactive_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     m.name AS full_name, 
                     m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at,
                     u.username AS name, 
                     u.salt AS cyclos_salt, 
@@ -85,6 +89,7 @@ class MigrateCyclosUsersCommand extends Command
                 ON DUPLICATE KEY UPDATE 
                     full_name = VALUES(full_name), 
                     email = VALUES(email), 
+                    email_verified_at = VALUES(email_verified_at), 
                     created_at = VALUES(created_at), 
                     updated_at = NOW(),
                     name = VALUES(name), 
@@ -106,18 +111,19 @@ class MigrateCyclosUsersCommand extends Command
 
         //Removed Users (cyclos group_id 8):
         DB::beginTransaction();
-
+        // Any remaining personal data will be anonymized
         try {
             $removedUsers = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, created_at, updated_at, name, cyclos_salt, password, last_login_at, deleted_at)
+                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, email_verified_at, created_at, updated_at, name, cyclos_salt, password, last_login_at, deleted_at)
                 SELECT 
                     m.id AS cyclos_id, 
-                    m.name AS full_name, 
-                    m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    CONCAT('Removed user ',  m.id) AS full_name,
+                    CONCAT(m.id, '@removed.mail') AS email,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at,
-                    u.username AS name, 
-                    u.salt AS cyclos_salt, 
+                    CONCAT('Removed user ',  m.id) AS name,
+                    u.salt AS cyclos_salt,
                     u.password, 
                     FROM_UNIXTIME(UNIX_TIMESTAMP(u.last_login)) AS last_login_at,
                     FROM_UNIXTIME(UNIX_TIMESTAMP(ghl.start_date)) AS deleted_at
@@ -128,6 +134,7 @@ class MigrateCyclosUsersCommand extends Command
                 ON DUPLICATE KEY UPDATE 
                     full_name = VALUES(full_name), 
                     email = VALUES(email), 
+                    email_verified_at = VALUES(email_verified_at), 
                     created_at = VALUES(created_at), 
                     updated_at = NOW(),
                     name = VALUES(name), 
@@ -152,19 +159,25 @@ class MigrateCyclosUsersCommand extends Command
 
         try {
             $localBanks = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.banks (cyclos_id, name, email, created_at, updated_at)
+                INSERT INTO {$destinationDb}.banks (cyclos_id, name, cyclos_salt, password, email, email_verified_at, created_at, updated_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     u.username AS name, 
+                    u.salt AS cyclos_salt, 
+                    u.password, 
                     m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at
                 FROM `{$sourceDb}`.`members` m
                 JOIN `{$sourceDb}`.`users` u ON m.id = u.id
                 WHERE m.group_id = 13
                 ON DUPLICATE KEY UPDATE
                     name = VALUES(name),
+                    cyclos_salt = VALUES(cyclos_salt), 
+                    password = VALUES(password),
                     email = VALUES(email), 
+                    email_verified_at = VALUES(email_verified_at), 
                     created_at = VALUES(created_at), 
                     updated_at = NOW();
                         ");
@@ -183,19 +196,25 @@ class MigrateCyclosUsersCommand extends Command
 
         try {
             $organizations = DB::affectingStatement("                        
-                INSERT INTO {$destinationDb}.organizations (cyclos_id, name, email, created_at, updated_at)
+                INSERT INTO {$destinationDb}.organizations (cyclos_id, name, cyclos_salt, password, email, email_verified_at, created_at, updated_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     u.username AS name, 
+                    u.salt AS cyclos_salt, 
+                    u.password, 
                     m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at,  
                     NOW() AS updated_at
                 FROM `{$sourceDb}`.`members` m
                 JOIN `{$sourceDb}`.`users` u ON m.id = u.id
                 WHERE m.group_id = 14
                 ON DUPLICATE KEY UPDATE
                     name = VALUES(name),
+                    cyclos_salt = VALUES(cyclos_salt), 
+                    password = VALUES(password),
                     email = VALUES(email), 
+                    email_verified_at = VALUES(email_verified_at), 
                     created_at = VALUES(created_at), 
                     updated_at = NOW();
                 ");
@@ -214,12 +233,15 @@ class MigrateCyclosUsersCommand extends Command
 
         try {
             $localBanks = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.banks (cyclos_id, name, email, created_at, updated_at)
+                INSERT INTO {$destinationDb}.banks (cyclos_id, name, cyclos_salt, password, email, email_verified_at, created_at, updated_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     u.username AS name, 
+                    u.salt AS cyclos_salt, 
+                    u.password, 
                     m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at,  
                     NOW() AS updated_at
                 FROM `{$sourceDb}`.`members` m
                 JOIN `{$sourceDb}`.`users` u ON m.id = u.id
@@ -227,6 +249,7 @@ class MigrateCyclosUsersCommand extends Command
                 ON DUPLICATE KEY UPDATE
                     name = VALUES(name),
                     email = VALUES(email), 
+                    email_verified_at = VALUES(email_verified_at), 
                     created_at = VALUES(created_at), 
                     updated_at = NOW();
                 ");
@@ -245,19 +268,23 @@ class MigrateCyclosUsersCommand extends Command
 
         try {
             $projectsCreateHour = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.banks (cyclos_id, name, email, created_at, updated_at)
+                INSERT INTO {$destinationDb}.banks (cyclos_id, name, cyclos_salt, password, email, email_verified_at, created_at, updated_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     u.username AS name, 
+                    u.salt AS cyclos_salt, 
+                    u.password, 
                     m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at,  
                     NOW() AS updated_at
                 FROM `{$sourceDb}`.`members` m
                 JOIN `{$sourceDb}`.`users` u ON m.id = u.id
                 WHERE m.group_id = 15
                 ON DUPLICATE KEY UPDATE
                     name = VALUES(name),
-                    email = VALUES(email), 
+                    email = VALUES(email),
+                    email_verified_at = VALUES(email_verified_at), 
                     created_at = VALUES(created_at), 
                     updated_at = NOW();
                 ");
@@ -515,67 +542,65 @@ class MigrateCyclosUsersCommand extends Command
         }
 
 
+        // Register laravel-love models
+        $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reacters registered: Users');
+        } else {
+            $this->error('Laravel-love Reacters registration failed: Users');
+        }
+
+        $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reacters registered: Organizations');
+        } else {
+            $this->error('Laravel-love Reacters registration failed: Organizations');
+        }
 
 
-        // // Register laravel-love models
-        // $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reacters registered: Users');
-        // } else {
-        //     $this->error('Laravel-love Reacters registration failed: Users');
-        // }
+        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reactants registered: Users');
+        } else {
+            $this->error('Laravel-love Reactants registration failed.');
+        }
 
-        // $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reacters registered: Organizations');
-        // } else {
-        //     $this->error('Laravel-love Reacters registration failed: Organizations');
-        // }
+        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reactants registered: Organizations');
+        } else {
+            $this->error('Laravel-love Reactants registration failed: Organizations');
+        }
 
+        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reactants registered: Organizations');
+        } else {
+            $this->error('Laravel-love Reactants registration failed: Organizations');
+        }
 
-        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reactants registered: Users');
-        // } else {
-        //     $this->error('Laravel-love Reactants registration failed.');
-        // }
-
-        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reactants registered: Organizations');
-        // } else {
-        //     $this->error('Laravel-love Reactants registration failed: Organizations');
-        // }
-
-        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reactants registered: Organizations');
-        // } else {
-        //     $this->error('Laravel-love Reactants registration failed: Organizations');
-        // }
-
-        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Bank'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reactants registered: Banks');
-        // } else {
-        //     $this->error('Laravel-love Reactants registration failed.');
-        // }
+        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Bank'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reactants registered: Banks');
+        } else {
+            $this->error('Laravel-love Reactants registration failed.');
+        }
 
 
-        // // Attach Messenger profiles
-        // $exitCode = Artisan::call('messenger:attach:messengers', [], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Rtippin Messenger providers registered.');
-        // } else {
-        //     $this->error('Rtippin Messenger providers registration failed');
-        // }
+        // Attach Messenger profiles
+        $exitCode = Artisan::call('messenger:attach:messengers', [], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Rtippin Messenger providers registered.');
+        } else {
+            $this->error('Rtippin Messenger providers registration failed');
+        }
 
         $this->warn('Do not run this migration again without refreshing the database and deleting all files in storage/app/public/profile-photo\'s');
     }

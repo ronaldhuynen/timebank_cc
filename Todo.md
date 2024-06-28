@@ -2,8 +2,11 @@
 
 - make bank and organization default profile photo 
 - make bank also a messenger providerye
+- Login attempt by organization: ask to register as a user and contact TB to grant access using this user account?
+-> This organization profile has no users attached. Are you also registered as a user Y/N ? Login as user, or register
+-> Make special page to attach organization to user with cyclos auth method on org.  
 - csv export transaction overview (LN
-- qr code payment / transfer descr etc in url)
+- qr code payment / transfer description etc in url)
 
 # Questions  Joeri
 

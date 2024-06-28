@@ -30,16 +30,17 @@ class MigrateCyclosUsersCommand extends Command
         $limitMax = config('timebank-cc.accounts.user.limit_max');
         try {
             $activeUsers = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, created_at, updated_at, name, cyclos_salt, password, limit_min, limit_max, last_login_at)
+                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, email_verified_at, created_at, updated_at, name, cyclos_salt, password, limit_min, limit_max, last_login_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     m.name AS full_name, 
-                    m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    m.email AS email,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at,
                     u.username AS name, 
-                    u.salt, 
-                    u.password, 
+                    u.salt AS cyclos_salt, 
+                    u.password AS password,
                     " . $limitMin . " as limit_min,
                     " . $limitMax . " as limit_max,
                     FROM_UNIXTIME(UNIX_TIMESTAMP(u.last_login)) AS last_login_at
@@ -76,16 +77,17 @@ class MigrateCyclosUsersCommand extends Command
         try {
             $inActiveUsers = DB::affectingStatement("
                                     
-                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, created_at, updated_at, name, cyclos_salt, password, limit_min, limit_max, last_login_at, inactive_at)
+                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, email_verified_at, created_at, updated_at, name, cyclos_salt, password, limit_min, limit_max, last_login_at, inactive_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     m.name AS full_name, 
-                    m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    m.email AS email, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at,
                     u.username AS name, 
                     u.salt AS cyclos_salt, 
-                    u.password, 
+                    u.password AS password, 
                     " . $limitMin . " as limit_min,
                     " . $limitMax . " as limit_max,
                     FROM_UNIXTIME(UNIX_TIMESTAMP(u.last_login)) AS last_login_at,
@@ -121,16 +123,17 @@ class MigrateCyclosUsersCommand extends Command
 
         try {
             $removedUsers = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, created_at, updated_at, name, cyclos_salt, password, limit_min, limit_max, last_login_at, deleted_at)
+                INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, email_verified_at, created_at, updated_at, name, cyclos_salt, password, limit_min, limit_max, last_login_at, deleted_at)
                 SELECT 
                     m.id AS cyclos_id, 
-                    m.name AS full_name, 
-                    m.email, 
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    CONCAT('Removed user ',  m.id) AS full_name,
+                    CONCAT(m.id, '@removed.mail') AS email,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at,
-                    u.username AS name, 
+                    CONCAT('Removed user ', m.id) AS name,
                     u.salt AS cyclos_salt, 
-                    u.password, 
+                    u.password AS password,
                     '0' as limit_min,
                     '0' as limit_max,
                     FROM_UNIXTIME(UNIX_TIMESTAMP(u.last_login)) AS last_login_at,
@@ -168,24 +171,27 @@ class MigrateCyclosUsersCommand extends Command
         $limitMax = config('timebank-cc.accounts.bank.limit_max');
         try {
             $localBanks = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.banks (cyclos_id, name, full_name, email, cyclos_salt, password, limit_min, limit_max, created_at, updated_at)
+                INSERT INTO {$destinationDb}.banks (cyclos_id, name, full_name, email, email_verified_at, cyclos_salt, password, limit_min, limit_max, created_at, updated_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     u.username AS name,
                     m.name as full_name,
-                    m.email, 
+                    m.email as email, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
                     u.salt AS cyclos_salt, 
-                    u.password, 
+                    u.password AS password, 
                     " . $limitMin . " as limit_min,
                     " . $limitMax . " as limit_max,
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at
                 FROM `{$sourceDb}`.`members` m
                 JOIN `{$sourceDb}`.`users` u ON m.id = u.id
                 WHERE m.group_id = 13
                 ON DUPLICATE KEY UPDATE
                     name = VALUES(name),
+                    name = VALUES(full_name),
                     email = VALUES(email), 
+                    email_verified_at = VALUES(email_verified_at),
                     created_at = VALUES(created_at), 
                     updated_at = NOW();
                         ");
@@ -206,17 +212,18 @@ class MigrateCyclosUsersCommand extends Command
         $limitMax = config('timebank-cc.accounts.organization.limit_max');
         try {
             $organizations = DB::affectingStatement("                        
-                INSERT INTO {$destinationDb}.organizations (cyclos_id, name, full_name, email, cyclos_salt, password, limit_min, limit_max, created_at, updated_at)
+                INSERT INTO {$destinationDb}.organizations (cyclos_id, name, full_name, email, email_verified_at, cyclos_salt, password, limit_min, limit_max, created_at, updated_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     u.username AS name, 
                     m.name AS full_name,
-                    m.email, 
+                    m.email AS email,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
                     u.salt AS cyclos_salt, 
-                    u.password, 
+                    u.password AS password,
                     " . $limitMin . " as limit_min,
                     " . $limitMax . " as limit_max,
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at,  
                     NOW() AS updated_at
                 FROM `{$sourceDb}`.`members` m
                 JOIN `{$sourceDb}`.`users` u ON m.id = u.id
@@ -244,17 +251,18 @@ class MigrateCyclosUsersCommand extends Command
         $limitMax = config('timebank-cc.accounts.bank.limit_max');
         try {
             $localBanks = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.banks (cyclos_id, name, full_name, email, cyclos_salt, password, limit_min, limit_max, created_at, updated_at)
+                INSERT INTO {$destinationDb}.banks (cyclos_id, name, full_name, email, email_verified_at, cyclos_salt, password, limit_min, limit_max, created_at, updated_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     u.username AS name, 
                     m.name AS full_name,
-                    m.email, 
+                    m.email AS email,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
                     u.salt AS cyclos_salt, 
-                    u.password, 
+                    u.password AS password,
                     " . $limitMin . " as limit_min,
                     " . $limitMax . " as limit_max,
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS cr`ated_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at
                 FROM `{$sourceDb}`.`members` m
                 JOIN `{$sourceDb}`.`users` u ON m.id = u.id
@@ -282,17 +290,18 @@ class MigrateCyclosUsersCommand extends Command
         $limitMax = config('timebank-cc.accounts.bank.limit_max');
         try {
             $projectsCreateHour = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.banks (cyclos_id, name, full_name, email, cyclos_salt, password, limit_min, limit_max, created_at, updated_at)
+                INSERT INTO {$destinationDb}.banks (cyclos_id, name, full_name, email, email_verified_at, cyclos_salt, password, limit_min, limit_max, created_at, updated_at)
                 SELECT 
                     m.id AS cyclos_id, 
                     u.username AS name, 
                     m.name AS full_name,
-                    m.email, 
+                    m.email AS email,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
                     u.salt AS cyclos_salt, 
-                    u.password, 
+                    u.password AS password,
                     " . $limitMin . " as limit_min,
                     " . $limitMax . " as limit_max,
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS created_at, 
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at
                 FROM `{$sourceDb}`.`members` m
                 JOIN `{$sourceDb}`.`users` u ON m.id = u.id

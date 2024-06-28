@@ -14,7 +14,8 @@ return new class () extends Migration {
             $table->id();
             $table->string('name')->unique();
             $table->string('full_name');
-            $table->string('email', 191)->nullable();            
+            $table->string('email', 191)->nullable(); 
+            $table->timestamp('email_verified_at')->nullable();           
             $table->string('password');
             $table->string('profile_photo_path', 2048)->nullable();
             $table->text('about')->nullable();

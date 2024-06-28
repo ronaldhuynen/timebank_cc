@@ -117,12 +117,12 @@ class MigrateCyclosUsersCommand extends Command
                 INSERT INTO {$destinationDb}.users (cyclos_id, full_name, email, email_verified_at, created_at, updated_at, name, cyclos_salt, password, last_login_at, deleted_at)
                 SELECT 
                     m.id AS cyclos_id, 
-                    m.name AS full_name, 
+                    CONCAT('Removed user ',  m.id) AS full_name,
                     CONCAT(m.id, '@removed.mail') AS email,
                     FROM_UNIXTIME(UNIX_TIMESTAMP(m.member_activation_date)) AS email_verified_at, 
                     FROM_UNIXTIME(UNIX_TIMESTAMP(m.creation_date)) AS created_at, 
                     NOW() AS updated_at,
-                    u.username AS name,
+                    CONCAT('Removed user ',  m.id) AS name,
                     u.salt AS cyclos_salt,
                     u.password, 
                     FROM_UNIXTIME(UNIX_TIMESTAMP(u.last_login)) AS last_login_at,

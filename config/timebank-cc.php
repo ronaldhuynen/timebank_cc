@@ -93,6 +93,7 @@ return [
             'password' => 'required|min:6|same:passwordConfirmation',
             'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',
             'about' => 'nullable|string|max:400',   //TODO: check max with legacy cyclos data
+            'about_short' => 'nullable|string|max:150',   //TODO: check max with legacy cyclos data
             'motivation' => 'nullable|string|max:200',  //TODO: check max with legacy cyclos data
             'date_of_birth' => 'nullable|date',
             'website' => 'nullable|string|max:150',

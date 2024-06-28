@@ -40,17 +40,6 @@ class JetstreamServiceProvider extends ServiceProvider
         Livewire::component('profile-user.update-profile-personal-form', UpdateProfilePersonalForm::class);
         Livewire::component('profile-user.update-profile-phone-form', UpdateProfilePhoneForm::class);
 
-        //Save user's last login time and ip
-        Fortify::authenticateUsing(function (Request $request) {
-            $user = User::where('email', $request->email)->first();
-            if ($user && Hash::check($request->password, $user->password)) {
-                $user->update([
-                    'last_login_at' => Carbon::now()->toDateTimeString(),
-                    'last_login_ip' => $request->getClientIp()
-                ]);
-                return $user;
-            }
-        });
 
         // Register LoginResponse for conditional redirects in Http/Responses/LoginResponse.php
         // This is used to load language preference after login

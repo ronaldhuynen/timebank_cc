@@ -91,13 +91,14 @@ class TransactionsTable extends Component
                 if ($t->to_account_id === $accountId) {
                     // Credit transfer
                     $ct = $t;
+                    // dd($ct);
                     $transactions[] = [
                         'trans_id' =>  $ct->id,
                         'datetime' => $ct->created_at,
                         'amount' => $ct->amount,
                         'type' => 'Credit',
                         'account_from' => $ct->from_account_id,
-                        'account_from_name' => $ct->accountFrom->name,
+                        'account_from_name' => ($ct->accountFrom->name != null ? $ct->accountFrom->name : ''),
                         'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
                         'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
                         'description' => $ct->description,
@@ -112,7 +113,7 @@ class TransactionsTable extends Component
                         'amount' => $dt->amount,
                         'type' => 'Debit',
                         'account_to' => $dt->to_account_id,
-                        'account_to_name' => $dt->accountTo->name,
+                        'account_to_name' => ($dt->accountTo->name != null ? $dt->accountTo->name : ''),
                         'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
                         'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
                         'description' => $dt->description,
@@ -191,7 +192,7 @@ class TransactionsTable extends Component
                         'amount' => $ct->amount,
                         'type' => 'Credit',
                         'account_from' => $ct->from_account_id,
-                        'account_from_name' => $ct->accountFrom->name,
+                        'account_from_name' => ($ct->accountFrom->name != null ? $ct->accountFrom->name : ''),
                         'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
                         'profile_photo' => ($ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : ''),
                         'description' => $ct->description,
@@ -207,7 +208,7 @@ class TransactionsTable extends Component
                         'amount' => $dt->amount,
                         'type' => 'Debit',
                         'account_to' => $dt->to_account_id,
-                        'account_to_name' => $dt->accountTo->name,
+                        'account_to_name' => ($dt->accountTo->name != null ? $dt->accountTo->name : ''),
                         'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
                         'profile_photo' => ($dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : ''),
                         'description' => $dt->description,

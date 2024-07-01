@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('from_account_id');
             $table->unsignedBigInteger('to_account_id');
-            $table->unsignedBigInteger('creator_user_id');
+            $table->unsignedBigInteger('creator_user_id')->nullable();
             $table->boolean('from_authorised_by_user_id')->default(false);
             $table->timestamp('from_authorisation_time')->nullable();
             $table->boolean('to_authorised_by_user_id')->default(false);
@@ -34,7 +34,6 @@ class CreateTransactionsTable extends Migration
             $table->timestamp('cancelled_time')->nullable();
             $table->unsignedBigInteger('advertisement_id')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

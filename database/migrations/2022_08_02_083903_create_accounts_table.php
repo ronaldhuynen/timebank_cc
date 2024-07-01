@@ -20,6 +20,7 @@ class CreateAccountsTable extends Migration
             $table->integer('limit_max')->nullable();
             $table->string('accountable_type');
             $table->unsignedBigInteger('accountable_id');
+            $table->integer('cyclos_id')->unique()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

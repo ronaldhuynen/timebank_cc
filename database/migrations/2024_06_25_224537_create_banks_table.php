@@ -28,6 +28,7 @@ return new class () extends Migration {
             $table->integer('limit_min')->nullable();
             $table->integer('limit_max')->nullable();
             $table->timestamps();
+            $table->date('last_login_at')->nullable();
             $table->date('inactive_at')->nullable();
             $table->softDeletes();
         });

@@ -2,11 +2,11 @@
 
 function tbFormat($minutes)
 {
-  // $sign = ($minutes < 0) ? ' -' : '';
-  $wholeHours = intdiv($minutes, 60);
-  $restMinutes = sprintf("%'.02d\n", (abs($minutes % 60)));
-  return __('H') . ' ' . $wholeHours . ':' . $restMinutes;
+    $wholeHours = intdiv($minutes, 60);
+    $restMinutes = sprintf("%02d", abs($minutes % 60)); 
+    return __('H') . ' ' . $wholeHours . ':' . $restMinutes; 
 }
+
 
 
 function dbFormat($hhh_mm)

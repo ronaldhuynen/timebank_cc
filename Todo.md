@@ -4,6 +4,9 @@
 - csv export transaction overview (LN
 - qr code payment / transfer descr etc in url)
 - Amount inputs: two field: Hours and another for minutes.
+- update last_login_at for banks and organizations when account is switched.
+- create remove user / project / bank method 
+- prevent creation of bank account when profile is not complete?  
 
 # Questions  Joeri
 - Keep Gift Accounts? Yes, but add is_closed logic. Can be showed in historic transaction overview (special checkbox)

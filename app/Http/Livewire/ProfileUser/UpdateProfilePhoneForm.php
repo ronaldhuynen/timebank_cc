@@ -47,11 +47,14 @@ class UpdateProfilePhoneForm extends Component
     {
         // Fill country code dropdown
         $this->phoneCodeOptions->toArray();
-        if ($this->state['phone'] != '') {
-            $country = new PhoneNumber($this->state['phone']);
+    
+        // Ensure the user is authenticated and retrieve the phone field
+        $userPhone = Auth::user()->phone ?? '';
+
+        if ($userPhone != '') {
+            $country = new PhoneNumber($userPhone);
             $this->phonecode = $country->getCountry();
-            $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
-            $phone->formatNational();
+            $phone = new PhoneNumber($userPhone, $this->phonecode);
             $this->state['phone'] = $phone->formatNational();
         } else {
             $country = User::find($this->state['id'])->locations()
@@ -63,7 +66,6 @@ class UpdateProfilePhoneForm extends Component
 
             if (in_array($country, $countries)) {
                 $this->phonecode = DB::table('countries')->select('code')->where('id', $country)->pluck('code')->first();
-
             } else {
                 $this->phonecode =  $this->phoneCodeOptions[0]['code'];
             }
@@ -83,7 +85,7 @@ class UpdateProfilePhoneForm extends Component
     {
         $this->validateOnly($this->state['phone']);
 
-        if  ($this->state['phone'] != '') {
+        if (isset($this->state['phone']) && $this->state['phone'] != '') {
             $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
             $phone->formatNational();
             $this->state['phone'] = $phone->formatNational();

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Organization;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -61,7 +60,6 @@ class OrgController extends Controller
             'profile_photo_path',
             'about',
             'motivation',
-            'date_of_birth',
             'website',
             // 'phone_public_for_friends',
             'created_at',
@@ -73,10 +71,10 @@ class OrgController extends Controller
             'accounts:id,name,accountable_type,accountable_id',
             'languages:id,name,lang_code,flag',
             'socials:id,name,icon,urL_structure',
-            'locations.district.locale:district_id,name',
-            'locations.city.locale:city_id,name',
-            'locations.division.locale:division_id,name',
-            'locations.country.locale:country_id,name',
+            'locations.district.translations:district_id,name',
+            'locations.city.translations:city_id,name',
+            'locations.division.translations:division_id,name',
+            'locations.country.translations:country_id,name',
             'loveReactant.reactions.reacter.reacterable',
             // 'loveReactant.reactions.type',
             'loveReactant.reactionCounters',

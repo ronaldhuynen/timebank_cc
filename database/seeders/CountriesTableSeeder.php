@@ -47,6 +47,41 @@ class CountriesTableSeeder extends Seeder
                 'flag' => '🇬🇧',
                 'phonecode' => '44',
             ),
+            4 => 
+            array (
+                'id' => 5,
+                'code' => 'FR',
+                'flag' => '🇫🇷',
+                'phonecode' => '33',
+            ),
+            5 => 
+            array (
+                'id' => 6,
+                'code' => 'ES',
+                'flag' => '🇪🇸',
+                'phonecode' => '34',
+            ),
+            6 => 
+            array (
+                'id' => 7,
+                'code' => 'PT',
+                'flag' => '🇵🇹',
+                'phonecode' => '351',
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'code' => 'IT',
+                'flag' => '🇮🇹',
+                'phonecode' => '39',
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'code' => 'PL',
+                'flag' => '🇵🇱',
+                'phonecode' => '48',
+            ),
         ));
         
         

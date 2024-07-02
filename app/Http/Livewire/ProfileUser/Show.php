@@ -152,24 +152,29 @@ class Show extends Component
     public function getLocation()
     {
         $location = '';
+        $country = '';
+        $division = '';
+        $city = '';
+        $district = '';
+
         $firstLocation = $this->user->locations->first();
 
 
         if ($firstLocation) {
-            if ($firstLocation->city) {
+            if (isset($firstLocation->city)) {
                 $city = $firstLocation->city->translations->first()->name;
                 $location = $city;
                 $locationShort = $city;
             }
-            if ($firstLocation->district) {
+            if (isset($firstLocation->district)) {
                 $district = $firstLocation->district->translations->first()->name;
                 $city ? $location = $city . ' ' . $district : $location = $district;
             }
-            if ($firstLocation->division) {
+            if (isset($firstLocation->division)) {
                 $division = $firstLocation->division->translations->first()->name;
                 $city || $district ? $location = $location . ', ' . $division : $location = $division;
             }
-            if ($firstLocation->country) {
+            if (isset($firstLocation->country)) {
                 $country = $firstLocation->country->code;
                 $city || $district || $division ? $location = $location . ', ' . $country : $location = $country;
             }

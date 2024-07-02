@@ -32,11 +32,12 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
 
 
     /**
-     * Get the locations for the bank.
+     * Get all related the locations of the bank.
+     * One-to-many polymorph.
      */
     public function locations()
     {
-        return $this->hasMany(Location::class);
+        return $this->morphMany(Location::class, 'locatable');
     }
 
 

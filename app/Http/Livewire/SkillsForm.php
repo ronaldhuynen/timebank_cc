@@ -139,10 +139,10 @@ class SkillsForm extends Component
         $tags = $tags->sortBy('category_color')->values();
 
         $this->initTagsArrayTranslated = $tags->toArray();
-        
+
         $this->tagsArray = json_encode($tags->toArray());
 
-        $this->dispatchBrowserEvent('load'); //! HIERZO
+        $this->dispatchBrowserEvent('load');
 
     }
 
@@ -151,7 +151,11 @@ class SkillsForm extends Component
     public function updatedNewTagName()
     {
         $this->resetErrorBag('newTag.name');
+        $this->newTagsArray = $this->initTagsArray;
         $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
+
+        ds($this->newTag);
+        ds($this->newTagsArray);
     }
 
 
@@ -362,7 +366,7 @@ class SkillsForm extends Component
 
         if ($this->translateRadioButton === 'select') {
 
-            // Attach an existing context in the base language to the new tag. See config('timebank-cc.base_language') 
+            // Attach an existing context in the base language to the new tag. See config('timebank-cc.base_language')
             // Note that the category_id and updated_by_user is not updated when selecting an existing context!
             $tagContext = Tag::find($this->selectTagTranslation)->contexts()->first();
             $tag->contexts()->attach($tagContext->id);
@@ -394,9 +398,9 @@ class SkillsForm extends Component
         }
 
         // Update newTagsArray with the new tag for save method
-        $this->newTagsArray->transform(function ($item, $key) {
+        $this->newTagsArray = collect($this->newTagsArray)->transform(function ($item, $key) {
             if (isset($item['value']) && $item['value'] === $this->newTag['name']) {
-                $item['title'] = $this->newTag['example'];      //TODO replace title with example, check Tagify script ReadOnlyMix class for this?
+                $item['title'] = $this->newTag['example'];
                 $item['locale'] = app()->getLocale();
             }
             return $item;
@@ -449,7 +453,7 @@ class SkillsForm extends Component
                         $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
 
                         $owner->tag($tag);
-                                                
+
                         // WireUI notification
                         $this->notification()->success(
                             $title = __('Your have updated your skills successfully!'),

@@ -1,11 +1,11 @@
 <x-jet-form-section submit="saveTags">
     <x-slot name="title">
-        {{ __('Skills you share on Timebank.cc') }}
+        {{ __('Activies you share on Timebank.cc') }}
     </x-slot>
 
     <x-slot name="description">
-        <p>{{ __('Add your skills to your profile.') }}
-        <p> {{ __('Rare skills can be interesting for others, but very common skills are very usefull too!') }} </p>
+        <p>{{ __('Which activities and skills can you share on Timebank? Give practical examples, avoid vague or general keywords.') }}
+        <p> {{ __('Rare skills can be interesting for others, but very common activities are also very useful to offer!') }} </p>
     </x-slot>
 
     <x-slot name="form">

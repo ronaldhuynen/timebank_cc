@@ -1,0 +1,1067 @@
+    {
+        "category_id": 35,
+        "category_name": "Media",
+        "tag_id": 17,
+        "tag_name": "Intermediary",
+        "similarity": 0.47619047619047616
+    },
+    {
+        "category_id": 35,
+        "category_name": "Media",
+        "tag_id": 28,
+        "tag_name": "social media",
+        "similarity": 0.6153846153846154
+    },
+    {
+        "category_id": 56,
+        "category_name": "Music",
+        "tag_id": 31,
+        "tag_name": "Making music for theather",
+        "similarity": 0.5
+    },
+    {
+        "category_id": 56,
+        "category_name": "Music",
+        "tag_id": 35,
+        "tag_name": "Teaching how to make music with computers",
+        "similarity": 0.45454545454545453
+    },
+    {
+        "category_id": 56,
+        "category_name": "Music",
+        "tag_id": 40,
+        "tag_name": "making music",
+        "similarity": 0.47619047619047616
+    },
+    {
+        "category_id": 51,
+        "category_name": "Acting",
+        "tag_id": 46,
+        "tag_name": "Acting",
+        "similarity": 0.7142857142857143
+    },
+    {
+        "category_id": 42,
+        "category_name": "Building",
+        "tag_id": 69,
+        "tag_name": "Assisting building up",
+        "similarity": 0.6666666666666666
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 83,
+        "tag_name": "English language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 84,
+        "tag_name": "Dutch language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 85,
+        "tag_name": "French language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 103,
+        "tag_name": "English language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 105,
+        "tag_name": "French language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 22,
+        "category_name": "Research",
+        "tag_id": 106,
+        "tag_name": "(Policy) research (qualitative)",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 16,
+        "category_name": "Education",
+        "tag_id": 124,
+        "tag_name": "art education",
+        "similarity": 0.6153846153846154
+    },
+    {
+        "category_id": 35,
+        "category_name": "Media",
+        "tag_id": 126,
+        "tag_name": "New media",
+        "similarity": 0.47619047619047616
+    },
+    {
+        "category_id": 9,
+        "category_name": "Advice",
+        "tag_id": 134,
+        "tag_name": "Legal advice",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 22,
+        "category_name": "Research",
+        "tag_id": 135,
+        "tag_name": "legal research",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 20,
+        "category_name": "Organization",
+        "tag_id": 138,
+        "tag_name": "Events organization",
+        "similarity": 0.5
+    },
+    {
+        "category_id": 15,
+        "category_name": "Culture",
+        "tag_id": 141,
+        "tag_name": "Interface in between different cultures (intercultural competence)",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 920,
+        "tag_name": "French language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 930,
+        "tag_name": "English language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 35,
+        "category_name": "Media",
+        "tag_id": 943,
+        "tag_name": "New media",
+        "similarity": 0.47619047619047616
+    },
+    {
+        "category_id": 56,
+        "category_name": "Music",
+        "tag_id": 944,
+        "tag_name": "music and meditation",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 56,
+        "category_name": "Music",
+        "tag_id": 945,
+        "tag_name": "music composition",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 56,
+        "category_name": "Music",
+        "tag_id": 946,
+        "tag_name": "music&interdisciplinary improvisation",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 56,
+        "category_name": "Music",
+        "tag_id": 950,
+        "tag_name": "music theory",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 951,
+        "tag_name": "Romanian language",
+        "similarity": 0.6153846153846154
+    },
+    {
+        "category_id": 56,
+        "category_name": "Music",
+        "tag_id": 952,
+        "tag_name": "ethnomusicology",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 22,
+        "category_name": "Research",
+        "tag_id": 959,
+        "tag_name": "social research",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 22,
+        "category_name": "Research",
+        "tag_id": 960,
+        "tag_name": "market research",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 64,
+        "category_name": "Games",
+        "tag_id": 969,
+        "tag_name": "Playing board games (age of empires/monopoly/kolonisten)",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 9,
+        "category_name": "Advice",
+        "tag_id": 980,
+        "tag_name": "Cat behaviorist / cat care advice",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 984,
+        "tag_name": "Dutch language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 987,
+        "tag_name": "French language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 988,
+        "tag_name": "German language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 989,
+        "tag_name": "Italian language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 990,
+        "tag_name": "Dutch language",
+        "similarity": 0.7272727272727273
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 991,
+        "tag_name": "teaching skills in languages",
+        "similarity": 0.615 
+    },
+    [
+        {
+            "category_id": 61,
+            "category_name": "Secondary School Education",
+            "tag_id": 933,
+            "tag_name": "middle school teacher",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 35,
+            "category_name": "Media",
+            "tag_id": 934,
+            "tag_name": "Marketing (target group analysis / mapping)",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 10,
+            "category_name": "Care",
+            "tag_id": 935,
+            "tag_name": "Care taker",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 47,
+            "category_name": "Wood Working",
+            "tag_id": 936,
+            "tag_name": "Woodwork",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 45,
+            "category_name": "Metal Working",
+            "tag_id": 937,
+            "tag_name": "Metalwork",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 24,
+            "category_name": "Transportation",
+            "tag_id": 938,
+            "tag_name": "Transportation planning",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 939,
+            "tag_name": "Language interpretation",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 24,
+            "category_name": "Transportation",
+            "tag_id": 940,
+            "tag_name": "Courier services",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 22,
+            "category_name": "Research",
+            "tag_id": 941,
+            "tag_name": "Research assistant",
+            "similarity": 0.2857142857142857
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 942,
+            "tag_name": "French language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 943,
+            "tag_name": "English language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 944,
+            "tag_name": "Spanish language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 945,
+            "tag_name": "German language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 946,
+            "tag_name": "Italian language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 947,
+            "tag_name": "Portuguese language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 948,
+            "tag_name": "Dutch language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 949,
+            "tag_name": "Chinese language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 950,
+            "tag_name": "Japanese language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 951,
+            "tag_name": "Korean language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 952,
+            "tag_name": "Russian language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 953,
+            "tag_name": "Hindi language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 954,
+            "tag_name": "Arabic language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 955,
+            "tag_name": "Greek language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 956,
+            "tag_name": "Turkish language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 957,
+            "tag_name": "Thai language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 958,
+            "tag_name": "Swedish language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 959,
+            "tag_name": "Norwegian language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 960,
+            "tag_name": "Danish language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 961,
+            "tag_name": "Finnish language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 962,
+            "tag_name": "Hebrew language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 963,
+            "tag_name": "Hungarian language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 964,
+            "tag_name": "Polish language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 965,
+            "tag_name": "Czech language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 966,
+            "tag_name": "Slovak language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 967,
+            "tag_name": "Bulgarian language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 968,
+            "tag_name": "Romanian language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 969,
+            "tag_name": "Serbian language",
+            "similarity": 0.6956521739130435
+        },
+        {
+            "category_id": 34,
+            "category_name": "Language",
+            "tag_id": 970,
+            "tag_name": "Croatian language",
+            "similarity": 0.6956521739130435
+        },
+[
+    {
+        "category_id": 61,
+        "category_name": "Secondary School Education",
+        "tag_id": 933,
+        "tag_name": "middle school teacher",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 35,
+        "category_name": "Media",
+        "tag_id": 934,
+        "tag_name": "Marketing (target group analysis / mapping)",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 10,
+        "category_name": "Care",
+        "tag_id": 935,
+        "tag_name": "Care taker",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 47,
+        "category_name": "Wood Working",
+        "tag_id": 936,
+        "tag_name": "Woodwork",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 45,
+        "category_name": "Metal Working",
+        "tag_id": 937,
+        "tag_name": "Metalwork",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 24,
+        "category_name": "Transportation",
+        "tag_id": 938,
+        "tag_name": "Transportation planning",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 939,
+        "tag_name": "Language interpretation",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 24,
+        "category_name": "Transportation",
+        "tag_id": 940,
+        "tag_name": "Courier services",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 22,
+        "category_name": "Research",
+        "tag_id": 941,
+        "tag_name": "Research assistant",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 942,
+        "tag_name": "French language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 943,
+        "tag_name": "English language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 944,
+        "tag_name": "Spanish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 945,
+        "tag_name": "German language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 946,
+        "tag_name": "Italian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 947,
+        "tag_name": "Portuguese language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 948,
+        "tag_name": "Dutch language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 949,
+        "tag_name": "Chinese language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 950,
+        "tag_name": "Japanese language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 951,
+        "tag_name": "Korean language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 952,
+        "tag_name": "Russian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 953,
+        "tag_name": "Hindi language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 954,
+        "tag_name": "Arabic language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 955,
+        "tag_name": "Greek language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 956,
+        "tag_name": "Turkish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 957,
+        "tag_name": "Thai language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 958,
+        "tag_name": "Swedish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 959,
+        "tag_name": "Norwegian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 960,
+        "tag_name": "Danish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 961,
+        "tag_name": "Finnish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 962,
+        "tag_name": "Hebrew language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 963,
+        "tag_name": "Hungarian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 964,
+        "tag_name": "Polish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 965,
+        "tag_name": "Czech language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 966,
+        "tag_name": "Slovak language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 967,
+        "tag_name": "Bulgarian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 968,
+        "tag_name": "Romanian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 969,
+        "tag_name": "Serbian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 970,
+        "tag_name": "Croatian language",
+        "similarity": 0.6956521739130435
+    },
+ [
+    {
+        "category_id": 61,
+        "category_name": "Secondary School Education",
+        "tag_id": 933,
+        "tag_name": "middle school teacher",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 35,
+        "category_name": "Media",
+        "tag_id": 934,
+        "tag_name": "Marketing (target group analysis / mapping)",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 10,
+        "category_name": "Care",
+        "tag_id": 935,
+        "tag_name": "Care taker",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 47,
+        "category_name": "Wood Working",
+        "tag_id": 936,
+        "tag_name": "Woodwork",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 45,
+        "category_name": "Metal Working",
+        "tag_id": 937,
+        "tag_name": "Metalwork",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 24,
+        "category_name": "Transportation",
+        "tag_id": 938,
+        "tag_name": "Transportation planning",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 939,
+        "tag_name": "Language interpretation",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 24,
+        "category_name": "Transportation",
+        "tag_id": 940,
+        "tag_name": "Courier services",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 22,
+        "category_name": "Research",
+        "tag_id": 941,
+        "tag_name": "Research assistant",
+        "similarity": 0.2857142857142857
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 942,
+        "tag_name": "French language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 943,
+        "tag_name": "English language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 944,
+        "tag_name": "Spanish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 945,
+        "tag_name": "German language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 946,
+        "tag_name": "Italian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 947,
+        "tag_name": "Portuguese language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 948,
+        "tag_name": "Dutch language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 949,
+        "tag_name": "Chinese language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 950,
+        "tag_name": "Japanese language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 951,
+        "tag_name": "Korean language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 952,
+        "tag_name": "Russian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 953,
+        "tag_name": "Hindi language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 954,
+        "tag_name": "Arabic language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 955,
+        "tag_name": "Greek language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 956,
+        "tag_name": "Turkish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 957,
+        "tag_name": "Thai language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 958,
+        "tag_name": "Swedish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 959,
+        "tag_name": "Norwegian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 960,
+        "tag_name": "Danish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 961,
+        "tag_name": "Finnish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 962,
+        "tag_name": "Hebrew language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 963,
+        "tag_name": "Hungarian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 964,
+        "tag_name": "Polish language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 965,
+        "tag_name": "Czech language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 966,
+        "tag_name": "Slovak language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 967,
+        "tag_name": "Bulgarian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 968,
+        "tag_name": "Romanian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 969,
+        "tag_name": "Serbian language",
+        "similarity": 0.6956521739130435
+    },
+    {
+        "category_id": 34,
+        "category_name": "Language",
+        "tag_id": 970,
+        "tag_name": "Croatian language",
+        "similarity": 0.6956521739130435
+    },

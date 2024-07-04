@@ -4,7 +4,7 @@
 
             <!-- Skills -->
             <div>
-                <x-jet-label wire:loading.remove for="tags" value="{{ __('Your Timebanking skills') }}" />
+                <x-jet-label wire:loading.remove for="tags" value="{{ __('Activities or skills you offer to other Timebankers') }}" />
                 <x-jet-label wire:loading for="tags" value="{{ __('Loading...') }}" />
                 <div wire:ignore>
 
@@ -94,22 +94,22 @@
 
                 <x-jet-dialog-modal wire:model="modalVisible">
                     <x-slot name="title">
-                        {{ __('Add a new skill to Timebank.cc') }}
+                        {{ __('Add a new activity or skill to Timebank.cc') }}
                     </x-slot>
 
                     <x-slot name="content">
 
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-input label="Skill title *" placeholder="Accurate and unique title of this skill"
+                            <x-input label="Activity tag *" placeholder="Accurate and unique name for this activity, avoid vague or general keywords"
                                 wire:model.lazy="newTag.name" />
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
                             <x-input label="Descriptive example *"
-                                placeholder="Give an example that illustrates this skill"
+                                placeholder="Give a practical example that illustrates this activity"
                                 wire:model.lazy="newTag.example" />
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-checkbox id="right-label" label="This example matches exactly the skill title *"
+                            <x-checkbox id="right-label" label="This example matches exactly the Activity tag *"
                                 wire:model="newTag.check" />
                         </div>
 
@@ -122,7 +122,7 @@
                         @if (app()->getLocale() != config('timebank-cc.base_language'))
                             <div class="mt-6 grid grid-cols-1 gap-6">
                                 <x-checkbox id="checkbox"
-                                    label="{{ __('Attach an English translation to this skill') }}"
+                                    label="{{ __('Attach an English translation to this tag') }}"
                                     wire:model="translationVisible" />
                             </div>
 
@@ -134,7 +134,7 @@
                             <div>
                                 @if ($translationVisible)
                                     <hr class="border-t border-gray-200" py-12 />
-                                    <x-radio id="radio-0" label="{{ __('Attach an existing skill in English') }}"
+                                    <x-radio id="radio-0" label="{{ __('Attach an existing Activity tag in English') }}"
                                         wire:model="translateRadioButton" value="select" />
                                     <div id='select-translation'
                                         class="my-6 grid grid-cols-1 gap-6 pl-6 md:grid-cols-2">
@@ -148,19 +148,19 @@
                                         </div>
                                     </div>
                                     <hr class="border-t border-gray-200" py-12 />
-                                    <x-radio id="radio-1" label="{{ __('Create a new skill in English') }}"
+                                    <x-radio id="radio-1" label="{{ __('Create a new Activity in English') }}"
                                         wire:model="translateRadioButton" value="input" />
                                     <div id="input-translation">
                                         <div class="my-6 grid grid-cols-1 gap-6 pl-6">
                                             <x-input label=""
-                                                placeholder="{{ $newTag ? $newTag['name'] : __('Skill title') }} {{ __('in English') }}"
+                                                placeholder="{{ $newTag ? $newTag['name'] : __('Activity tag') }} {{ __('in English') }}"
                                                 wire:model.lazy="inputTagTranslation.name" wire:key="nameInput"
                                                 :disabled="$inputDisabled" />
                                         </div>
 
                                         <div class="mt-6 grid grid-cols-1 gap-6 pl-6">
                                             <x-input label="{{ __('Descriptive example in English') }}"
-                                                placeholder="{{ __('Give an example in English that illustrates') }} {{ $newTag ? $newTag['name'] : __('this skill') }}"
+                                                placeholder="{{ __('Give a practical example that illustrates this activity') }} {{ $newTag ? $newTag['name'] : __('this skill') }}"
                                                 disabled=false wire:model.lazy="inputTagTranslation.example"
                                                 wire:key="exampleInput" :disabled="$inputDisabled" />
                                         </div>

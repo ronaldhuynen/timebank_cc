@@ -24,6 +24,7 @@ class MigrateCyclosProfilesCommand extends Command
         // Or define database name
         $sourceDb = 'timebank_2024_06_11';
         $destinationDb = env('DB_DATABASE');
+        $cyclos_skillsDb = 'timebank_cyclos_skills';
 
 
 
@@ -57,7 +58,7 @@ class MigrateCyclosProfilesCommand extends Command
 
 
 
-        
+
         // Migrate locations
 
         $countryCodeMap = [
@@ -131,16 +132,16 @@ class MigrateCyclosProfilesCommand extends Command
             DB::beginTransaction();
             try {
                 $affectedRows = DB::affectingStatement("
-                                                UPDATE `{$destinationDb}`.`{$tableName}` dest
-                                                JOIN (
-                                                    SELECT 
-                                                        c.member_id,
-                                                        c.string_value AS website 
-                                                    FROM `{$sourceDb}`.`custom_field_values` c
-                                                    WHERE c.field_id = 10
-                                                ) src ON dest.cyclos_id = src.member_id
-                                                SET dest.website = src.website
-                                            ");
+                    UPDATE `{$destinationDb}`.`{$tableName}` dest
+                    JOIN (
+                        SELECT 
+                            c.member_id,
+                            c.string_value AS website 
+                        FROM `{$sourceDb}`.`custom_field_values` c
+                        WHERE c.field_id = 10
+                    ) src ON dest.cyclos_id = src.member_id
+                    SET dest.website = src.website
+                ");
                 DB::commit();
                 $this->info(ucfirst($tableName) . " website field updated for $affectedRows records");
             } catch (\Exception $e) {
@@ -156,16 +157,16 @@ class MigrateCyclosProfilesCommand extends Command
             DB::beginTransaction();
             try {
                 $affectedRows = DB::affectingStatement("
-                                                        UPDATE `{$destinationDb}`.`{$tableName}` dest
-                                                        JOIN (
-                                                            SELECT 
-                                                                c.member_id,
-                                                                c.string_value AS motivation 
-                                                            FROM `{$sourceDb}`.`custom_field_values` c
-                                                            WHERE c.field_id = 35
-                                                        ) src ON dest.cyclos_id = src.member_id
-                                                        SET dest.motivation = src.motivation
-                                                    ");
+                    UPDATE `{$destinationDb}`.`{$tableName}` dest
+                    JOIN (
+                        SELECT 
+                            c.member_id,
+                            c.string_value AS motivation 
+                        FROM `{$sourceDb}`.`custom_field_values` c
+                        WHERE c.field_id = 35
+                    ) src ON dest.cyclos_id = src.member_id
+                    SET dest.motivation = src.motivation
+                ");
                 DB::commit();
                 $this->info(ucfirst($tableName) . " motivation field updated for $affectedRows records");
             } catch (\Exception $e) {
@@ -182,16 +183,16 @@ class MigrateCyclosProfilesCommand extends Command
             DB::beginTransaction();
             try {
                 $affectedRows = DB::affectingStatement("
-                        UPDATE `{$destinationDb}`.`{$tableName}` dest
-                        JOIN (
-                            SELECT 
-                                c.member_id,
-                                STR_TO_DATE(REPLACE(c.string_value, '/', '-'), '%d-%m-%Y') AS birthday
-                            FROM `{$sourceDb}`.`custom_field_values` c
-                            WHERE c.field_id = 1
-                        ) src ON dest.cyclos_id = src.member_id
-                        SET dest.date_of_birth = src.birthday
-                    ");
+                    UPDATE `{$destinationDb}`.`{$tableName}` dest
+                    JOIN (
+                        SELECT 
+                            c.member_id,
+                            STR_TO_DATE(REPLACE(c.string_value, '/', '-'), '%d-%m-%Y') AS birthday
+                        FROM `{$sourceDb}`.`custom_field_values` c
+                        WHERE c.field_id = 1
+                    ) src ON dest.cyclos_id = src.member_id
+                    SET dest.date_of_birth = src.birthday
+                ");
                 DB::commit();
                 $this->info(ucfirst($tableName) . " birthday field updated for $affectedRows records");
             } catch (\Exception $e) {
@@ -200,10 +201,50 @@ class MigrateCyclosProfilesCommand extends Command
             }
         }
 
+
+
+
+
+        // Mirgrate Cyclos skills from refined database
+
+
+        DB::beginTransaction();
+        try {
+            $affectedRows = DB::affectingStatement("
+                INSERT INTO `{$destinationDb}`.`cyclos_skills` (`id`, `field_id`, `string_value`, `member_id`, `lang`)
+                SELECT `id`, 
+                    `field_id`,
+                    CASE 
+                        WHEN CHAR_LENGTH(`string_value`) > 300 THEN CONCAT(LEFT(`string_value`, 297), '...')
+                        ELSE `string_value`
+                    END as `string_value`,
+                    `member_id`,
+                    `lang`
+                FROM `{$cyclos_skillsDb}`.`cyclos_skills`
+            ");
+            DB::commit();
+            $this->info("Cyclos skills table content copied for $affectedRows records");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->error("Cyclos skills table content migration failed: " . $e->getMessage());
+        }
+
+
+
+
     }
 
 
+    // Set suspicious robot members to inactive
 
+    // 1755
+    // 1768
+    // 1776
+    // 1777
+
+    // // copy long skill tags
+    // Check if user.about is null, if true, copy skill tags where length > 50 to user.about
+    // if user.about <> null, copy skill tags where length > 50 to about_short or update this field
 
 
 

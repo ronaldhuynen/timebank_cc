@@ -66,6 +66,7 @@ class TestUserSeeder extends Seeder
                 ->has(Location::factory()->state(['city_id' => 305, 'division_id' => 12, 'country_id' => 1]))
                 ->create([
                     'name' => 'Timebank.cc Den Haag',
+                    'full_name' => 'Timebank.cc Den Haag',
                     'email' => 'tb-den-haag@test.nl',
                     'profile_photo_path' => 'profile-photos/RMawhGXxED1wNNJDEJ7pVbBdg07LGKPAyhGL3npH.png',
                     ]);

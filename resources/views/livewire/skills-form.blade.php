@@ -157,7 +157,7 @@
                                         </div>
 
                                         <div class="mt-6 grid grid-cols-1 gap-6 pl-6">
-                                            <x-input :disabled="$inputDisabled" disabled=false
+                                            <x-input :disabled="$inputDisabled" label=""
                                                      label="{{ __('Descriptive example in English') }}"
                                                      placeholder="{{ __('Give a practical example that clearly illustrates this activity') }} {{ $newTag ? $newTag['name'] : __('this skill') }}"
                                                      wire:key="exampleInput"

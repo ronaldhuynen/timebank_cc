@@ -43,20 +43,50 @@ class SkillsForm extends Component
     public $inputDisabled = true;
     public $translateRadioButton = false;
 
+    public $baseLanguageOk = null;
+    public $sessionLanguageOk = null;
+
+    protected $langDetector = null;
     protected $listeners = ['save', 'cancelCreateTag'];
+
 
     protected function rules()
     {
         return [
             'newTagsArray' => 'array',
             'newTag' => 'array',
-            'newTag.name' => 'sometimes|required|string|min:3|max:80',
+            'newTag.name' => Rule::when(
+                function ($input) {
+                    // Check if newTag is not an empty array
+                    return count($input['newTag']) > 0;
+                },
+                [    'sometimes', 'required', 'string', 'min:3', 'max:80',
+                    function ($attribute, $value, $fail) {
+                        if ($this->sessionLanguageOk !== true) {
+
+                            $currentLocale = app()->getLocale();
+                            $locale = \Locale::getDisplayName($currentLocale, $currentLocale);
+                            $fail(__('We can not detect that this is in :locale, please modify.', ['locale' => $locale]));
+                        }
+                    },
+                ]
+            ),
             'newTag.example' => Rule::when(
                 function ($input) {
                     // Check if newTag is not an empty array
                     return count($input['newTag']) > 0;
                 },
-                ['required', 'string','min:10', 'max:100']
+                [
+                    'required', 'string', 'min:10', 'max:100',
+                    function ($attribute, $value, $fail) {
+                        if ($this->sessionLanguageOk !== true) {
+
+                            $currentLocale = app()->getLocale();
+                            $locale = \Locale::getDisplayName($currentLocale, $currentLocale);
+                            $fail(__('We can not detect that this is in :locale, please modify.', ['locale' => $locale]));
+                        }
+                    },
+                ]
             ),
             'newTag.check' => Rule::when(
                 function ($input) {
@@ -85,15 +115,41 @@ class SkillsForm extends Component
                     // Check if existing tag translation is selected
                     return ($this->translationVisible === true && $this->translateRadioButton == 'input');
                 },
-                ['required', 'string', 'min:3', 'max:80']
+                [
+                    'required', 'string', 'min:3', 'max:80',
+                    function ($attribute, $value, $fail) {
+                        if ($this->baseLanguageOk !== true) {
+                            $baseLocale = config('timebank-cc.base_language');
+                            $currentLocale = app()->getLocale();
+                            $locale = \Locale::getDisplayName($baseLocale, $currentLocale);
+                            // If baseLanguageOk is not true, fail the validation for this field
+                            $fail(__('We can not detect that this is in :locale , please modify', ['locale' => $locale]));
+                        }
+                    },
+
+                ]
             ),
             'inputTagTranslation.example' => Rule::when(
                 function ($input) {
                     // Check if existing tag translation is selected
                     return ($this->translationVisible === true && $this->translateRadioButton == 'input');
                 },
-                ['required', 'string', 'min:10', 'max:100']
+                [
+                    'required', 'string', 'min:10', 'max:100',
+                    function ($attribute, $value, $fail) {
+                        if ($this->baseLanguageOk !== true) {
+                            $baseLocale = config('timebank-cc.base_language');
+                            $currentLocale = app()->getLocale();
+                            $locale = \Locale::getDisplayName($baseLocale, $currentLocale);
+                            // If baseLanguageOk is not true, fail the validation for this field
+                            $fail(__('We can not detect that this is in :locale , please modify', ['locale' => $locale]));
+                        }
+                    },
+
+
+                ]
             ),
+
         ];
     }
 
@@ -129,11 +185,11 @@ class SkillsForm extends Component
                 'category' => $item['category'],
                 'category_path' =>  $item['category_path'],
                 'category_color' =>  $item['category_color'],
-                'title' =>  $item['category_path'] ,     // 'title' is used by Tagify script for text that shows on hover
+                'title' =>  $item['category_path'],     // 'title' is used by Tagify script for text that shows on hover
                 'style' =>  '--tag-bg:' . tailwindColorToHex($item['category_color'] . '-300') .
                     '; --tag-text-color:#111827' . // #111827 is gray-900
                     '; --tag-hover:' . tailwindColorToHex($item['category_color'] . '-200'),   // 'style' is used by Tagify script for background color, tailwindColorToHex is a helper function in app/Helpers/StyleHelper.php
-               ];
+            ];
         });
 
         $tags = $tags->sortBy('category_color')->values();
@@ -143,9 +199,17 @@ class SkillsForm extends Component
         $this->tagsArray = json_encode($tags->toArray());
 
         $this->dispatchBrowserEvent('load');
-
     }
 
+
+    protected function getLanguageDetector()
+    {
+        if (!$this->langDetector) {
+            $this->langDetector = new \Text_LanguageDetect();
+            $this->langDetector->setNameMode(2); // iso language code with 2 characters
+        }
+        return $this->langDetector;
+    }
 
 
     public function updatedNewTagName()
@@ -153,9 +217,6 @@ class SkillsForm extends Component
         $this->resetErrorBag('newTag.name');
         $this->newTagsArray = $this->initTagsArray;
         $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
-
-        ds($this->newTag);
-        ds($this->newTagsArray);
     }
 
 
@@ -163,6 +224,14 @@ class SkillsForm extends Component
     {
         $this->resetErrorBag('newTag.example');
         $this->newTag['example'] = StringHelper::DutchTitleCase($this->newTag['example']);
+
+        $langDetector = $this->getLanguageDetector();
+        $detectedLanguage = $langDetector->detectSimple($this->newTag['name'] . ' ' . $this->newTag['example']);
+        if ($detectedLanguage === session('locale')) {
+            $this->sessionLanguageOk = true;
+        } else {
+            $this->sessionLanguageOk = false;
+        }
 
         if (app()->getLocale() != config('timebank-cc.base_language')) {
             $this->translationVisible = true;
@@ -178,6 +247,7 @@ class SkillsForm extends Component
     public function updatedInputTagTranslationName()
     {
         $this->resetErrorBag('inputTagTranslation.name');
+        $this->resetErrorBag('inputTagTranslation.name');
         $this->inputTagTranslation['name'] = StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
     }
 
@@ -185,6 +255,15 @@ class SkillsForm extends Component
     public function updatedInputTagTranslationExample()
     {
         $this->resetErrorBag('inputTagTranslation.example');
+
+        $langDetector = $this->getLanguageDetector();
+        $detectedLanguage = $langDetector->detectSimple($this->inputTagTranslation['name'] . ' ' . $this->inputTagTranslation['example']);
+        if ($detectedLanguage === config('timebank-cc.base_language')) {
+            $this->baseLanguageOk = true;
+        } else {
+            $this->baseLanguageOk = false;
+        }
+
         $this->inputTagTranslation['example'] = StringHelper::DutchTitleCase($this->inputTagTranslation['example']);
     }
 
@@ -237,7 +316,6 @@ class SkillsForm extends Component
                 ->sortBy('name')->values();
 
             $this->modalVisible = true;
-
         } else {
             $newEntries = false;
         }
@@ -293,36 +371,35 @@ class SkillsForm extends Component
                 'locale',
                 'contexts'
             ])
-            ->whereHas('locale', function ($query) use ($locale) {
-                $query->whereIn('locale', [$locale]);
-            })
-            ->whereHas('contexts', function ($query) use ($related) {
-                $query->whereIn('category_id', $related);
-            })
-            ->pluck('normalized', 'tag_id')
-            ->map(function ($name, $index) {
-                return [
-                    'tag_id' => $index,
-                    'name' => StringHelper::DutchTitleCase($name)
-                ];
-            })->sortBy('name')->values();
-
+                ->whereHas('locale', function ($query) use ($locale) {
+                    $query->whereIn('locale', [$locale]);
+                })
+                ->whereHas('contexts', function ($query) use ($related) {
+                    $query->whereIn('category_id', $related);
+                })
+                ->pluck('normalized', 'tag_id')
+                ->map(function ($name, $index) {
+                    return [
+                        'tag_id' => $index,
+                        'name' => StringHelper::DutchTitleCase($name)
+                    ];
+                })->sortBy('name')->values();
         } else {
             // No category is selected: suggest all tags in $locale language
             $suggestions = Tag::with([
                 'locale',
                 'contexts'
             ])
-            ->whereHas('locale', function ($query) use ($locale) {
-                $query->where('locale', $locale);
-            })
-            ->pluck('normalized', 'tag_id')
-            ->map(function ($name, $index) {
-                return [
-                    'tag_id' => $index,
-                    'name' => StringHelper::DutchTitleCase($name)
-                ];
-            })->sortBy('name')->values();
+                ->whereHas('locale', function ($query) use ($locale) {
+                    $query->where('locale', $locale);
+                })
+                ->pluck('normalized', 'tag_id')
+                ->map(function ($name, $index) {
+                    return [
+                        'tag_id' => $index,
+                        'name' => StringHelper::DutchTitleCase($name)
+                    ];
+                })->sortBy('name')->values();
         }
         return $suggestions;
     }
@@ -361,7 +438,7 @@ class SkillsForm extends Component
         $context = [
             'category_id' => $this->newTagCategory,
             'updated_by_user' => auth()->user()->id
-            ];
+        ];
 
 
         if ($this->translateRadioButton === 'select') {
@@ -370,7 +447,6 @@ class SkillsForm extends Component
             // Note that the category_id and updated_by_user is not updated when selecting an existing context!
             $tagContext = Tag::find($this->selectTagTranslation)->contexts()->first();
             $tag->contexts()->attach($tagContext->id);
-
         } elseif ($this->translateRadioButton === 'input') {
 
             // Create a new context for the new tag
@@ -384,13 +460,12 @@ class SkillsForm extends Component
             $locale = [
                 'example' => $this->inputTagTranslation['example'],
                 'locale' => config('timebank-cc.base_language'),
-                ];
+            ];
             $tagTranslationLocale = $tagTranslation->locale()->update($locale);
 
             // Attach the context to the new tag and the translation
             $tag->contexts()->attach($tagContext->id);
             $tagTranslation->contexts()->attach($tagContext->id);
-
         } else {
 
             // Create a new context for the new tag without translation
@@ -456,7 +531,7 @@ class SkillsForm extends Component
 
                         // WireUI notification
                         $this->notification()->success(
-                            $title = __('Your have updated your skills successfully!'),
+                            $title = __('Your have updated your profile successfully!'),
                         );
                     });
                     // end of transaction
@@ -466,10 +541,10 @@ class SkillsForm extends Component
                     // WireUI notification
                     // TODO!: create event to send error notification to admin
                     $this->notification([
-                    'title' => __('Update failed!'),
-                    'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
-                    'icon' => 'error',
-                    'timeout' => 100000
+                        'title' => __('Update failed!'),
+                        'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
+                        'icon' => 'error',
+                        'timeout' => 100000
                     ]);
                 }
             }
@@ -484,7 +559,6 @@ class SkillsForm extends Component
         $this->newTagCategory = null;
         $this->mount();
         $this->dispatchBrowserEvent('tagifyChange', ['tagsArray' => $this->tagsArray]);
-
     }
 
 
@@ -493,8 +567,8 @@ class SkillsForm extends Component
         //  Remove cached skills for all supported locales of the active profile type.
         $localization = new LaravelLocalization();
         $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));  // Get the profile type (user / organization) from the session and convert to lowercase
-        foreach(collect($localization->getSupportedLocales())->keys() as $locale) {
-            Cache::forget('skills-'. $profileType . '-' . auth()->id() . '-lang-' . $locale);
+        foreach (collect($localization->getSupportedLocales())->keys() as $locale) {
+            Cache::forget('skills-' . $profileType . '-' . auth()->id() . '-lang-' . $locale);
         }
     }
 
@@ -503,7 +577,7 @@ class SkillsForm extends Component
     {
         $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType')))); // Get the profile type (user / organization) from the session and convert to lowercase
 
-        $skillsCache = Cache::remember('skills-'. $profileType . '-' . session('activeProfileId') . '-lang-' . app()->getLocale(), now()->addDays(7), function () { // remember cache for 7 days
+        $skillsCache = Cache::remember('skills-' . $profileType . '-' . session('activeProfileId') . '-lang-' . app()->getLocale(), now()->addDays(7), function () { // remember cache for 7 days
             $tagIds = session('activeProfileType')::find(session('activeProfileId'))->tags->pluck('tag_id');
             $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
             $skills = $translatedTags->map(function ($item, $key) {

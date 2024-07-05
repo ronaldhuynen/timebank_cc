@@ -98,17 +98,17 @@
                     <x-slot name="content">
 
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-input label="Activity tag name *"
-                                     placeholder="Accurate and unique name for this activity, avoid vague or general keywords"
+                            <x-input label="{{ __('Activity tag name')}} *"
+                                     placeholder="{{ __('Accurate and unique name for this activity, avoid vague or general keywords')}}"
                                      wire:model.lazy="newTag.name" />
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-input label="Descriptive example *"
-                                     placeholder="Give a practical example that clearly illustrates this activity"
+                            <x-input label="{{ __('Descriptive example')}} *"
+                                     placeholder="{{ __('Give a practical example that clearly illustrates this activity')}}"
                                      wire:model.lazy="newTag.example" />
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-checkbox id="right-label" label="This example matches exactly the Activity tag *"
+                            <x-checkbox id="right-label" label="{{ __('This example matches exactly the Activity tag')}} *"
                                         wire:model="newTag.check" />
                         </div>
 
@@ -120,7 +120,7 @@
                         @if (app()->getLocale() != config('timebank-cc.base_language'))
                             <div class="mt-6 grid grid-cols-1 gap-6">
                                 <x-checkbox id="checkbox"
-                                            label="{{ __('Attach an English translation to this tag') }}"
+                                            label="{{ __('Attach an ' . config('timebank-cc.base_language_name') . ' translation to this tag') }}"
                                             wire:model="translationVisible" />
                             </div>
 
@@ -133,7 +133,7 @@
                                 @if ($translationVisible)
                                     <hr class="border-t border-gray-200" py-12 />
                                     <x-radio id="radio-0"
-                                             label="{{ __('Attach an existing Activity tag in English') }}"
+                                             label="{{ __('Select an existing Activity tag in ' . config('timebank-cc.base_language_name')) }}"
                                              value="select" wire:model="translateRadioButton" />
                                     <div class="my-6 grid grid-cols-1 gap-6 pl-6 md:grid-cols-2"
                                          id='select-translation'>
@@ -147,12 +147,12 @@
                                         </div>
                                     </div>
                                     <hr class="border-t border-gray-200" py-12 />
-                                    <x-radio id="radio-1" label="{{ __('Create a new Activity in English') }}"
+                                    <x-radio id="radio-1" label="{{ __('Create a new Activity in ' . config('timebank-cc.base_language_name')) }}"
                                              value="input" wire:model="translateRadioButton" />
                                     <div id="input-translation">
                                         <div class="my-6 grid grid-cols-1 gap-6 pl-6">
                                             <x-input :disabled="$inputDisabled" label=""
-                                                     placeholder="{{ $newTag ? $newTag['name'] : __('Activity tag name') }} {{ __('in English') }}"
+                                                     placeholder="{{ $newTag ? $newTag['name'] : __('Activity tag name in ' . config('timebank-cc.base_language_name')) }}"
                                                      wire:key="nameInput" wire:model.lazy="inputTagTranslation.name" />
                                         </div>
 

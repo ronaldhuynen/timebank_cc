@@ -123,7 +123,7 @@ class SkillsForm extends Component
                             $currentLocale = app()->getLocale();
                             $locale = \Locale::getDisplayName($baseLocale, $currentLocale);
                             // If baseLanguageOk is not true, fail the validation for this field
-                            $fail(__('We can not detect that this is in :locale , please modify', ['locale' => $locale]));
+                            $fail(__('We can not detect that this is in :locale , please modify.', ['locale' => $locale]));
                         }
                     },
 
@@ -142,7 +142,7 @@ class SkillsForm extends Component
                             $currentLocale = app()->getLocale();
                             $locale = \Locale::getDisplayName($baseLocale, $currentLocale);
                             // If baseLanguageOk is not true, fail the validation for this field
-                            $fail(__('We can not detect that this is in :locale , please modify', ['locale' => $locale]));
+                            $fail(__('We can not detect that this is in :locale , please modify.', ['locale' => $locale]));
                         }
                     },
 
@@ -407,6 +407,7 @@ class SkillsForm extends Component
 
     public function cancelCreateTag()
     {
+        $this->resetErrorBag();
         $this->newTag = null;
         $this->newTagCategory = null;
         $this->translationVisible = false;

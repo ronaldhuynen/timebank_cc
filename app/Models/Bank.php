@@ -15,6 +15,7 @@ use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
@@ -38,6 +39,22 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
     public function locations()
     {
         return $this->morphMany(Location::class, 'locatable');
+    }
+
+
+    
+    /**
+     * Check if the bank has any associated accounts.
+     *
+     * @return bool Returns true if the user has accounts, false otherwise.
+     */
+    public function hasAccounts()
+    {        
+        $accountsExists = DB::table('accounts')
+                            ->where('accountable_id', $this->id)
+                            ->where('accountable_type', 'App\Models\User')
+                            ->exists();
+        return $accountsExists;
     }
 
 

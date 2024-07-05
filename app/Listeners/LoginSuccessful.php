@@ -35,11 +35,13 @@ class LoginSuccessful
 
         Session::flash('login-success', 'Hello ' . $event->user->name . ', welcome back!');
 
+        // Set session properties
         Session([
                 'activeProfileType' => User::class,
                 'activeProfileId' => $user->id,
                 'activeProfileName' => $user->name,
-                'activeProfilePhoto' => $user->profile_photo_path
+                'activeProfilePhoto' => $user->profile_photo_path,
+                'activeProfileAccounts' => User::find($user->id)->accounts()->pluck('id')->toArray()
             ]);
 
         $activeProfile = [

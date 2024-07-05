@@ -55,14 +55,16 @@ class SelectOrganization extends Component
                 'activeProfileType' => Organization::class,
                 'activeProfileId' => $organizationId,
                 'activeProfileName' => $this->userOrganizations[$organizationId - 1]['name'],
-                'activeProfilePhoto' => $this->userOrganizations[$organizationId - 1]['photo']
+                'activeProfilePhoto' => $this->userOrganizations[$organizationId - 1]['photo'],
+                'activeProfileAccounts' => Organization::find($organizationId)->accounts()->pluck('id')->toArray()
             ]);
         } else {
             Session([
                 'activeProfileType' => User::class,
                 'activeProfileId' => Auth::user()->id,
                 'activeProfileName' => $this->user->name,
-                'activeProfilePhoto' => $this->user->profile_photo_path
+                'activeProfilePhoto' => $this->user->profile_photo_path,
+                'activeProfileAccounts' => User::find($this->user->id)->accounts()->pluck('id')->toArray()
             ]);
         }
         $activeProfile = [

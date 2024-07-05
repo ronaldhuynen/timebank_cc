@@ -13,6 +13,17 @@
     "German": "Duits",
     "Spanish": "Spaans",
 
+    "Add a new activity or skill to Timebank.cc": "Voeg een nieuwe activiteit of vaardigheid toe aan Timebak.cc",
+    "Accurate and unique name for this activity, avoid vague or general keywords": "Exacte en unieke naam voor deze activiteit, vermijd vage of algemene sleutelwoorden",
+    "Activity tag name": "Activiteit label",
+    "Descriptive example": "Beschrijvend voorbeeld",
+    "Give a practical example that clearly illustrates this activity": "Geef een praktisch voorbeeld dat duidelijk deze activiteit beschrijft",
+    "Attach an English translation to this tag": "Koppel een Engelse vertaling aan dit label",
+    "Select an existing Activity tag in English": "Selecteer een bestaande activiteit-label in het Engels",
+    "Activity tag name in English": "Activity tag label in het Engels",
+    "Please confirm: this example matches exactly the Activity tag": "Controleer: dit voorbeeld komt exact overeen met het activiteit-label",
+    "Descriptive example in English": "Beschrijvend voorbeeld in het Engels",
+
     "good": "goed",
     "limited": "beperkt",
 
@@ -61,6 +72,9 @@
     "What language(s) do you speak?": "Welke taal of talen spreek je?",
     "What language(s) does your organisation use?": "Welke taal of talen gebruikt jullie organsatie?",
     "Select (multiple) languages": "Selecteer (meerdere) talen",
+
+    "Select a category": "Selecteer een categorie",
+    "Select a translation": "Selecteer een vertaling",
 
 
     "Why I am a Timbanker": "Waarom ik een Timebanker ben",

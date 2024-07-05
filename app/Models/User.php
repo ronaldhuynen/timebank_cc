@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -229,6 +230,24 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         return $this->morphMany(Account::class, 'accountable');
     }
 
+
+
+    /**
+     * Check if the user has any associated accounts.
+     *
+     * @return bool Returns true if the user has accounts, false otherwise.
+     */
+    public function hasAccounts()
+    {        
+        $accountsExists = DB::table('accounts')
+                            ->where('accountable_id', $this->id)
+                            ->where('accountable_type', 'App\Models\User')
+                            ->exists();
+        return $accountsExists;
+    }
+
+
+    
     /**
      * Get all related languages of the user.
      * Many-to-many polymorphic.

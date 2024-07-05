@@ -69,6 +69,7 @@ class TestUserSeeder extends Seeder
                     'full_name' => 'Timebank.cc Den Haag',
                     'email' => 'tb-den-haag@test.nl',
                     'profile_photo_path' => 'profile-photos/RMawhGXxED1wNNJDEJ7pVbBdg07LGKPAyhGL3npH.png',
+                    'password' => bcrypt('password'),
                     ]);
 
             $org2 = Organization::factory()
@@ -92,6 +93,7 @@ class TestUserSeeder extends Seeder
                     'name' => 'Lekkernassuh',
                     'email' => 'lekkernassuh@test.nl',
                     'profile_photo_path' => 'profile-photos/hWcYqfdquJW7QiPnyuUtdFsrldykLFZPbR6H4qwF.jpg',
+                    'password' => bcrypt('password'),
                     ]);
 
             DB::table('organization_user')->insert([

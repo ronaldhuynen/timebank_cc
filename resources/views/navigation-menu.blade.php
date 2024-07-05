@@ -15,9 +15,15 @@
                 <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('transfer') }}" :active="request()->routeIs('transfer')">
-                    {{ __('Payments') }}
-                </x-jet-nav-link>
+    
+                <!-- Only if activeProfile has any accounts -->
+                @if ( session('activeProfileAccounts') )
+                        <x-jet-nav-link href="{{ route('transfer') }}" :active="request()->routeIs('transfer')">
+                            {{ __('Payments') }}
+                        </x-jet-nav-link>
+                @endif
+
+
                 <x-jet-nav-link href="{{ route('user.edit') }}" :active="request()->routeIs('user.edit')">
                     {{ __('Commons') }}
                 </x-jet-nav-link>

@@ -4,13 +4,13 @@
 
             <!-- Skills -->
             <div>
-                <x-jet-label for="tags" value="{{ __('Activities or skills you offer to other Timebankers') }}"
-                             wire:loading.remove />
+                <x-label for="tags" value="{{ __('Activities or skills you offer to other Timebankers') }}"
+                         wire:loading.remove />
                 <x-jet-label for="tags" value="{{ __('Loading...') }}" wire:loading />
                 <div wire:ignore>
 
-                    <input id="tags" placeholder="{{ __('Select or create a new tag title') }}" type="text"
-                           value="{{ $tagsArray }}" wire:ignore x-data="{ input: @entangle('tagsArray') }" x-init=" tagify = new Tagify($refs.input, {
+      <input id="tags" placeholder="{{ __('Select or create a new tag title') }}" type="text"
+       :value="JSON.stringify(@json($tagsArray))" wire:ignore x-data="{ input: @entangle('tagsArray') }" x-init="tagify = new Tagify($refs.input, {
                                 pattern: /^.{3,80}$/, // max 80 characters, make sure also vaidation rule in Model is equally set
                                 maxTags: 40,
                                 autocapitalize: true,
@@ -26,17 +26,7 @@
                                     closeOnSelect: false, // don't hide the dropdown when an item is selected
                                     highlightFirst: true, // hightlight / suggest best match
                                 },
-                                {{-- texts: {
-                        empty      : "empty!",
-                        exceed     : "number of tags exceeded!",
-                        pattern    : "pattern mismatch!",
-                        duplicate  : "already exists!",
-                        notAllowed : "not allowed!"
-                    } --}}
                             });
-                           
-                           
-                           
                             tagify.on('dblclick', onChange)
                            
                             function onChange(e) {
@@ -56,7 +46,6 @@
                            
                             function onLoaded(e) {
                                 tagify.loading(true)
-                           
                                 //document.querySelector('.tagify__input').focus()
                                 onChange(e)
                                 {{-- console.log('blur') --}}
@@ -68,7 +57,8 @@
                             window.addEventListener('load', onLoaded);
                             window.addEventListener('cancelCreateTag', onCancel);
                             window.addEventListener('backdrop-click', onBackdropClick);"
-                           x-ref="input">
+                               x-ref="input"
+                           :value="JSON.stringify(initData)">
 
                 </div>
 
@@ -98,17 +88,18 @@
                     <x-slot name="content">
 
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-input label="{{ __('Activity tag name')}} *"
-                                     placeholder="{{ __('Accurate and unique name for this activity, avoid vague or general keywords')}}"
+                            <x-input label="{{ __('Activity tag name') }} *"
+                                     placeholder="{{ __('Accurate and unique name for this activity, avoid vague or general keywords') }}"
                                      wire:model.lazy="newTag.name" />
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-input label="{{ __('Descriptive example')}} *"
-                                     placeholder="{{ __('Give a practical example that clearly illustrates this activity')}}"
+                            <x-input label="{{ __('Descriptive example') }} *"
+                                     placeholder="{{ __('Give a practical example that clearly illustrates this activity') }}"
                                      wire:model.lazy="newTag.example" />
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-checkbox id="right-label" label="{{ __('This example matches exactly the Activity tag')}} *"
+                            <x-checkbox id="right-label"
+                                        label="{{ __('This example matches exactly the Activity tag') }} *"
                                         wire:model="newTag.check" />
                         </div>
 
@@ -147,20 +138,21 @@
                                         </div>
                                     </div>
                                     <hr class="border-t border-gray-200" py-12 />
-                                    <x-radio id="radio-1" label="{{ __('Create a new Activity in ' . config('timebank-cc.base_language_name')) }}"
+                                    <x-radio id="radio-1"
+                                             label="{{ __('Or create a new Activity tag in ' . config('timebank-cc.base_language_name')) }}"
                                              value="input" wire:model="translateRadioButton" />
                                     <div id="input-translation">
                                         <div class="my-6 grid grid-cols-1 gap-6 pl-6">
-                                            <x-input :disabled="$inputDisabled" label=""
-                                                     placeholder="{{ $newTag ? $newTag['name'] : __('Activity tag name in ' . config('timebank-cc.base_language_name')) }}"
-                                                     wire:key="nameInput" wire:model.lazy="inputTagTranslation.name" />
+                                            <x-input :disabled="$inputDisabled"
+                                             placeholder="'{{ $newTag['name'] . '\' ' . __('in') . ' ' . config('timebank-cc.base_language_name') ?? __('Activity tag name in') . ' ' . config('timebank-cc.base_language_name') }}"                                                     
+                                             wire:key="nameInput" wire:model.lazy="inputTagTranslation.name" />
                                         </div>
 
                                         <div class="mt-6 grid grid-cols-1 gap-6 pl-6">
                                             <x-input :disabled="$inputDisabled" label=""
                                                      label="{{ __('Descriptive example in English') }}"
-                                                     placeholder="{{ __('Give a practical example that clearly illustrates this activity') }} {{ $newTag ? $newTag['name'] : __('this skill') }}"
-                                                     wire:key="exampleInput"
+                                                     placeholder="{{ __('Give a practical example that clearly illustrates') }} {{ $inputTagTranslation['name'] ?? __('this activity') }} "
+                                                     wire:key="translationExample"
                                                      wire:model.lazy="inputTagTranslation.example" />
                                         </div>
                                     </div>
@@ -188,6 +180,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+
 
             window.livewire.on('disableSelect', () => {
                 document.getElementById('select-translation').style.opacity = '0.4';

@@ -1,4 +1,4 @@
-<x-form-section submit="saveTags">
+<x-jet-form-section submit="saveTags">
     <x-slot name="title">
         {{ __('Activies you share on Timebank.cc') }}
     </x-slot>
@@ -10,6 +10,10 @@
 
     <x-slot name="form">
         </div>
+        {{-- TODO: fix this ungly hack: skills-form need to be loaded twice to function properly in update-profile views
+        <div class="hidden">
+        @livewire('skills-form')
+        </div> --}}
         @livewire('skills-form')
     </x-slot>
-</x-form-section>
+</x-jet-form-section>

@@ -12,8 +12,6 @@
                                            </div>
             <div>
              @livewire('skills-form')
-
-                {{-- @livewire('main-search-bar') --}}
             </div>
         </div>
     </div>

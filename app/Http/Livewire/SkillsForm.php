@@ -198,7 +198,7 @@ class SkillsForm extends Component
 
         $this->tagsArray = json_encode($tags->toArray());
 
-        $this->dispatchBrowserEvent('load');
+        // $this->dispatchBrowserEvent('load');
     }
 
 
@@ -240,6 +240,7 @@ class SkillsForm extends Component
 
     public function updatedNewTagCategory()
     {
+        $this->selectTagTranslation = [];  
         // Suggest related tags in base language (English) and possibly based on the category of the new tag
         $this->translationOptions = $this->relatedTag($this->newTagCategory, config('timebank-cc.base_language'));
     }
@@ -408,6 +409,7 @@ class SkillsForm extends Component
     public function cancelCreateTag()
     {
         $this->resetErrorBag();
+
         $this->newTag = null;
         $this->newTagCategory = null;
         $this->translationVisible = false;
@@ -484,6 +486,7 @@ class SkillsForm extends Component
 
         $this->modalVisible = false;
         $this->save();
+        $this->reset();
     }
 
 

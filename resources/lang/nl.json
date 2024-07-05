@@ -18,11 +18,13 @@
     "Activity tag name": "Activiteit label",
     "Descriptive example": "Beschrijvend voorbeeld",
     "Give a practical example that clearly illustrates this activity": "Geef een praktisch voorbeeld dat duidelijk deze activiteit beschrijft",
+    "This example matches exactly the Activity tag": "Dit voorbeeld komt exact overeen met deze activiteit",
     "Attach an English translation to this tag": "Koppel een Engelse vertaling aan dit label",
     "Select an existing Activity tag in English": "Selecteer een bestaande activiteit-label in het Engels",
-    "Activity tag name in English": "Activity tag label in het Engels",
+    "Or create a new Activity tag in English": "Of maak een nieuwe activiteit label in het Engels",
     "Please confirm: this example matches exactly the Activity tag": "Controleer: dit voorbeeld komt exact overeen met het activiteit-label",
     "Descriptive example in English": "Beschrijvend voorbeeld in het Engels",
+
 
     "good": "goed",
     "limited": "beperkt",

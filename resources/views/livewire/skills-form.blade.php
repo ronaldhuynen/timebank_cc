@@ -9,56 +9,51 @@
                 <x-jet-label for="tags" value="{{ __('Loading...') }}" wire:loading />
                 <div wire:ignore>
 
-      <input id="tags" placeholder="{{ __('Select or create a new tag title') }}" type="text"
-       :value="JSON.stringify(@json($tagsArray))" wire:ignore x-data="{ input: @entangle('tagsArray') }" x-init="tagify = new Tagify($refs.input, {
-                                pattern: /^.{3,80}$/, // max 80 characters, make sure also vaidation rule in Model is equally set
-                                maxTags: 40,
-                                autocapitalize: true,
-                                id: 'skillTags',
-                                whitelist: {{ json_encode($suggestions) }},
-                                enforceWhiteList: false,
-                                backspace: false,
-                                editTags: false,
-                                dropdown: {
-                                    maxItems: 10, // <- maximum allowed rendered suggestions
-                                    classname: 'readonlyMix', // Foreign tags are readonly and have a distict appearance
-                                    enabled: 3, // characters types to show suggestions on focus
-                                    closeOnSelect: false, // don't hide the dropdown when an item is selected
-                                    highlightFirst: true, // hightlight / suggest best match
-                                },
-                            });
-                            tagify.on('dblclick', onChange)
-                           
-                            function onChange(e) {
-                                tagify.loading(true)
-                                $wire.set('tagsArray', e.target.value)
-                                {{-- console.log('onChange is fired') --}}
-                                tagify.loading(false)
-                            };
-                           
-                            function onCancel(e) {
-                                tagify.removeTag(e.target.value)
-                            };
-                           
-                            function onBackdropClick(e) {
-                                $wire.emit('cancelCreateTag')
-                            }
-                           
-                            function onLoaded(e) {
-                                tagify.loading(true)
-                                //document.querySelector('.tagify__input').focus()
-                                onChange(e)
-                                {{-- console.log('blur') --}}
-                                //document.querySelector('.tagify__input').blur()
-                                tagify.loading(false)
-                            };
-                           
-                            $refs.input.addEventListener('change', onChange)
-                            window.addEventListener('load', onLoaded);
-                            window.addEventListener('cancelCreateTag', onCancel);
-                            window.addEventListener('backdrop-click', onBackdropClick);"
-                               x-ref="input"
-                           :value="JSON.stringify(initData)">
+ <div x-data="tagifyComponent()" x-init="init">
+    <input x-ref="tagifyInput" placeholder="Select or create a new tag">
+</div>
+
+<script>
+function tagifyComponent() {
+    return {
+        init() {
+            console.log('Component initialized');
+            // Initialize Tagify on the input element
+            var input = this.$refs.tagifyInput;
+            var tagify = new Tagify(input, {
+                pattern: /^.{3,80}$/, // max 80 characters, make sure also vaidation rule in Model is equally set
+                maxTags: 40,
+                autocapitalize: true,
+                id: 'skillTags',
+                whitelist: @json($suggestions),
+                placeholder: "Select or create a new tag",
+                enforceWhiteList: false,
+                backspace: false,
+                editTags: false,
+                dropdown: {
+                    maxItems: 10, // <- maximum allowed rendered suggestions
+                    classname: 'readonlyMix', // Foreign tags are readonly and have a distict appearance
+                    enabled: 3, // characters types to show suggestions on focus
+                    closeOnSelect: false, // don't hide the dropdown when an item is selected
+                    highlightFirst: true, // hightlight / suggest best match
+                },
+            });
+            
+             tagify.on('add', (e) => {
+                Livewire.emit('updateTags', tagify.value.map(tag => tag.value));
+            });
+
+            tagify.on('remove', (e) => {
+                Livewire.emit('updateTags', tagify.value.map(tag => tag.value));
+            });
+        }
+    };
+}
+</script>
+
+
+
+//TODO entangle correct the tagsArra!
 
                 </div>
 
@@ -200,12 +195,23 @@
 
             });
 
-            window.addEventListener('tagifyChange', function(e) {
+             window.addEventListener('update-tagify', event => {
+                const tags = event.detail.tags;
+                // Assuming tagify is initialized and accessible
+                tagify.removeAllTags();
+                tagify.addTags(tags);
+            });
+
+            {{-- window.addEventListener('tagifyChange', function(e) {
                 tagify.loading(true)
                 tagify.loadOriginalValues(e.detail.tagsArray)
                 tagify.loading(false)
-            });
+            }); --}}
         });
     </script>
 
 </div>
+
+
+
+

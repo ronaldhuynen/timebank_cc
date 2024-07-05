@@ -47,7 +47,7 @@ class SkillsForm extends Component
     public $sessionLanguageOk = null;
 
     protected $langDetector = null;
-    protected $listeners = ['save', 'cancelCreateTag'];
+    protected $listeners = ['updateTags', 'save', 'cancelCreateTag'];
 
 
     protected function rules()
@@ -275,25 +275,34 @@ class SkillsForm extends Component
     }
 
 
+    public function updateTags($tags)
+    {
+        $this->tagsArray = json_encode($tags);
+        $this->updatedTagsArray();
+    }
+
+
     public function updatedTagsArray()
     {
-        $this->newTagsArray = collect(json_decode($this->tagsArray, true));
+        $this->newTagsArray = collect(json_decode($this->tagsArray, false));
+
+        ds($this->newTagsArray, 'newtagsArray');
 
         $localesToCheck = [app()->getLocale(), ''];     // Only current locale and tags without locale should be checked for any new tag keywords
         $newTagsArrayLocal = $this->newTagsArray->whereIn('locale', $localesToCheck);
-
         $suggestions = collect($this->suggestions);
+        ds($suggestions, 'suggestions');
         // Retrieve new tag entries not present in suggestions
         $newEntries = $newTagsArrayLocal->filter(function ($newItem) use ($suggestions) {
-            return !$suggestions->contains($newItem['value']);
+            return !$suggestions->contains($newItem);
         });
 
-        // Add a new skill modal if there are new entries
-        if (count($newEntries) > 0) {
-
+        // Add a new skill modal when there are is a new entry
+        if ($newEntries) {
+        
+            $this->modalVisible = true;
+            
             $this->newTag['name'] = ucfirst($newEntries->flatten()->first());
-
-
             $this->categoryOptions = Category::with(['translations' => function ($query) {
                 $query->where('locale', app()->getLocale())->select('id', 'category_id', 'name');
             }])
@@ -316,7 +325,6 @@ class SkillsForm extends Component
                 })
                 ->sortBy('name')->values();
 
-            $this->modalVisible = true;
         } else {
             $newEntries = false;
         }
@@ -409,8 +417,7 @@ class SkillsForm extends Component
     public function cancelCreateTag()
     {
         $this->resetErrorBag();
-
-        $this->newTag = null;
+        $this->newTag['name'] = null;
         $this->newTagCategory = null;
         $this->translationVisible = false;
 

@@ -1,4 +1,4 @@
-<x-form-section submit="saveTags">
+<x-jet-form-section submit="saveTags">
     <x-slot name="title">
         {{ __('Activies you share on Timebank.cc') }}
     </x-slot>
@@ -12,4 +12,4 @@
         </div>
         @livewire('skills-form')
     </x-slot>
-</x-form-section>
+</x-jet-form-section>

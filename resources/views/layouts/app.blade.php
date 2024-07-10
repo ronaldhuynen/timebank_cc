@@ -12,7 +12,7 @@
         <wireui:scripts />
         <script src="{{ asset('js/app.js') }}" defer></script>
         {{-- <script src="{{ asset('js/lang.js') }}" defer></script> --}}
-                <script src="{{ route('lang.js') }}"></script>
+        <script src="{{ route('lang.js') }}"></script>
 
 
 
@@ -117,12 +117,13 @@
         </div>
 
         <!-- Scripts body-->
-        @livewireScripts
         <script src="{{ mix('js/echo.js') }}"></script>
         @stack('modals')
         {{-- @stack('scripts') --}}
         @yield('scripts_body')
         @include('messenger::scripts')
+        @livewireScripts
+
 
 
 

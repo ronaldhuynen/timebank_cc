@@ -11,7 +11,8 @@
         <x-jet-section-border />
         @livewire('profile-user.update-profile-location-form')
         <x-jet-section-border />
-        <x-profile-user.skills />
+        @livewire('profile.update-profile-skills-form')
+
     </div>
 
 </x-app-layout>

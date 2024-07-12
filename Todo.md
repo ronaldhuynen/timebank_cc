@@ -1,5 +1,17 @@
 # TODO
 
+!! Debug update-profile-skills-form deze is denk ik betrouwbaarder. Alles werkt, BEHALVE wanneer er een vertaling wordt gebruikt.:
+
+
+context_id wordt verkeerd opgeslagen!
+
+
+
+
+/home/r/Websites/timebank_cc_2
+/
+storage/framework/views/34fd51eb92ad59faba518213bed37f6c.php:387 {▶}
+
 - make bank and organization default profile photo 
 - csv export transaction overview (LN
 - qr code payment / transfer descr etc in url)

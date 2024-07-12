@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Profile;
 
 use App\Models\Tag;
 use App\Traits\TaggableWithLocale;
 use Cviebrock\EloquentTaggable\Services\TagService;
 use Livewire\Component;
 
-class SkillsForm extends Component
+class UpdateProfileSkillsForm extends Component
 {
     use TaggableWithLocale;
 
@@ -16,8 +16,9 @@ class SkillsForm extends Component
     public $suggestions = [];
 
 
-     protected $rules = [
-        'tagsArray.*' => 'required|string|max:50',   // make sure to set also 50 in Alpine Tagify script (in view)
+    //! TODO: fix max characters validation!
+    protected $rules = [
+       'tagsArray.*' => 'required|string|max:50',   // make sure to set also 50 in Alpine Tagify script (in view)
     ];
 
     public function mount()
@@ -33,7 +34,7 @@ class SkillsForm extends Component
     public function updated()
     {
         $this->tagsArray = collect(json_decode($this->tags))->pluck('value')->toArray();
-        }
+    }
 
 
 
@@ -44,12 +45,12 @@ class SkillsForm extends Component
      */
     public function saveTags()
     {
-        dd('test');
         $owner = session('activeProfileType')::find(session('activeProfileId'));
 
         if ($this->tags != null) {
+            // dd($this->tagsArray);
             $this->validate();  // 2nd validation, just before save method
-            $this->resetErrorBag();                       
+            $this->resetErrorBag();
             $owner->detag();
             $tagList = (implode(", ", $this->tagsArray));
             $owner->tag($tagList);
@@ -71,6 +72,6 @@ class SkillsForm extends Component
 
     public function render()
     {
-        return view('livewire.skills-form');
+        return view('livewire.profile.update-profile-skills-form');
     }
 }

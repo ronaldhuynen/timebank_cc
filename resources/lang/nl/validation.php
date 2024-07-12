@@ -172,7 +172,6 @@ return [
     */
 
     'attributes' => [
-
         // registration.php
         'name' => 'Naam',
 
@@ -186,14 +185,23 @@ return [
         'socialsOptionSelected' => 'Social Media',
         'userOnSocial' => 'Profiel op social media',
 
-        // UpdateProfileLocationForm.php
+
+        // update-profile-location-form.blade.php
         'country' => 'Land',
         'division' => 'Provincie',
         'city' => 'Plaats',
         'district' => 'Buurt',
 
-        // update-skills-form.blade.php
-        'tagsArray.*' => 'Label',
+        // update-profile-skills-form.blade.php
+        // update-profile-skills-form.blade.php
+        'tagsArray.*' => 'label',
+        'newTag.name' => 'activiteit label',
+        'newTag.example' => 'beschrijvend voorbeeld',
+        'newTag.check' => 'De controle op het voorbeeld',
+        'newTagCategory' => 'Categorie',
+        'selectTagTranslation' => 'Geselecteerde vertaling',
+        'inputTagTranslation.name' => 'vertaalde activiteit label',
+        'inputTagTranslation.example' => 'vertaalde voorbeeld'
     ],
 
 ];

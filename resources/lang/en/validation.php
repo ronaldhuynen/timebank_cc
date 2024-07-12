@@ -183,18 +183,25 @@ return [
         'state.motivation' => 'Motivation',
         'language' => 'Language',
         'state.date_of_birth' => 'Date of birth',
-        'socialsOptionSelected' => 'Social Media',
+        'socialsOptionSelected' => 'Social media',
         'userOnSocial' => 'Username on social media',
 
-        // UpdateProfileLocationForm.php
+        // update-profile-location-form.blade.php
         'country' => 'Country',
         'division' => 'Division',
         'city' => 'City',
         'district' => 'District',
 
-        // update-skills-form.blade.php
-        'tagsArray.*' => 'Tags',
+        // update-profile-skills-form.blade.php
+        // update-profile-skills-form.blade.php
+        'tagsArray.*' => 'tags',
+        'newTag.name' => 'activity tag',
+        'newTag.example' => 'descriptive example',
+        'newTag.check' => 'check on the example',
+        'newTagCategory' => 'category',
+        'selectTagTranslation' => 'selected translation',
+        'inputTagTranslation.name' => 'translation of the activity tag',
+        'inputTagTranslation.example' => 'translation of the example'
 
     ],
-
 ];

@@ -62,11 +62,16 @@ class SkillsCardFull extends Component
                 },
                 [    'sometimes', 'required', 'string', 'min:3', 'max:80',
                     function ($attribute, $value, $fail) {
+                        if (!preg_match('/\S+\s+\S+/', $value)) {
+                            // If the input doesn't have at least 2 words, fail the validation for this field
+                            $fail(__('The :attribute must be at least 2 words.'));
+                        }
+                    },
+                    function ($attribute, $value, $fail) {
                         if ($this->sessionLanguageOk !== true) {
-
                             $currentLocale = app()->getLocale();
                             $locale = \Locale::getDisplayName($currentLocale, $currentLocale);
-                            $fail(__('We can not detect that this is in :locale, please modify.', ['locale' => $locale]));
+                            $fail(__('We can not detect that this is in :locale. Check also your example below.', ['locale' => $locale]));
                         }
                     },
                 ]
@@ -83,7 +88,7 @@ class SkillsCardFull extends Component
 
                             $currentLocale = app()->getLocale();
                             $locale = \Locale::getDisplayName($currentLocale, $currentLocale);
-                            $fail(__('We can not detect that this is in :locale, please modify.', ['locale' => $locale]));
+                            $fail(__('We can not detect that this is in :locale. Try to use more words.', ['locale' => $locale]));
                         }
                     },
                 ]
@@ -117,6 +122,12 @@ class SkillsCardFull extends Component
                 },
                 [
                     'required', 'string', 'min:3', 'max:80',
+                    function ($attribute, $value, $fail) {
+                        if (!preg_match('/\S+\s+\S+/', $value)) {
+                            // If the input doesn't have at least 2 words, fail the validation for this field
+                            $fail(__('The :attribute must be at least 2 words.', ['attribute' => $attribute]));
+                        }
+                    },
                     function ($attribute, $value, $fail) {
                         if ($this->baseLanguageOk !== true) {
                             $baseLocale = config('timebank-cc.base_language');
@@ -193,12 +204,9 @@ class SkillsCardFull extends Component
         });
 
         $tags = $tags->sortBy('category_color')->values();
-
         $this->initTagsArrayTranslated = $tags->toArray();
-
         $this->tagsArray = json_encode($tags->toArray());
-
-        // $this->dispatchBrowserEvent('load');
+        $this->dispatchBrowserEvent('load');
     }
 
 
@@ -238,16 +246,17 @@ class SkillsCardFull extends Component
         }
     }
 
+
     public function updatedNewTagCategory()
     {
-        $this->selectTagTranslation = [];  
+        $this->selectTagTranslation = [];
         // Suggest related tags in base language (English) and possibly based on the category of the new tag
         $this->translationOptions = $this->relatedTag($this->newTagCategory, config('timebank-cc.base_language'));
     }
 
+
     public function updatedInputTagTranslationName()
     {
-        $this->resetErrorBag('inputTagTranslation.name');
         $this->resetErrorBag('inputTagTranslation.name');
         $this->inputTagTranslation['name'] = StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
     }
@@ -256,22 +265,21 @@ class SkillsCardFull extends Component
     public function updatedInputTagTranslationExample()
     {
         $this->resetErrorBag('inputTagTranslation.example');
-
         $langDetector = $this->getLanguageDetector();
+        $this->inputTagTranslation['name'] ?? $this->inputTagTranslation['name'] = "";
         $detectedLanguage = $langDetector->detectSimple($this->inputTagTranslation['name'] . ' ' . $this->inputTagTranslation['example']);
         if ($detectedLanguage === config('timebank-cc.base_language')) {
             $this->baseLanguageOk = true;
         } else {
             $this->baseLanguageOk = false;
         }
-
         $this->inputTagTranslation['example'] = StringHelper::DutchTitleCase($this->inputTagTranslation['example']);
     }
 
 
     public function updatingTagsArray()  // Note this is updating, not updated, as Tagify catches the json too soon.
     {
-        $this->tagsArray = json_encode(json_decode($this->tagsArray));    // re-encode the json
+        // $this->tagsArray = json_encode(json_decode($this->tagsArray));    // re-encode the json
     }
 
 
@@ -321,6 +329,7 @@ class SkillsCardFull extends Component
             $newEntries = false;
         }
     }
+
 
     public function updatedTranslationVisible()
     {
@@ -486,7 +495,7 @@ class SkillsCardFull extends Component
 
         $this->modalVisible = false;
         $this->save();
-        $this->reset();
+        // $this->reset();
     }
 
 
@@ -497,7 +506,6 @@ class SkillsCardFull extends Component
      */
     public function save()
     {
-
         if ($this->newTagsArray) {
             if (count($this->newTagsArray) > 0) {
 
@@ -557,7 +565,6 @@ class SkillsCardFull extends Component
         $this->forgetCachedSkills();
         $this->cacheSkills();
         $this->emit('saved');
-
         $this->newTag = null;
         $this->newTagsArray = null;
         $this->newTagCategory = null;

@@ -20,55 +20,55 @@
                     <x-jet-label for="tags" value="{{ __('Loading...') }}" wire:loading />
                     <div wire:ignore>
 
-                        @php
-                            $tagsJson = json_encode($tagsArray);
-                            $suggestionsJson = json_encode($suggestions);
-                        @endphp
-
-                        <input :value="tagsJson" id="tags" placeholder="Select or create a new tag title"
-                               type="text" wire:ignore x-data="{ input: @entangle('tagsArray'), tagsJson: {{ $tagsJson }}, suggestionsJson: {{ $suggestionsJson }} }" x-init="tagify = new Tagify($refs.input, {
-                                   pattern: /^.{3,80}$/,
-                                   maxTags: 40,
-                                   autocapitalize: true,
-                                   id: 'skillTags',
-                                   whitelist: suggestionsJson,
-                                   enforceWhiteList: false,
-                                   backspace: false,
-                                   editTags: false,
-                                   dropdown: {
-                                       maxItems: 10,
-                                       classname: 'readonlyMix',
-                                       enabled: 3,
-                                       closeOnSelect: false,
-                                       highlightFirst: true,
-                                   },
-                               });
-                               tagify.on('dblclick', onChange);
+                        <input id="tags" placeholder="{{ __('Select or create a new tag title') }}" type="text"
+                               value="{{ $tagsArray }}" x-data="{ input: @entangle('tagsArray') }" x-init=" tagify = new Tagify($refs.input, {
+                                    pattern: /^.{3,80}$/, // max 80 characters, make sure also vaidation rule in Model is equally set
+                                    maxTags: 40,
+                                    autocapitalize: true,
+                                    id: 'skillTags',
+                                    whitelist: {{ json_encode($suggestions) }},
+                                    enforceWhiteList: false,
+                                    backspace: false,
+                                    editTags: false,
+                                    dropdown: {
+                                        maxItems: 10, // <- maximum allowed rendered suggestions
+                                        classname: 'readonlyMix', // Foreign tags are readonly and have a distict appearance
+                                        enabled: 3, // characters types to show suggestions on focus
+                                        closeOnSelect: false, // don't hide the dropdown when an item is selected
+                                        highlightFirst: true, // hightlight / suggest best match
+                                    },
+                                });
+                                tagify.on('dblclick', onChange)
                                
-                               function onChange(e) {
-                                   tagify.loading(true);
-                                   $wire.set('tagsArray', e.target.value);
-                                   tagify.loading(false);
-                               };
+                                function onChange(e) {
+                                    tagify.loading(true)
+                                    $wire.set('tagsArray', e.target.value)
+                                    {{-- console.log('onChange is fired') --}}
+                                    tagify.loading(false)
+                                };
                                
-                               function onCancel(e) {
-                                   tagify.removeTag(e.target.value);
-                               };
+                                function onCancel(e) {
+                                    tagify.removeTag(e.target.value)
+                                };
                                
-                               function onBackdropClick(e) {
-                                   $wire.emit('cancelCreateTag');
-                               }
+                                function onBackdropClick(e) {
+                                    $wire.emit('cancelCreateTag')
+                                }
                                
-                               function onLoaded(e) {
-                                   tagify.loading(true);
-                                   onChange(e);
-                                   tagify.loading(false);
-                               };
+                                function onLoaded(e) {
+                                    tagify.loading(true)
                                
-                               $refs.input.addEventListener('change', onChange);
-                               window.addEventListener('load', onLoaded);
-                               window.addEventListener('cancelCreateTag', onCancel);
-                               window.addEventListener('backdrop-click', onBackdropClick);"
+                                    //document.querySelector('.tagify__input').focus()
+                                    onChange(e)
+                                    {{-- console.log('blur') --}}
+                                    //document.querySelector('.tagify__input').blur()
+                                    tagify.loading(false)
+                                };
+                               
+                                $refs.input.addEventListener('change', onChange)
+                                window.addEventListener('load', onLoaded);
+                                window.addEventListener('cancelCreateTag', onCancel);
+                                window.addEventListener('backdrop-click', onBackdropClick);"
                                x-ref="input">
                     </div>
 
@@ -143,8 +143,9 @@
                                                  value="input" wire:model="translateRadioButton" />
                                         <div id="input-translation">
                                             <div class="my-6 grid grid-cols-1 gap-6 pl-6">
+                                                {{ info($newTag['name'] ?? 'newTag is null')}}
                                                 <x-input :disabled="$inputDisabled"
-                                                         placeholder="'{{ $newTag['name'] . '\' ' . __('in') . ' ' . config('timebank-cc.base_language_name') ?? __('Activity tag name in') . ' ' . config('timebank-cc.base_language_name') }}"
+                                                         {{-- placeholder="'{{ $newTag['name'] . '\' ' . __('in') . ' ' . config('timebank-cc.base_language_name') ?? __('Activity tag name in') . ' ' . config('timebank-cc.base_language_name') }}" --}}
                                                          wire:key="nameInput"
                                                          wire:model.lazy="inputTagTranslation.name" />
                                             </div>
@@ -167,12 +168,11 @@
 
                         <x-slot name="footer">
                             <x-jet-secondary-button wire:click="cancelCreateTag()" wire:loading.attr="disabled">
-                                {{ __('Annuleren') }}
+                                {{ __('Cancel') }}
                             </x-jet-secondary-button>
 
-                            <x-jet-secondary-button class="ml-3" wire:click="createTag()"
-                                                    wire:loading.attr="disabled">
-                                {{ __('Opslaan') }}
+                            <x-jet-secondary-button class="ml-3" wire:click="createTag()" wire:loading.attr="disabled">
+                                {{ __('Save') }}
                             </x-jet-secondary-button>
                         </x-slot>
                     </x-jet-dialog-modal>
@@ -180,13 +180,12 @@
         </x-slot>
 
         <x-slot name="actions">
-            <x-jet-action-message class="mr-3" on="saved">
-                {{ __('Saved') }}
-            </x-jet-action-message>
-
-            <x-jet-button wire:loading.attr="disabled" wire:target="photo">
-                {{ __('Save') }}
-            </x-jet-button>
+                <x-jet-action-message class="mr-3" on="saved">
+                    {{ __('Saved') }}
+                </x-jet-action-message>
+                <x-jet-button wire:loading.attr="disabled" wire:click="$emit('save')">
+                    {{ __('Save') }}
+                </x-jet-button>
         </x-slot>
 
     </x-jet-form-section>

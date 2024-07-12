@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Helpers\StringHelper;
+use App\Models\Category;
 use App\Models\CategoryTranslation;
 use App\Models\TaggableLocale;
 use Cviebrock\EloquentTaggable\Events\ModelTagged;
@@ -260,15 +261,32 @@ trait TaggableWithLocale
 
         $contexts = $result->contexts->first();
 
+        
+        //Make sure we don't get lost in translation when translating back to source locale!
+        if ($sourceLocale != $toLocale) {
         // Prioritize and filter the loaded translations based on the locale
         $tag = $contexts->tags->filter(function ($tag) use ($toLocale) {
                 return optional($tag->locale)->locale == $toLocale;
             })->first() ?? $contexts->tags->first();
+        } else {
+            // No re-translating back to source locale
+            $tag = Tag::find($tagId);
+        }
 
         // Similar approach for categories
+        if ($sourceLocale != $toLocale) {
         $categoryTranslation = $contexts->category->translations
             ->firstWhere('locale', $toLocale)
             ?? $contexts->category->translations->first();
+        } else {
+            // No re-translating back to source locale
+            $categoryWithoutTrans = [
+                'name' => $tag->name,
+                'category_id' => $tag->contexts->pluck('category_id')->first(),
+            ];
+            $categoryTranslation = $categoryWithoutTrans;   
+            $categoryTranslation = (object)$categoryTranslation;
+        }
 
         $categoryPath = $contexts->category->ancestorsAndSelf->sortBy('id')->pluck('id');
         $categoryColor = $contexts->category->rootAncestor ? $contexts->category->rootAncestor->color : $contexts->category->color;

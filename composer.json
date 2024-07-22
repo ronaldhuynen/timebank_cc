@@ -33,6 +33,7 @@
         "rawilk/laravel-form-components": "^8.1",
         "rtippin/messenger": "^1.22",
         "rtippin/messenger-ui": "^2.6",
+        "sebastienheyd/hidden-captcha": "^7.4",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-activitylog": "^4.7",
         "spatie/laravel-medialibrary": "^10.0.0",

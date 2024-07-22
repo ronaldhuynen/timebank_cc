@@ -39,6 +39,12 @@ class TestController extends Controller
         return view('test.debug-1');
     }
 
+
+    public function viewDebug2(Request $request)
+    {
+        return view('test.debug-2');
+    }
+
     
     public function clearCache()
     {   

@@ -143,7 +143,8 @@ return [
     'custom' => [
         'profile_user' => [
             'name' => [
-                'disallowed' => 'The :attribute can not contain ":word"',
+                'disallowed' => ':attribute can not contain ":word".',
+                'completely_disallowed' => ':attribute can not only be ":name".',
             ],
         ],
         'country' => [

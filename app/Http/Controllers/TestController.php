@@ -14,7 +14,9 @@ class TestController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function index(Request $request)
+
+    
+    public function viewIpLocation(Request $request)
     {
         if (App::environment(['local', 'staging'])) {
             $ip = '103.75.231.255'; // Static IP address Brussels for testing
@@ -28,5 +30,11 @@ class TestController extends Controller
         // dd($ipLocatonInfo);
         // TODO: Enable alternative IpLocation info providers.
         return view('test.ip-location', compact('IpLocationInfo'));
+    }
+
+
+    public function viewDebug1(Request $request)
+    {
+        return view('test.debug-1');
     }
 }

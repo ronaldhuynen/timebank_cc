@@ -4,6 +4,7 @@ use App\Http\Controllers\LangJsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -24,21 +25,40 @@ use Mcamara\LaravelLocalization\LaravelLocalization;
 |
 */
 
-// Broadcast test
-Route::get('/test/broadcast', function () {
-    // manually authorize user 2
-    $user = User::find(2);
-    $toUserId = 2;
-    Auth::login($user);
-    return view('test.broadcast', compact(['user' , 'toUserId']));
-});
-// IpLocation test
-Route::get('/test/ip-location', [TestController::class, 'index']);
-// Clear cache test
-Route::get('/clear-cache', function () {
-    Artisan::call('cache:clear');
-    return "Cache is cleared";
-});
+// DEBUG
+// Check if the application environment is set to 'dev'
+if (App::environment(['local', 'development', ' test' ])) {
+
+    // Broadcast test with manual authorization
+    Route::get('/test/broadcast', function () {
+        // manually authorize user 2
+        $user = User::find(2);
+        $toUserId = 2;
+        Auth::login($user);
+        return view('test.broadcast', compact(['user' , 'toUserId']));
+    });
+
+
+    // IpLocation test
+    Route::get('/test/ip-location', [TestController::class, 'viewIpLocation'])->name('ip-location');
+
+
+    // Debug sandbox 1
+    Route::get('/test/debug-1', [TestController::class, 'viewDebug1'])->name('debug-1');
+
+    
+    // Clear cache
+    Route::get('/clear-cache', function () {
+        Artisan::call('cache:clear');
+        return "Cache is cleared";
+    });
+
+    
+
+
+}
+
+
 
 
 //! TODO translate js packages
@@ -150,11 +170,11 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                                     ->name('user.show')
                                     ->missing(function () {return view('user.not_found');});
 
-                                    
+
                 Route::get('/search', [SearchController::class, 'show'])->name('search.show');
 
 
-                // This route should always be the last route in the file! 
+                // This route should always be the last route in the file!
                 // It will catch all routes that are not defined above as a {name} route.
                 Route::get('/{name}', 'App\Http\Controllers\UserController@showByName')
                                     ->name('show.by.name')

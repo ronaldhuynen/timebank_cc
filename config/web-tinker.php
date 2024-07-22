@@ -5,7 +5,7 @@ return [
     /*
      * The web tinker page will be available on this path.
      */
-    'path' => '/tinker',
+    'path' => '/test/tinker',
 
     /*
      * Possible values are 'auto', 'light' and 'dark'.
@@ -16,8 +16,8 @@ return [
      * By default this package will only run in local development.
      * Do not change this, unless you know what you are doing.
      */
-    'enabled' => env('APP_ENV') === 'local',
-
+    'enabled' => in_array(env('APP_ENV'), ['local', 'development', 'test']),
+    
     /*
     * This class can modify the output returned by Tinker. You can replace this with
     * any class that implements \Spatie\WebTinker\OutputModifiers\OutputModifier.

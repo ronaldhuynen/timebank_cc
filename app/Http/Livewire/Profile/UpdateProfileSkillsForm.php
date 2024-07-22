@@ -450,7 +450,6 @@ class UpdateProfileSkillsForm extends Component
             'updated_by_user' => auth()->user()->id
         ];
 
-
         if ($this->translateRadioButton === 'select') {
 
             // Attach an existing context in the base language to the new tag. See config('timebank-cc.base_language')
@@ -494,10 +493,19 @@ class UpdateProfileSkillsForm extends Component
             return $item;
         });
 
-        ds($this->newTagsArray)->label('newTagsArray na transform');
-
         $this->modalVisible = false;
         $this->save();
+
+        $this->initTagsArray = [];
+        $this->forgetCachedSkills();
+        $this->cacheSkills();
+        $this->newTag = [];
+        $this->newTagsArray = [];
+        $this->newTagCategory = null;
+        $this->emit('saved');
+        $this->mount();
+        $this->dispatchBrowserEvent('tagifyChange', ['tagsArray' => $this->tagsArray]);
+
     }
 
 
@@ -539,15 +547,11 @@ class UpdateProfileSkillsForm extends Component
 
                         // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
                         $this->newTagsArray = collect($this->newTagsArray);
-                        
-ds($this->newTagsArray)->label('newTagsArray na untagging');
 
-                    $tag = collect($this->newTagsArray)->filter(function ($item) {
-                        // Select items that do not have the 'readonly' key or have it set to false
-                        return !isset($item['readonly']) || $item['readonly'] !== true;
-                    })->pluck('value')->toArray();
-                        
-ds($tag)->label('$tag na untagging');
+                        $tag = collect($this->newTagsArray)->filter(function ($item) {
+                            // Select items that do not have the 'readonly' key or have it set to false
+                            return !isset($item['readonly']) || $item['readonly'] !== true;
+                        })->pluck('value')->toArray();
 
                         $owner->tag($tag);
 
@@ -571,12 +575,12 @@ ds($tag)->label('$tag na untagging');
                 }
             }
         }
-        $this->initTagsArray = [];
-        $this->forgetCachedSkills();
-        $this->cacheSkills();
-        $this->newTag = [];
-        $this->newTagsArray = [];
-        $this->newTagCategory = null;
+        // $this->initTagsArray = [];
+        // $this->forgetCachedSkills();
+        // $this->cacheSkills();
+        // $this->newTag = [];
+        // $this->newTagsArray = [];
+        // $this->newTagCategory = null;
         $this->emit('saved');
         $this->mount();
         $this->dispatchBrowserEvent('tagifyChange', ['tagsArray' => $this->tagsArray]);

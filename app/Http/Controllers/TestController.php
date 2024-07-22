@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
 use Stevebauman\Location\Facades\Location as IpLocation;
 
 
@@ -36,5 +37,18 @@ class TestController extends Controller
     public function viewDebug1(Request $request)
     {
         return view('test.debug-1');
+    }
+
+    
+    public function clearCache()
+    {   
+        Artisan::call('cache:clear');
+        return "Cache is cleared";
+    }
+
+    public function optimizeClear()
+    {
+        Artisan::call('optimize:clear');
+        return "Events, views, caches, routes, configs cleared";
     }
 }

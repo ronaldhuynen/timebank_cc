@@ -5,7 +5,6 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
@@ -25,8 +24,8 @@ use Mcamara\LaravelLocalization\LaravelLocalization;
 |
 */
 
-// DEBUG
-// Check if the application environment is set to 'dev'
+// DEBUG ROUTES
+// Check if the application environment is secure for debugging
 if (App::environment(['local', 'development', ' test' ])) {
 
     // Broadcast test with manual authorization
@@ -48,13 +47,10 @@ if (App::environment(['local', 'development', ' test' ])) {
 
     
     // Clear cache
-    Route::get('/clear-cache', function () {
-        Artisan::call('cache:clear');
-        return "Cache is cleared";
-    });
-
-    
-
+    Route::get('/test/clear-cache', [TestController::class, 'clearCache'])->name('clear-cache');
+   
+    // Optimize clear
+    Route::get('/test/opt-clear', [TestController::class, 'optimizeClear'])->name('optimize-clear');
 
 }
 

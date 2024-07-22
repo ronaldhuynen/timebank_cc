@@ -144,6 +144,7 @@ return [
         'profile_user' => [
             'name' => [
                 'disallowed' => ':Attribute mag geen ":word" bevatten',
+                'completely_disallowed' => ':Attribute mag niet alleen ":name" zijn.',
             ],
         ],
         'country' => [

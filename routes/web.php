@@ -46,6 +46,10 @@ if (App::environment(['local', 'development', ' test' ])) {
     Route::get('/test/debug-1', [TestController::class, 'viewDebug1'])->name('debug-1');
 
     
+    // Debug sandbox 2
+    Route::get('/test/debug-2', [TestController::class, 'viewDebug2'])->name('debug-2');
+
+    
     // Clear cache
     Route::get('/test/clear-cache', [TestController::class, 'clearCache'])->name('clear-cache');
    

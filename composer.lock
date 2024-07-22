@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f44c0c51c6e00f3bf87193172cc5c5d",
+    "content-hash": "e9231fcdfe48f0622deea7e029d1921c",
     "packages": [
         {
             "name": "atomescrochus/laravel-string-similarities",
@@ -7863,6 +7863,69 @@
                 }
             ],
             "time": "2023-07-06T01:02:21+00:00"
+        },
+        {
+            "name": "sebastienheyd/hidden-captcha",
+            "version": "7.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastienheyd/hidden-captcha.git",
+                "reference": "4ab85a52d981cc783d72e1c689568dbcd02b1a79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastienheyd/hidden-captcha/zipball/4ab85a52d981cc783d72e1c689568dbcd02b1a79",
+                "reference": "4ab85a52d981cc783d72e1c689568dbcd02b1a79",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "laravel/framework": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.0|^4.0|^5.0|^6.0|^7.0",
+                "phpunit/phpunit": "^5.0|^6.0|^7.0|^8.0|^9.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider"
+                    ],
+                    "aliases": {
+                        "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\Facades\\HiddenCaptcha"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SebastienHeyd\\HiddenCaptcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastien HEYD",
+                    "email": "contact@sheyd.fr"
+                }
+            ],
+            "description": "Fully hidden captcha for Laravel without reCaptcha",
+            "keywords": [
+                "captcha",
+                "hidden",
+                "invisible",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastienheyd/hidden-captcha/issues",
+                "source": "https://github.com/sebastienheyd/hidden-captcha/tree/7.4.2"
+            },
+            "time": "2023-06-12T09:30:13+00:00"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",

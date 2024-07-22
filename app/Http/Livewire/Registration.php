@@ -34,7 +34,7 @@ class Registration extends Component implements CreatesNewUsers
     public $validateDivision = true;
     public $validateCity = true;
     public $waitMessage = false;
-
+    public $captcha;
 
     protected $listeners = ['countryToParent', 'divisionToParent', 'cityToParent', 'districtToParent'];
 
@@ -48,12 +48,20 @@ class Registration extends Component implements CreatesNewUsers
         'division' => 'required_if:validateDivision,true',
         'city' => 'required_if:validateCity,true',
         'district' => 'sometimes',
+        'captcha' => 'hiddencaptcha:15,300', // min, max time in sec for submitting form without captcha validation error
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'captcha.hiddencaptcha' => __('Automatic form completion detected. Try again filling in the form manually. Robots are not allowed to register.'),
         ];
     }
 
     public function mount(Request $request)
     {
-        if (App::environment(['local', 'staging'])) {
+        if (App::environment(['local', 'development', 'staging'])) {
             $ip = '103.75.231.255'; // Static IP address Brussels for testing
             //$ip = '31.20.250.12'; // Static IP address The Hague for testing
             //$ip = '101.33.29.255'; // Static IP address in Amsterdam for testing

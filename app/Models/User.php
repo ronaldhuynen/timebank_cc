@@ -381,7 +381,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
 
 
     /**
-     * Get all of the User's posts.
+     * Get all of the User's categories.
      */
     public function categories()
     {

@@ -103,7 +103,7 @@
 }
 
 #messenger-style-overrides .thread_list_item.alert-warning:hover {
-    background: #1f2937 !important;
+    background: #494d50 !important;
     border-color: #000;
     color: #fff;
 }
@@ -122,10 +122,33 @@
     background: #1f2937;
 }
 
-#messenger-style-overrides .inbox ul.messages-list li:hover {
-    background: #f8f9fa;
+#messenger-style-overrides .inbox ul.messages-list li {
+    background: #e9ecef;
     border: 0px solid #dfdfdf;
     padding: 5px 10px;
+}
+
+#messenger-style-overrides .inbox ul.messages-list li[class*="alert-"] {
+    background: #494d50;
+    border: 0px solid #dfdfdf;
+}
+
+#messenger-style-overrides .inbox ul.messages-list li:hover {
+    color: #fff !important;
+    background: #444;
+    border: 0px solid #dfdfdf;
+}
+
+#messenger-style-overrides .inbox ul.messages-list li[class*="alert-"] a {
+    color: #fff;
+}
+
+#messenger-style-overrides .inbox ul.messages-list li a {
+    background-color: #fff !important;
+}
+
+#messenger-style-overrides .inbox ul.messages-list li:hover a {
+    color: #fff !important;
 }
 
 #messenger-style-overrides .shadow-sm.badge.badge-pill.badge-primary {
@@ -228,21 +251,22 @@
 
 /* Left messages (others) */
 #messenger-style-overrides .message.info .message-body {
-    color: #263238;
-    background: #d7d9da;
-    rotate: z -0.0deg;
+    color: #fff !important;
+    background: #494d50 !important;
+}
+
+messenger-style-overrides .message hr {
+    display: none;
 }
 
 /* Right messages (self) */
 #messenger-style-overrides .my-message .message-body {
     color: #fff;
     background: #808080;
-    rotate: z -0.0deg;
 }
 
 #messenger-style-overrides .my-message .timeago {
     color: #fff;
-    background: #808080;
 }
 
 #messenger-style-overrides .my-message a {
@@ -266,6 +290,11 @@
 
 #messenger-style-overrides #message_container .message-reactions .text-primary {
     color: #d7d9da !important
+}
+
+/* Hide Record Audio Message Button */
+#messenger-style-overrides #record_audio_message_btn {
+    display: none;
 }
 
 /* Message container avatars */
@@ -410,8 +439,17 @@
 
 #messenger-style-overrides #message_container .bg-warning,
 .bg-outline-warning {
-    background: #1f2937 !important;
-    color: #fff;
+    background: #fff !important;
+    color: #1f2937 !important;
+}
+
+
+
+#messenger-style-overrides .bg-warning,
+.bg-outline-warning {
+    background: #fff !important;
+    color: #1f2937 !important;
+    box-shadow: none !important;
 }
 
 /* Settings modal*/

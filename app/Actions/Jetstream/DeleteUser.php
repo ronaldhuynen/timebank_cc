@@ -79,11 +79,52 @@ class DeleteUser implements DeletesUsers
 
             // Detach Messenger profile? No not needed 
 
-            // Softdelete messenger participant from messenger thread
-            // By timestamping the deleted_at collumn in the participants table where owner_id = $user->id
+            
+            // Remove participant from messenger threads. And remove threads where user is sole admin.
+            
+            // Fetch thread IDs where the user is the sole admin
+            $singleAdminThreads = DB::table('participants')
+                ->select('thread_id')
+                ->where('admin', true)
+                ->groupBy('thread_id')
+                ->havingRaw('COUNT(*) = 1')
+                ->pluck('thread_id');
+
+            // Fetch participant records for the user as admin in those threads
+            $participantsThreadAdminOwned = DB::table('participants')
+                ->whereIn('thread_id', $singleAdminThreads)
+                ->where('owner_id', $user->id)
+                ->where('admin', true)
+                ->whereNull('deleted_at')
+                ->get(['id', 'thread_id']); // Only select necessary fields
+
+            // Extract thread IDs from the participants
+            $threadIds = $participantsThreadAdminOwned->pluck('thread_id');
+
+            // Update threads to mark them as deleted
+            DB::table('threads')
+                ->whereIn('id', $threadIds)
+                ->whereNull('deleted_at')
+                ->update(['deleted_at' => now()]);
+
+            // Update participant records to mark them as deleted
+            DB::table('participants')
+                    ->whereIn('thread_id', $threadIds)
+                ->where('owner_id', $user->id)
+                ->where('admin', true)
+                ->whereNull('deleted_at')
+                ->update(['deleted_at' => now()]);
+
+            // Update non-admin participant records for the user to mark them as deleted
+            DB::table('participants')
+                ->where('owner_id', $user->id)
+                ->where('admin', false)
+                ->whereNull('deleted_at')
+                ->update(['deleted_at' => now()]);
 
 
-            // Remove Messenger message files                              
+
+            // Purge Messenger message files                              
             $messages = Message::where('owner_type', 'App\Models\User')
                 ->where('owner_id', $user->id)
                 ->where('type', '<>', Message::MESSAGE)
@@ -104,6 +145,7 @@ class DeleteUser implements DeletesUsers
                 (new $purgeClass($fileService))->execute($messages);
             }
 
+            
             // Remove Messenger messages            
             DB::table('messages')
                 ->where('owner_type', 'App\Models\User')
@@ -127,7 +169,6 @@ class DeleteUser implements DeletesUsers
             }
 
                         
-
             // Detach Laravel-love 
             
             

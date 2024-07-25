@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\View\Components\GuestLayout;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function register()
-    {        
+    {
         $this->app->bind(
             'Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate',
             'app\Overrides\Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate'
@@ -52,5 +54,10 @@ class AppServiceProvider extends ServiceProvider
                 }
             );
         }
+
+        // Register Guest Layout
+        Blade::component('guest-layout', GuestLayout::class);
+
+
     }
 }

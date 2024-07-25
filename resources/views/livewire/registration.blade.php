@@ -3,7 +3,7 @@
                         <form wire:submit.prevent="create">
                             <input name="remember" type="hidden" value="true">
                             @csrf
-                            @hiddencaptcha
+                            {{-- @hiddencaptcha --}}
 
                             <div class="mt-4">
                                 <!-- TODO: Pubic username or real name?? Use placeholder or label to clarify -->

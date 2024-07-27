@@ -191,7 +191,6 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
 
                 // Jetstream routes (copied from vendor/laravel/jetstream/routes/livewire.php, to overrule, to include in Laravel-localization class)
-
                 Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {
                     if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
                         Route::get('/terms-of-service', [TermsOfServiceController::class, 'show'])->name('terms.show');
@@ -208,7 +207,7 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
                     Route::group(['middleware' => array_values(array_filter([$authMiddleware, $authSessionMiddleware]))], function () {
                         // User & Profile...
-                        Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
+                        Route::get('/user/settings', [UserProfileController::class, 'show'])->name('profile.show');
 
                         Route::group(['middleware' => 'verified'], function () {
                             // API...

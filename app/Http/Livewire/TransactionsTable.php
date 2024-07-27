@@ -2,14 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Account;
-use App\Models\Organization;
 use App\Models\Transaction;
-use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Matchish\ScoutElasticSearch\MixedSearch;
 
 class TransactionsTable extends Component
 {

@@ -935,68 +935,68 @@ class MigrateCyclosCommand extends Command
 
         // REGISTRATION OF PACKAGE MODELS
 
-        // // Register laravel-love models
-        // $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reacters registered: Users');
-        // } else {
-        //     $this->error('Laravel-love Reacters registration failed: Users');
-        // }
+        // Register laravel-love models
+        $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reacters registered: Users');
+        } else {
+            $this->error('Laravel-love Reacters registration failed: Users');
+        }
 
-        // $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reacters registered: Organizations');
-        // } else {
-        //     $this->error('Laravel-love Reacters registration failed: Organizations');
-        // }
-
-
-        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reactants registered: Users');
-        // } else {
-        //     $this->error('Laravel-love Reactants registration failed.');
-        // }
-
-        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reactants registered: Organizations');
-        // } else {
-        //     $this->error('Laravel-love Reactants registration failed: Organizations');
-        // }
-
-        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reactants registered: Organizations');
-        // } else {
-        //     $this->error('Laravel-love Reactants registration failed: Organizations');
-        // }
-
-        // $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Bank'], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Laravel-love Reactants registered: Banks');
-        // } else {
-        //     $this->error('Laravel-love Reactants registration failed.');
-        // }
+        $exitCode = Artisan::call('love:register-reacters', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reacters registered: Organizations');
+        } else {
+            $this->error('Laravel-love Reacters registration failed: Organizations');
+        }
 
 
-        // // Attach Messenger profiles
-        // $exitCode = Artisan::call('messenger:attach:messengers', [], new \Symfony\Component\Console\Output\ConsoleOutput());
-        // // Optionally, check if the command was successful
-        // if ($exitCode === 0) {
-        //     $this->info('Rtippin Messenger providers registered.');
-        // } else {
-        //     $this->error('Rtippin Messenger providers registration failed');
-        // }
+        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\User'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reactants registered: Users');
+        } else {
+            $this->error('Laravel-love Reactants registration failed.');
+        }
 
-        // $this->warn('Do not run this migration again without refreshing the database and deleting all files in storage/app/public/profile-photo\'s');
-        // $this->warn('You can do this with the command: php artisan db:seed');
-        // $this->info('');
+        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reactants registered: Organizations');
+        } else {
+            $this->error('Laravel-love Reactants registration failed: Organizations');
+        }
+
+        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Organization'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reactants registered: Organizations');
+        } else {
+            $this->error('Laravel-love Reactants registration failed: Organizations');
+        }
+
+        $exitCode = Artisan::call('love:register-reactants', ['--model' => 'App\Models\Bank'], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Laravel-love Reactants registered: Banks');
+        } else {
+            $this->error('Laravel-love Reactants registration failed.');
+        }
+
+
+        // Attach Messenger profiles
+        $exitCode = Artisan::call('messenger:attach:messengers', [], new \Symfony\Component\Console\Output\ConsoleOutput());
+        // Optionally, check if the command was successful
+        if ($exitCode === 0) {
+            $this->info('Rtippin Messenger providers registered.');
+        } else {
+            $this->error('Rtippin Messenger providers registration failed');
+        }
+
+        $this->warn('Do not run this migration again without refreshing the database and deleting all files in storage/app/public/profile-photo\'s');
+        $this->warn('You can do this with the command: php artisan db:seed');
+        $this->info('');
     }
 }

@@ -22,6 +22,7 @@ class CreateAccountsTable extends Migration
             $table->unsignedBigInteger('accountable_id');
             $table->integer('cyclos_id')->unique()->nullable();
             $table->timestamps();
+            $table->datetime('owner_deleted_at')->nullable();
             $table->softDeletes();
         });
     }

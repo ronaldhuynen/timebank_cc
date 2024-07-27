@@ -1,5 +1,5 @@
 <x-guest-layout>
-    @if (session('deleted_at'))
+    @if (session('result'))
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-900">
             {{ __('Goodbye')}}
@@ -19,10 +19,10 @@
                         </div>
                     </div>
                     <div class="mb-12 mt-6 flex justify-between">
-                        <p class="text-xl font-bold text-gray-900">{{ __('All your personal data, including all your uploaded files and messages havejust been permanently deleted.') }}</p>
+                        <p class="text-xl font-bold text-gray-900">{{ __('All your personal data, including all your uploaded files and messages have just been permanently deleted.') }}</p>
                     </div>
                     <div class="mb-12 mt-6 flex justify-between">
-                        <p class="text-lg text-gray-900">{{ __('Your profile has been deleted on:') }} {{ session('deleted_at') }}</p>
+                        <p class="text-lg text-gray-900">{{ __('Your profile has been deleted on:') }} {{ session('result')['time'] }}</p>
                     </div>
                     <div class="mb-12 mt-6 flex justify-between">
                         <p class="text-lg text-gray-900">{{ __('On behalf of the Timebank.cc team, hope to see you next time!') }}</p>

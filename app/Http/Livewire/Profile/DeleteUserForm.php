@@ -2,12 +2,15 @@
 
 namespace App\Http\Livewire\Profile;
 
+use App\Mail\UserDeletedMail;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Laravel\Jetstream\Contracts\DeletesUsers;
 use Livewire\Component;
@@ -67,9 +70,9 @@ class DeleteUserForm extends Component
             ]);
         }
 
-        
+        $user = Auth::user();
         $time = DB::table('users')
-                ->where('id', Auth::user()->id)
+                ->where('id', $user->id)
                 ->pluck('updated_at')
                 ->first();
                 
@@ -81,10 +84,14 @@ class DeleteUserForm extends Component
 
         if ($result['status'] === 'success') {
 
-            $result = $time->translatedFormat('j F Y, H:i');
+            $result['time'] = $time->translatedFormat('j F Y, H:i');
+            $result['deletedUser'] = $user;
+            $result['mail'] = $user->email;
             
-            session()->flash('deleted_at', $result);
-
+            session()->flash('result', $result);
+            Log::notice('User deleted: ' . $result['deletedUser']);
+            Mail::to($user->email)->queue(new UserDeletedMail($result));
+        
             $auth->logout();
 
             return redirect()->route('goodbye-deleted-user');
@@ -95,6 +102,9 @@ class DeleteUserForm extends Component
                 $title = __('Deletion Failed'),
                 $description = __('There was an error deleting your profile: ') . $result['message']
             );
+
+            Log::warning('User deletion failed: ' . $result['deletedUser']);
+            Log::error('Error message: ' . $result['message']);
 
             return redirect()->back();
         }

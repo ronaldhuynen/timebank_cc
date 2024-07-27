@@ -202,10 +202,6 @@ class Registration extends Component implements CreatesNewUsers
                 $account->limit_max = config('timebank-cc.accounts.personal.limit_max');
                 $user->accounts()->save($account); // create the new account for the user
 
-                // TODO: Attach Messenger when profile has been further completed
-                // TODO: Check if this is needed, and where this also is being done?
-                //  Attach (Rtippin Messenger) Provider:
-                // Messenger::getProviderMessenger($user);
 
                 // WireUI notification
                 $this->notification()->success(

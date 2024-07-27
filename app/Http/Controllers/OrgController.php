@@ -64,7 +64,9 @@ class OrgController extends Controller
             // 'phone_public_for_friends',
             'created_at',
             // 'last_login_at',
-            'love_reactant_id'
+            'love_reactant_id',
+            'inactive_at',
+
         ])
         ->with([
             'users:id,name,profile_photo_path',

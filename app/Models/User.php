@@ -62,7 +62,6 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         'password',
         'lang_preference',
         'last_login_at',
-        'last_login_ip',
     ];
 
     /**

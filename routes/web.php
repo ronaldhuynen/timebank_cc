@@ -189,7 +189,6 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                     ->middleware('auth');
 
 
-
                 // Jetstream routes (copied from vendor/laravel/jetstream/routes/livewire.php, to overrule, to include in Laravel-localization class)
                 Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {
                     if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {

@@ -1,4 +1,5 @@
  <div class="py-12">
+     @if ($inactive === false)
      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 
          <section>
@@ -355,5 +356,10 @@
 
 
 
-
-     </div>
+    @else
+    <!-- User is inactive --> 
+    <script>
+        window.location.href = "{{ route('dashboard') }}";
+    </script>
+    @endif
+</div>

@@ -32,6 +32,17 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
     use Searchable; // laravel/scout with ElasticSearch
 
 
+
+    /**
+     * Get the bank's user(s) that can manage bank profiles.
+     * Many-to-many.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+
     /**
      * Get all related the locations of the bank.
      * One-to-many polymorph.

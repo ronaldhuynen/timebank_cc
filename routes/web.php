@@ -4,6 +4,7 @@ use App\Http\Controllers\LangJsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Models\User;
+use App\View\Components\GuestLayout;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,7 @@ use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 use Laravel\Jetstream\Jetstream;
 use Mcamara\LaravelLocalization\LaravelLocalization;
+use RTippin\MessengerUi\Http\Controllers\ViewPortalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,7 +78,16 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
         Route::get('/', function () {
             return view('welcome');
-        });
+        })->name('welcome');
+
+        
+        Route::get('/goodbye', function () {
+            return view('goodbye-deleted-user');
+        })->name('goodbye-deleted-user');
+
+
+        
+        
 
         // Route::post('upload', [UploadController::class, 'store']);
 
@@ -173,22 +184,12 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
                 Route::get('/search', [SearchController::class, 'show'])->name('search.show');
 
-
-                // This route should always be the last route in the file!
-                // It will catch all routes that are not defined above as a {name} route.
-                Route::get('/{name}', 'App\Http\Controllers\UserController@showByName')
-                                    ->name('show.by.name')
-                                    ->missing(function () {return view('user.not_found');});
-
-
-
-
-
-
+                // Messenger invitation link to join a group thread
+                Route::get('/messenger/join/{invite}', [ViewPortalController::class, 'showJoinWithInvite'])
+                    ->middleware('auth');
 
 
                 // Jetstream routes (copied from vendor/laravel/jetstream/routes/livewire.php, to overrule, to include in Laravel-localization class)
-
                 Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {
                     if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
                         Route::get('/terms-of-service', [TermsOfServiceController::class, 'show'])->name('terms.show');
@@ -205,7 +206,7 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
                     Route::group(['middleware' => array_values(array_filter([$authMiddleware, $authSessionMiddleware]))], function () {
                         // User & Profile...
-                        Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
+                        Route::get('/user/settings', [UserProfileController::class, 'show'])->name('profile.show');
 
                         Route::group(['middleware' => 'verified'], function () {
                             // API...
@@ -231,6 +232,13 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
 
 
             });
+
+            
+            // This route should always be the last route in the file!
+            // It will catch all routes that are not defined above as a {name} route.
+            Route::get('/{name}', 'App\Http\Controllers\UserController@showByName')
+                    ->name('show.by.name')
+                    ->missing(function () {return view('user.not_found');});
 
 
             // // Route when full registration has NOT yet been completed.

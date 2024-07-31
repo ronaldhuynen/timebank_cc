@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
+use App\Http\Livewire\Profile\DeleteUserForm;
 use App\Http\Livewire\ProfileUser\UpdateProfilePersonalForm;
 use App\Http\Livewire\ProfileUser\UpdateProfilePhoneForm;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +36,9 @@ class JetstreamServiceProvider extends ServiceProvider
         Jetstream::deleteUsersUsing(DeleteUser::class);
         Livewire::component('profile-user.update-profile-personal-form', UpdateProfilePersonalForm::class);
         Livewire::component('profile-user.update-profile-phone-form', UpdateProfilePhoneForm::class);
+
+        // Register customized Jetstream DeleteUserForm
+        Livewire::component('profile.delete-user-form', DeleteUserForm::class);
 
 
         // Register LoginResponse for conditional redirects in Http/Responses/LoginResponse.php

@@ -1,5 +1,5 @@
 @component('mail::message')
-    {{__('Hi') . ' ' . $to['name'] }},
+    {{__('Hola') . ' ' . $to['name'] }},
 
     {{ __('Your profile on Timebank.cc just received a') . ' ' .  $reactionType['name'] . ' ' . __('from') . ' ' . $from->name . '.'}}
 

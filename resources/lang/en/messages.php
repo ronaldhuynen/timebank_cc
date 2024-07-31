@@ -1,3 +1,4 @@
+
 <?php
 
 return [
@@ -25,6 +26,6 @@ return [
     'limited' => 'limited',
 
     'Your_profile_has_received_a_star' => 'Your profile received a star',
-
+    'Your_profile_has_been_deleted' => 'Your profile has been deleted',
 
 ];

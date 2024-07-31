@@ -68,7 +68,8 @@ class UserController extends Controller
             'lang_preference',
             'created_at',
             'last_login_at',
-            'love_reactant_id'
+            'love_reactant_id',
+            'inactive_at'
         ])
         ->with([
             'organizations:id,name,profile_photo_path',

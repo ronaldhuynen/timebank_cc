@@ -19,6 +19,7 @@ use Spatie\Activitylog\Models\Activity;
 class Show extends Component
 {
     public $user;
+    public $inactive = false;
     public $showAboutFullText = false;
     public $location = [];
     public $friend;
@@ -40,6 +41,7 @@ class Show extends Component
      */
     public function mount()
     {
+        $this->isInactive();
         $this->getOnlineStatus();
         $this->getLocation();
         $this->getFriend();
@@ -52,6 +54,14 @@ class Show extends Component
         $this->getSkills();
         $this->getAccountsTotals();
         $this->getSocials();
+    }
+
+
+    public function isInactive()
+    {
+        if ($this->user->inactive_at !== null){
+            $this->inactive = true;
+        } 
     }
 
 

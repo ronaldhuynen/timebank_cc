@@ -29,7 +29,7 @@
                                             d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
                                     </svg>
                             <a class="mb-2 ml-2 hidden font-bold text-gray-900 sm:block"
-                                href="{{ url()->previous() }}">{{ __('Previous page') }}<a>
+                                href="{{ url()->previous() }}">{{ __('Previous page') }}</a>
                                 
 
                         </div>

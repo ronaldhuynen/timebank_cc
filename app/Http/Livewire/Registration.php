@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Component;
 use Stevebauman\Location\Facades\Location as IpLocation;
@@ -48,7 +47,7 @@ class Registration extends Component implements CreatesNewUsers
         'division' => 'required_if:validateDivision,true',
         'city' => 'required_if:validateCity,true',
         'district' => 'sometimes',
-        'captcha' => 'hiddencaptcha:15,300', // min, max time in sec for submitting form without captcha validation error
+        // 'captcha' => 'hiddencaptcha:3,300', // min, max time in sec for submitting form without captcha validation error
         ];
     }
 
@@ -203,10 +202,6 @@ class Registration extends Component implements CreatesNewUsers
                 $account->limit_max = config('timebank-cc.accounts.personal.limit_max');
                 $user->accounts()->save($account); // create the new account for the user
 
-                // TODO: Attach Messenger when profile has been further completed
-                // TODO: Check if this is needed, and where this also is being done?
-                //  Attach (Rtippin Messenger) Provider:
-                // Messenger::getProviderMessenger($user);
 
                 // WireUI notification
                 $this->notification()->success(

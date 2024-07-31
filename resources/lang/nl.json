@@ -14,6 +14,8 @@
     "German": "Duits",
     "Spanish": "Spaans",
 
+    "Removed message": "Verwijderd bericht",
+
     "Add a new activity or skill to Timebank.cc": "Voeg een nieuwe activiteit of vaardigheid toe aan Timebak.cc",
     "Accurate and unique tag title for this activity, avoid vague or general keywords": "Exacte en unieke labelnaam voor deze activiteit, vermijd vage of algemene sleutelwoorden",
     "Activity tag (min. 2 words)": "Activiteit label (min. 2 woorden)",
@@ -206,5 +208,11 @@
     "past quarter": "afgelopen kwartaal",
     "past month": "afgelopen maand",
     "past week": "afgelopen week",
-    "sinds yesterday": "sinds gisteren"
+    "sinds yesterday": "sinds gisteren",
+
+    "Goodbye": "Tot ziens",
+    "Your profile has been deleted": "Je profiel is verwijderd",
+    "All your personal data, including all your uploaded files and messages have just been permanently deleted.": "Al je persoonlijke gegevens, inclusief je verzonden bestanden en berichten zijn zojuist permanent verwijderd.",
+    "Your profile has been deleted on:": "Je profiel is verwijderd op:",
+    "On behalf of the Timebank.cc team, hope to see you next time!": "Namens het Timebank.cc team, hopelijk tot een volgende keer!"
 }

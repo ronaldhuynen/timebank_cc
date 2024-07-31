@@ -27,6 +27,7 @@ return [
     'past year' => 'afgelopen jaar',
 
     'Your_profile_has_received_a_star' => 'Je profiel heeft een ster ontvangen',
+    'Your_profile_has_been_deleted' => 'Je profiel is verwijderd',
 
 
 ];

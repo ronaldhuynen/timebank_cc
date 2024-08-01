@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9231fcdfe48f0622deea7e029d1921c",
+    "content-hash": "5f090e8501d571ff3bfbbbad97948642",
     "packages": [
         {
             "name": "atomescrochus/laravel-string-similarities",

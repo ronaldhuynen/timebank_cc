@@ -13,6 +13,7 @@
         @foreach ([
         ['name' => 'Debug 1', 'url' => route('debug-1')],
         ['name' => 'Debug 2', 'url' => route('debug-2')],
+        ['name' => 'Export link', 'url' => route('export-test')],
         ['name' => 'Test ip location', 'url' => route('ip-location')],
         ['name' => 'Web Tinker', 'url' => '/test/tinker'], // Direct path added here
         ['name' => 'Clear Cache', 'url' => route('clear-cache')],

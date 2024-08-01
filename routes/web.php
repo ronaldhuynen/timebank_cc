@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\LangJsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Models\User;
-use App\View\Components\GuestLayout;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -224,6 +224,10 @@ Route::group(['prefix' => (new LaravelLocalization())->setLocale(),
                                             ->middleware(['signed'])
                                             ->name('team-invitations.accept');
                             }
+
+                            // Exports
+                            Route::get('export-test/', [ExportController::class, 'allUsersExport'])->name('export-test');
+
                         });
                     });
                 });

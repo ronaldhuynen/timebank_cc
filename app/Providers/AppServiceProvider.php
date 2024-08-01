@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
             'Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate',
             'app\Overrides\Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate'
         );
+
     }
 
     /**
@@ -57,7 +58,6 @@ class AppServiceProvider extends ServiceProvider
 
         // Register Guest Layout
         Blade::component('guest-layout', GuestLayout::class);
-
 
     }
 }

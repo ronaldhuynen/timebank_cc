@@ -22,7 +22,6 @@
         "maatwebsite/excel": "^3.1",
         "matchish/laravel-scout-elasticsearch": "^7.5",
         "mcamara/laravel-localization": "^1.8",
-        "mediconesystems/livewire-datatables": "^0.10.0",
         "nette/schema": "^1.2",
         "orangehill/iseed": "^3.0",
         "pear/text_languagedetect": "^1.0",
@@ -44,7 +43,6 @@
         "staudenmeir/eloquent-has-many-deep": "^1.7",
         "staudenmeir/laravel-adjacency-list": "^1.13",
         "stevebauman/location": "^6.6",
-        "victorybiz/laravel-simple-select": "^1.4",
         "wireui/wireui": "1.17.10"
     },
     "require-dev": {

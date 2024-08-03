@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateProfileInformation">
+<x-jetstream.form-section submit="updateProfileInformation">
     <x-slot name="title">
         {{ __('Transfer Timebank Hours') }}
     </x-slot>
@@ -13,7 +13,7 @@
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
                 <!-- Profile Photo File Input -->
                 <input type="file" class="hidden"
-                            wire:model="photo"
+                            wire:model.live="photo"
                             x-ref="photo"
                             x-on:change="
                                     photoName = $refs.photo.files[0].name;
@@ -24,7 +24,7 @@
                                     reader.readAsDataURL($refs.photo.files[0]);
                             " />
 
-                <x-jet-label for="photo" value="{{ __('Photo') }}" />
+                <x-jetstream.label for="photo" value="{{ __('Photo') }}" />
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="! photoPreview">
@@ -38,39 +38,39 @@
                     </span>
                 </div>
 
-                <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                <x-jetstream.secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                     {{ __('Select A New Photo') }}
-                </x-jet-secondary-button>
+                </x-jetstream.secondary-button>
 
                 @if ($this->user->profile->profile_photo_path)
-                    <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
+                    <x-jetstream.secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
                         {{ __('Remove Photo') }}
-                    </x-jet-secondary-button>
+                    </x-jetstream.secondary-button>
                 @endif
 
-                <x-jet-input-error for="photo" class="mt-2" />
+                <x-jetstream.input-error for="photo" class="mt-2" />
             </div>
         @endif
 
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="name" value="{{ __('Name') }}" />
-            <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name" />
-            <x-jet-input-error for="name" class="mt-2" />
+            <x-jetstream.label for="name" value="{{ __('Name') }}" />
+            <x-jetstream.input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" autocomplete="name" />
+            <x-jetstream.input-error for="name" class="mt-2" />
         </div>
 
         <!-- Language -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="locale" value="{{ __('Language') }}" />
-            <x-jet-input id="locale" type="text" class="mt-1 block w-full" wire:model.defer="state.locale" autocomplete="locale" />
-            <x-jet-input-error for="locale" class="mt-2" />
+            <x-jetstream.label for="locale" value="{{ __('Language') }}" />
+            <x-jetstream.input id="locale" type="text" class="mt-1 block w-full" wire:model="state.locale" autocomplete="locale" />
+            <x-jetstream.input-error for="locale" class="mt-2" />
         </div>
 
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="email" value="{{ __('Email') }}" />
-            <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="state.email" />
-            <x-jet-input-error for="email" class="mt-2" />
+            <x-jetstream.label for="email" value="{{ __('Email') }}" />
+            <x-jetstream.input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" />
+            <x-jetstream.input-error for="email" class="mt-2" />
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
                 <p class="text-sm mt-2">
@@ -91,12 +91,12 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-jetstream.action-message class="mr-3" on="saved">
             {{ __('Saved') }}
-        </x-jet-action-message>
+        </x-jetstream.action-message>
 
-        <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+        <x-jetstream.button wire:loading.attr="disabled" wire:target="photo">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-jetstream.button>
     </x-slot>
-</x-jet-form-section>
+</x-jetstream.form-section>

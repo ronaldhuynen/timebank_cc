@@ -1,4 +1,4 @@
-<form wire:submit.prevent="validateModal">
+<form wire:submit="validateModal">
 
     @csrf
     <div class="px-4 py-4 sm:p-6 bg-white shadow sm:rounded-lg">
@@ -38,15 +38,15 @@
             </div>
         </div>
     <div class="text-right">
-        <x-jet-button>
+        <x-jetstream.button>
             {{ __('Pay') }}
-        </x-jet-button>
+        </x-jetstream.button>
     </div>
 </div>
 
 
     <!----Transfer limit error Modal ---->
-    <x-jet-dialog-modal wire:model="modalErrorVisible">
+    <x-jetstream.dialog-modal wire:model.live="modalErrorVisible">
         <x-slot name="title">
         </x-slot>
 
@@ -54,16 +54,16 @@
             {{ $limitError }}
         </x-slot>
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('modalErrorVisible')" wire:loading.attr="disabled">
+            <x-jetstream.secondary-button wire:click="$toggle('modalErrorVisible')" wire:loading.attr="disabled">
                 {{ __('Back') }}
-            </x-jet-secondary-button>
+            </x-jetstream.secondary-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-jetstream.dialog-modal>
 
 
 
     <!---- Confirmation Modal ---->
-    <x-jet-dialog-modal wire:model="modalVisible">
+    <x-jetstream.dialog-modal wire:model.live="modalVisible">
         <x-slot name="title">
         </x-slot>
 
@@ -71,15 +71,15 @@
             {{ __('Transfer ') . $amount . __(' to the ') . $toAccountName . __(' of ') . $toHolderName . '?' }}
         </x-slot>
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('modalVisible')" wire:loading.attr="disabled">
+            <x-jetstream.secondary-button wire:click="$toggle('modalVisible')" wire:loading.attr="disabled">
                 {{ __('No') }}
-            </x-jet-secondary-button>
+            </x-jetstream.secondary-button>
 
-            <x-jet-secondary-button class="ml-3" wire:click="doTransfer()" wire:loading.attr="disabled">
+            <x-jetstream.secondary-button class="ml-3" wire:click="doTransfer()" wire:loading.attr="disabled">
                 {{ __('Yes') }}
-            </x-jet-secondary-button>
+            </x-jetstream.secondary-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-jetstream.dialog-modal>
 
 
 </form>

@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateProfilePersonalForm">
+<x-jetstream.form-section submit="updateProfilePersonalForm">
     <x-slot name="title">
         {{ __('Organization info') }}
 
@@ -14,7 +14,7 @@
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
                 <!-- Profile Photo File Input -->
                 <input type="file" class="hidden"
-                            wire:model="photo"
+                            wire:model.live="photo"
                             x-ref="photo"
                             x-on:change="
                                     photoName = $refs.photo.files[0].name;
@@ -25,7 +25,7 @@
                                     reader.readAsDataURL($refs.photo.files[0]);
                             " />
 
-                <x-jet-label for="photo" value="{{ __('Profile Photo') }}" />
+                <x-jetstream.label for="photo" value="{{ __('Profile Photo') }}" />
 
                 <!-- Current Profile Photo -->
                 <div class="mt-3 mb-3" x-show="! photoPreview">
@@ -39,62 +39,62 @@
                     </span>
                 </div>
 
-                <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                <x-jetstream.secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                     {{ __('Change Photo') }}
-                </x-jet-secondary-button>
+                </x-jetstream.secondary-button>
 
                 @if ($this->organization->profile_photo_path)
-                    <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto" x-on:click.prevent="">
+                    <x-jetstream.secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto" x-on:click.prevent="">
                         {{ __('Delete Photo') }}
-                    </x-jet-secondary-button>
+                    </x-jetstream.secondary-button>
                 @endif
 
-                <x-jet-input-error for="photo" class="mt-2" />
+                <x-jetstream.input-error for="photo" class="mt-2" />
             </div>
         @endif
 
         <!-- Description -->
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
-                wire:model.debounce.800ms="state.about" 
+                wire:model.live.debounce.800ms="state.about" 
                 label="{{ __('Please introduce your organization')}} *" 
                 placeholder="{{ __('What does your organization do? And why?') }}" 
                 class="placeholder-gray-300"/>
-            <x-jet-input-error for="about" class="mt-2" />
+            <x-jetstream.input-error for="about" class="mt-2" />
         </div>
 
         <!-- Very short intro -->
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
-                wire:model.debounce.500ms="state.about_short" 
+                wire:model.live.debounce.500ms="state.about_short" 
                 label="{{ __('Introduction in one sentence')}} *" 
                 placeholder="{{ __('I.e. your goal or slogan') }}" 
                 class="placeholder-gray-300"/>
-            <x-jet-input-error for="about" class="mt-2" />
+            <x-jetstream.input-error for="about" class="mt-2" />
         </div>
 
         <!-- Motivation -->
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
-                wire:model.debounce.800ms="state.motivation" 
+                wire:model.live.debounce.800ms="state.motivation" 
                 label="{{ __('Why is your organization using Timebank?') }} *" 
                 placeholder="{{__('Reaching out to a new community or serious about a new value system?')}}" 
                 class="placeholder-gray-300"/>
-            <x-jet-input-error for="motivation" class="mt-2" />
+            <x-jetstream.input-error for="motivation" class="mt-2" />
         </div>
 
         <!--- Languages -->
         <div class="col-span-6 sm:col-span-4">
             @livewire('profile-org.languages-dropdown', ['languages' => $languages])
-            <x-jet-input-error for="languages" class="mt-2" />
+            <x-jetstream.input-error for="languages" class="mt-2" />
         </div>
 
         <!-- Website -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="website" value="{{ __('Organization Website') }}" />
-            <x-input
+            <x-jetstream.label for="website" value="{{ __('Organization Website') }}" />
+            <x-jetstream.input
                 placeholder="website.org"
-                wire:model.lazy="website"
+                wire:model.blur="website"
                 class="placeholder-gray-300"
             />
         </div>
@@ -105,13 +105,13 @@
     <x-errors />
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-jetstream.action-message class="mr-3" on="saved">
             {{ __('Saved') }}
-        </x-jet-action-message>
+        </x-jetstream.action-message>
 
-        <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+        <x-jetstream.button wire:loading.attr="disabled" wire:target="photo">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-jetstream.button>
     </x-slot>
-</x-jet-form-section>
+</x-jetstream.form-section>
 

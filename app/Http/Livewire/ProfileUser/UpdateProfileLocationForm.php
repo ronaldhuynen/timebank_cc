@@ -8,11 +8,12 @@ use App\Models\Locations\District;
 use App\Models\Locations\Location;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 class UpdateProfileLocationForm extends Component
 {
-    use Actions;
+    use WireUiActions;
+
 
     public $state;
     public $country;
@@ -54,7 +55,7 @@ class UpdateProfileLocationForm extends Component
             if ($this->state->locations->first()->country) {
                 // For now we only use a single location. In the future this can become an array of locations.
                 $this->country = $this->state->locations->first()->country->id;
-                $this->emit('countryToChildren', $this->country);
+                $this->dispatch('countryToChildren', $this->country);
             }
 
 
@@ -117,10 +118,10 @@ class UpdateProfileLocationForm extends Component
 
     public function emitLocationToChildren()
     {
-        $this->emit('countryToChildren', $this->country);
-        $this->emit('divisionToChildren', $this->division);
-        $this->emit('cityToChildren', $this->city);
-        $this->emit('districtToChildren', $this->district);
+        $this->dispatch('countryToChildren', $this->country);
+        $this->dispatch('divisionToChildren', $this->division);
+        $this->dispatch('cityToChildren', $this->city);
+        $this->dispatch('districtToChildren', $this->district);
     }
 
 
@@ -184,7 +185,7 @@ class UpdateProfileLocationForm extends Component
             // Save the location with the updated relationship IDs
             $location->save();
 
-            $this->emit('saved');
+            $this->dispatch('saved');
         });
     }
 

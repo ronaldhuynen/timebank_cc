@@ -15,11 +15,12 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Component;
 use Stevebauman\Location\Facades\Location as IpLocation;
 use Throwable;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 class Registration extends Component implements CreatesNewUsers
 {
-    use Actions;
+    use WireUiActions;
+
 
     public $name;
     public $email;
@@ -96,10 +97,10 @@ class Registration extends Component implements CreatesNewUsers
 
     public function emitLocationToChildren()
     {
-        $this->emit('countryToChildren', $this->country);
-        $this->emit('divisionToChildren', $this->division);
-        $this->emit('cityToChildren', $this->city);
-        $this->emit('districtToChildren', $this->district);
+        $this->dispatch('countryToChildren', $this->country);
+        $this->dispatch('divisionToChildren', $this->division);
+        $this->dispatch('cityToChildren', $this->city);
+        $this->dispatch('districtToChildren', $this->district);
     }
 
 

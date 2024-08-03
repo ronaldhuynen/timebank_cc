@@ -32,7 +32,7 @@ class TrixEditor extends Component
 
     public function updatingValue($value)
     {
-        $this->emit('trixEditor', $value);
+        $this->dispatch('trixEditor', $value);
     }
 
 

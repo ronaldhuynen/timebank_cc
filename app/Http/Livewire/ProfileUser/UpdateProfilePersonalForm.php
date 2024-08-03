@@ -150,7 +150,7 @@ class UpdateProfilePersonalForm extends Component
         }
 
         $this->user->save();
-        $this->emit('saved');
+        $this->dispatch('saved');
         Session(['activeProfilePhoto' => $this->user->profile_photo_path ]);
         redirect()->route('user.edit');
     }
@@ -182,7 +182,7 @@ class UpdateProfilePersonalForm extends Component
             Session(['activeProfilePhoto' => $this->user->profile_photo_path ]);
         }
 
-        $this->emit('saved');
+        $this->dispatch('saved');
         return redirect()->route('user.edit');
     }
 

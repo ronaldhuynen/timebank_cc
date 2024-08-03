@@ -40,7 +40,7 @@ class AddTranslationSelectbox extends Component
     public function updated()
     {
         if ($this->localeSelected) {
-            $this->emit('languageToParent', $this->localeSelected);
+            $this->dispatch('languageToParent', $this->localeSelected);
         }
     }
 

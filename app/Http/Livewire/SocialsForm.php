@@ -66,7 +66,7 @@ class SocialsForm extends Component
         $this->selectedPlaceholder = Social::find($this->socialsOptionSelected);
         $this->updateMode = true;
 
-        $this->dispatchBrowserEvent('contentChanged');
+        $this->dispatch('contentChanged');
     }
 
 

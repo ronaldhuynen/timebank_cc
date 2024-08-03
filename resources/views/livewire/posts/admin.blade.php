@@ -45,7 +45,7 @@
                             @foreach ($post->translations as $key => $translation)
                     <tr class="dark:bordergray-600 hover:bg-gray-50">
                         <td class="py3 whitespace-no-wrap border-b border-white px-6 text-sm leading-5">
-                            <input type="checkbox" wire:model="bulkSelected" value="{{ $translation->id }}">
+                            <input type="checkbox" wire:model.live="bulkSelected" value="{{ $translation->id }}">
                         </td>
                         <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
                             {{ $post->id }}
@@ -120,10 +120,10 @@
     <div
         class="@if (!$showModal) hidden @endif fixed bottom-0 left-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
         <div class="h-5/6 w-3/5 overflow-scroll rounded-lg bg-white">
-            <form wire:submit.prevent="save" class="w-ful">
+            <form wire:submit="save" class="w-ful">
                 <div class="flex flex-col items-start p-4">
                     <div class="flex w-full items-center bg-white pb-4">
-                        <div wire:model="language" class="text-lg font-medium text-gray-900">
+                        <div wire:model.live="language" class="text-lg font-medium text-gray-900">
                             @if ($postId)
                                 @if ($createTranslation)
                                     {{ __('Add translation') .':' . ' ' . __('messages.' . $language) }}
@@ -151,7 +151,7 @@
                         <label class="block text-sm font-medium text-gray-700">
                             {{ __('Title') }}
                         </label>
-                        <input wire:model.debounce.800ms="title"
+                        <input wire:model.live.debounce.800ms="title"
                             class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
                         @error('title')
                             <p class="mt-2 text-sm text-red-600" id="title-error">{{ $message }}</p>
@@ -161,14 +161,14 @@
                         <label class="block text-sm font-medium text-gray-700">
                             {{ __('Slug') }}
                         </label>
-                        <input wire:model.lazy="post.slug"
+                        <input wire:model.blur="post.slug"
                             class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
                         @error('post.slug')
                             <p class="mt-2 text-sm text-red-600" id="slug-error">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="w-full py-2">
-                        <x-textarea wire:model.defer="post.excerpt" label="{{ __('Intro') }}" placeholder="" />
+                        <x-textarea wire:model="post.excerpt" label="{{ __('Intro') }}" placeholder="" />
                         @error('post.excerpt')
                             <p class="mt-2 text-sm text-red-600" id="excerpt-error">{{ $message }}</p>
                         @enderror
@@ -202,7 +202,7 @@
                                 x-on:livewire-upload-error="isUploading = false"
                                 x-on:livewire-upload-progress="progress = $event.detail.progress">
                                 <!-- File Input -->
-                                <input type="file" wire:model="image">
+                                <input type="file" wire:model.live="image">
                                 <!-- Progress Bar -->
                                 <div x-show.transition="isUploading"
                                     class="flex-start my-6 flex h-4 w-64 overflow-hidden rounded bg-gray-100 font-sans text-xs font-medium">
@@ -222,13 +222,13 @@
                             <div class="flex space-x-12">
                                 <div class="my-6 flex-auto">
                                     <x-datetime-picker label="{{ __('Start of the event') }}"
-                                        placeholder="{{ __('Select a date and time') }}" wire:model="meetingFrom"
+                                        placeholder="{{ __('Select a date and time') }}" wire:model.live="meetingFrom"
                                         time-format="24" display-format="DD-MM-YYYY @ H:mm"
                                         parse-format="YYYY-MM-DD HH:mm" />
                                 </div>
                                 <div class="my-6 flex-auto">
                                     <x-datetime-picker label="{{ __('End of the event') }}"
-                                        placeholder="{{ __('Select a date and time') }}" wire:model="meetingTill"
+                                        placeholder="{{ __('Select a date and time') }}" wire:model.live="meetingTill"
                                         time-format="24" display-format="DD-MM-YYYY @ H:mm"
                                         parse-format="YYYY-MM-DD HH:mm" />
                                 </div>
@@ -238,7 +238,7 @@
                                 <label class="block text-sm font-medium text-gray-700">
                                     {{ __('Event address') }}
                                 </label>
-                                <input wire:model.defer="meetingAddress"
+                                <input wire:model="meetingAddress"
                                     class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
                                 @error('meetingAddress')
                                     <p class="mt-2 text-sm text-red-600" id="meeting-address-error">{{ $message }}
@@ -258,12 +258,12 @@
                         <div class="flex space-x-12">
                             <div class="my-6 flex-auto">
                                 <x-datetime-picker label="{{ __('Start of publication') }}"
-                                    placeholder="{{ __('Select a date') }}" wire:model="start" time-format="24"
+                                    placeholder="{{ __('Select a date') }}" wire:model.live="start" time-format="24"
                                     display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                             </div>
                             <div class="my-6 flex-auto">
                                 <x-datetime-picker label="{{ __('End of publication') }}"
-                                    placeholder="{{ __('Select a date') }}" wire:model="stop" time-format="24"
+                                    placeholder="{{ __('Select a date') }}" wire:model.live="stop" time-format="24"
                                     display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                             </div>
                         </div>

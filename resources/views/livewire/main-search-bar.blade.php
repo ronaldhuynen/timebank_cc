@@ -4,7 +4,7 @@
     <div class="relative mx-auto text-gray-600 ">
         <div class="flex rounded-md border border-gray-300 bg-white  placeholder-gray-300 transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-600 sm:text-sm">
 
-            <input wire:model.debounce.150ms="search" wire:keydown.enter="showSearchResults('{{ $search }}')"
+            <input wire:model.live.debounce.150ms="search" wire:keydown.enter="showSearchResults('{{ $search }}')"
                 x-on:focus="open = true" x-on:input="open = true" x-on:keydown.enter="open = false"
                 x-on:click.away="open = false" type="search" placeholder="{{ __('Search...') }}"
                 class="border-none focus:border-none focus:outline-none focus:ring-0 mx-2 leading-5 text-sm"

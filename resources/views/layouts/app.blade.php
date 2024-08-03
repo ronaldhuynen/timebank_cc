@@ -95,8 +95,8 @@
     </head>
     <body class="font-sans antialiased" id="messenger-style-overrides">
 
-        <x-jet-banner />
-        <x-jet-toaster />
+        <x-jetstream.banner />
+        <x-jetstream.toaster /> {{--NOT USED IN JETSTREAM V3 ?--}}
 
         <div class="min-h-screen bg-gray-100">
             @livewire('navigation-menu')
@@ -117,14 +117,26 @@
         </div>
 
         <!-- Scripts body-->
+        @livewireScripts
         <script src="{{ mix('js/echo.js') }}"></script>
         @stack('modals')
         {{-- @stack('scripts') --}}
         @yield('scripts_body')
         @include('messenger::scripts')
-        @livewireScripts
 
+        <!-- Initialize Livewire -->
+        <script>
+            document.addEventListener('livewire:load', function () {
+                // Livewire is loaded
+            });
+        </script>
 
+        <!-- Alpine.js Initialization -->
+        <script>
+            document.addEventListener('alpine:init', () => {
+                // Alpine.js is initialized
+            });
+        </script>
 
 
 {{-- @yield('js') --}}

@@ -25,7 +25,7 @@ class Amount extends Component
 
     public function updated()
     {
-        $this->emit('amount', $this->amount);
+        $this->dispatch('amount', $this->amount);
         // try {
 
         //     $this->validateOnly('amount');

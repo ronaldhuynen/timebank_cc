@@ -3,12 +3,13 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 
 class NotifySwitchProfile extends Component
 {
-    use Actions;
+    use WireUiActions;
+
 
     public function mount()
     {

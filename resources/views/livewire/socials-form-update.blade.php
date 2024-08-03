@@ -6,7 +6,7 @@
             placeholder="{{$selectedPlaceholder->name}}"
             option-label="name"
             option-value="id"
-            wire:model="socialsOptionSelected"
+            wire:model.live="socialsOptionSelected"
             wire:key="{{ $socialsOptionSelected}}.select">
             @foreach ($socialsOptions as $socialOption)
                 <x-select.user-option src="{{ Storage::url($socialOption->icon) }}" label="{{$socialOption->name}}" value="{{ $socialOption->id }}"/>
@@ -14,10 +14,10 @@
         </x-select>
     </div>
         <div class="grid grid-cols-1 gap-6 mt-3 mb-3 md:grid-cols-2">
-        <x-input wire:model="userOnSocial" label="Username on medium" placeholder="AccountName" prefix="@ " />
+        <x-jetstream.input wire:model.live="userOnSocial" label="Username on medium" placeholder="AccountName" prefix="@ " />
         @if(App\Models\Social::find($socialsOptionSelected))
             @if(Str::contains(App\Models\Social::find($socialsOptionSelected)->url_structure, '#'))
-            <x-input wire:model="serverOfSocial" label="Server of social" placeholder="Server name" prefix="@ " />
+            <x-jetstream.input wire:model.live="serverOfSocial" label="Server of social" placeholder="Server name" prefix="@ " />
             @endif
         @endif
         </div>

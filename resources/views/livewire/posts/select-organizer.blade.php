@@ -15,7 +15,7 @@
         <!----- When nothing is selected ---->
         @if (!isset($selectedId) || $search != '')
 
-            <input wire:model.debounce.300ms="search" x-on:blur="$wire.inputBlur()"
+            <input wire:model.live.debounce.300ms="search" x-on:blur="$wire.inputBlur()"
                 class="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 leading-5 placeholder-gray-400 shadow-sm transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-700 sm:text-sm"
                 placeholder="{{ __('Search organizer name') }}" type="search" autocomplete="off">
 
@@ -59,7 +59,7 @@
             </div>
         <!----- When selected ---->
         @else
-            <input wire:model.debounce.300ms="search"
+            <input wire:model.live.debounce.300ms="search"
                 class="sadow-sm block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 leading-5 placeholder-gray-400 transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-300 focus:outline-none sm:text-sm"
                 placeholder="{{ __('Search again...') }}" type="search" autocomplete="off">
             <div

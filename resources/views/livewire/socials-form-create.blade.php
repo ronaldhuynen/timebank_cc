@@ -3,7 +3,7 @@
         <x-select id="create"
             label="{{ __('Add social media profiles') }}"
             placeholder="{{ __('Select a social medium') }}"
-            wire:model="socialsOptionSelected"
+            wire:model.live="socialsOptionSelected"
             class="placeholder-gray-300"
             >
             @foreach ($socialsOptions as $option)
@@ -15,12 +15,12 @@
     <div class="grid grid-cols-1 gap-6 mt-3 mb-3 md:grid-cols-2">
         @if(App\Models\Social::find($socialsOptionSelected))
             @if(App\Models\Social::find($socialsOptionSelected)->url_structure === '')
-            <x-input wire:model="userOnSocial" label="{{ __('Link to your page on social medium') }}" placeholder="Link or URL addres" prefix=" " class="placeholder-gray-300"/>
+            <x-jetstream.input wire:model.live="userOnSocial" label="{{ __('Link to your page on social medium') }}" placeholder="Link or URL addres" prefix=" " class="placeholder-gray-300"/>
             @else
 
-        <x-input wire:model="userOnSocial" label="{{ __('Your username on social medium') }}" placeholder="Account Name" prefix="@ " class="placeholder-gray-300"/>
+        <x-jetstream.input wire:model.live="userOnSocial" label="{{ __('Your username on social medium') }}" placeholder="Account Name" prefix="@ " class="placeholder-gray-300"/>
             @if(Str::contains(App\Models\Social::find($socialsOptionSelected)->url_structure, '#'))
-            <x-input wire:model="serverOfSocial" label="Server of social" placeholder="Server name" prefix="@ " />
+            <x-jetstream.input wire:model.live="serverOfSocial" label="Server of social" placeholder="Server name" prefix="@ " />
             @endif
             @endif
 

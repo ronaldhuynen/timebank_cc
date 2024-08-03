@@ -1,7 +1,7 @@
 <div
     x-data="datePicker({
         @if ($hasWireModel())
-            value: @entangle($attributes->wire('model')),
+            value: @entangle($attributes->wire('model')).live,
         @elseif ($hasXModel())
             value: {{ $attributes->first('x-model' ) }},
         @else
@@ -47,7 +47,7 @@
             @if ($name) name="{{ $name }}" @endif
             @if ($id) id="{{ $id }}" @endif
             @if ($placeholder) placeholder="{{ $placeholder }}" @endif
-            {{ $attributes->except(['type', 'aria-describedby'])->whereDoesntStartWith(['wire:model', 'x-model'])->class($inputClass()) }}
+            {{ $attributes->except(['type', 'aria-describedby'])->whereDoesntStartWith(['wire:model.live', 'x-model'])->class($inputClass()) }}
             x-date-picker:input
             wire:ignore
 

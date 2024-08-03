@@ -2,23 +2,23 @@
 
     <div class="flex space-x-12">
         <div class="flex-none w-2/4 my-6">
-            <x-input wire:model="search" right-icon="search" label="{{ __('Search transactions') }}" placeholder="Name, description or amount" :clearable="true" class="placeholder-gray-300 text-gray-900 text-sm" />
+            <x-jetstream.input wire:model.live="search" right-icon="search" label="{{ __('Search transactions') }}" placeholder="Name, description or amount" :clearable="true" class="placeholder-gray-300 text-gray-900 text-sm" />
 
         </div>
         <div class="flex-auto my-6 z-50">
-            <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model="fromDate" :without-time="true" display-format="DD-MM-YYYY" class="placeholder-gray-300" />
+            <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model.live="fromDate" :without-time="true" display-format="DD-MM-YYYY" class="placeholder-gray-300" />
 
         </div>
 
         <div class="flex-auto my-6 z-50">
-            <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model="toDate" :without-time="true"  display-format="DD-MM-YYYY" class="placeholder-gray-300" />
+            <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model.live="toDate" :without-time="true"  display-format="DD-MM-YYYY" class="placeholder-gray-300" />
         </div>
     </div>
 
 
 
 <!-- Results table -->
- <table wire:model="searchState" class="mbt-2 mb-20 min-w-full w-full leading-normal" id="transactions">
+ <table wire:model.live="searchState" class="mbt-2 mb-20 min-w-full w-full leading-normal" id="transactions">
      <thead>
          <tr>
             <th class="py-6 border-b border-gray-200">
@@ -125,7 +125,7 @@
 <!-- Pagination -->
  <div class="row my-6 relative">
     <div class="flex">
-        <select wire:model="perPage" class="w-16 py-2 px-3 border border-gray-300 bg-white text-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <select wire:model.live="perPage" class="w-16 py-2 px-3 border border-gray-300 bg-white text-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>

@@ -1,4 +1,4 @@
-<x-jet-action-section>
+<x-jetstream.action-section>
     <x-slot name="title">
         {{ __('Delete profile and login') }}
     </x-slot>
@@ -13,13 +13,13 @@
         </div>
 
         <div class="mt-5">
-            <x-jet-danger-button wire:click="confirmUserDeletion" wire:loading.attr="disabled">
+            <x-jetstream.danger-button wire:click="confirmUserDeletion" wire:loading.attr="disabled">
                 {{ __('Delete profile') }}
-            </x-jet-danger-button>
+            </x-jetstream.danger-button>
         </div>
 
         <!-- Delete User Confirmation Modal -->
-        <x-jet-dialog-modal wire:model="confirmingUserDeletion">
+        <x-jetstream.dialog-modal wire:model.live="confirmingUserDeletion">
             <x-slot name="title">
                 {{ __('Delete profile') }}
             </x-slot>
@@ -30,25 +30,25 @@
 
 
                 <div class="mt-4" x-data="{}" x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
-                    <x-jet-input type="password" class="mt-1 block w-3/4"
+                    <x-jetstream.input type="password" class="mt-1 block w-3/4"
                                 placeholder="{{ __('Password') }}"
                                 x-ref="password"
-                                wire:model.defer="password"
+                                wire:model="password"
                                 wire:keydown.enter="deleteUser" />
 
-                    <x-jet-input-error for="password" class="mt-2" />
+                    <x-jetstream.input-error for="password" class="mt-2" />
                 </div>
             </x-slot>
 
             <x-slot name="footer">
-                <x-jet-secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
+                <x-jetstream.secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
                     {{ __('Cancel') }}
-                </x-jet-secondary-button>
+                </x-jetstream.secondary-button>
 
-                <x-jet-danger-button class="ml-3" wire:click="deleteUser" wire:loading.attr="disabled">
+                <x-jetstream.danger-button class="ml-3" wire:click="deleteUser" wire:loading.attr="disabled">
                     {{ __('Delete profile') }}
-                </x-jet-danger-button>
+                </x-jetstream.danger-button>
             </x-slot>
-        </x-jet-dialog-modal>
+        </x-jetstream.dialog-modal>
     </x-slot>
-</x-jet-action-section>
+</x-jetstream.action-section>

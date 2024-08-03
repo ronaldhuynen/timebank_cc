@@ -3,11 +3,12 @@
 namespace App\Http\Livewire\ProfileOrg;
 
 use Livewire\Component;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 class UpdateSocialMediaForm extends Component
 {
-    use Actions;
+    use WireUiActions;
+
 
     public $profile;
     public $website;
@@ -52,7 +53,7 @@ class UpdateSocialMediaForm extends Component
 
     public function emitSaved()
     {
-        $this->emit('saved');
+        $this->dispatch('saved');
     }
 
     /**
@@ -67,7 +68,7 @@ class UpdateSocialMediaForm extends Component
         $this->profile->website =  str_replace(['http://', 'https://', ], '', $this->website);
 
         $this->profile->save();
-        $this->emit('saved');
+        $this->dispatch('saved');
     }
 
 

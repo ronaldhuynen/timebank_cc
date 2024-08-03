@@ -3,7 +3,7 @@
   <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full">
       <div>
-        <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg"
+        <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg" 
           alt="Workflow">
         <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
           Sign in to your account
@@ -16,11 +16,11 @@
           </a>
         </p>
       </div>
-      <form class="mt-8" wire:submit.prevent="login">
+      <form class="mt-8" wire:submit="login">
         <input type="hidden" name="remember" value="true">
         <div class="rounded-md shadow-sm">
           <div>
-            <input wire:model.lazy="email" aria-label="Email address" name="email" type="email" required
+            <input wire:model.blur="email" aria-label="Email address" name="email" type="email" required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
               placeholder="Email address">
             @error('email')
@@ -28,7 +28,7 @@
             @enderror
           </div>
           <div class="-mt-px">
-            <input wire:model.lazy="password" aria-label="Password" name="password" type="password" required
+            <input wire:model.blur="password" aria-label="Password" name="password" type="password" required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
               placeholder="Password">
           </div>

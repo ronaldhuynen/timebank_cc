@@ -7,11 +7,12 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 class SelectOrganization extends Component
 {
-    use Actions;
+    use WireUiActions;
+
 
     public $user;
     public $userOrganizations = [];

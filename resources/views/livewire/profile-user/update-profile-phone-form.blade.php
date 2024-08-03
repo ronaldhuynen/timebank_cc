@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateProfilePhone">
+<x-jetstream.form-section submit="updateProfilePhone">
     <x-slot name="title">
         {{ __('Mobile phone number') }}
     </x-slot>
@@ -12,12 +12,12 @@
 
         <!-- Phone -->
         <div class="col-span-6  -mb-6" wire:init="phonecodeInit">
-        <x-jet-label for="phone" value="{{ __('Mobile phone') }}" />
+        <x-jetstream.label for="phone" value="{{ __('Mobile phone') }}" />
         </div>
             <div class="col-span-1">
                 <x-native-select
                     id="phonecode"
-                    wire:model="phonecode"
+                    wire:model.live="phonecode"
                     :options="$phoneCodeOptions"
                     option-value="code"
                     option-label="label"
@@ -26,10 +26,10 @@
                 </x-native-select>
             </div>
             <div class="col-span-2 -ml-3">
-                <x-input
+                <x-jetstream.input
                     id="phone"
                     placeholder="Enter mobile phone number"
-                    wire:model.lazy="state.phone" 
+                    wire:model.blur="state.phone" 
                     class="placeholder-gray-300"/>
             </div>
             @error('phone')
@@ -37,19 +37,19 @@
             @enderror
 
         <div class="col-span-6 -mt-3">
-            <x-checkbox id="right-label" label="Visible for my Timebank.cc friends" wire:model.defer="state.phone_public_for_friends" />
+            <x-jetstream.checkbox id="right-label" label="Visible for my Timebank.cc friends" wire:model="state.phone_public_for_friends" />
         </div>
     </x-slot>
 
 
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-jetstream.action-message class="mr-3" on="saved">
             {{ __('Saved') }}
-        </x-jet-action-message>
+        </x-jetstream.action-message>
 
-        <x-jet-button wire:loading.attr="disabled">
+        <x-jetstream.button wire:loading.attr="disabled">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-jetstream.button>
     </x-slot>
-</x-jet-form-section>
+</x-jetstream.form-section>

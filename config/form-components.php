@@ -266,7 +266,7 @@ return [
     |
     | Here you may define aliases for components this package provides.
     | For example, instead of rendering an input with <x-form-components::inputs.input>,
-    | you may register an alias of 'input' and render it with <x-input>
+    | you may register an alias of 'input' and render it with <x-jetstream.input>
     | instead.
     |
     */

@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Laravel\Jetstream\Contracts\DeletesUsers;
 use Livewire\Component;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 
 class DeleteUserForm extends Component
 {
-    use Actions;
+    use WireUiActions;
+
 
 
     /**
@@ -47,7 +48,7 @@ class DeleteUserForm extends Component
 
         $this->password = '';
 
-        $this->dispatchBrowserEvent('confirming-delete-user');
+        $this->dispatch('confirming-delete-user');
 
         $this->confirmingUserDeletion = true;
     }

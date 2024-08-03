@@ -55,10 +55,10 @@ class LocationsDropdown extends Component
         $this->reset(['city', 'cities']);
         $this->reset(['district', 'districts']);
 
-        $this->emit('countryToParent', $this->country);
-        $this->emit('divisionToParent', $this->division);
-        $this->emit('cityToParent', $this->city);
-        $this->emit('districtToParent', $this->district);
+        $this->dispatch('countryToParent', $this->country);
+        $this->dispatch('divisionToParent', $this->division);
+        $this->dispatch('cityToParent', $this->city);
+        $this->dispatch('districtToParent', $this->district);
     }
 
 
@@ -69,9 +69,9 @@ class LocationsDropdown extends Component
         if ($this->division === '') {
             $this->division = null;
         }
-        $this->emit('divisionToParent', $this->division);
-        $this->emit('cityToParent', $this->city);
-        $this->emit('districtToParent', $this->district);
+        $this->dispatch('divisionToParent', $this->division);
+        $this->dispatch('cityToParent', $this->city);
+        $this->dispatch('districtToParent', $this->district);
     }
 
 
@@ -81,8 +81,8 @@ class LocationsDropdown extends Component
         if ($this->city === '') {
             $this->city = null;
         }
-        $this->emit('cityToParent', $this->city);
-        $this->emit('districtToParent', $this->district);
+        $this->dispatch('cityToParent', $this->city);
+        $this->dispatch('districtToParent', $this->district);
     }
 
 
@@ -91,31 +91,31 @@ class LocationsDropdown extends Component
         if ($this->district === '') {
             $this->district = null;
         }
-        $this->emit('districtToParent', $this->district);
+        $this->dispatch('districtToParent', $this->district);
     }
 
 
     public function countrySelected()
     {
-        $this->emit('countryToParent', $this->country);
+        $this->dispatch('countryToParent', $this->country);
     }
 
 
     public function divisionSelected()
     {
-        $this->emit('divisionToParent', $this->division);
+        $this->dispatch('divisionToParent', $this->division);
     }
 
 
     public function citySelected()
     {
-        $this->emit('cityToParent', $this->city);
+        $this->dispatch('cityToParent', $this->city);
     }
 
 
     public function districtSelected()
     {
-        $this->emit('districtToParent', $this->district);
+        $this->dispatch('districtToParent', $this->district);
     }
 
 

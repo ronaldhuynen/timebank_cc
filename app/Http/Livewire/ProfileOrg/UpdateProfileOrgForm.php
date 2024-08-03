@@ -148,7 +148,7 @@ class UpdateProfileOrgForm extends Component
         }
 
         $this->organization->save();
-        $this->emit('saved');
+        $this->dispatch('saved');
         Session(['activeProfilePhoto' => $this->organization->profile_photo_path ]);
         redirect()->route('org.edit');
     }
@@ -180,7 +180,7 @@ class UpdateProfileOrgForm extends Component
             Session(['activeProfilePhoto'=> $this->organization->profile_photo_path ]);
         }
 
-        $this->emit('saved');
+        $this->dispatch('saved');
         return redirect()->route('org.edit');
     }
 

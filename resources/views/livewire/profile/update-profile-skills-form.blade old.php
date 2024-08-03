@@ -1,14 +1,14 @@
 <div>
     <div>
-        <form wire:submit.prevent="save" wire:key="skills-form">
+        <form wire:submit="save" wire:key="skills-form">
 
             <!-- Skills -->
             <div>
-                <x-jet-label wire:loading.remove for="tags" value="{{ __('Your Timebanking skills') }}" />
-                <x-jet-label wire:loading for="tags" value="{{ __('Loading...') }}" />
+                <x-jetstream.label wire:loading.remove for="tags" value="{{ __('Your Timebanking skills') }}" />
+                <x-jetstream.label wire:loading for="tags" value="{{ __('Loading...') }}" />
                 <div wire:ignore>
 
-                    <input id="tags" wire:ignore x-data="{ input: @entangle('tagsArray') }" x-ref="input" x-init=" tagify = new Tagify($refs.input, {
+                    <input id="tags" wire:ignore x-data="{ input: @entangle('tagsArray').live }" x-ref="input" x-init=" tagify = new Tagify($refs.input, {
                          pattern: /^.{3,80}$/, // max 80 characters, make sure also vaidation rule in Model is equally set
                          maxTags: 40,
                          autocapitalize: true,
@@ -78,21 +78,21 @@
             </div>
 
             <div class="bg-gray-white flex items-center justify-end px-4 py-3 text-right">
-                <x-jet-action-message class="mr-3" on="saved">
+                <x-jetstream.action-message class="mr-3" on="saved">
                     {{ __('Saved') }}
-                </x-jet-action-message>
+                </x-jetstream.action-message>
 
-                <x-jet-button wire:loading.attr="disabled" wire:click="$emit('save')">
+                <x-jetstream.button wire:loading.attr="disabled" wire:click="$dispatch('save')">
                     {{ __('Save') }}
-                </x-jet-button>
+                </x-jetstream.button>
             </div>
 
 
 
             <!---- New Tag Modal ---->
-            <form wire:submit.prevent="createtag">
+            <form wire:submit="createtag">
 
-                <x-jet-dialog-modal wire:model="modalVisible">
+                <x-jetstream.dialog-modal wire:model.live="modalVisible">
                     <x-slot name="title">
                         {{ __('Add a new skill to Timebank.cc') }}
                     </x-slot>
@@ -100,30 +100,30 @@
                     <x-slot name="content">
 
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-input label="Skill title *" placeholder="Accurate and unique title of this skill"
-                                wire:model.lazy="newTag.name" />
+                            <x-jetstream.input label="Skill title *" placeholder="Accurate and unique title of this skill"
+                                wire:model.blur="newTag.name" />
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-input label="Descriptive example *"
+                            <x-jetstream.input label="Descriptive example *"
                                 placeholder="Give an example that illustrates this skill"
-                                wire:model.lazy="newTag.example" />
+                                wire:model.blur="newTag.example" />
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-checkbox id="right-label" label="This example matches exactly the skill title *"
-                                wire:model="newTag.check" />
+                            <x-jetstream.checkbox id="right-label" label="This example matches exactly the skill title *"
+                                wire:model.live="newTag.check" />
                         </div>
 
                         <div class="mt-2 grid grid-cols-1 gap-6 md:grid-cols-2">
                             <x-select id="category" label="{{ __('Category') }}"
-                                placeholder="{{ __('Select a category') }}" wire:model="newTagCategory"
+                                placeholder="{{ __('Select a category') }}" wire:model.live="newTagCategory"
                                 class="placeholder-gray-300" :options="$categoryOptions" option-label="name"
                                 option-value="category_id" />
                         </div>
                         @if (app()->getLocale() != config('timebank-cc.base_language'))
                             <div class="mt-6 grid grid-cols-1 gap-6">
-                                <x-checkbox id="checkbox"
+                                <x-jetstream.checkbox id="checkbox"
                                     label="{{ __('Attach an English translation to this skill') }}"
-                                    wire:model="translationVisible" />
+                                    wire:model.live="translationVisible" />
                             </div>
 
                             <div class="mt-6 grid grid-cols-1 gap-6" wire:loading wire:target="translationVisible">
@@ -135,12 +135,12 @@
                                 @if ($translationVisible)
                                     <hr class="border-t border-gray-200" py-12 />
                                     <x-radio id="radio-0" label="{{ __('Attach an existing skill in English') }}"
-                                        wire:model="translateRadioButton" value="select" />
+                                        wire:model.live="translateRadioButton" value="select" />
                                     <div id='select-translation'
                                         class="my-6 grid grid-cols-1 gap-6 pl-6 md:grid-cols-2">
                                         <x-select id="translation" label=""
                                             placeholder="{{ __('Select a translation') }}"
-                                            wire:model="selectTagTranslation" class="placeholder-gray-300"
+                                            wire:model.live="selectTagTranslation" class="placeholder-gray-300"
                                             :options="$translationOptions" option-label="name" option-value="tag_id" />
                                         <div class="mt-6 grid grid-cols-1 gap-6" wire:loading
                                             wire:target="translationOptions">
@@ -149,19 +149,19 @@
                                     </div>
                                     <hr class="border-t border-gray-200" py-12 />
                                     <x-radio id="radio-1" label="{{ __('Create a new skill in English') }}"
-                                        wire:model="translateRadioButton" value="input" />
+                                        wire:model.live="translateRadioButton" value="input" />
                                     <div id="input-translation">
                                         <div class="my-6 grid grid-cols-1 gap-6 pl-6">
-                                            <x-input label=""
+                                            <x-jetstream.input label=""
                                                 placeholder="{{ $newTag ? $newTag['name'] : __('Skill title') }} {{ __('in English') }}"
-                                                wire:model.lazy="inputTagTranslation.name" wire:key="nameInput"
+                                                wire:model.blur="inputTagTranslation.name" wire:key="nameInput"
                                                 :disabled="$inputDisabled" />
                                         </div>
 
                                         <div class="mt-6 grid grid-cols-1 gap-6 pl-6">
-                                            <x-input label="{{ __('Descriptive example in English') }}"
+                                            <x-jetstream.input label="{{ __('Descriptive example in English') }}"
                                                 placeholder="{{ __('Give an example in English that illustrates') }} {{ $newTag ? $newTag['name'] : __('this skill') }}"
-                                                disabled=false wire:model.lazy="inputTagTranslation.example"
+                                                disabled=false wire:model.blur="inputTagTranslation.example"
                                                 wire:key="exampleInput" :disabled="$inputDisabled" />
                                         </div>
                                     </div>
@@ -177,15 +177,15 @@
 
 
     <x-slot name="footer">
-        <x-jet-secondary-button wire:click="cancelCreateTag()" wire:loading.attr="disabled">
+        <x-jetstream.secondary-button wire:click="cancelCreateTag()" wire:loading.attr="disabled">
             {{ __('Annuleren') }}
-        </x-jet-secondary-button>
+        </x-jetstream.secondary-button>
 
-        <x-jet-secondary-button class="ml-3" wire:click="createTag()" wire:loading.attr="disabled">
+        <x-jetstream.secondary-button class="ml-3" wire:click="createTag()" wire:loading.attr="disabled">
             {{ __('Opslaan') }}
-        </x-jet-secondary-button>
+        </x-jetstream.secondary-button>
     </x-slot>
-    </x-jet-dialog-modal>
+    </x-jetstream.dialog-modal>
 
 
     </form>

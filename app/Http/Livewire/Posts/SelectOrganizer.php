@@ -23,7 +23,7 @@ class SelectOrganizer extends Component
 
     public function inputBlur()
     {
-        $this->emit('toAccountValidation');        
+        $this->dispatch('toAccountValidation');        
         $this->showDropdown = false;
         $this->search = '';
     }
@@ -63,7 +63,7 @@ class SelectOrganizer extends Component
         $this->selected = collect($this->searchResults)->where('id', '=', $value)->first();
         $this->showDropdown = false;
         $this->search = '';
-        $this->emit('organizerSelected', $this->selected);
+        $this->dispatch('organizerSelected', $this->selected);
     }
 
 

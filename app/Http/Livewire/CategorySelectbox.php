@@ -33,7 +33,7 @@ class CategorySelectbox extends Component
      */
     public function updated()
     {
-        $this->emit('categoryToParent', $this->categorySelected);
+        $this->dispatch('categoryToParent', $this->categorySelected);
     }
 
 

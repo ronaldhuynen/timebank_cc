@@ -1,12 +1,12 @@
 <x-guest-layout>
-    <x-jet-authentication-card>
+    <x-jetstream.authentication-card>
 
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            <x-jetstream.authentication-card-logo />
         </x-slot>
 
         <!--- Left section -->
-        <x-jet-section-title>
+        <x-jetstream.section-title>
             <x-slot name="title">{{ __('Registration') }}</x-slot>
             <x-slot name="description">
                 <div class="my-4">
@@ -27,10 +27,10 @@
                 </div>
 
             </x-slot>
-        </x-jet-section-title>
+        </x-jetstream.section-title>
 
         <div class="mt-5 md:col-span-2 md:mt-0">
-            <x-jet-validation-errors class="mb-4" />
+            <x-validation-errors class="mb-4" />
 
             <!---- Right section --->
             <div class="bg-white px-4 py-5 shadow sm:rounded-tl-md sm:rounded-tr-md sm:p-6">
@@ -44,5 +44,5 @@
             </div>
         </div>
 
-    </x-jet-authentication-card>
+    </x-jetstream.authentication-card>
 </x-guest-layout>

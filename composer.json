@@ -12,13 +12,14 @@
         "cybercog/laravel-love": "^10.0",
         "graham-campbell/markdown": "^15.2",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/fortify": "^1.21",
         "laravel/framework": "^10.0",
-        "laravel/jetstream": "^2.9",
+        "laravel/jetstream": "^3.0",
         "laravel/reverb": "@beta",
         "laravel/sanctum": "^3.2",
         "laravel/scout": "^10.6",
         "laravel/tinker": "^2.5",
-        "livewire/livewire": "^2.5",
+        "livewire/livewire": "^3.0",
         "maatwebsite/excel": "^3.1",
         "matchish/laravel-scout-elasticsearch": "^7.5",
         "mcamara/laravel-localization": "^1.8",
@@ -43,7 +44,7 @@
         "staudenmeir/eloquent-has-many-deep": "^1.7",
         "staudenmeir/laravel-adjacency-list": "^1.13",
         "stevebauman/location": "^6.6",
-        "wireui/wireui": "1.17.10"
+        "wireui/wireui": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

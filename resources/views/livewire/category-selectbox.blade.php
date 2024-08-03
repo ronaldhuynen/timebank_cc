@@ -5,7 +5,7 @@
         :options="$categoryOptions"
         option-label="name"
         option-value="category_id"
-        wire:model="categorySelected"
+        wire:model.live="categorySelected"
         class="asteriks-red"
     />
     @error('categoryId')

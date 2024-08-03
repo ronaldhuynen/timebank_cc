@@ -6,7 +6,7 @@
             @if ($hasWireModel())
                 __this: @this,
                 __wireModel: '{{ $attributes->wire('model')->value() }}',
-                __value: @entangle($attributes->wire('model')),
+                __value: @entangle($attributes->wire('model')).live,
             @elseif ($hasXModel())
                 __value: {{ $attributes->first('x-model') }},
             @endif

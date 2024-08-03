@@ -1,6 +1,6 @@
 <div wire:ignore class="ml-auto mt-6 w-full">
     <div
-        x-data="{ value: @entangle('value').defer }"
+        x-data="{ value: @entangle('value') }"
         x-init="$watch('value', function (value) {
             $refs.trix.editor.loadHTML(value)
             var length = $refs.trix.editor.getDocument().toString().length

@@ -2,7 +2,7 @@
 
     <label for="description" class="mt-2 block text-sm font-medium text-gray-900"> {{ __('Description') }}</label>
     <textarea
-        wire:model.debounce.800ms="description"
+        wire:model.live.debounce.800ms="description"
         x-on:blur="$wire.checkRequired()"
         placeholder=" {{ __('Payment description') }}"
         rows="5"

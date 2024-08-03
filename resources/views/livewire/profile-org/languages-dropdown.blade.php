@@ -6,6 +6,6 @@
         :options="$langOptions"
         option-label="name"
         option-value="id"
-        wire:model="langSelected"
+        wire:model.live="langSelected"
     />
 </div>

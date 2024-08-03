@@ -46,7 +46,7 @@ class LanguagesDropdown extends Component
     public function updated()
     {
         $this->langSelectedOptions = collect($this->langOptions)->whereIn('id', $this->langSelected);
-        $this->emit('languagesToParent', $this->langSelectedOptions);
+        $this->dispatch('languagesToParent', $this->langSelectedOptions);
     }
 
 

@@ -7,7 +7,7 @@
         @endif
 
         @if ($hasWireModel())
-            __value: @entangle($attributes->wire('model')),
+            __value: @entangle($attributes->wire('model')).live,
         @elseif ($hasXModel())
             __value: {{ $attributes->first('x-model') }},
         @else
@@ -27,7 +27,7 @@
     by="{{ $valueField }}"
     class="{{ $containerClass() }}"
 
-    {{ $attributes->except(['class'])->whereDoesntStartWith(['x-model', 'wire:model']) }}
+    {{ $attributes->except(['class'])->whereDoesntStartWith(['x-model', 'wire:model.live']) }}
     {{ $extraAttributes ?? '' }}
 
     @if ($hasXModel())

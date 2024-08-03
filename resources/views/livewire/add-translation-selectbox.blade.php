@@ -5,7 +5,7 @@
         :options="$langOptions"
         option-label="name"
         option-value="lang_code"
-        wire:model="localeSelected"
+        wire:model.live="localeSelected"
         class="asteriks-red"
     />
     @error('locale')

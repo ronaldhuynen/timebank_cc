@@ -1,10 +1,10 @@
 <x-guest-layout>
-    <x-jet-authentication-card>
+    <x-jetstream.authentication-card>
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            <x-jetstream.authentication-card-logo />
         </x-slot>
 
-        <x-jet-section-title>
+        <x-jetstream.section-title>
             <x-slot name="title">{{ __('Please introduce yourself') }}</x-slot>
             <x-slot name="description">
                 <div class="my-4">{{ __('Other Timebankers like to know who you are before they start their first exchange with you.') }}</div>
@@ -18,11 +18,11 @@
                 </div>
 
             </x-slot>
-        </x-jet-section-title>
+        </x-jetstream.section-title>
 
 
         <div class="mt-5 md:mt-0 md:col-span-2">
-            <x-jet-validation-errors class="mb-4" />
+            <x-jetstream.validation-errors class="mb-4" />
 
             <!---- Right section --->
             <div class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md">
@@ -40,32 +40,32 @@
 
 
                                 <div class="mt-4">
-                                    <x-jet-label for="photo" value="{{ __('Profile photo') }}" />
+                                    <x-jetstream.label for="photo" value="{{ __('Profile photo') }}" />
                                     <input type="file" name="photo"/>
                                 </div>
 
 
                                 <div class="mt-4">
-                                    <x-jet-label for="about" value="{{ __('Short intro about yourself') }}" />
-                                    <x-jet-input id="about" class="block mt-1 w-full" type="text" name="about" :value="old('about')" required autofocus autocomplete="about" />
+                                    <x-jetstream.label for="about" value="{{ __('Short intro about yourself') }}" />
+                                    <x-jetstream.input id="about" class="block mt-1 w-full" type="text" name="about" :value="old('about')" required autofocus autocomplete="about" />
                                 </div>
 
                                 <div class="mt-4">
-                                    <x-jet-label for="motivation" value="{{ __('Why do you like to joinTimebank.cc?') }}" />
-                                    <x-jet-input id="motivation" class="block mt-1 w-full" type="text" name="motivation" :value="old('motivation')" required autofocus autocomplete="motivation" />
+                                    <x-jetstream.label for="motivation" value="{{ __('Why do you like to joinTimebank.cc?') }}" />
+                                    <x-jetstream.input id="motivation" class="block mt-1 w-full" type="text" name="motivation" :value="old('motivation')" required autofocus autocomplete="motivation" />
                                 </div>
 
                                 <div class="mt-4">
-                                    <x-jet-label for="date_of_birth" value="{{ __('Date of birth') }}" />
-                                    <x-jet-input id="date_of_birth" class="block mt-1 w-full" type="text" name="date_of_birth" :value="old('date_of_birth')" required autofocus autocomplete="date_of_birth" />
+                                    <x-jetstream.label for="date_of_birth" value="{{ __('Date of birth') }}" />
+                                    <x-jetstream.input id="date_of_birth" class="block mt-1 w-full" type="text" name="date_of_birth" :value="old('date_of_birth')" required autofocus autocomplete="date_of_birth" />
                                 </div>
 
 
                                 @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                                 <div class="mt-4">
-                                    <x-jet-label for="terms">
+                                    <x-jetstream.label for="terms">
                                         <div class="flex items-center">
-                                            <x-jet-checkbox name="terms" id="terms" />
+                                            <x-jetstream.checkbox name="terms" id="terms" />
 
                                             <div class="ml-2">
                                                 {!! __('I agree to the :terms_of_service and :privacy_policy', [
@@ -74,21 +74,21 @@
                                                 ]) !!}
                                             </div>
                                         </div>
-                                    </x-jet-label>
+                                    </x-jetstream.label>
                                 </div>
                                 @endif
                         </div>
                     </div>
 
                     <div class="flex items-center justify-end mt-4">
-                        <x-jet-button class="ml-4">
+                        <x-jetstream.button class="ml-4">
                             {{ __('Register') }}
-                        </x-jet-button>
+                        </x-jetstream.button>
                     </div>
 
                     </form>
 
                 </div>
             </div>
-    </x-jet-authentication-card>
+    </x-jetstream.authentication-card>
 </x-guest-layout>

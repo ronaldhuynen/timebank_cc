@@ -9,11 +9,12 @@ use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 class Transfer extends Component
 {
-    use Actions;
+    use WireUiActions;
+
 
     public $amount;
     public $fromAccountId;
@@ -276,7 +277,7 @@ class Transfer extends Component
                     $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />'. '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>'
                 );
 
-                $this->emit('resetForm');
+                $this->dispatch('resetForm');
 
                 //Send TransferReceived mail
                 $now = now();

@@ -20,7 +20,7 @@ class Description extends Component
     public function checkRequired()
     {
 
-        $this->emit('description', $this->description);
+        $this->dispatch('description', $this->description);
 
         if ($this->description === null || '')
         {
@@ -44,7 +44,7 @@ class Description extends Component
         // }
         // // Execution stops here if validation fails.
         // $this->requiredError = false;
-        $this->emit('description', $this->description);
+        $this->dispatch('description', $this->description);
 
     }
 

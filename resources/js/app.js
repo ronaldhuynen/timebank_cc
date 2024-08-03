@@ -13,7 +13,7 @@ window.createPopper = createPopper;
 window.Alpine = Alpine;
 window.Tagify = tagifyMin;      // Needs to be loaded after Alpine
 
-
+// Alpine.start();
 
 document.addEventListener("trix-before-initialize", () => {
   // Change Trix.config if you need

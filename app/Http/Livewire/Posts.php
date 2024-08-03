@@ -13,13 +13,14 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 class Posts extends Component
 {
     use WithPagination;
     use WithFileUploads;
-    use Actions;
+    use WireUiActions;
+
 
     public $search;
     public $showModal = false;
@@ -168,7 +169,7 @@ class Posts extends Component
         }
 
         // Emit content to trix-editor component
-        $this->emit('showModal', $this->post['content']);
+        $this->dispatch('showModal', $this->post['content']);
 
 
         $this->title = $this->post['title'];
@@ -195,7 +196,7 @@ class Posts extends Component
     public function create()
     {
         $this->reset();
-        $this->emit('showModal');
+        $this->dispatch('showModal');
         $this->showModal = true;
     }
 
@@ -467,7 +468,7 @@ class Posts extends Component
             $this->organizer['id'] = $this->meeting['meetingable_id'];
             $this->organizer['type'] = $this->meeting['meetingable_type'];
             if ($this->organizer['id']) {    
-                $this->emit('organizerExists', $this->meeting);
+                $this->dispatch('organizerExists', $this->meeting);
             }
         }
     }

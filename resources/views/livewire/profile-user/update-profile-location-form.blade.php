@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateProfileInformation">
+<x-jetstream.form-section submit="updateProfileInformation">
     <x-slot name="title">
         {{ __('Locations') }}
     </x-slot>
@@ -27,13 +27,13 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-jetstream.action-message class="mr-3" on="saved">
             {{ __('Saved') }}
-        </x-jet-action-message>
+        </x-jetstream.action-message>
 
-        <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+        <x-jetstream.button wire:loading.attr="disabled" wire:target="photo">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-jetstream.button>
     </x-slot>
-</x-jet-form-section>
+</x-jetstream.form-section>
 

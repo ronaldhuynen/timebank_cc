@@ -65,7 +65,7 @@ class UpdateProfileSkillsForm extends Component
 
         }
 
-        $this->emit('saved');
+        $this->dispatch('saved');
     }
 
 

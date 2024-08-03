@@ -30,7 +30,7 @@ class FromAccount extends Component
     public function resetForm()
     {
         $this->profileAccounts = $this->getProfileAccounts();
-        $this->emitSelf('preSelected)');
+        $this->dispatch('preSelected)')->self();
     }
 
 
@@ -38,13 +38,13 @@ class FromAccount extends Component
     public function preSelected()
     {
         $this->fromAccountId = $this->profileAccounts[0]['id'];  // by default 1st account is selected
-        $this->emit('fromAccountId', $this->fromAccountId);
+        $this->dispatch('fromAccountId', $this->fromAccountId);
     }
 
 
     public function fromAccountSelected($fromAccountId)
     {
-        $this->emit('fromAccountId', $fromAccountId);
+        $this->dispatch('fromAccountId', $fromAccountId);
     }
 
 

@@ -14,7 +14,7 @@
         @if (!isset($toAccountId) || $search != '')
 
             <input
-            wire:model.debounce.300ms="search"
+            wire:model.live.debounce.300ms="search"
             x-on:blur="$wire.checkValidation()"
             x-on:focus="open = true"
             x-on:click.away="open = false"
@@ -56,7 +56,7 @@
 
             <!----- When a To account is selected ---->
             @else
-            <input wire:model.debounce.300ms="search" class="block w-full pl-10 pr-3 py-2 border sadow-sm border-gray-300 rounded-md leading-5 bg-white placeholder-gray-300 focus:outline-none focus:placeholder-gray-300 focus:border-indigo-300 sm:text-sm transition duration-150 ease-in-out" 
+            <input wire:model.live.debounce.300ms="search" class="block w-full pl-10 pr-3 py-2 border sadow-sm border-gray-300 rounded-md leading-5 bg-white placeholder-gray-300 focus:outline-none focus:placeholder-gray-300 focus:border-indigo-300 sm:text-sm transition duration-150 ease-in-out" 
                 placeholder="{{ __('Search again...') }}"
                 type="search" 
                 autocomplete="off">
@@ -66,10 +66,10 @@
                 <div class="flex items-center px-2 py-2">
                     <img src="{{ $toHolderPhoto }}" class="w-10 rounded-full">
                     <div class="ml-4 leading-tight">
-                        <div wire:model="toHolderName" class="font-semibold">
+                        <div wire:model.live="toHolderName" class="font-semibold">
                             {{ $toHolderName }}
                         </div>
-                        <div wire:model="toAccountName" class="text-gray-600">
+                        <div wire:model.live="toAccountName" class="text-gray-600">
                             {{ $toAccountName }}
                         </div>
                     </div>

@@ -2,7 +2,7 @@
     wire:ignore.self
     x-data="switchToggle({
         @if ($hasWireModel())
-            value: @entangle($attributes->wire('model')),
+            value: @entangle($attributes->wire('model')).live,
         @elseif ($hasXModel())
             value: {{ $attributes->first('x-model') }},
         @else
@@ -31,7 +31,7 @@
              x-bind:checked="isPressed"
              x-on:change="toggle"
 
-             {{ $attributes->except(['type', 'x-model', 'wire:model', 'wire:model.defer', 'wire:model.lazy', 'aria-describedby', 'class']) }}
+             {{ $attributes->except(['type', 'x-model', 'wire:model.live', 'wire:model', 'wire:model.blur', 'aria-describedby', 'class']) }}
 
              @if ($name) name="{{ $name }}" @endif
              @if ($id) id="{{ $id }}" @endif

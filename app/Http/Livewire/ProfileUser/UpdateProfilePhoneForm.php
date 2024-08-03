@@ -114,8 +114,8 @@ class UpdateProfilePhoneForm extends Component
         }
 
         $user->save();
-        $this->emit('saved');
-        $this->emit('refresh-navigation-menu');
+        $this->dispatch('saved');
+        $this->dispatch('refresh-navigation-menu');
     }
 
 

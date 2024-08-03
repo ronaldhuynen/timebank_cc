@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
-use App\Http\Livewire\Profile\DeleteUserForm;
 use App\Http\Livewire\ProfileUser\UpdateProfilePersonalForm;
 use App\Http\Livewire\ProfileUser\UpdateProfilePhoneForm;
+use App\Http\Livewire\Profile\DeleteUserForm;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
@@ -77,7 +78,7 @@ class JetstreamServiceProvider extends ServiceProvider
 
     protected function registerComponent(string $component)
     {
-        \Illuminate\Support\Facades\Blade::component('jetstream::components.'.$component, 'jet-'.$component);
+        Blade::component('components.' . $component, $component);
     }
 
 }

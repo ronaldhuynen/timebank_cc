@@ -16,12 +16,13 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 use Throwable;
-use WireUi\Traits\Actions;
+use WireUi\Traits\WireUiActions;
 
 class UpdateProfileSkillsForm extends Component
 {
     use TaggableWithLocale;
-    use Actions;
+    use WireUiActions;
+
 
     public $tagsArray = [];
     public $initialIds = [];
@@ -198,7 +199,7 @@ class UpdateProfileSkillsForm extends Component
 
         $this->tagsArray = json_encode($tags->toArray());
 
-        // $this->dispatchBrowserEvent('load');
+        // $this->dispatch('load');
     }
 
 
@@ -334,10 +335,10 @@ class UpdateProfileSkillsForm extends Component
     {
         if ($this->translateRadioButton === "select") {
             $this->inputDisabled = true;
-            $this->emit('disableInput');
+            $this->dispatch('disableInput');
         } elseif ($this->translateRadioButton === "input") {
             $this->inputDisabled = false;
-            $this->emit('disableSelect');   // Script inside view skills-form.blade.php
+            $this->dispatch('disableSelect');   // Script inside view skills-form.blade.php
         }
     }
 
@@ -346,7 +347,7 @@ class UpdateProfileSkillsForm extends Component
     {
         $this->translateRadioButton = "select";
         $this->inputDisabled = true;
-        $this->emit('disableInput');    // Script inside view skills-form.blade.php
+        $this->dispatch('disableInput');    // Script inside view skills-form.blade.php
     }
 
 
@@ -354,7 +355,7 @@ class UpdateProfileSkillsForm extends Component
     {
         $this->translateRadioButton = "input";
         $this->inputDisabled = false;
-        $this->emit('disableSelect');   // Script inside view skills-form.blade.php
+        $this->dispatch('disableSelect');   // Script inside view skills-form.blade.php
     }
 
 
@@ -414,7 +415,7 @@ class UpdateProfileSkillsForm extends Component
         $this->newTagCategory = null;
         $this->translationVisible = false;
 
-        $this->dispatchBrowserEvent('cancelCreateTag'); // Removes last value of the tagsArray on front-end only
+        $this->dispatch('cancelCreateTag'); // Removes last value of the tagsArray on front-end only
 
         $this->newTagsArray = $this->initTagsArray;
         $this->tagsArray = json_encode($this->initTagsArray);
@@ -556,13 +557,13 @@ class UpdateProfileSkillsForm extends Component
         $this->initTagsArray = [];
         $this->forgetCachedSkills();
         $this->cacheSkills();
-        $this->emit('saved');
+        $this->dispatch('saved');
 
         $this->newTag = null;
         $this->newTagsArray = null;
         $this->newTagCategory = null;
         $this->mount();
-        $this->dispatchBrowserEvent('tagifyChange', ['tagsArray' => $this->tagsArray]);
+        $this->dispatch('tagifyChange', ['tagsArray' => $this->tagsArray]);
     }
 
 

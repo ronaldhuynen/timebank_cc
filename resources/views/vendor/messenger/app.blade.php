@@ -23,8 +23,8 @@
     </head>
 
     <body class="font-sans antialiased">
-        <x-jet-banner />
-        <x-jet-toaster />
+        <x-banner />
+        <x-toaster />
 
         <x-app-layout>
             <x-slot name="header">

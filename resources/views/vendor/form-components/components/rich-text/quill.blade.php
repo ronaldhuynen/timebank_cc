@@ -1,7 +1,7 @@
 <div
     x-data="quill({
         @if ($hasWireModel())
-            __value: @entangle($attributes->wire('model')),
+            __value: @entangle($attributes->wire('model')).live,
         @elseif ($hasXModel())
             __value: {{ $attributes->first('x-model') }},
         @else

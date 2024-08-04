@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c23cfbfea52e2c19dd05c60444645859",
+    "content-hash": "4d76c6a98524681f75b69d2448753cfc",
     "packages": [
         {
             "name": "atomescrochus/laravel-string-similarities",
@@ -4425,25 +4425,25 @@
         },
         {
             "name": "mcamara/laravel-localization",
-            "version": "V1.8.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mcamara/laravel-localization.git",
-                "reference": "9b1779a963c1779d1977d8ad0558a681608e3ec1"
+                "reference": "9b47bb7db4f6712564ceca448b4df8bb7c7e415a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mcamara/laravel-localization/zipball/9b1779a963c1779d1977d8ad0558a681608e3ec1",
-                "reference": "9b1779a963c1779d1977d8ad0558a681608e3ec1",
+                "url": "https://api.github.com/repos/mcamara/laravel-localization/zipball/9b47bb7db4f6712564ceca448b4df8bb7c7e415a",
+                "reference": "9b47bb7db4f6712564ceca448b4df8bb7c7e415a",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "~5.2.0||~5.3.0||~5.4.0||~5.5.0||~5.6.0||~5.7.0||~5.8.0||^6.0||^7.0||^8.0||^9.0|^10.0",
+                "laravel/framework": "~5.2.0||~5.3.0||~5.4.0||~5.5.0||~5.6.0||~5.7.0||~5.8.0||^6.0||^7.0||^8.0||^9.0|^10.0||^11.0",
                 "php": ">=7.1.0"
             },
             "require-dev": {
-                "orchestra/testbench-browser-kit": "~3.4|~3.8|~4.0|^7.12",
-                "phpunit/phpunit": "6.0.*|^8.0|^9.5.10"
+                "orchestra/testbench-browser-kit": "~3.4|~3.8|~4.0|^7.12|^8.5",
+                "phpunit/phpunit": "6.0.*|^8.0|^9.5.10|^10.0"
             },
             "suggest": {
                 "ext-intl": "*"
@@ -4485,7 +4485,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mcamara/laravel-localization/issues",
-                "source": "https://github.com/mcamara/laravel-localization/tree/V1.8.0"
+                "source": "https://github.com/mcamara/laravel-localization/tree/v2.0.1"
             },
             "funding": [
                 {
@@ -4497,7 +4497,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-18T15:43:23+00:00"
+            "time": "2024-03-13T08:44:33+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -7450,30 +7450,30 @@
         },
         {
             "name": "roave/better-reflection",
-            "version": "6.39.0",
+            "version": "6.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/BetterReflection.git",
-                "reference": "39856ecc149809b9a681dfda0f768ba56b8b9a10"
+                "reference": "8a8ca7303e6353091868c06377deeffaa720eb7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/BetterReflection/zipball/39856ecc149809b9a681dfda0f768ba56b8b9a10",
-                "reference": "39856ecc149809b9a681dfda0f768ba56b8b9a10",
+                "url": "https://api.github.com/repos/Roave/BetterReflection/zipball/8a8ca7303e6353091868c06377deeffaa720eb7c",
+                "reference": "8a8ca7303e6353091868c06377deeffaa720eb7c",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "jetbrains/phpstorm-stubs": "2024.1",
-                "nikic/php-parser": "^5.0.2",
+                "nikic/php-parser": "^5.1.0",
                 "php": "~8.2.0 || ~8.3.2"
             },
             "conflict": {
                 "thecodingmachine/safe": "<1.1.3"
             },
             "require-dev": {
-                "phpbench/phpbench": "^1.2.15",
-                "phpunit/phpunit": "^11.2.2"
+                "phpbench/phpbench": "^1.3.1",
+                "phpunit/phpunit": "^11.3.0"
             },
             "suggest": {
                 "composer/composer": "Required to use the ComposerSourceLocator"
@@ -7513,9 +7513,9 @@
             "description": "Better Reflection - an improved code reflection API",
             "support": {
                 "issues": "https://github.com/Roave/BetterReflection/issues",
-                "source": "https://github.com/Roave/BetterReflection/tree/6.39.0"
+                "source": "https://github.com/Roave/BetterReflection/tree/6.41.0"
             },
-            "time": "2024-06-18T15:26:37+00:00"
+            "time": "2024-08-03T12:28:06+00:00"
         },
         {
             "name": "rtippin/messenger",

@@ -9,7 +9,6 @@
         <title>@yield('title', config('messenger-ui.site_name'))</title>
 
         <!-- Scripts head -->
-        <wireui:scripts />
         <script src="{{ asset('js/app.js') }}" defer></script>
         {{-- <script src="{{ asset('js/lang.js') }}" defer></script> --}}
         <script src="{{ route('lang.js') }}"></script>
@@ -96,7 +95,7 @@
     <body class="font-sans antialiased" id="messenger-style-overrides">
 
         <x-jetstream.banner />
-        <x-jetstream.toaster /> {{--NOT USED IN JETSTREAM V3 ?--}}
+        <x-jetstream.toaster />
 
         <div class="min-h-screen bg-gray-100">
             @livewire('navigation-menu')
@@ -118,6 +117,7 @@
 
         <!-- Scripts body-->
         @livewireScripts
+        <wireui:scripts />
         <script src="{{ mix('js/echo.js') }}"></script>
         @stack('modals')
         {{-- @stack('scripts') --}}

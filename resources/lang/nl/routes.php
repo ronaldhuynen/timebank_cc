@@ -18,7 +18,30 @@
 */
 
 
-// return [
-//     "dashboard"    =>  "overzicht",
-//     "article"  =>  "gebruiker/{userId}",
-// ];
+return [
+    "welcome" => "welkom",
+    "goodbye-deleted-user" => "tot-ziens",
+    'dashboard' => 'overzicht',
+    'pay' => 'betaal',
+    'pay-to-name' => 'betaal/{name}',
+    'transactions' => 'transacties',
+    'statement' => 'transactie/{transactionId}',
+    'posts.manage' => 'artikelen/beheren',
+    'post.show_by_id' => 'artikel/{postId}',
+    'post.show_by_slug' => 'artikel/{slug}',
+    'user.show' => 'gebruiker/{userId}',
+    'org.show' => 'organisatie/{orgId}',
+    'user.edit' => 'gebruiker/bewerken',
+    'org.edit' => 'organisatie/bewerken',
+    'users-overview' => 'gebruikers-overzicht',
+    'user.show' => 'gebruiker/{userId}',
+    'search.show' => 'zoeken',
+    'messenger.join' => 'messenger/uitnodiging/{invite}',
+    'terms.show' => 'algemene-voorwaarden',
+    'policy.show' => 'privacybeleid',
+    'profile.show' => 'gebruiker/instellingen',
+    'show.by.name' => '{name}',
+
+
+
+];

@@ -22,10 +22,10 @@ class TransactionController extends Controller
     }
 
 
-    public function transfer()
+    public function pay()
     {
         $toName = null;
-        return view('transfer.show', compact(['toName']));
+        return view('pay.show', compact(['toName']));
     }
 
 
@@ -34,7 +34,7 @@ class TransactionController extends Controller
         //TODO: add permission check
         //TODO: if 403, but has permission, redirect with message to switch profile
         //TODO: replace 403 with custom redirect page incl explanation
-        return view('transfer.show', compact(['toName']));
+        return view('pay.show', compact(['toName']));
 
     }
 

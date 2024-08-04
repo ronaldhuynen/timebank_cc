@@ -18,7 +18,7 @@
     
                 <!-- Only if activeProfile has any accounts -->
                 @if ( session('activeProfileAccounts') )
-                        <x-jetstream.nav-link href="{{ route('transfer') }}" :active="request()->routeIs('transfer')">
+                        <x-jetstream.nav-link href="{{ route('pay') }}" :active="request()->routeIs('pay')">
                             {{ __('Payments') }}
                         </x-jetstream.nav-link>
                 @endif
@@ -240,7 +240,7 @@
             <x-jetstream.responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-jetstream.responsive-nav-link>
-            <x-jetstream.responsive-nav-link href="{{ route('transfer') }}" :active="request()->routeIs('transfer')">
+            <x-jetstream.responsive-nav-link href="{{ route('pay') }}" :active="request()->routeIs('pay')">
                 {{ __('Tranfer') }}
             </x-jetstream.responsive-nav-link>
         </div>

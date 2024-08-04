@@ -372,7 +372,7 @@ class Show extends Component
      */
     public function payButton()
     {
-        return redirect()->route('pay.to.name', ['name' => $this->org->name]);
+        return redirect()->route('pay-to-name', ['name' => $this->org->name]);
     }
 
 

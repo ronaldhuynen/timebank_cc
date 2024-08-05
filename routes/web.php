@@ -111,7 +111,6 @@ Route::group([
             })->name('dashboard');
 
 
-
             //TEST ME: changed 'transfer' route to 'pay' route. Easier for users to remember
             Route::get(LaravelLocalization::transRoute('routes.pay'), 'App\Http\Controllers\TransactionController@pay')->name('pay');
 

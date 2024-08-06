@@ -1,12 +1,14 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
-const colors = require('tailwindcss/colors')
+const colors = require('tailwindcss/colors');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     // mode: 'jit',
     // purge: [
     //     './public/**/*.html',
-    //     './src/**/*.{js,jsx,ts,tsx,vue}'],
+    //     './src/**/*.{js,jsx,ts,tsx,vue}',
+    //     "./vendor/robsontenorio/mary/src/View/Components/**/*.php"
+    // ],
     presets: [
         require('./vendor/wireui/wireui/tailwind.config.js')
     ],
@@ -18,7 +20,7 @@ module.exports = {
         // './vendor/wireui/wireui/resources/**/*.blade.php',  // Wire UI livewire components
         // './vendor/wireui/wireui/ts/**/*.ts',                // Wire UI livewire components
         // './vendor/wireui/wireui/src/View/**/*.php',          // Wire UI livewire components
-  
+
         "./vendor/wireui/wireui/src/*.php",
         "./vendor/wireui/wireui/ts/**/*.ts",
         "./vendor/wireui/wireui/src/WireUi/**/*.php",
@@ -52,9 +54,9 @@ module.exports = {
         },
     },
 
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
+        require('daisyui')
+    ],
 };
-
-
-
-

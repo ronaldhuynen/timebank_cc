@@ -8,9 +8,9 @@
     <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
         
         @livewire('profile-user.update-profile-personal-form')
-        <x-section-border />
+        <x-jetstream.section-border />
         @livewire('profile-user.update-profile-location-form')
-        <x-section-border />
+        <x-jetstream.section-border />
         @livewire('profile.update-profile-skills-form')
 
     </div>

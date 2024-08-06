@@ -9,7 +9,7 @@
         <title>@yield('title', config('messenger-ui.site_name'))</title>
 
         <!-- Scripts head -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
         {{-- <script src="{{ asset('js/lang.js') }}" defer></script> --}}
         <script src="{{ route('lang.js') }}"></script>
 
@@ -34,6 +34,8 @@
         <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script> --}}
         {{-- <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" /> --}}
         @livewireStyles
+        {{-- <wireui:scripts /> --}}
+        @wireUiScripts
 
         {{-- TODO: replace with self-hosted scripts --}}
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
@@ -117,26 +119,13 @@
 
         <!-- Scripts body-->
         @livewireScripts
-        <wireui:scripts />
+        <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ mix('js/echo.js') }}"></script>
         @stack('modals')
         {{-- @stack('scripts') --}}
         @yield('scripts_body')
         @include('messenger::scripts')
 
-        <!-- Initialize Livewire -->
-        <script>
-            document.addEventListener('livewire:load', function () {
-                // Livewire is loaded
-            });
-        </script>
-
-        <!-- Alpine.js Initialization -->
-        <script>
-            document.addEventListener('alpine:init', () => {
-                // Alpine.js is initialized
-            });
-        </script>
 
 
 {{-- @yield('js') --}}

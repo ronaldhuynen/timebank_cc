@@ -158,11 +158,11 @@
                 <x-slot name="footer">
                     <x-jetstream.secondary-button wire:click="cancelCreateTag()" wire:loading.attr="disabled">
                         {{ __('Cancel') }}
-                    </x-jetstream.secondary-button>
+                    </x-secondary-button>
 
                     <x-jetstream.secondary-button class="ml-3" wire:click="createTag()" wire:loading.attr="disabled">
                         {{ __('Save') }}
-                    </x-jetstream.secondary-button>
+                    </x-secondary-button>
                 </x-slot>
             </x-jetstream.dialog-modal>
 

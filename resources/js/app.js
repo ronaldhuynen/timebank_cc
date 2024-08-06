@@ -1,7 +1,5 @@
 require('./bootstrap');
-require('alpinejs');
 
-import Alpine from "alpinejs";
 import { createPopper } from "@popperjs/core";
 import focus from "@alpinejs/focus";
 import Trix from "trix";
@@ -10,10 +8,7 @@ import tagifyMin from "@yaireo/tagify";
 Alpine.plugin(focus);
 
 window.createPopper = createPopper;
-window.Alpine = Alpine;
 window.Tagify = tagifyMin;      // Needs to be loaded after Alpine
-
-// Alpine.start();
 
 document.addEventListener("trix-before-initialize", () => {
   // Change Trix.config if you need
@@ -65,8 +60,6 @@ document.addEventListener("trix-before-initialize", () => {
     `;
     }
 })
-
-Alpine.start();
 
 
 

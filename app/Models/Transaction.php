@@ -42,7 +42,7 @@ class Transaction extends Model
         return [
             'id' => $this->id,
             'created_at' => $this->created_at,
-            'amount' => $this->amount, 
+            'amount' => $this->amount,
             'account_from_name' => $this->accountFrom->name,    // Include also relationship in search
             'account_to_name' => $this->accountTo->name,    // Include also relationship in search
             'relation_from' => 'From ' . ($this->accountFrom->accountable->name != null ? $this->accountFrom->accountable->name : ''), // Include also relationship in search
@@ -57,10 +57,12 @@ class Transaction extends Model
         return $this->belongsTo(Account::class, 'from_account_id');
     }
 
+
     public function accountTo()
     {
         return $this->belongsTo(Account::class, 'to_account_id');
     }
+
 
     public function creator()
     {

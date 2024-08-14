@@ -1,141 +1,177 @@
 <div class="my-4">
 
     <div class="flex space-x-12">
-        <div class="flex-none w-2/4 my-6">
-            <x-jetstream.input wire:model.live="search" right-icon="search" label="{{ __('Search transactions') }}" placeholder="Name, description or amount" :clearable="true" class="placeholder-gray-300 text-gray-900 text-sm" />
+        <div class="my-6 w-2/4 flex-none">
+            <x-jetstream.label for="search" value="{{ __('From / To or description') }}" />
+            <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
+                               placeholder="Search by name or description" right-icon="search" wire:model.live="search" />
+            @error('search')
+                <div class="mb-3 text-sm text-red-700" role="alert">
+                    {{ __($message) }}
+                </div>
+            @enderror
 
+            <x-jetstream.label for="searchAmount" value="{{ __('Search amount') }}" />
+            <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
+                               placeholder="Search by amount" right-icon="search" wire:model.live="searchAmount" />
+            @error('searchAmount')
+                <div class="mb-3 text-sm text-red-700" role="alert">
+                    {{ __($message) }}
+                </div>
+            @enderror
         </div>
-        <div class="flex-auto my-6 z-50">
-            <x-datetime-picker label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}" wire:model.live="fromDate" :without-time="true" display-format="DD-MM-YYYY" class="placeholder-gray-300" />
-
+        <div class="z-50 my-6 flex-auto">
+            <x-datetime-picker :without-time="true" class="placeholder-gray-300" display-format="DD-MM-YYYY"
+                               label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}"
+                               wire:model.live="fromDate" />
         </div>
-
-        <div class="flex-auto my-6 z-50">
-            <x-datetime-picker label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}" wire:model.live="toDate" :without-time="true"  display-format="DD-MM-YYYY" class="placeholder-gray-300" />
+        <div class="z-50 my-6 flex-auto">
+            <x-datetime-picker :without-time="true" class="placeholder-gray-300" display-format="DD-MM-YYYY"
+                               label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}"
+                               wire:model.live="toDate" />
         </div>
     </div>
 
+    <x-jetstream.secondary-button class="mt-2" type="button" wire:click="searchTransactions" x-on:click.prevent="">
+        {{ __('Search') }}
+    </x-jetstream.secondary-button>
 
+    <!-- Results table -->
+    <table class="mbt-2 mb-20 w-full min-w-full leading-normal" id="transactions" wire:model.live="searchState">
+        <thead>
+            <tr>
+                <th class="border-b border-gray-200 py-6">
 
-<!-- Results table -->
- <table wire:model.live="searchState" class="mbt-2 mb-20 min-w-full w-full leading-normal" id="transactions">
-     <thead>
-         <tr>
-            <th class="py-6 border-b border-gray-200">
+                    <a class="px-0 py-2 text-sm font-normal text-gray-500" href="#" role="button" scope="col"
+                       wire:click.prevent="sortBy('datetime')">
+                        {{ __('Date') }}
+                    </a>
+                </th>
+                <th class="border-b border-gray-200 py-6">
 
-                <a wire:click.prevent="sortBy('datetime')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
-                    {{ __('Date') }}
-                </a>
-             </th>
-             <th class="py-6 border-b border-gray-200">
+                    <a class="px-0 py-2 text-sm font-normal text-gray-500" href="#" role="button" scope="col"
+                       wire:click.prevent="sortBy('relation')">
+                        {{ __('From / to') }}
+                    </a>
+                </th>
+                <th class="border-b border-gray-200 py-6">
 
+                    <a class="px-0 py-2 text-sm font-normal text-gray-500" href="#" role="button" scope="col"
+                       wire:click.prevent="sortBy('description')">
+                        {{ __('Details') }}
+                    </a>
+                </th>
+                <th class="border-b border-gray-200 py-6 text-right">
 
-                <a wire:click.prevent="sortBy('relation')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
-                    {{ __('From / to') }}
-                </a>
-             </th>
-             <th class="py-6 border-b border-gray-200">
-
-
-                <a wire:click.prevent="sortBy('description')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
-                    {{ __('Details') }}
-                </a>
-            </th>
-            <th class="py-6 border-b border-gray-200 text-right">
-
-
-                <a wire:click.prevent="sortBy('amount')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
-                    {{ __('Amount') }}
-                </a>
-            </th>
-            @if ($searchState === false )
-            <th class="py-6 border-b border-gray-200 text-right">
-                <a wire:click.prevent="sortBy('balance')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
-                    {{ __('Balance') }}
-                </a>
-            </th>
-            @endif
-         </tr>
-     </thead>
-     <tbody>
-         @foreach($transactions as $transaction)
-         <tr onclick="window.location='{{ route('transaction.show', $transaction['trans_id']) }}'" style="cursor: pointer;">
-             <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-2/16">
-                 <p class="text-gray-900 whitespace-no-wrap">
-                     {{ date('d-m-Y', strtotime($transaction['datetime'])) }}
-                 </p>
-             </td>
-             <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-6/16">
-                 <div class="flex items-center">
-                     <div class="flex-shrink-0">
-                         <p href="#" class="block relative">
-                             <img alt="profile" src="{{ Storage::url($transaction['profile_photo']) }}" class="mx-auto object-cover rounded-full h-10 w-10 " />
-                         </p>
-                     </div>
-                     <div class="ml-3">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $transaction['relation'] }}
+                    <a class="px-0 py-2 text-sm font-normal text-gray-500" href="#" role="button" scope="col"
+                       wire:click.prevent="sortBy('amount')">
+                        {{ __('Amount') }}
+                    </a>
+                </th>
+                @if ($searchState === false)
+                    <th class="border-b border-gray-200 py-6 text-right">
+                        <a class="px-0 py-2 text-sm font-normal text-gray-500" href="#" role="button"
+                           scope="col" wire:click.prevent="sortBy('balance')">
+                            {{ __('Balance') }}
+                        </a>
+                    </th>
+                @endif
+            </tr>
+        </thead>
+        <tbody>
+            @if ($transactions)
+                {{-- {{dd($transactions)}} --}}
+                @foreach ($transactions['data'] as $transaction)
+                    <tr onclick="window.location='{{ route('transaction.show', $transaction['trans_id']) }}'"
+                        style="cursor: pointer;">
+                        <td class="w-2/16 border-b border-gray-200 bg-white px-2 py-2 text-sm">
+                            <p class="whitespace-no-wrap text-gray-900">
+                                {{ date('d-m-Y', strtotime($transaction['datetime'])) }}
                             </p>
-                            <p class="text-gray-500 whitespace-no-wrap">
-                                @if(isset($transaction['account_to_name']))
-                                   {{ $transaction['account_to_name'] }}
+                        </td>
+                        <td class="w-6/16 border-b border-gray-200 bg-white px-2 py-2 text-sm">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <p class="relative block" href="#">
+                                        <img alt="profile" class="mx-auto h-10 w-10 rounded-full object-cover"
+                                             src="{{ Storage::url($transaction['profile_photo']) }}" />
+                                    </p>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="whitespace-no-wrap text-gray-900">
+                                        {{ $transaction['relation'] }}
+                                    </p>
+                                    <p class="whitespace-no-wrap text-gray-500">
+                                        @if (isset($transaction['account_to_name']))
+                                            {{ $transaction['account_to_name'] }}
+                                        @else
+                                            {{ $transaction['account_from_name'] }}
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="w-8/16 border-b border-gray-200 bg-white px-2 py-2 text-sm">
+                            @if ($searchState === false)
+                                <p class="whitespace-no-wrap text-gray-900">
+                                    {{ strlen($transaction['description']) > 63 ? substr_replace($transaction['description'], '...', 60) : $transaction['description'] }}
+                                </p>
+                            @else
+                                <p class="whitespace-no-wrap text-gray-900">
+                                    {{ strlen($transaction['description']) > 83 ? substr_replace($transaction['description'], '...', 80) : $transaction['description'] }}
+                                </p>
+                            @endif
+                        </td>
+                        <td class="w-2/16 border-b border-gray-200 bg-white px-2 py-2 text-right text-sm">
+                            <p class="whitespace-no-wrap text-gray-900">
+                                @if ($transaction['type'] === 'Debit')
+                                    <span class="text-red-700"> {{ tbFormat($transaction['amount']) }} -</span>
                                 @else
-                                   {{ $transaction['account_from_name'] }}
+                                    <span class="text-gray-900"> {{ tbFormat($transaction['amount']) }} +</span>
                                 @endif
                             </p>
-                     </div>
-                 </div>
-             </td>
-             <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-8/16">
-                @if ($searchState === false )
-                    <p class="text-gray-900 whitespace-no-wrap">
-                        {{ (strlen($transaction['description']) > 63) ? substr_replace($transaction['description'], '...', 60) : $transaction['description'] }}
-                    </p>
-                @else
-                    <p class="text-gray-900 whitespace-no-wrap">
-                        {{ (strlen($transaction['description']) > 83) ? substr_replace($transaction['description'], '...', 80) : $transaction['description'] }}
-                    </p>
-                @endif
-             </td>
-             <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
-                 <p class="text-gray-900 whitespace-no-wrap">
-                     @if ( $transaction['type'] === 'Debit' )
-                     <span class="text-red-700"> {{ tbFormat($transaction['amount']) }} -</span>
-                     @else
-                        <span class="text-gray-900"> {{ tbFormat($transaction['amount']) }} +</span>
-                     @endif
-                 </p>
-             </td>
-            @if ($searchState === false )
-                <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm text-right w-2/16">
-                    <p class="text-gray-900 whitespace-no-wrap">
-                        @if ( $transaction['balance'] < 0 )
-                            <span class="text-red-700"> {{ tbFormat($transaction['balance']) }} </span>
-                        @else
-                            <span class="text-gray-900"> {{ tbFormat($transaction['balance']) }} </span>
+                        </td>
+                        @if ($searchState === false)
+                            <td class="w-2/16 border-b border-gray-200 bg-white px-2 py-2 text-right text-sm">
+                                <p class="whitespace-no-wrap text-gray-900">
+                                    @if ($transaction['balance'] < 0)
+                                        <span class="text-red-700"> {{ tbFormat($transaction['balance']) }} </span>
+                                    @else
+                                        <span class="text-gray-900"> {{ tbFormat($transaction['balance']) }} </span>
+                                    @endif
+                                </p>
+                            </td>
                         @endif
-                    </p>
-                </td>
+                    </tr>
+                @endforeach
             @endif
-         </tr>
-         @endforeach
-     </tbody>
- </table>
+        </tbody>
+    </table>
 
-<!-- Pagination -->
- <div class="row my-6 relative">
-    <div class="flex">
-        <select wire:model.live="perPage" class="w-16 py-2 px-3 border border-gray-300 bg-white text-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-        </select>
-        <div class="flex-auto px-3 mt-2 text-gray-400">{{ __('results') }}</div>
+    <!-- Pagination -->
+    <div class="row relative my-6">
+        <div class="flex">
+            <select class="w-16 rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    wire:model.live="perPage">
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <div class="mt-2 flex-auto px-3 text-gray-400">{{ __('results') }}</div>
+        </div>
+        <div class="absolute right-0">
+            @if ($transactions)
+                <div class="absolute right-0">
+                    {{ (new \Illuminate\Pagination\LengthAwarePaginator(
+                        $transactions['data'],
+                        $transactions['total'],
+                        $transactions['per_page'],
+                        $transactions['current_page'],
+                        ['path' => $transactions['path']],
+                    ))->links() }}
+                </div>
+            @endif
+        </div>
     </div>
-    <div class="absolute right-0">
-        {{-- TODO! Remove livewire.datatables and use the default pagination! No need for datatables package with many dependecies (maatwerk/excel) only for pagination?--}}
-        {{ $transactions->links('livewire.datatables.tailwind-pagination') }}
-    </div>
- </div>
 
 </div>

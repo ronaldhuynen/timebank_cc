@@ -32,6 +32,16 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
     use Searchable; // laravel/scout with ElasticSearch
 
 
+    /**
+    * Get the index name for the model.
+    *
+    * @return string
+    */
+    public function searchableAs()
+    {
+        return 'banks_index';
+    }
+
 
     /**
      * Get the bank's user(s) that can manage bank profiles.
@@ -53,14 +63,14 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
     }
 
 
-    
+
     /**
      * Check if the bank has any associated accounts.
      *
      * @return bool Returns true if the user has accounts, false otherwise.
      */
     public function hasAccounts()
-    {        
+    {
         $accountsExists = DB::table('accounts')
                             ->where('accountable_id', $this->id)
                             ->where('accountable_type', 'App\Models\User')
@@ -134,5 +144,5 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
     {
         return '/storage/' . $this->profile_photo_path;
     }
-    
+
 }

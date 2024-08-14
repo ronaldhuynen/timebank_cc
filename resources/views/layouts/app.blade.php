@@ -13,8 +13,6 @@
         {{-- <script src="{{ asset('js/lang.js') }}" defer></script> --}}
         <script src="{{ route('lang.js') }}"></script>
 
-
-
         <!-- Fonts -->
         {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
 
@@ -25,7 +23,6 @@
         <link rel="stylesheet" href="{{ asset('css/trix.css') }}">
         <link rel="stylesheet" href="{{ asset('css/tagify.css') }}">
         <link rel="stylesheet" href="{{ asset('css/custom_tagify.css') }}">
-
 
         {{-- <link rel="stylesheet" href="{{ asset('css/filepond.min.css') }}">
         <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/> --}}
@@ -44,7 +41,6 @@
         <script>
             window.i18n = {!! json_encode(__('messages')) !!};
         </script>
-
 
         <style>
 
@@ -126,11 +122,7 @@
         @yield('scripts_body')
         @include('messenger::scripts')
 
-
-
-{{-- @yield('js') --}}
-
-
+        {{-- @yield('js') --}}
 
         <!-- Debug section for Events --->
         {{-- <script>
@@ -142,7 +134,6 @@
                     console.log(e);
                   });
         </script> --}}
-
 
     </body>
 </html>

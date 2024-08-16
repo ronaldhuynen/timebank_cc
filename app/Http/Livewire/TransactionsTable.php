@@ -4,9 +4,14 @@ namespace App\Http\Livewire;
 
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Elastic\Elasticsearch\Client;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Log;
+use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
+use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
+use ONGR\ElasticsearchDSL\Search;
 
 class TransactionsTable extends Component
 {
@@ -97,8 +102,7 @@ class TransactionsTable extends Component
 
         }
 
-        $transactions = collect($transactions) ->sortByDesc('datetime');
-        $transactions = collect($transactions) ->sortByDesc('datetime');
+        $transactions = collect($transactions)->sortByDesc('datetime');
 
         $state = [];
         foreach ($transactions as $s) {
@@ -112,8 +116,6 @@ class TransactionsTable extends Component
             $state[] = $s;
         }
 
-
-
         // Paginate the $state array
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = $this->perPage; // Number of items per page
@@ -121,7 +123,6 @@ class TransactionsTable extends Component
         $paginatedItems = new LengthAwarePaginator($currentItems, count($state), $perPage, $currentPage, [
             'path' => LengthAwarePaginator::resolveCurrentPath(),
         ]);
-
 
         // Convert to array for Livewire
         $this->transactions = $paginatedItems->toArray();
@@ -141,40 +142,69 @@ class TransactionsTable extends Component
         // Validate inputs
         $this->validate();
 
-
         // Remove special characters that conflict with Elesticsearch query from $search
         $search = preg_replace('/[^a-zA-Z0-9\s]/', '', $search);
 
-        if (isset($searchAmount)) {
-            // $search contains a time format
 
-            if (strlen($search) > 0) {
-                $searchQuery = $search . '~ AND ' . $searchAmount;
-            } else {
-                $searchQuery = 'amount:' . $searchAmount;	//
-            }
+        // Convert $search to lowercase
+        $search = strtolower($search);
+
+
+        // Remove trailing whitespaces
+        $search = trim($search);
+
+        if (strlen($search) > 0) {
+
+
+            $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+                ->where(function ($query) use ($accountId) {
+                    $query->where('to_account_id', $accountId)
+                          ->orWhere('from_account_id', $accountId);
+                })
+                ->where(function ($query) use ($search) {
+                    $query->where('description', 'like', '%' . $search . '%');
+
+                    if (strpos($search, 'to') > 0) {
+                        $query->orWhereHas('accountTo.accountable', function ($query) use ($search) {
+                            $search = str_replace('to', '', $search); // Remove 'to' from the search string
+                            $query->where('name', 'like', '%' . $search . '%');
+                        });
+                    }
+                    if (strpos($search, 'from') > 0) {
+                        $query->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
+                            $search = str_replace('from', '', $search); // Remove 'from' from the search string
+                            $query->where('name', 'like', '%' . $search . '%');
+                        });
+                    }
+                    if (strpos($search, 'from') === false || strpos($search, 'to') === false) {
+                        $query->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
+                            $query->where('name', 'like', '%' . $search . '%');
+                        })
+                        ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
+                            $query->where('name', 'like', '%' . $search . '%');
+                        });
+                    }
+                })
+                ->orderBy('created_at', 'desc') // Sort by created_at in descending order
+                ->get();
+
+            // Convert the search results to a collection
+            $searchResults = collect($searchResults);
 
         } else {
-            // $search does not contain a time format
-            $searchQuery = $search . '~';
+            // Search is empty
+            $searchResults = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+                        ->where('to_account_id', $accountId)
+                        ->orWhere('from_account_id', $accountId)
+                        ->orderBy('created_at', 'desc') // Sort by created_at in descending order
+                        ->get();
+
+            // Convert the search results to a collection
+            $searchResults = collect($searchResults);
+
         }
 
-        if (strlen($searchQuery) > 1) {     // Because we use the fuzzy search character '~', we need to check if $searchQuery is > 1
-            $searchResults = Transaction::search($searchQuery)
-            ->query(function ($query) use ($accountId) {
-                $query->where('to_account_id', $accountId)
-                ->orWhere('from_account_id', $accountId);
-            })
-            ->get(); // Scout search
-        } else {
-            $searchResults = Transaction::search('*')
-            ->query(function ($query) use ($accountId) {
-                $query->where('to_account_id', $accountId)
-                ->orWhere('from_account_id', $accountId);
-            })
-            ->get(); // Scout search
-        }
-
+        // TODO NEXT: search amount and by date range!!
 
         if ($this->fromDate == null) {
             $this->fromDate = '';
@@ -182,6 +212,8 @@ class TransactionsTable extends Component
         if ($this->toDate == null) {
             $this->toDate = Carbon::now()->toDateString();
         }
+
+
 
         $results = $searchResults->whereBetween('created_at', [$this->fromDate, $this->toDate]);
         foreach ($results as $t) {
@@ -250,8 +282,10 @@ class TransactionsTable extends Component
     public function render()
     {
         if ($this->searchState === false) {
-        $transactions = $this->getTransactions();
-        } else { $transactions = $this->transactions; }
+            $transactions = $this->getTransactions();
+        } else {
+            $transactions = $this->transactions;
+        }
 
         return view('livewire.transactions-table', [
             'transactions' => collect($transactions)

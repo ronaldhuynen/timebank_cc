@@ -238,8 +238,8 @@ class MainSearchBar extends Component
         }
 
 
-        info('cardData: ' . json_encode($cardData, JSON_PRETTY_PRINT));
-        info('rawOutput: ' . json_encode($rawOutput, JSON_PRETTY_PRINT));
+        // info('cardData: ' . json_encode($cardData, JSON_PRETTY_PRINT));
+        // info('rawOutput: ' . json_encode($rawOutput, JSON_PRETTY_PRINT));
 
         $rawData = $rawOutput['hits']['hits'];
 

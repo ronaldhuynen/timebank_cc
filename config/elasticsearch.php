@@ -239,6 +239,35 @@ return [
                 ],
 
             ],
+
+            'transactions_index' => [
+                'properties' => [
+                    'description' => [
+                        'type' => 'text',
+                        'analyzer' => 'analyzer_general',
+                    ],
+                    'relation_from' => [
+                        'type' => 'text',
+                        'analyzer' => 'analyzer_general',
+                    ],
+                    'relation_to' => [
+                        'type' => 'text',
+                        'analyzer' => 'analyzer_general',
+                    ],
+                    'from_account_id' => [
+                        'type' => 'integer',
+                    ],
+                    'to_account_id' => [
+                        'type' => 'integer',
+                    ],
+                    'amount' => [
+                        'type' => 'integer',
+                    ],
+                    'created_at' => [
+                        'type' => 'date',
+                    ],
+                ],
+            ],
         ],
 
 
@@ -317,7 +346,7 @@ return [
                     ],
 
                     'analyzer' => [
-                         'locations_analyzer' => [
+                        'locations_analyzer' => [
                             'tokenizer' => 'standard',
                             'filter' => [
                                 'lowercase',
@@ -363,6 +392,13 @@ return [
                             'filter' => [
                                 'lowercase',
                                 'spanish_stop',
+                            ],
+                        ],
+                        'analyzer_general' => [
+                            'type' => 'custom',
+                            'tokenizer' => 'standard',
+                            'filter' => [
+                                'lowercase',
                             ],
                         ],
                     ],

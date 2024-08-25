@@ -2,9 +2,9 @@
 
         <div class="flex space-x-12">
             <div class="my-6 w-2/4 flex-none">
-                <x-jetstream.label for="search" value="{{ __('From / To or description') }}" />
+                <x-jetstream.label for="search" value="{{ __('Search keywords') }}" />
                 <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                                   placeholder="Search by name or description" right-icon="search"
+                                   placeholder="Search keywords" right-icon="search"
                                    wire:model.live="search" />
                 @error('search')
                     <div class="mb-3 text-sm text-red-700" role="alert">
@@ -12,6 +12,7 @@
                     </div>
                 @enderror
 
+                <livewire:select-account :label="'Search from / to'" />
                 <x-jetstream.label for="searchAmount" value="{{ __('Search amount') }}" />
                 <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
                                    placeholder="Search by amount" right-icon="search" wire:model.live="searchAmount" />

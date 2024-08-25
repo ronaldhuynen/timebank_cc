@@ -26,7 +26,7 @@ class TransactionsTable extends Component
     public $stateSource = [];
     public $transactions = [];
 
-    protected $listeners = ['fromAccountId', 'searchTransactions', 'accountSelected'];
+    protected $listeners = ['fromAccountId', 'searchTransactions', 'accountSelected', 'accountDeselected'];
 
     protected $rules = [
         'searchAmount' => 'nullable|regex:/^\d*:[0-5]\d$/',
@@ -41,6 +41,8 @@ class TransactionsTable extends Component
         'fromDate.date' => 'The from date must be a valid date.',
         'toDate.date' => 'The to date must be a valid date.',
     ];
+
+    // TODO NEXT: search by amount. Refactor 1st the amount component with two HH and MM inputs
 
 
     public function mount()
@@ -68,6 +70,12 @@ class TransactionsTable extends Component
     public function accountSelected($accountId)
     {
         $this->searchAccount = $accountId;
+    }
+
+
+    public function accountDeselected()
+    {
+        $this->searchAccount = null;
     }
 
 
@@ -175,94 +183,58 @@ class TransactionsTable extends Component
         $toDate = $this->toDate ? strtotime($this->toDate) : null;
 
 
-// Filter the transactions based on the search criteria
-$stateFiltered = array_filter($state, function ($transaction) use ($search, $searchAccount, $fromDate, $toDate) {
-    // Check if the transaction date is within the specified date range
-    $transactionDate = strtotime($transaction['datetime']);
-    $dateInRange = (!$fromDate || $transactionDate >= $fromDate) && (!$toDate || $transactionDate <= $toDate);
+        // Filter the transactions based on the search criteria
+        $stateFiltered = array_filter($state, function ($transaction) use ($search, $searchAccount, $fromDate, $toDate) {
+            // Check if the transaction date is within the specified date range
+            $transactionDate = strtotime($transaction['datetime']);
+            $dateInRange = (!$fromDate || $transactionDate >= $fromDate) && (!$toDate || $transactionDate <= $toDate);
+            // If the date is not in range, skip this transaction
+            if (!$dateInRange) {
+                return false;
+            }
+            // If both $search and $searchAccount are empty, only apply the dateInRange filter
+            if (empty($search) && empty($searchAccount)) {
+                return true;
+            }
+            // Initialize search-related flags
+            $descriptionContainsSearch = false;
+            $relationContainsSearch = false;
+            // Check if a search term is provided
+            if (!empty($search)) {
+                // Convert transaction description and relation to lowercase and check if they contain the search keyword
+                $descriptionContainsSearch = isset($transaction['description']) && $transaction['description'] !== null && strpos(strtolower($transaction['description']), $search) !== false;
+                $relationContainsSearch = isset($transaction['relation']) && $transaction['relation'] !== null && strpos(strtolower($transaction['relation']), $search) !== false;
+            }
+            // Check if the transaction matches the searchAccount
+            $accountMatches = false;
+            if (isset($transaction['account_from']) && in_array($searchAccount, (array)$transaction['account_from'], true)) {
+                $accountMatches = true;
+            }
+            if (isset($transaction['account_to']) && in_array($searchAccount, (array)$transaction['account_to'], true)) {
+                $accountMatches = true;
+            }
+            // Combine all conditions
+            if (!empty($search) && !empty($searchAccount)) {
+                $result = $accountMatches && ($descriptionContainsSearch || $relationContainsSearch);
+            } else {
+                $result = $descriptionContainsSearch || $relationContainsSearch || $accountMatches;
+            }
 
-    // If the date is not in range, skip this transaction
-    if (!$dateInRange) {
-        info("transactionDate: ".$transactionDate);
-        info("toDate: ".$toDate);
-        info("fromDate: ".$fromDate);
-        info("dateInRange: ".$dateInRange);
-        info("result: " . 'false');
-        return false;
-    }
+            return $result;
+        });
 
-    // If both $search and $searchAccount are empty, only apply the dateInRange filter
-    if (empty($search) && empty($searchAccount)) {
-        info("transactionDate: ".$transactionDate);        
-        info("toDate: ".$toDate);
-        info("fromDate: ".$fromDate);
-        info("dateInRange: ".$dateInRange);
-        info("result: " . 'true');
-        return true;
-    }
+         // Paginate the $stateFiltered array
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = $this->perPage; // Number of items per page
+        $currentItems = array_slice($stateFiltered, ($currentPage - 1) * $perPage, $perPage);
+        $paginatedItems = new LengthAwarePaginator($currentItems, count($stateFiltered), $perPage, $currentPage, [
+            'path' => LengthAwarePaginator::resolveCurrentPath(),
+        ]);
+        // Assign the paginated items to $this->transactions
+        $this->transactions = $paginatedItems->toArray();
 
-    // Initialize search-related flags
-    $descriptionContainsSearch = false;
-    $relationContainsSearch = false;
-
-    // Check if a search term is provided
-    if (!empty($search)) {
-        // Convert transaction description and relation to lowercase and check if they contain the search keyword
-        $descriptionContainsSearch = isset($transaction['description']) && $transaction['description'] !== null && strpos(strtolower($transaction['description']), $search) !== false;
-        $relationContainsSearch = isset($transaction['relation']) && $transaction['relation'] !== null && strpos(strtolower($transaction['relation']), $search) !== false;
-    }
-
-    // Check if the transaction matches the searchAccount
-    $accountMatches = false;
-    if (isset($transaction['account_from']) && in_array($searchAccount, (array)$transaction['account_from'], true)) {
-        $accountMatches = true;
-    }
-    if (isset($transaction['account_to']) && in_array($searchAccount, (array)$transaction['account_to'], true)) {
-        $accountMatches = true;
-    }
-
-    // Debugging output
-    info("descriptionContainsSearch: " . ($descriptionContainsSearch ? 'true' : 'false'));
-    info("relationContainsSearch: " . ($relationContainsSearch ? 'true' : 'false'));
-    info("accountMatches: " . ($accountMatches ? 'true' : 'false'));
-    info("dateInRange: " . ($dateInRange ? 'true' : 'false'));
-    info("search: " . $search);
-
-    // Combine all conditions    
-
-    if (!empty($search) && !empty($searchAccount)) {
-        $result = $accountMatches && ($descriptionContainsSearch || $relationContainsSearch);
-    } else {
-        $result = $descriptionContainsSearch || $relationContainsSearch || $accountMatches;
-    }
-
-
-    info("result: " . ($result ? 'true' : 'false'));
-    return $result;
-});
-
-// Debugging output for filtered state
-info("Filtered transactions count: " . count($stateFiltered));
-
-// Paginate the $stateFiltered array
-$currentPage = LengthAwarePaginator::resolveCurrentPage();
-$perPage = $this->perPage; // Number of items per page
-$currentItems = array_slice($stateFiltered, ($currentPage - 1) * $perPage, $perPage);
-$paginatedItems = new LengthAwarePaginator($currentItems, count($stateFiltered), $perPage, $currentPage, [
-    'path' => LengthAwarePaginator::resolveCurrentPath(),
-]);
-
-// Debugging output for paginated items
-info("Paginated items count: " . count($paginatedItems));
-
-// Assign the paginated items to $this->transactions
-$this->transactions = $paginatedItems->toArray();
-
-// Debugging output for transactions assigned to $this->transactions
-info("Transactions assigned to \$this->transactions: " . count($this->transactions));
-
-// Return the paginated items
-return $paginatedItems;
+        // Return the paginated items
+        return $paginatedItems;
 
 
     }

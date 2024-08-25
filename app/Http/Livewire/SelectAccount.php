@@ -20,7 +20,7 @@ class SelectAccount extends Component
     public $userAccounts;
     public $label;
 
-    protected $listeners = ['excludeAccountId', 'resetForm'];
+    protected $listeners = ['excludeAccountId', 'resetForm', 'deselected'];
 
     public function mount($holderName = null)
     {
@@ -62,7 +62,6 @@ class SelectAccount extends Component
         $accountDetails = collect($this->searchResults)
             ->where('accountId', '=', $account)
             ->first();
-        // $this->dispatch('accountDetails', $accountDetails);
         $this->accountName = $accountDetails['accountName'];
         $this->holderName = $accountDetails['holderName'];
         $this->holderPhoto = $accountDetails['holderPhoto'];
@@ -71,6 +70,19 @@ class SelectAccount extends Component
         $this->dispatch('accountSelected', $account);
     }
 
+
+    public function deselected()
+    {
+        $this->accountId = null;
+        $this->accountName = null;
+        $this->holderName = null;
+        $this->holderPhoto = null;
+        $this->showDropdown = false;
+        $this->search = '';
+        $this->dispatch('accountDeselected');
+    }
+
+    
     /**
      * updatedSearch: Search query To Accounts
      *

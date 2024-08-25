@@ -58,7 +58,7 @@
             @endif
 
 
-            <!----- When a To account is selected ---->
+            <!----- When an account is selected ---->
             @else
             <input wire:model.live.debounce.300ms="search" class="block w-full pl-10 pr-3 py-2 border sadow-sm border-gray-300 rounded-md leading-5 bg-white placeholder-gray-300 focus:outline-none focus:placeholder-gray-300 focus:border-indigo-300 sm:text-sm transition duration-150 ease-in-out" 
                 placeholder="{{ __('Search again...') }}"
@@ -77,6 +77,16 @@
                             {{ $accountName }}
                         </div>
                     </div>
+                      <!-- Add the remove button here -->
+        {{-- <button wire:click="removeSelectedAccount" class="ml-auto font-bold text-gray-700 px-3 py-1 rounded-lg">
+            X
+        </button> --}}
+
+
+        <button wire:click="deselected" class="dialog-button-close focus:outline-none ml-auto p-1 focus:ring-2 focus:ring-secondary-200 hover:ring-2 hover:ring-secondary-200 rounded-full text-secondary-300" type="button">
+                    <span class="sr-only">close</span>
+                    <svg class="w-5 h-5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 18L18 6M6 6L18 18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
                 </div>
             </div>
         @endif

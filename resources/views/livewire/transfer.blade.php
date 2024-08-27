@@ -6,7 +6,8 @@
                 <div class="col-span-6 sm:col-span-4">
 
                     <!--- Amount --->
-                    <livewire:amount>
+                <livewire:amount :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.user')">
+                    {{-- TODO: if user is admin or bank:  <livewire:amount :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
                         @error('amount')
                         <div class="text-sm text-red-700 mb-3" role="alert">
                             {{ __($message) }}

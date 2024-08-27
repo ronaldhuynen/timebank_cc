@@ -27,6 +27,12 @@ return [
             'limit_max' => 600000, //  10,000 H
         ],
     ],
+    'maxLengthHoursInput' => [  // Sets the default max length the amount component can have for the hours input box 
+        'user' => 3,
+        'organization' => 3,
+        'bank' => 5,
+        'admin' => 10,
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -67,106 +73,106 @@ return [
 
     'rules' => [
         'profile_user' => [
-'name' =>  ['required', 'string', 'unique:users,name', 'unique:organizations,name', 'min:3', 'max:40',
-    function ($attribute, $value, $fail) {
-        // Disallow the following words to be used inside the name:
-        $disallowedWords = [
-            'admin',
-            'administrator',
-            'superuser',
-            'super-user',
-            'supervisor',
-            'webmaster',
-            'web-master',
-            'tijd-bank',
-            'tijdbank',
-            'bank',
-            'timebank',
-            'time-bank',
-            'moderator',
-            'regulator',
-            'belasting',
-            'tax',
-            'test',
-        ];
+            'name' =>  ['required', 'string', 'unique:users,name', 'unique:organizations,name', 'min:3', 'max:40',
+                function ($attribute, $value, $fail) {
+                    // Disallow the following words to be used inside the name:
+                    $disallowedWords = [
+                        'admin',
+                        'administrator',
+                        'superuser',
+                        'super-user',
+                        'supervisor',
+                        'webmaster',
+                        'web-master',
+                        'tijd-bank',
+                        'tijdbank',
+                        'bank',
+                        'timebank',
+                        'time-bank',
+                        'moderator',
+                        'regulator',
+                        'belasting',
+                        'tax',
+                        'test',
+                    ];
 
-        // Disallowed names as they might conflict with (future) url paths
-        $completelyDisallowedNames = [
-            'test',
-            'debug',
-            'user',
-            'users',
-            'member',
-            'members',
-            'profile',
-            'organization',
-            'organizations',
-            'organisation',
-            'organisations',
-            'bank',
-            'banks',
-            'admin',
-            'transaction',
-            'transactions',
-            'transfer',
-            'transfers',
-            'statement',
-            'statements',
-            'payment',
-            'payments',
-            'pay',
-            'paid',
-            'invoice',
-            'request',
-            'requests',
-            'edit',
-            'show',
-            'update',
-            'message',
-            'messages',
-            'messenger',
-            'messengers',
-            'berichten',
-            'chat',
-            'talk',
-            'meet',
-            'drive',
-            'cloud',
-            'config',
-            'settings',
-            'agenda',
-            'calendar',
-            'news',
-            'nieuws',
-            'vote',
-            'poll',
-            'auth',
-            'authenticate',
-            'verify',
-            'verification',
-            'date',
-            'datum',
-            'confirm',
-            'mail',
-            'post',
-            'posts',
-            'blog',
-        ];
+                    // Disallowed names as they might conflict with (future) url paths
+                    $completelyDisallowedNames = [
+                        'test',
+                        'debug',
+                        'user',
+                        'users',
+                        'member',
+                        'members',
+                        'profile',
+                        'organization',
+                        'organizations',
+                        'organisation',
+                        'organisations',
+                        'bank',
+                        'banks',
+                        'admin',
+                        'transaction',
+                        'transactions',
+                        'transfer',
+                        'transfers',
+                        'statement',
+                        'statements',
+                        'payment',
+                        'payments',
+                        'pay',
+                        'paid',
+                        'invoice',
+                        'request',
+                        'requests',
+                        'edit',
+                        'show',
+                        'update',
+                        'message',
+                        'messages',
+                        'messenger',
+                        'messengers',
+                        'berichten',
+                        'chat',
+                        'talk',
+                        'meet',
+                        'drive',
+                        'cloud',
+                        'config',
+                        'settings',
+                        'agenda',
+                        'calendar',
+                        'news',
+                        'nieuws',
+                        'vote',
+                        'poll',
+                        'auth',
+                        'authenticate',
+                        'verify',
+                        'verification',
+                        'date',
+                        'datum',
+                        'confirm',
+                        'mail',
+                        'post',
+                        'posts',
+                        'blog',
+                    ];
 
-        // Check for disallowed substrings
-        foreach ($disallowedWords as $word) {
-            if (str_contains(strtolower($value), $word)) {
-                $fail(trans('validation.custom.profile_user.name.disallowed', ['word' => $word]));
-            }
-        }
+                    // Check for disallowed substrings
+                    foreach ($disallowedWords as $word) {
+                        if (str_contains(strtolower($value), $word)) {
+                            $fail(trans('validation.custom.profile_user.name.disallowed', ['word' => $word]));
+                        }
+                    }
 
-        // Check for completely disallowed names
-        if (in_array(strtolower($value), array_map('strtolower', $completelyDisallowedNames))) {
-            $fail(trans('validation.custom.profile_user.name.completely_disallowed', ['name' => $value]));
-        }
-    },
-    'regex:/^[a-zA-Z0-9-_ ]+$/', // only letters, numbers, spaces, dashes and underscores
-],
+                    // Check for completely disallowed names
+                    if (in_array(strtolower($value), array_map('strtolower', $completelyDisallowedNames))) {
+                        $fail(trans('validation.custom.profile_user.name.completely_disallowed', ['name' => $value]));
+                    }
+                },
+                'regex:/^[a-zA-Z0-9-_ ]+$/', // only letters, numbers, spaces, dashes and underscores
+            ],
 
             'email' => 'required|email|unique:users,email|max:40',
             'password' => 'required|min:6|same:passwordConfirmation',

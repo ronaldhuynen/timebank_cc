@@ -1,42 +1,48 @@
 <div class="my-4">
 
-        <div class="flex space-x-12">
-            <div class="my-6 w-2/4 flex-none">
-                <x-jetstream.label for="search" value="{{ __('Search keywords') }}" />
-                <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                                   placeholder="Search keywords" right-icon="search"
-                                   wire:model.live="search" />
-                @error('search')
-                    <div class="mb-3 text-sm text-red-700" role="alert">
-                        {{ __($message) }}
-                    </div>
-                @enderror
+    <div class="flex space-x-12">
+        <div class="my-6 w-2/4 flex-none">
+            <x-jetstream.label for="search" value="{{ __('Search keywords') }}" />
+            <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
+                               placeholder="Search keywords" right-icon="search" wire:model.live="search" />
+            @error('search')
+                <div class="mb-3 text-sm text-red-700" role="alert">
+                    {{ __($message) }}
+                </div>
+            @enderror
 
-                <livewire:select-account :label="'Search from / to'" />
-                <x-jetstream.label for="searchAmount" value="{{ __('Search amount') }}" />
-                <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                                   placeholder="Search by amount" right-icon="search" wire:model.live="searchAmount" />
-                @error('searchAmount')
+            <livewire:select-account :label="__('Search from / to')" />
+            <x-jetstream.label for="searchAmount" value="{{ __('Search amount') }}" />
+            <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
+                               placeholder="Search by amount" right-icon="search" wire:model.live="searchAmount" />
+            @error('searchAmount')
+                <div class="mb-3 text-sm text-red-700" role="alert">
+                    {{ __($message) }}
+                </div>
+            @enderror
+            <!--- Amount --->
+            <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.user')" />
+            {{-- TODO: if user is admin or bank:  <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
+                @error('amount')
                     <div class="mb-3 text-sm text-red-700" role="alert">
                         {{ __($message) }}
                     </div>
                 @enderror
-            </div>
-            <div class="z-50 my-6 flex-auto">
-                <x-datetime-picker :without-time="true" :shadowless="true" class="placeholder-gray-300" display-format="DD-MM-YYYY"
-                                   label="{{ __('From date') }}" placeholder="{{ __('Select a date') }}"
-                                   wire:model.live="fromDate" />
-            </div>
-            <div class="z-50 my-6 flex-auto">
-                <x-datetime-picker :without-time="true" :shadowless="true" class="placeholder-gray-300" display-format="DD-MM-YYYY"
-                                   label="{{ __('To date') }}" placeholder="{{ __('Select a date') }}"
-                                   wire:model.live="toDate" />
-            </div>
         </div>
-        <x-jetstream.secondary-button class="mt-2" type="button" wire:click="searchTransactions"
-                                      >
-            {{ __('Search') }}
-        </x-jetstream.secondary-button>
+        <div class="z-50 my-6 flex-auto">
+            <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                               display-format="DD-MM-YYYY" label="{{ __('From date') }}"
+                               placeholder="{{ __('Select a date') }}" wire:model.live="fromDate" />
+        </div>
+        <div class="z-50 my-6 flex-auto">
+            <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                               display-format="DD-MM-YYYY" label="{{ __('To date') }}"
+                               placeholder="{{ __('Select a date') }}" wire:model.live="toDate" />
+        </div>
+    </div>
+    <x-jetstream.secondary-button class="mt-2" type="button" wire:click="searchTransactions">
+        {{ __('Search') }}
+    </x-jetstream.secondary-button>
     <!-- Results table -->
     <table class="mbt-2 mb-20 w-full min-w-full leading-normal" id="transactions">
         <thead>
@@ -159,17 +165,17 @@
             </select>
             <div class="mt-2 flex-auto px-3 text-gray-400">{{ __('results') }}</div>
         </div>
-            @if ($transactions)
-                <div class="absolute right-0">
-                    {{ (new \Illuminate\Pagination\LengthAwarePaginator(
-                        $transactions['data'],
-                        $transactions['total'],
-                        $transactions['per_page'],
-                        $transactions['current_page'],
-                        ['path' => $transactions['path']],
-                    ))->links('vendor.livewire.tailwind') }}
-                </div>
-            @endif
+        @if ($transactions)
+            <div class="absolute right-0">
+                {{ (new \Illuminate\Pagination\LengthAwarePaginator(
+                    $transactions['data'],
+                    $transactions['total'],
+                    $transactions['per_page'],
+                    $transactions['current_page'],
+                    ['path' => $transactions['path']],
+                ))->links('vendor.livewire.tailwind') }}
+            </div>
+        @endif
     </div>
 
 </div>

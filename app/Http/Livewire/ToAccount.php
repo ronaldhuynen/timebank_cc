@@ -55,11 +55,11 @@ class ToAccount extends Component
         $this->updatedSearch($toHolderName);
     }
 
-    public function toAccountSelected($toAccount)
+    public function toAccountSelected($toAccountId)
     {
-        $this->toAccountId = $toAccount;
+        $this->toAccountId = $toAccountId;
         $toAccountDetails = collect($this->searchResults)
-            ->where('accountId', '=', $toAccount)
+            ->where('accountId', '=', $toAccountId)
             ->first();
         $this->dispatch('toAccountDetails', $toAccountDetails);
         $this->toAccountName = $toAccountDetails['accountName'];
@@ -67,7 +67,7 @@ class ToAccount extends Component
         $this->toHolderPhoto = $toAccountDetails['holderPhoto'];
         $this->showDropdown = false;
         $this->search = '';
-        $this->dispatch('toAccountSelected', $toAccount);
+        $this->dispatch('toAccountSelected', $toAccountId);
     }
 
     /**
@@ -76,36 +76,36 @@ class ToAccount extends Component
      * @param  mixed $newValue
      * @return void
      */
-public function updatedSearch()
-{
-    $this->showDropdown = true;
-    $excludeAccount = $this->fromAccountId;
-    $search = $this->search;
-    $accounts = Account::with('accountable')
-        ->where(function ($query) use ($search) {
-            $query->where('name', 'like', '%' . $search . '%')
-                  ->orWhereHas('accountable', function (Builder $query) use ($search) {
-                      $query->where('name', 'like', '%' . $search . '%')
-                            ->orWhere('email', 'like', '%' . $search . '%');
-                  });
-        })
-        ->whereNull('owner_deleted_at')
-        ->get();
+    public function updatedSearch()
+    {
+        $this->showDropdown = true;
+        $excludeAccount = $this->fromAccountId;
+        $search = $this->search;
+        $accounts = Account::with('accountable')
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                      ->orWhereHas('accountable', function (Builder $query) use ($search) {
+                          $query->where('name', 'like', '%' . $search . '%')
+                                ->orWhere('email', 'like', '%' . $search . '%');
+                      });
+            })
+            ->whereNull('owner_deleted_at')
+            ->get();
 
-    $mappedAccounts = $accounts->map(function ($account, $key) {
-        return [
-            'accountId' => $account->id,
-            'accountName' => $account->name,
-            'holderId' => $account->accountable->id,
-            'holderName' => $account->accountable->name,
-            'holderPhoto' => url(Storage::url($account->accountable->profile_photo_path)),
-        ];
-    })->whereNotIn('accountId', $excludeAccount);
+        $mappedAccounts = $accounts->map(function ($account, $key) {
+            return [
+                'accountId' => $account->id,
+                'accountName' => $account->name,
+                'holderId' => $account->accountable->id,
+                'holderName' => $account->accountable->name,
+                'holderPhoto' => url(Storage::url($account->accountable->profile_photo_path)),
+            ];
+        })->whereNotIn('accountId', $excludeAccount);
 
-    $response = $mappedAccounts->take(6);
+        $response = $mappedAccounts->take(6);
 
-    $this->searchResults = $response;
-}
+        $this->searchResults = $response;
+    }
 
     public function render()
     {

@@ -1,14 +1,28 @@
 <?php
 
+
+/**
+ * Format the given number of minutes into a time format string.
+ * Minutes are used in the database to record currency.
+ *
+ * @param int $minutes The number of minutes to format.
+ * @return string The formatted time string.
+ */
 function tbFormat($minutes)
 {
     $wholeHours = intdiv($minutes, 60);
-    $restMinutes = sprintf("%02d", abs($minutes % 60)); 
-    return __('H') . ' ' . $wholeHours . ':' . $restMinutes; 
+    $restMinutes = sprintf("%02d", abs($minutes % 60));
+    return __('H') . ' ' . $wholeHours . ':' . $restMinutes;
 }
 
 
 
+/**
+ * Converts a time string in the format "HHH:MM" to minutes.
+ *
+ * @param string $hhh_mm The time string to convert.
+ * @return int The time in minutes.
+ */
 function dbFormat($hhh_mm)
 {
   list($wholeHours, $restMinutes) = explode(':', $hhh_mm);

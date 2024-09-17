@@ -15,8 +15,8 @@ class Transfer extends Component
 {
     use WireUiActions;
 
-
     public $amount;
+    public $amount2;
     public $fromAccountId;
     public $toAccountId;
     public $toAccountName;
@@ -31,37 +31,38 @@ class Transfer extends Component
 
 
     protected $listeners = [
-        'amount',
+        'amountUpdated' => 'updateAmount',
         'fromAccountId',
         'toAccountDetails',
         'description',
         'resetForm',
-        'toAccountValidation'
+        // 'toAccountValidation'
     ];
 
     protected $rules = [
-        'amount' => 'required|regex:/^\d*:[0-5]\d$/',
         'toAccountId' => 'required',
         'description' => 'required|string|min:3|max:1500'
     ];
 
-
-    protected $messages = [
-        'amount.regex' => 'The amount should be positive and in hh:mm format. For example 90 minutes is 1:30.',
-    ];
-
-
     /**
-      * Sets amount after it is selected in livewire amount component
-      *
-      * @param  mixed $amount
-      * @return void
-      */
-    public function amount($amount)
+    * Sets amount after it is selected in livewire amount component
+    *
+    * @param  mixed $amount
+    * @return void
+    */
+    // public function amountDispatched($amount)
+    //     {
+
+    // dump('Amount received in Transfer model: ' . $amount);
+
+    //         $this->amount = $amount;
+    //         // Add any additional logic you need to handle the amount update
+    //     }
+    public function updateAmount($amount)
     {
         $this->amount = $amount;
-        $this->validateOnly('amount');
     }
+
 
 
     /**
@@ -82,10 +83,10 @@ class Transfer extends Component
      * @param  mixed $toAccount
      * @return void
      */
-    public function toAccountSelected($toAccount)
+    public function toAccountSelected($toAccountId, $toAccountName)
     {
-        $this->validateOnly('toAccountId');
-        $this->toAccountSelected = $toAccount;
+        // $this->validateOnly('toAccountId');
+        $this->toAccountId = $toAccountId;
     }
 
 
@@ -110,16 +111,16 @@ class Transfer extends Component
      *
      * @param  mixed $toAccountId
      * @return void
-     */
-    public function toAccountValidation($toAccountId = null)
-    {
-        if ($toAccountId === null) {
-            $this->requiredError = true;
-        } else {
-            $this->requiredError = false;
-        }
-        // TODO create also a validation error when from and to account is equal!!
-    }
+    //  */
+    // public function toAccountValidation($toAccountId = null)
+    // {
+    //     if ($toAccountId === null) {
+    //         $this->requiredError = true;
+    //     } else {
+    //         $this->requiredError = false;
+    //     }
+    //     // TODO create also a validation error when from and to account is equal!!
+    // }
 
     /**
      * Sets description after it is updated
@@ -127,10 +128,10 @@ class Transfer extends Component
      * @param  mixed $content
      * @return void
      */
-    public function description($content)
+    public function description($description)
     {
-        $this->description = $content;
-        $this->validateOnly('description');
+        $this->description = $description;
+        // $this->validateOnly('description');
     }
 
 
@@ -146,7 +147,7 @@ class Transfer extends Component
 
         $fromAccountId = $this->fromAccountId;
         $toAccountId = $this->toAccountId;
-        $amount = dbFormat($this->amount);
+        $amount = $this->amount;
         $transactions = new TransactionController();
         $balanceFrom = $transactions->getBalance($fromAccountId);
         $balanceTo = $transactions->getBalance($toAccountId);
@@ -218,7 +219,7 @@ class Transfer extends Component
     {
         $fromAccountId = $this->fromAccountId;
         $toAccountId = $this->toAccountId;
-        $amount = dbFormat($this->amount);
+        $amount = $this->amount;
         $description = $this->description;
 
         $transactions = new TransactionController();
@@ -290,7 +291,7 @@ class Transfer extends Component
                 // WireUI notification
                 $this->notification()->error(
                     $title = __('Transfer failed!'),
-                    $description = __('Oops, we have an error: the transfer was not saved!')
+                    $description = __('Sorry, we have an error: the transfer was not saved!')
                 );
 
                 return back();

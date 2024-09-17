@@ -6,35 +6,30 @@
                 <div class="col-span-6 sm:col-span-4">
 
                     <!--- Amount --->
-                <livewire:amount :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.user')">
-                    {{-- TODO: if user is admin or bank:  <livewire:amount :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
-                        @error('amount')
-                        <div class="text-sm text-red-700 mb-3" role="alert">
-                            {{ __($message) }}
-                        </div>
-                        @enderror
+                    @livewire('amount-new')
+                    {{-- @livewire('amount-new', ['maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')]) --}}
 
 
                     <!--- From account --->
-                    <livewire:from-account>
+                    @livewire('from-account')
 
 
                     <!--- To Account --->
-                    <livewire:to-account :toHolderName="$toHolderName">
-                        @if ($requiredError && !isset($result))
+                    @livewire('to-account', ['toHolderName' => $toHolderName])
+                        {{-- @if ($requiredError && !isset($result))
                         <div class="text-sm text-red-700 mb-3" role="alert">
                             {{ __('This field is required') }}
                         </div>
-                        @endif
+                        @endif --}}
 
 
                     <!--- Description --->
-                    <livewire:description>
-                        @error('description')
+                    @livewire('description')
+                        {{-- @error('description')
                         <div class="text-sm text-red-700 mb-3" role="alert">
                             {{ __($message) }}
                         </div>
-                        @enderror
+                        @enderror --}}
 
             </div>
         </div>

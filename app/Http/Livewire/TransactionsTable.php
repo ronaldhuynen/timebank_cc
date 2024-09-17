@@ -26,7 +26,7 @@ class TransactionsTable extends Component
     public $stateSource = [];
     public $transactions = [];
 
-    protected $listeners = ['fromAccountId', 'searchTransactions', 'accountSelected', 'accountDeselected'];
+    protected $listeners = ['fromAccountId', 'searchTransactions', 'accountSelected', 'accountDeselected', 'amountDispatched'];
 
     protected $rules = [
         'searchAmount' => 'nullable|regex:/^\d*:[0-5]\d$/',
@@ -52,6 +52,11 @@ class TransactionsTable extends Component
 
         // $this->fromDate = Carbon::now()->subYears(2)->toDateString(); // Set default fromDate to 2 years ago to limit long queries
         // $this->toDate = Carbon::now()->toDateString();
+    }
+
+    public function amountDispatched($amount)
+    {
+        // dump('amount received in Transaction table: ' . $amount);
     }
 
 
@@ -223,7 +228,7 @@ class TransactionsTable extends Component
             return $result;
         });
 
-         // Paginate the $stateFiltered array
+        // Paginate the $stateFiltered array
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = $this->perPage; // Number of items per page
         $currentItems = array_slice($stateFiltered, ($currentPage - 1) * $perPage, $perPage);

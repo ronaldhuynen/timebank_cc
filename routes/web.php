@@ -111,11 +111,10 @@ Route::group([
             })->name('dashboard');
 
 
-            //TEST ME: changed 'transfer' route to 'pay' route. Easier for users to remember
             Route::get(LaravelLocalization::transRoute('routes.pay'), 'App\Http\Controllers\TransactionController@pay')->name('pay');
 
             // Route::post('/pay', 'App\Http\Controllers\TransactionController@savePayment')->name('saveTransfer');
-            
+
             Route::get(LaravelLocalization::transRoute('routes.pay-to-name'), 'App\Http\Controllers\TransactionController@payToName')
                     ->name('pay-to-name')
                     ->missing(function () {
@@ -123,40 +122,40 @@ Route::group([
                     });
 
             Route::get(LaravelLocalization::transRoute('routes.transactions'), 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
-           
+
             Route::get(LaravelLocalization::transRoute('routes.statement'), 'App\Http\Controllers\TransactionController@statement')
                 ->where(['transactionId' => '[0-9]+'])     // Add constraint: only numbers allowed
                 ->name('transaction.show');
 
             Route::get(LaravelLocalization::transRoute('routes.posts.manage'), 'App\Http\Controllers\PostController@admin')->name('posts.manage');
-          
+
             Route::get(LaravelLocalization::transRoute('routes.post.show_by_id'), 'App\Http\Controllers\PostController@showById')
                     ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed
                     ->name('post.show_by_id')
                     ->missing(function () {
                         return view('post.not_found');
                     });
-                    
+
             Route::get(LaravelLocalization::transRoute('routes.post.show_by_slug'), 'App\Http\Controllers\PostController@showBySlug')
                 ->name('post.show_by_slug');
-            
+
             Route::get(LaravelLocalization::transRoute('routes.user.show'), 'App\Http\Controllers\UserController@show')
                     ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed
                     ->name('user.show')
                     ->missing(function () {
                         return view('user.not_found');
                     });
-            
+
             Route::get(LaravelLocalization::transRoute('routes.org.show'), 'App\Http\Controllers\OrgController@show')
                     ->where(['orgId' => '[0-9]+'])     // Add constraint: only numbers allowed
                     ->name('org.show')
                     ->missing(function () {
                         return view('org.not_found');
                     });
-                    
+
             Route::get(LaravelLocalization::transRoute('routes.user.edit'), 'App\Http\Controllers\UserController@edit')
                     ->name('user.edit');
-                    
+
             Route::get(LaravelLocalization::transRoute('routes.org.edit'), 'App\Http\Controllers\OrgController@edit')
                     ->name('org.edit');
 
@@ -171,11 +170,11 @@ Route::group([
                         ->missing(function () {
                             return view('user.not_found');
                         });
-           
+
             Route::get(LaravelLocalization::transRoute('routes.search.show'), [SearchController::class, 'show'])
                         ->name('search.show');
 
-            // Messenger invitation link to join a group thread 
+            // Messenger invitation link to join a group thread
             Route::get(LaravelLocalization::transRoute('routes.messenger.join'), [ViewPortalController::class, 'showJoinWithInvite'])
                     ->middleware('auth');
 
@@ -183,7 +182,7 @@ Route::group([
 
             // Jetstream routes (copied from vendor/laravel/jetstream/routes/livewire.php, to overrule, to include in Laravel-localization class)
             Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {
-                if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {                   
+                if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
                     Route::get(LaravelLocalization::transRoute('routes.terms.show'), [TermsOfServiceController::class, 'show'])
                             ->name('terms.show');
                     Route::get(LaravelLocalization::transRoute('routes.policy.show'), [PrivacyPolicyController::class, 'show'])
@@ -202,7 +201,7 @@ Route::group([
                     // User & Profile...
                     Route::get(LaravelLocalization::transRoute('routes.profile.show'), [UserProfileController::class, 'show'])
                         ->name('profile.show');
-                        
+
                     Route::group(['middleware' => 'verified'], function () {
                         // API...
                         if (Jetstream::hasApiFeatures()) {
@@ -234,7 +233,7 @@ Route::group([
 
 
         // This route should always be the last route in the file!
-        // It will catch all routes that are not defined above as a {name} route.       
+        // It will catch all routes that are not defined above as a {name} route.
         Route::get(LaravelLocalization::transRoute('routes.show.by.name'), 'App\Http\Controllers\UserController@showByName')
             ->name('show.by.name')
             ->missing(function () {

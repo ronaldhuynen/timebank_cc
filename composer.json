@@ -14,7 +14,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/fortify": "^1.21",
         "laravel/framework": "^10.0",
-        "laravel/jetstream": "^3.0",
+        "laravel/jetstream": "^4.0",
         "laravel/reverb": "@beta",
         "laravel/sanctum": "^3.2",
         "laravel/scout": "^10.6",

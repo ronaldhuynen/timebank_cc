@@ -93,7 +93,7 @@ class SocialsForm extends Component
                 'updated_at' => Carbon::now(),
             ]);
             
-            $this->emitUp('emitSaved');
+            $this->dispatch('emitSaved');
             $this->resetInputFields();
         }
     }

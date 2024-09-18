@@ -37,7 +37,7 @@ $maxWidth = [
             {{ $attributes->has('focusable') ? 'setTimeout(() => firstFocusable().focus(), 100)' : '' }}
         } else {
             document.body.classList.remove('overflow-y-hidden');
-            @this.emit('closeModal');  
+            @this.dispatch('closeModal');  
         }
     })"
     x-on:close.stop="show = false"

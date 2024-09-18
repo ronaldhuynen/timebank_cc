@@ -1,78 +1,81 @@
-<div x-data="{ open: false }" class="max-w-md mt-4">
+<div class="mt-4 max-w-md" x-data="{ open: false }">
 
-    <label for="toAccount" class="my-2 block text-sm font-medium text-gray-900"> {{ __('To account') }}</label>
+    <label class="my-2 block text-sm font-medium text-gray-900" for="toAccount"> {{ __('To account') }}</label>
 
     <div class="relative">
-        <div class="absolute inset-y-0 left-0 pl-3 pt-2 flex pointer-events-none">
+        {{-- <div class="pointer-events-none absolute inset-y-0 left-0 flex pl-3 pt-2">
             <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                <path clip-rule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      fill-rule="evenodd" />
             </svg>
-        </div>
-
+        </div> --}}
 
         <!----- When no To account is selected ---->
         @if (!isset($toAccountId) || $search != '')
-
-            <input
-            wire:model.live.debounce.300ms="search"
-            x-on:blur="$wire.checkValidation()"
-            x-on:focus="open = true"
-            x-on:click.away="open = false"
-            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm leading-5 bg-white placeholder-gray-300 focus:placeholder-gray-700 focus:border-indigo-300 sm:text-sm transition duration-150 ease-in-out"
-            placeholder="{{ __('Search name or account') }}"
-            type="search"
-            autocomplete="off">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex pl-3 pt-2">
+            <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path clip-rule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      fill-rule="evenodd" />
+            </svg>
+        </div>
+            <input autocomplete="off"
+                   class="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 leading-5 placeholder-gray-300 shadow-sm transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-700 sm:text-sm"
+                   placeholder="{{ __('Search name or account') }}" type="search"
+                   wire:model.live.debounce.500ms="search" x-on:blur="$wire.checkValidation()"
+                   x-on:click.away="open = false" x-on:focus="open = true">
 
             @if (strlen($search) > 2)
-            <ul x-show="open" class="cursor-default absolute z-50 bg-white border border-gray-300 w-full shadow-lg rounded-md mt-0 text-gray-900 text-sm">
-                @forelse ($searchResults as $result)
-                <li>
-                    <a wire:click="toAccountSelected({{ $result['accountId'] }})" class="flex items-center px-2 py-2 hover:bg-gray-100">
-                        <img src="{{ $result['holderPhoto'] }}" class="w-10 rounded-full">
-                        <div class="ml-4 leading-tight">
-                            <div class="font-semibold text-gray-900">
-                                @if (array_key_exists('holderName', $result))
-                                {{ $result['holderName'] }}
-                                @else
-                                {{ __('No account holder found') }}
-                                @endif
-                            </div>
-                            <div class="text-gray-600">
-                                @if (array_key_exists('accountName', $result))
-                                {{ $result['accountName'] }}
-                                @else
-                                {{ __('No accounts found') }}
-                                @endif
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                @empty
-                <li class="px-4 py-4">{{ __('No results found for') }} "{{ $search }}"</li>
-                @endforelse
-            </ul>
+                <ul class="absolute z-50 mt-0 w-full cursor-default rounded-md border border-gray-300 bg-white text-sm text-gray-900 shadow-lg"
+                    x-show="open">
+                    @forelse ($searchResults as $result)
+                        <li>
+                            <a class="flex items-center px-2 py-2 hover:bg-gray-100"
+                               wire:click="toAccountSelected({{ $result['accountId'] }})">
+                                <img class="w-10 rounded-full" src="{{ $result['holderPhoto'] }}">
+                                <div class="ml-4 leading-tight">
+                                    <div class="font-semibold text-gray-900">
+                                        @if (array_key_exists('holderName', $result))
+                                            {{ $result['holderName'] }}
+                                        @else
+                                            {{ __('No account holder found') }}
+                                        @endif
+                                    </div>
+                                    <div class="text-gray-600">
+                                        @if (array_key_exists('accountName', $result))
+                                            {{ $result['accountName'] }}
+                                        @else
+                                            {{ __('No accounts found') }}
+                                        @endif
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    @empty
+                        <li class="px-4 py-4">{{ __('No results found for') }} "{{ $search }}"</li>
+                    @endforelse
+                </ul>
             @endif
 
-
             <!----- When a To account is selected ---->
-            @else
-            <input wire:model.live.debounce.300ms="search" class="block w-full pl-10 pr-3 py-2 border sadow-sm border-gray-300 rounded-md leading-5 bg-white placeholder-gray-300 focus:outline-none focus:placeholder-gray-300 focus:border-indigo-300 sm:text-sm transition duration-150 ease-in-out" 
-                placeholder="{{ __('Search again...') }}"
-                type="search" 
-                autocomplete="off">
-
-            <div class="cursor-default w-full pl-0 pr-3 py-2 mt-2 border border-gray-300 rounded-md leading-5 shadow-sm bg-white focus:outline-none focus:placeholder-gray-300 focus:border-indigo-300 focus:shadow-outline-blue sm:text-sm transition duration-150 ease-in-out">
+        @else
+            <div
+                 class="focus:shadow-outline-blue mt-2 w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-0 pr-3 leading-5 shadow-sm transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-300 focus:outline-none sm:text-sm">
                 <!-- Add cursor-default class here -->
                 <div class="flex items-center px-2 py-2">
-                    <img src="{{ $toHolderPhoto }}" class="w-10 rounded-full">
+                    <img class="w-10 rounded-full" src="{{ $toHolderPhoto }}">
                     <div class="ml-4 leading-tight">
-                        <div wire:model.live="toHolderName" class="font-semibold">
+                        <div class="font-semibold" wire:model.live="toHolderName">
                             {{ $toHolderName }}
                         </div>
-                        <div wire:model.live="toAccountName" class="text-gray-600">
+                        <div class="text-gray-600" wire:model.live="toAccountName">
                             {{ $toAccountName }}
                         </div>
                     </div>
+                    <button class="ml-auto text-gray-600 hover:text-red-600" wire:click="removeSelectedAccount">
+                        <x-icon class="h-5 w-5" name="x-circle" />
+                    </button>
                 </div>
             </div>
         @endif

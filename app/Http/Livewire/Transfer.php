@@ -16,7 +16,6 @@ class Transfer extends Component
     use WireUiActions;
 
     public $amount;
-    public $amount2;
     public $fromAccountId;
     public $toAccountId;
     public $toAccountName;
@@ -31,62 +30,58 @@ class Transfer extends Component
 
 
     protected $listeners = [
-        'amountUpdated' => 'updateAmount',
+        'amount' => 'amountValidation',
         'fromAccountId',
+        'toAccountId',
         'toAccountDetails',
         'description',
         'resetForm',
-        // 'toAccountValidation'
     ];
 
     protected $rules = [
-        'toAccountId' => 'required',
+        'amount' => 'required|integer|min:1',
+        'fromAccountId' => 'required|integer',
+        'toAccountId' => 'required|integer',
         'description' => 'required|string|min:3|max:1500'
     ];
 
+
     /**
-    * Sets amount after it is selected in livewire amount component
-    *
-    * @param  mixed $amount
-    * @return void
-    */
-    // public function amountDispatched($amount)
-    //     {
-
-    // dump('Amount received in Transfer model: ' . $amount);
-
-    //         $this->amount = $amount;
-    //         // Add any additional logic you need to handle the amount update
-    //     }
-    public function updateAmount($amount)
+     * Extra validation when amount looses focus
+     *
+     * @param  mixed $toAccountId
+     * @return void
+     */
+    public function amountValidation($amount = null)
     {
-        $this->amount = $amount;
+        $this->amount = $amount ?? $this->amount;
+        $this->validateOnly('amount');
     }
-
 
 
     /**
      * Sets fromAccountId after From Account drop down is selected
      *
-     * @param  mixed $fromAccount
+     * @param  mixed $toAccount
      * @return void
      */
-    public function fromAccountId($fromAccount)
+    public function fromAccountId($fromAccountId)
     {
-        $this->fromAccountId = $fromAccount;
+        $this->fromAccountId = $fromAccountId;
     }
 
-
+    
     /**
-     * Sets toAccountSelected after From Account drop down is selected
+     * Sets fromAccountId after To Account drop down is selected
      *
      * @param  mixed $toAccount
      * @return void
      */
-    public function toAccountSelected($toAccountId, $toAccountName)
+    public function toAccountId($toAccountId)
     {
-        // $this->validateOnly('toAccountId');
+        $this->modalVisible = false;
         $this->toAccountId = $toAccountId;
+        $this->validateOnly('toAccountId'); 
     }
 
 
@@ -107,22 +102,6 @@ class Transfer extends Component
 
 
     /**
-     * Extra validation when search field lost focus
-     *
-     * @param  mixed $toAccountId
-     * @return void
-    //  */
-    // public function toAccountValidation($toAccountId = null)
-    // {
-    //     if ($toAccountId === null) {
-    //         $this->requiredError = true;
-    //     } else {
-    //         $this->requiredError = false;
-    //     }
-    //     // TODO create also a validation error when from and to account is equal!!
-    // }
-
-    /**
      * Sets description after it is updated
      *
      * @param  mixed $content
@@ -131,16 +110,16 @@ class Transfer extends Component
     public function description($description)
     {
         $this->description = $description;
-        // $this->validateOnly('description');
+        $this->validateOnly('description');
     }
 
 
-    public function validateModal()
+    public function showModal()
     {
         try {
             $this->validate();
         } catch (\Illuminate\Validation\ValidationException $errors) {
-            // dump($errors);
+            dump($errors);  //TODO! Replace dump and render error message nicely for user
             $this->validate();
             // Execution stops here if validation fails.
         }
@@ -191,24 +170,6 @@ class Transfer extends Component
             $this->modalVisible = true;
         }
     }
-
-    // /**
-    // * Shows the transfer confirmation modal after a 2nd and complete validation
-    // *
-    // * @return void
-    // */
-    // public function confirmModal()
-    // {
-    //     try {
-    //         $this->validate();
-    //     } catch (\Illuminate\Validation\ValidationException $errors) {
-    //         // dump($errors);
-    //         $this->validate();
-    //         // Execution stops here if validation fails.
-    //     }
-    //     $this->modalVisible = true;
-    // }
-
 
     /**
      * Create transfer, output success / error message and reset from.

@@ -32,7 +32,7 @@ class ToAccount extends Component
 
     public function checkValidation()
     {
-        $this->dispatch('toAccountValidation');
+        $this->dispatch('toAccountId', $this->toAccountId);
     }
 
     public function resetForm()
@@ -40,10 +40,6 @@ class ToAccount extends Component
         $this->reset();
     }
 
-    public function updatedSelected()
-    {
-        $this->dispatch('toAccountSelected', $this->selected)->self();
-    }
 
     public function fromAccountId($fromAccount)
     {
@@ -61,13 +57,13 @@ class ToAccount extends Component
         $toAccountDetails = collect($this->searchResults)
             ->where('accountId', '=', $toAccountId)
             ->first();
-        $this->dispatch('toAccountDetails', $toAccountDetails);
         $this->toAccountName = $toAccountDetails['accountName'];
         $this->toHolderName = $toAccountDetails['holderName'];
         $this->toHolderPhoto = $toAccountDetails['holderPhoto'];
         $this->showDropdown = false;
         $this->search = '';
-        $this->dispatch('toAccountSelected', $toAccountId);
+        $this->dispatch('toAccountDetails', $toAccountDetails);
+        $this->dispatch('toAccountId', $this->toAccountId);
     }
 
     /**
@@ -106,6 +102,14 @@ class ToAccount extends Component
 
         $this->searchResults = $response;
     }
+
+
+    public function removeSelectedAccount()
+    {
+        $this->toAccountId = null;
+        $this->dispatch('toAccountId', $this->toAccountId);
+    }
+
 
     public function render()
     {

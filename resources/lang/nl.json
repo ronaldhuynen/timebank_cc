@@ -110,7 +110,6 @@
     "Added": "Toegevoegd",
     "Enable": "Inschakelen",
     "Enabled": "Ingeschakeld",
-    "Pay": "Betaal",
     "Yes": "Ja",
     "Nee": "Nee",
     "Cancel": "Annuleren",
@@ -125,15 +124,15 @@
     "Sorry, your data could not be saved!": "Sorry, je gegevens konden niet worden opgeslagen!",
     "Our team has ben notified about this error. Please try again later.": "Ons team krijgt bericht van deze fout. Probeer het alsjeblieft later nog eens.",
 
-    "Payments": "Betalingen",
+    "Dashboard": "Overzicht",
+    "Pay": "Betalen",
     "Transactions": "Transacties",
     "Transaction History": "Transactie-overzicht",
     "Search transactions": "Zoek transacties",
     "Description": "Omschrijving",
     "Payment description": "Betalingsomschrijving",
-    "Transaction Statement": "Bewijs van overschijving",
+    "Transaction Statement": "Transactie-bewijs",
 
-    "Dashboard": "Dashboard",
     "Previous login": "Vorige login",
     "First login session": "Eerste login sessie",
 
@@ -170,7 +169,6 @@
     "From account": "Vanaf rekening",
     "To account": "Naar rekening",
 
-    "Your transaction history": "Je transactie-overicht",
     "From date": "Vanaf datum",
     "To date": "Tot datum",
     "Date": "Datum",

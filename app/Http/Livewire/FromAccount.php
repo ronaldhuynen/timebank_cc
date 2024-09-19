@@ -3,13 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\TransactionController;
-
 use Livewire\Component;
 
 class FromAccount extends Component
 {
     public $profileAccounts = [];
     public $fromAccountId;
+    public $label;
 
     protected $listeners = [
         'resetForm'];

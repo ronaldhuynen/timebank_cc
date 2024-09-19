@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="mt-0 md:col-span-2 md:mt-0">
-                        @livewire('transfer', ['toHolderName' => $toName]) </div>
+                        @livewire('pay', ['toHolderName' => $toName]) </div>
                 </div>
             </div>
     </div>

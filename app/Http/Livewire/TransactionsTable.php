@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Transaction;
-use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -26,10 +25,9 @@ class TransactionsTable extends Component
     public $stateSource = [];
     public $transactions = [];
 
-    protected $listeners = ['fromAccountId', 'searchTransactions', 'accountSelected', 'accountDeselected', 'amountDispatched'];
+    protected $listeners = ['fromAccountId', 'searchTransactions', 'accountSelected', 'accountDeselected', 'amount' => 'amountDispatched'];
 
     protected $rules = [
-        'searchAmount' => 'nullable|regex:/^\d*:[0-5]\d$/',
         'search' => 'nullable|string|min:3|max:100',
         'searchAmount' => 'nullable|integer',
         'fromDate' => 'nullable|date',
@@ -37,13 +35,9 @@ class TransactionsTable extends Component
     ];
 
     protected $messages = [
-        'searchAmount.regex' => 'The amount should be positive and in hh:mm format. For example 90 minutes is 1:30.',
         'fromDate.date' => 'The from date must be a valid date.',
         'toDate.date' => 'The to date must be a valid date.',
     ];
-
-    // TODO NEXT: search by amount. Refactor 1st the amount component with two HH and MM inputs
-
 
     public function mount()
     {
@@ -56,33 +50,28 @@ class TransactionsTable extends Component
 
     public function amountDispatched($amount)
     {
-        // dump('amount received in Transaction table: ' . $amount);
+        $this->searchAmount = $amount;
     }
-
 
     public function updatingPerPage()
     {
         $this->resetPage();
     }
 
-
     public function fromAccountId($fromAccount)
     {
         $this->fromAccountId = $fromAccount;
     }
-
 
     public function accountSelected($accountId)
     {
         $this->searchAccount = $accountId;
     }
 
-
     public function accountDeselected()
     {
         $this->searchAccount = null;
     }
-
 
     public function getTransactions()
     {
@@ -155,7 +144,6 @@ class TransactionsTable extends Component
         return $this->transactions = $paginatedItems->toArray();
     }
 
-
     public function searchTransactions()
     {
         if (!empty($this->search) || !empty($this->searchAmount || !empty($this->fromDate) || !empty($this->toDate || !empty($this->searchAccount)))) {
@@ -172,7 +160,7 @@ class TransactionsTable extends Component
 
         $search = $this->search;
         $searchAccount = $this->searchAccount;
-        $searchAmount = $this->searchAmount !== null ? dbFormat($this->searchAmount) : null;
+        $searchAmount = $this->searchAmount !== null ? $this->searchAmount : null;
 
         $this->resetPage();
         $this->validate();
@@ -187,9 +175,8 @@ class TransactionsTable extends Component
         $fromDate = $this->fromDate ? strtotime($this->fromDate) : null;
         $toDate = $this->toDate ? strtotime($this->toDate) : null;
 
-
         // Filter the transactions based on the search criteria
-        $stateFiltered = array_filter($state, function ($transaction) use ($search, $searchAccount, $fromDate, $toDate) {
+        $stateFiltered = array_filter($state, function ($transaction) use ($search, $searchAccount, $fromDate, $toDate, $searchAmount) {
             // Check if the transaction date is within the specified date range
             $transactionDate = strtotime($transaction['datetime']);
             $dateInRange = (!$fromDate || $transactionDate >= $fromDate) && (!$toDate || $transactionDate <= $toDate);
@@ -197,13 +184,14 @@ class TransactionsTable extends Component
             if (!$dateInRange) {
                 return false;
             }
-            // If both $search and $searchAccount are empty, only apply the dateInRange filter
-            if (empty($search) && empty($searchAccount)) {
+            // If all search criteria are empty, only apply the dateInRange filter
+            if (empty($search) && empty($searchAccount) && empty($searchAmount)) {
                 return true;
             }
             // Initialize search-related flags
             $descriptionContainsSearch = false;
             $relationContainsSearch = false;
+            $amountMatches = false;
             // Check if a search term is provided
             if (!empty($search)) {
                 // Convert transaction description and relation to lowercase and check if they contain the search keyword
@@ -212,17 +200,27 @@ class TransactionsTable extends Component
             }
             // Check if the transaction matches the searchAccount
             $accountMatches = false;
-            if (isset($transaction['account_from']) && in_array($searchAccount, (array)$transaction['account_from'], true)) {
+            if (isset($transaction['account_from']) && in_array($searchAccount, (array) $transaction['account_from'], true)) {
                 $accountMatches = true;
             }
-            if (isset($transaction['account_to']) && in_array($searchAccount, (array)$transaction['account_to'], true)) {
+            if (isset($transaction['account_to']) && in_array($searchAccount, (array) $transaction['account_to'], true)) {
                 $accountMatches = true;
+            }
+            // Check if the transaction amount matches the searchAmount
+            if (!empty($searchAmount) && isset($transaction['amount']) && $transaction['amount'] == $searchAmount) {
+                $amountMatches = true;
             }
             // Combine all conditions
-            if (!empty($search) && !empty($searchAccount)) {
+            if (!empty($search) && !empty($searchAccount) && !empty($searchAmount)) {
+                $result = $accountMatches && ($descriptionContainsSearch || $relationContainsSearch) && $amountMatches;
+            } elseif (!empty($search) && !empty($searchAccount)) {
                 $result = $accountMatches && ($descriptionContainsSearch || $relationContainsSearch);
+            } elseif (!empty($search) && !empty($searchAmount)) {
+                $result = ($descriptionContainsSearch || $relationContainsSearch) && $amountMatches;
+            } elseif (!empty($searchAccount) && !empty($searchAmount)) {
+                $result = $accountMatches && $amountMatches;
             } else {
-                $result = $descriptionContainsSearch || $relationContainsSearch || $accountMatches;
+                $result = $descriptionContainsSearch || $relationContainsSearch || $accountMatches || $amountMatches;
             }
 
             return $result;
@@ -240,10 +238,7 @@ class TransactionsTable extends Component
 
         // Return the paginated items
         return $paginatedItems;
-
-
     }
-
 
     public function render()
     {

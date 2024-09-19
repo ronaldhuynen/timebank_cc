@@ -13,7 +13,14 @@ class Amount extends Component
     public $maxLengthHoursInput = 3;
 
     protected $listeners = ['resetForm'];
-    
+
+
+    public function mount()
+    {
+        $this->hours = '';
+        $this->minutes = '';
+        $this->amount = 0;
+    }
 
     public function resetForm()
     {
@@ -39,6 +46,18 @@ class Amount extends Component
         $minutes = is_numeric($this->minutes) ? (int)$this->minutes : 0;
         $this->amount = ($hours * 60) + $minutes;
         $this->dispatch('amount', $this->amount);
+        // Format the inputs for empty values
+        if ($this->amount === 0) {
+            $this->reset(['hours', 'minutes']);
+        } else {
+            if ($this->amount < 60) {
+                $this->hours = 0;
+            }
+            if ($this->amount % 60 === 0) {
+                $this->minutes = '00';
+            }
+        }
+
     }
 
 

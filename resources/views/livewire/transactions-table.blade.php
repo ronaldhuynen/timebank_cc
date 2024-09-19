@@ -11,23 +11,19 @@
                 </div>
             @enderror
 
-            <livewire:select-account :label="__('Search from / to')" />
-            <x-jetstream.label for="searchAmount" value="{{ __('Search amount') }}" />
-            <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                               placeholder="Search by amount" right-icon="search" wire:model.live="searchAmount" />
-            @error('searchAmount')
+            @livewire('select-account', ['label' => __('Search from / to account')])
+               @error('account')
                 <div class="mb-3 text-sm text-red-700" role="alert">
                     {{ __($message) }}
                 </div>
             @enderror
-            <!--- Amount --->
-            <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.user')" />
-            {{-- TODO: if user is admin or bank:  <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
-                @error('amount')
-                    <div class="mb-3 text-sm text-red-700" role="alert">
-                        {{ __($message) }}
-                    </div>
-                @enderror
+          
+            @livewire('amount', ['label' => __('Search amount'), 'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')]) {{-- TODO: if user is admin or bank:  <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
+            @error('amount')
+                <div class="mb-3 text-sm text-red-700" role="alert">
+                    {{ __($message) }}
+                </div>
+            @enderror
         </div>
         <div class="z-50 my-6 flex-auto">
             <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"

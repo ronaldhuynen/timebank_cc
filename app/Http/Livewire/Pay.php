@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
-class Transfer extends Component
+class Pay extends Component
 {
     use WireUiActions;
 
@@ -70,7 +70,7 @@ class Transfer extends Component
         $this->fromAccountId = $fromAccountId;
     }
 
-    
+
     /**
      * Sets fromAccountId after To Account drop down is selected
      *
@@ -81,7 +81,7 @@ class Transfer extends Component
     {
         $this->modalVisible = false;
         $this->toAccountId = $toAccountId;
-        $this->validateOnly('toAccountId'); 
+        $this->validateOnly('toAccountId');
     }
 
 
@@ -279,6 +279,6 @@ class Transfer extends Component
        */
     public function render()
     {
-        return view('livewire.transfer');
+        return view('livewire.pay');
     }
 }

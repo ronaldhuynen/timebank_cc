@@ -19,7 +19,10 @@
                 <!-- Only if activeProfile has any accounts -->
                 @if (session('activeProfileAccounts'))
                     <x-jetstream.nav-link :active="request()->routeIs('pay')" href="{{ route('pay') }}">
-                        {{ __('Payments') }}
+                        {{ __('Pay') }}
+                    </x-jetstream.nav-link>
+                    <x-jetstream.nav-link :active="request()->routeIs('pay')" href="{{ route('transactions') }}">
+                        {{ __('Transactions') }}
                     </x-jetstream.nav-link>
                 @endif
 

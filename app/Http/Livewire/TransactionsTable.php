@@ -13,6 +13,7 @@ class TransactionsTable extends Component
 
     public $searchState = false;
     public $hideBalance = false;
+    public $showSearchSection = false;
     public $search;
     public $searchAmount;
     public $searchAccount;

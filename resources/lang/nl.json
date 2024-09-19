@@ -165,10 +165,13 @@
     
 
     "Transfer Timebank.cc Hours": "Betaal Timebank.cc uren",
-    "Amount": "Aantal",
+    "Amount": "Bedrag",
+    "Account": "Rekening",
     "From account": "Vanaf rekening",
     "To account": "Naar rekening",
 
+    "Keywords": "Zoekwoorden",
+    "From / to account": "Van / naar rekening",
     "From date": "Vanaf datum",
     "To date": "Tot datum",
     "Date": "Datum",

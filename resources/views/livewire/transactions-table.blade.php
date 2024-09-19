@@ -1,46 +1,64 @@
 <div class="my-4">
+    @if (!$showSearchSection)
+        <x-jetstream.accordion-button class="mt-2 flex justify-between" type="button"
+                                      wire:click.debounce.200ms="$toggle('showSearchSection')">
+            {{ __('Search') }}
+        </x-jetstream.accordion-button>
+    @endif
+    <div class="@if (!$showSearchSection) hidden @endif rounded-md border border-gray-300 px-6 pb-6 shadow-md">
+        <div class="text-right mt-4">
+            <button class="transition text-gray-700 hover:text-gray-600" 
+            wire:click.debounce.200ms="$toggle('showSearchSection')">
+            <x-icon class="h-5 w-5" mini name="chevron-up" />
+            </button>
+        </div>
+        <div class="flex space-x-12">
+            <div class="my-6 w-2/4 flex-none">
+                <x-jetstream.label for="search" value="{{ __('Keywords') }}" />
+                <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
+                                   placeholder="Search keywords" right-icon="search" wire:model.live="search" />
+                @error('search')
+                    <div class="mb-3 text-sm text-red-700" role="alert">
+                        {{ __($message) }}
+                    </div>
+                @enderror
 
-    <div class="flex space-x-12">
-        <div class="my-6 w-2/4 flex-none">
-            <x-jetstream.label for="search" value="{{ __('Search keywords') }}" />
-            <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                               placeholder="Search keywords" right-icon="search" wire:model.live="search" />
-            @error('search')
-                <div class="mb-3 text-sm text-red-700" role="alert">
-                    {{ __($message) }}
-                </div>
-            @enderror
+                @livewire('select-account', ['label' => __('From / to account')])
+                @error('account')
+                    <div class="mb-3 text-sm text-red-700" role="alert">
+                        {{ __($message) }}
+                    </div>
+                @enderror
 
-            @livewire('select-account', ['label' => __('Search from / to account')])
-               @error('account')
-                <div class="mb-3 text-sm text-red-700" role="alert">
-                    {{ __($message) }}
+                <div class="my-6 flex-auto">
+                    @livewire('amount', ['label' => __('Amount'), 'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')]) {{-- TODO: if user is admin or bank:  <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
+                    @error('amount')
+                        <div class="mb-3 text-sm text-red-700" role="alert">
+                            {{ __($message) }}
+                        </div>
+                    @enderror
                 </div>
-            @enderror
-          
-            @livewire('amount', ['label' => __('Search amount'), 'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')]) {{-- TODO: if user is admin or bank:  <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
-            @error('amount')
-                <div class="mb-3 text-sm text-red-700" role="alert">
-                    {{ __($message) }}
-                </div>
-            @enderror
+
+            </div>
+            <div class="z-50 my-6 flex-auto">
+                <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                                   display-format="DD-MM-YYYY" label="{{ __('From date') }}"
+                                   placeholder="{{ __('Select a date') }}" wire:model.live="fromDate" />
+            </div>
+            <div class="z-50 my-6 flex-auto">
+                <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                                   display-format="DD-MM-YYYY" label="{{ __('To date') }}"
+                                   placeholder="{{ __('Select a date') }}" wire:model.live="toDate" />
+            </div>
         </div>
-        <div class="z-50 my-6 flex-auto">
-            <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
-                               display-format="DD-MM-YYYY" label="{{ __('From date') }}"
-                               placeholder="{{ __('Select a date') }}" wire:model.live="fromDate" />
-        </div>
-        <div class="z-50 my-6 flex-auto">
-            <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
-                               display-format="DD-MM-YYYY" label="{{ __('To date') }}"
-                               placeholder="{{ __('Select a date') }}" wire:model.live="toDate" />
-        </div>
+
+        <x-jetstream.secondary-button class="mt-2" type="button" wire:click="searchTransactions">
+            {{ __('Search') }}
+        </x-jetstream.secondary-button>
     </div>
-    <x-jetstream.secondary-button class="mt-2" type="button" wire:click="searchTransactions">
-        {{ __('Search') }}
-    </x-jetstream.secondary-button>
+
     <!-- Results table -->
-    <table class="mbt-2 mb-20 w-full min-w-full leading-normal" id="transactions">
+    <table class="mb-20 mt-12 w-full min-w-full leading-normal" id="transactions">
         <thead>
             <tr>
                 <th class="border-b border-gray-200 py-6">
@@ -139,7 +157,8 @@
                                     @if ($transaction['balance'] < 0)
                                         <span class="text-red-700"> {{ tbFormat($transaction['balance']) }} </span>
                                     @else
-                                        <span class="text-gray-900"> {{ tbFormat($transaction['balance']) }} </span>
+                                        <span class="text-gray-900"> {{ tbFormat($transaction['balance']) }}
+                                        </span>
                                     @endif
                                 </p>
                             </td>

@@ -1,60 +1,59 @@
 <div class="my-4">
-    @if (!$showSearchSection)
-        <x-jetstream.accordion-button class="mt-2 flex justify-between" type="button"
-                                      wire:click.debounce.200ms="$toggle('showSearchSection')">
-            {{ __('Search') }}
-        </x-jetstream.accordion-button>
-    @endif
-    <div class="@if (!$showSearchSection) hidden @endif rounded-md border border-gray-300 px-6 pb-6 shadow-md">
-        <div class="text-right mt-4">
-            <button class="transition text-gray-700 hover:text-gray-600" 
-            wire:click.debounce.200ms="$toggle('showSearchSection')">
-            <x-icon class="h-5 w-5" mini name="chevron-up" />
-            </button>
-        </div>
-        <div class="flex space-x-12">
-            <div class="my-6 w-2/4 flex-none">
-                <x-jetstream.label for="search" value="{{ __('Keywords') }}" />
-                <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                                   placeholder="Search keywords" right-icon="search" wire:model.live="search" />
-                @error('search')
-                    <div class="mb-3 text-sm text-red-700" role="alert">
-                        {{ __($message) }}
-                    </div>
-                @enderror
 
-                @livewire('select-account', ['label' => __('From / to account')])
-                @error('account')
-                    <div class="mb-3 text-sm text-red-700" role="alert">
-                        {{ __($message) }}
-                    </div>
-                @enderror
-
-                <div class="my-6 flex-auto">
-                    @livewire('amount', ['label' => __('Amount'), 'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')]) {{-- TODO: if user is admin or bank:  <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
-                    @error('amount')
+    <!-- Accordion Item 1 -->
+    <div class="rounded-md border border-gray-300 px-6 py-3 shadow-md">
+        <button class="flex w-full items-center justify-between py-2" onclick="toggleAccordion(1)">
+            <span class="text-xs font-semibold uppercase tracking-widest text-gray-700">
+                {{ __('Search transactions') }}</span>
+            <span class="transition-transform duration-300" id="icon-1">
+                <x-icon class="h-5 w-5 text-gray-700 hover:text-gray-600" name="chevron-down" />
+            </span>
+        </button>
+        <!-- Content 1 of open accordion -->
+        <div class="max-h-0 transition-all duration-300 ease-in-out" id="content-1" wire:ignore>
+            <div class="my-2 flex space-x-12">
+                <div class="w-2/4 flex-none">
+                    <x-jetstream.label for="search" value="{{ __('Keywords') }}" />
+                    <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
+                                       placeholder="Search keywords" right-icon="search" wire:model.live="search" />
+                    @error('search')
                         <div class="mb-3 text-sm text-red-700" role="alert">
                             {{ __($message) }}
                         </div>
                     @enderror
+
+                    @livewire('to-account', ['label' => __('From / to account')])
+                    @error('account')
+                        <div class="mb-3 text-sm text-red-700" role="alert">
+                            {{ __($message) }}
+                        </div>
+                    @enderror
+
+                    <div class="my-6 flex-auto">
+                        @livewire('amount', ['label' => __('Amount'), 'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')]) {{-- TODO: if user is admin or bank:  <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
+                        @error('amount')
+                            <div class="mb-3 text-sm text-red-700" role="alert">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+                    </div>
                 </div>
+                <div class="z-50 my-6 flex-auto">
+                    <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                                       display-format="DD-MM-YYYY" label="{{ __('From date') }}"
+                                       placeholder="{{ __('Select a date') }}" wire:model.live="fromDate" />
+                </div>
+                <div class="z-50 my-6 flex-auto">
+                    <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                                       display-format="DD-MM-YYYY" label="{{ __('To date') }}"
+                                       placeholder="{{ __('Select a date') }}" wire:model.live="toDate" />
+                </div>
+            </div>
 
-            </div>
-            <div class="z-50 my-6 flex-auto">
-                <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
-                                   display-format="DD-MM-YYYY" label="{{ __('From date') }}"
-                                   placeholder="{{ __('Select a date') }}" wire:model.live="fromDate" />
-            </div>
-            <div class="z-50 my-6 flex-auto">
-                <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
-                                   display-format="DD-MM-YYYY" label="{{ __('To date') }}"
-                                   placeholder="{{ __('Select a date') }}" wire:model.live="toDate" />
-            </div>
+            <x-jetstream.secondary-button class="my-3" type="button" wire:click="searchTransactions">
+                {{ __('Search') }}
+            </x-jetstream.secondary-button>
         </div>
-
-        <x-jetstream.secondary-button class="mt-2" type="button" wire:click="searchTransactions">
-            {{ __('Search') }}
-        </x-jetstream.secondary-button>
     </div>
 
     <!-- Results table -->
@@ -193,4 +192,67 @@
         @endif
     </div>
 
-</div>
+    <!-- Accordion script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all accordions to be collapsed by default
+            const accordions = document.querySelectorAll('[id^="content-"]');
+            accordions.forEach(content => {
+                content.style.maxHeight = '0';
+                content.style.overflow = 'hidden';
+            });
+
+            const icons = document.querySelectorAll('[id^="icon-"]');
+            icons.forEach(icon => {
+                icon.innerHTML = `
+        <x-icon class="h-4 w-4 text-gray-900 hover:text-gray-700 font-bold" name="chevron-down" />
+      `;
+            });
+        });
+
+        function toggleAccordion(index) {
+            const content = document.getElementById(`content-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+            const toggleButton = document.getElementById(`toggle-button-${index}`);
+
+            // SVG for Down icon
+            const downSVG = `
+        <x-icon class="h-4 w-4 text-gray-900 hover:text-gray-700 font-bold" name="chevron-up" />
+    `;
+
+            // SVG for Up icon
+            const upSVG = `
+        <x-icon class="h-4 w-4 text-gray-900 hover:text-gray-700 font-bold" name="chevron-down" />
+    `;
+
+            // Toggle the content's max-height and overflow for smooth opening and closing
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                content.style.maxHeight = '0';
+                content.style.overflow = 'hidden';
+                icon.innerHTML = upSVG;
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.overflow = 'visible';
+                icon.innerHTML = downSVG;
+            }
+        }
+
+        // Prevent the accordion from closing when clicking or typing inside it
+        document.addEventListener('click', function(event) {
+            const toggleButton = document.getElementById('toggle-button-1');
+            const content = document.getElementById('content-1');
+
+            if (content.contains(event.target) && !toggleButton.contains(event.target)) {
+                event.stopPropagation();
+            }
+        });
+
+        document.addEventListener('input', function(event) {
+            const toggleButton = document.getElementById('toggle-button-1');
+            const content = document.getElementById('content-1');
+
+            if (content.contains(event.target) && !toggleButton.contains(event.target)) {
+                event.stopPropagation();
+            }
+        });
+    </script>

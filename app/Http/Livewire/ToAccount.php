@@ -9,6 +9,7 @@ use Livewire\Component;
 
 class ToAccount extends Component
 {
+    public $label;
     public $search;
     public $searchResults = [];
     public $showDropdown = false;

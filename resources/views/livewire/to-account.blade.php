@@ -1,25 +1,22 @@
 <div class="mt-4 max-w-md" x-data="{ open: false }">
 
-    <label class="my-2 block text-sm font-medium text-gray-900" for="toAccount"> {{ __('To account') }}</label>
+  @isset($label)
+        <x-jetstream.label :value="$label" for="toAccount" />
+    @else
+        <x-jetstream.label for="toAccount" value="{{ __('To account') }}" />
+    @endisset
 
     <div class="relative">
-        {{-- <div class="pointer-events-none absolute inset-y-0 left-0 flex pl-3 pt-2">
-            <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path clip-rule="evenodd"
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                      fill-rule="evenodd" />
-            </svg>
-        </div> --}}
 
-        <!----- When no To account is selected ---->
+        <!----- When no To account is selected ----->
         @if (!isset($toAccountId) || $search != '')
-        <div class="pointer-events-none absolute inset-y-0 left-0 flex pl-3 pt-2">
-            <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path clip-rule="evenodd"
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                      fill-rule="evenodd" />
-            </svg>
-        </div>
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex pl-3 pt-2">
+                <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path clip-rule="evenodd"
+                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                          fill-rule="evenodd" />
+                </svg>
+            </div>
             <input autocomplete="off"
                    class="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 leading-5 placeholder-gray-300 shadow-sm transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-700 sm:text-sm"
                    placeholder="{{ __('Search name or account') }}" type="search"
@@ -27,7 +24,7 @@
                    x-on:click.away="open = false" x-on:focus="open = true">
 
             @if (strlen($search) > 2)
-                <ul class="absolute z-50 mt-0 w-full cursor-default rounded-md border border-gray-300 bg-white text-sm text-gray-900 shadow-lg"
+                <ul class="absolute z-50 overflow-visible mt-0 w-full cursor-default rounded-md border border-gray-300 bg-white text-sm text-gray-900 shadow-lg"
                     x-show="open">
                     @forelse ($searchResults as $result)
                         <li>
@@ -58,12 +55,12 @@
                 </ul>
             @endif
 
-            <!----- When a To account is selected ---->
+        <!----- When a To account is selected ---->
         @else
             <div
                  class="focus:shadow-outline-blue mt-2 w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-0 pr-3 leading-5 shadow-sm transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-300 focus:outline-none sm:text-sm">
                 <!-- Add cursor-default class here -->
-                <div class="flex items-center px-2 py-2">
+                <div class="flex items-center pl-2">
                     <img class="w-10 rounded-full" src="{{ $toHolderPhoto }}">
                     <div class="ml-4 leading-tight">
                         <div class="font-semibold" wire:model.live="toHolderName">

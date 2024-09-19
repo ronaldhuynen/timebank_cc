@@ -26,7 +26,12 @@ class TransactionsTable extends Component
     public $stateSource = [];
     public $transactions = [];
 
-    protected $listeners = ['fromAccountId', 'searchTransactions', 'accountSelected', 'accountDeselected', 'amount' => 'amountDispatched'];
+    protected $listeners = [
+        'fromAccountId', 
+        'searchTransactions', 
+        'toAccountId' => 'accountSelected', 
+        'amount' => 'amountDispatched'
+    ];
 
     protected $rules = [
         'search' => 'nullable|string|min:3|max:100',
@@ -40,39 +45,37 @@ class TransactionsTable extends Component
         'toDate.date' => 'The to date must be a valid date.',
     ];
 
+    
     public function mount()
     {
         $this->resetPage();
         $this->getTransactions();
-
-        // $this->fromDate = Carbon::now()->subYears(2)->toDateString(); // Set default fromDate to 2 years ago to limit long queries
-        // $this->toDate = Carbon::now()->toDateString();
     }
 
+    
     public function amountDispatched($amount)
     {
         $this->searchAmount = $amount;
     }
 
+    
     public function updatingPerPage()
     {
         $this->resetPage();
     }
 
+    
     public function fromAccountId($fromAccount)
     {
         $this->fromAccountId = $fromAccount;
     }
+
 
     public function accountSelected($accountId)
     {
         $this->searchAccount = $accountId;
     }
 
-    public function accountDeselected()
-    {
-        $this->searchAccount = null;
-    }
 
     public function getTransactions()
     {

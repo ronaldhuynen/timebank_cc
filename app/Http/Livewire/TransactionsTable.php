@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,17 +21,18 @@ class TransactionsTable extends Component
     public $searchAccount;
     public $fromDate;
     public $toDate;
-    public $perPage = 50;
+    public $perPage = 25;
     public $sortField;
     public $sortAsc = true;
     public $fromAccountId;
     public $stateSource = [];
     public $transactions = [];
+    public $transactionsForExport;
 
     protected $listeners = [
-        'fromAccountId', 
-        'searchTransactions', 
-        'toAccountId' => 'accountSelected', 
+        'fromAccountId',
+        'searchTransactions',
+        'toAccountId' => 'accountSelected',
         'amount' => 'amountDispatched'
     ];
 
@@ -45,26 +48,25 @@ class TransactionsTable extends Component
         'toDate.date' => 'The to date must be a valid date.',
     ];
 
-    
+
     public function mount()
     {
         $this->resetPage();
-        $this->getTransactions();
     }
 
-    
+
     public function amountDispatched($amount)
     {
         $this->searchAmount = $amount;
     }
 
-    
+
     public function updatingPerPage()
     {
         $this->resetPage();
     }
 
-    
+
     public function fromAccountId($fromAccount)
     {
         $this->fromAccountId = $fromAccount;
@@ -82,6 +84,9 @@ class TransactionsTable extends Component
         $transactions = [];
         $balance = 0;
         $accountId = $this->fromAccountId;
+        $account = Account::with(['accountable' => function ($query) {
+            $query->select('id', 'name', 'full_name'); // Ensure 'id' is selected for the relationship to work
+        }])->find($accountId);
 
         $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->where('to_account_id', $accountId)->orWhere('from_account_id', $accountId)->get();
 
@@ -93,10 +98,17 @@ class TransactionsTable extends Component
                     'trans_id' => $ct->id,
                     'datetime' => $ct->created_at,
                     'amount' => $ct->amount,
-                    'type' => 'Credit',
+                    'type' => 'Credit', // A transaction received FROM another account holder
+                    'account_id' => $account->id,
+                    'account_name' => $account->name,
+                    'account_holder_name' => $account->accountable->name,
+                    'account_holder_full_name' => $account->accountable->full_name,
                     'account_from' => $ct->from_account_id,
+                    'account_counter_id' => $ct->from_account_id,
                     'account_from_name' => $ct->accountFrom->name != null ? $ct->accountFrom->name : '',
-                    'relation' => 'From ' . ($ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : ''),
+                    'account_counter_name' => $ct->accountFrom->name != null ? $ct->accountFrom->name : '',
+                    'relation' => $ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->name : '',
+                    'relation_full_name' => $ct->accountFrom->accountable->name != null ? $ct->accountFrom->accountable->full_name : '',
                     'profile_photo' => $ct->accountFrom->accountable->profile_photo_path != null ? $ct->accountFrom->accountable->profile_photo_path : '',
                     'description' => $ct->description,
                 ];
@@ -108,10 +120,17 @@ class TransactionsTable extends Component
                     'trans_id' => $dt->id,
                     'datetime' => $dt->created_at,
                     'amount' => $dt->amount,
-                    'type' => 'Debit',
+                    'type' => 'Debit', // A transaction paid TO another account holder
+                    'account_id' => $account->id,
+                    'account_name' => $account->name,
+                    'account_holder_name' => $account->accountable->name,
+                    'account_holder_full_name' => $account->accountable->full_name,
                     'account_to' => $dt->to_account_id,
+                    'account_counter_id' => $dt->to_account_id,
                     'account_to_name' => $dt->accountTo->name != null ? $dt->accountTo->name : '',
-                    'relation' => 'To ' . ($dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : ''),
+                    'account_counter_name' => $dt->accountTo->name != null ? $dt->accountTo->name : '',
+                    'relation' => $dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->name : '',
+                    'relation_full_name' => $dt->accountTo->accountable->name != null ? $dt->accountTo->accountable->full_name : '',
                     'profile_photo' => $dt->accountTo->accountable->profile_photo_path != null ? $dt->accountTo->accountable->profile_photo_path : '',
                     'description' => $dt->description,
                 ];
@@ -144,6 +163,8 @@ class TransactionsTable extends Component
             'path' => LengthAwarePaginator::resolveCurrentPath(),
         ]);
 
+        
+        $this->transactionsForExport = $state;
         // Convert to array for Livewire
         return $this->transactions = $paginatedItems->toArray();
     }
@@ -237,12 +258,38 @@ class TransactionsTable extends Component
         $paginatedItems = new LengthAwarePaginator($currentItems, count($stateFiltered), $perPage, $currentPage, [
             'path' => LengthAwarePaginator::resolveCurrentPath(),
         ]);
+        
+        $this->transactionsForExport = $stateFiltered;
         // Assign the paginated items to $this->transactions
         $this->transactions = $paginatedItems->toArray();
 
         // Return the paginated items
         return $paginatedItems;
     }
+
+    public function exportTransactions($type)
+    {
+
+        $data = collect($this->transactionsForExport);
+
+        // Remove multiple keys from each item in the collection
+        $data = $data->map(function ($item) {
+            $item = collect($item);
+            $item->forget([
+                'account_from',
+                'account_to',
+                'account_to_name',
+                'account_from_name',
+                'profile_photo'
+            ]);
+            return $item->toArray();
+        });
+
+        // Store the modified data in the session
+        Session::put('export_data', $data->toArray()); // Convert back to array if needed
+        return redirect()->route('export-transactions-pdf', ['type' => $type]);
+    }
+
 
     public function render()
     {

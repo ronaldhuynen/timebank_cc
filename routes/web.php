@@ -220,7 +220,12 @@ Route::group([
                         }
 
                         // Exports
+                        //TODO! Secure these routes!
                         Route::get('export-test/', [ExportController::class, 'allUsersExport'])->name('export-test');
+                        
+                        Route::get('export/users/{year?}', [ExportController::class, 'allUsersExport'])->name('export-transactions-pdf');                       
+                        Route::get('/export/transactions/{type}', [ExportController::class, 'transactionsExport'])->name('export-transactions-pdf');
+
 
                     });
                 });

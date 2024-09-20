@@ -169,13 +169,15 @@
     "Account": "Rekening",
     "From account": "Vanaf rekening",
     "To account": "Naar rekening",
+    "From": "Van",
+    "To": "Naar",
+    "From / to": "Van / naar",
 
     "Keywords": "Zoekwoorden",
     "From / to account": "Van / naar rekening",
     "From date": "Vanaf datum",
     "To date": "Tot datum",
     "Date": "Datum",
-    "From/to": "Van/naar",
     "Details": "Details",
     "Balance": "Saldo",
 

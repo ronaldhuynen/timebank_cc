@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransactionsExport;
 use App\Exports\UsersExport;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
 {
-
-    public function __construct(int $year = null)
+    public function allUsersExport($year = null)
     {
-        $year = 2011;
-        $this->year = $year;
+        return Excel::download(new UsersExport(), 'users.xlsx');
     }
-   
 
-    public function allUsersExport()
+    public function transactionsExport($type)
     {
-        return Excel::download(new UsersExport($this->year), 'users.xlsx');
+        $dataArray = Session::get('export_data', []);
+        Session::forget('export_data'); // Optionally clear the session data after use
+        $data = collect($dataArray); // Convert array to collection       
+
+        // Process the data and generate the export
+        return Excel::download(new TransactionsExport($data), "export.{$type}");
     }
 }

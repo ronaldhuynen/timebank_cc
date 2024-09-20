@@ -10,6 +10,7 @@
         "cviebrock/eloquent-sluggable": "^10.0",
         "cviebrock/eloquent-taggable": "^10.0",
         "cybercog/laravel-love": "^10.0",
+        "dompdf/dompdf": "^3.0",
         "graham-campbell/markdown": "^15.2",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/fortify": "^1.21",

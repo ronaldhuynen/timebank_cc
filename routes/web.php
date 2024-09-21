@@ -172,15 +172,38 @@ Route::group([
                         });
 
             Route::get(LaravelLocalization::transRoute('routes.search.show'), [SearchController::class, 'show'])
-                        ->name('search.show');
+                ->name('search.show');
+
+
+            
+            //  Translated Messenger routes 
+            Route::get(LaravelLocalization::transRoute('routes.messenger.portal'), [ViewPortalController::class, 'index'])
+                ->middleware('auth')
+                ->name('messenger.portal');
+                        
+            Route::get(LaravelLocalization::transRoute('routes.messenger.show'), [ViewPortalController::class, 'showThread'])
+                ->middleware('auth')    
+                ->name('messenger.show');
+
+            Route::get(LaravelLocalization::transRoute('routes.messenger.private.create'), [ViewPortalController::class, 'showCreatePrivate'])
+                ->middleware('auth')
+                ->name('messenger.private.create');
+                
+            Route::get(LaravelLocalization::transRoute('routes.messenger.threads.show.call'), [ViewPortalController::class, 'showVideoCall'])
+                ->middleware('auth')
+                ->name('messenger.threads.show.call');
 
             // Messenger invitation link to join a group thread
-            Route::get(LaravelLocalization::transRoute('routes.messenger.join'), [ViewPortalController::class, 'showJoinWithInvite'])
-                    ->middleware('auth');
+            Route::get(LaravelLocalization::transRoute('routes.messenger.invites.join'), [ViewPortalController::class, 'showJoinWithInvite'])
+                ->name('messenger.invites.join')
+                ->middleware('auth');
+
+                
 
 
 
-            // Jetstream routes (copied from vendor/laravel/jetstream/routes/livewire.php, to overrule, to include in Laravel-localization class)
+
+            // Jetstream routes (copied from vendor/laravel/jetstream/routes/livewire.php, to overrule, and to include in Laravel-localization class)
             Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {
                 if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
                     Route::get(LaravelLocalization::transRoute('routes.terms.show'), [TermsOfServiceController::class, 'show'])
@@ -222,11 +245,6 @@ Route::group([
                         // Exports
                         //TODO! Secure these routes!
                         Route::get('export-test/', [ExportController::class, 'allUsersExport'])->name('export-test');
-                        
-                        Route::get('export/users/{year?}', [ExportController::class, 'allUsersExport'])->name('export-transactions-pdf');                       
-                        Route::get('/export/transactions/{type}', [ExportController::class, 'transactionsExport'])->name('export-transactions-pdf');
-
-
                     });
                 });
             });

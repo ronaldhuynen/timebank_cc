@@ -1,5 +1,5 @@
 @extends('messenger::popup')
-@section('title')Video Call @endsection
+@section('title'){{ __('Video call' )}} @endsection
 @section('content')
 <div id="call_status">
     <div class="jumbotron bg-gradient-dark text-white">
@@ -14,7 +14,7 @@
 <div id="empty_room" class="NS">
     <div class="jumbotron bg-gradient-dark text-white">
         <div class="text-center">
-            <span class="display-4">Waiting for others...</span>
+            <span class="display-4">{{ __('Waiting for others') }}...</span>
         </div>
         <div class="text-center mt-5">
             <div class="col-12"><div class="spinner-grow text-danger" role="status"></div></div>
@@ -31,31 +31,31 @@
             <div class="navbar-collapse collapse justify-content-start">
                 <ul id="video_main_nav" class="navbar-nav">
                     <li class="nav-item mr-2 dropup">
-                        <button data-tooltip="tooltip" title="Streaming Options" data-placement="left" class="btn text-secondary btn-light pt-1 pb-0 px-2 dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog fa-2x"></i></button>
+                        <button data-tooltip="tooltip" title="{{ __('Streaming options') }}" data-placement="left" class="btn text-secondary btn-light pt-1 pb-0 px-2 dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog fa-2x"></i></button>
                         <div class="dropdown-menu dropdown-menu-left">
                             <span id="rtc_options_dropdown"></span>
                         </div>
                     </li>
                     <li id="end_call_nav" class="nav-item mr-2 NS">
-                        <button data-toggle="tooltip" title="End Call" data-placement="top" id="end_call_btn" onclick="JanusServer.hangUp(true)" class="btn btn-warning pt-1 pb-0 px-2"><i class="fas fa-times-circle fa-2x"></i></button>
+                        <button data-toggle="tooltip" title="{{__('End call')}}" data-placement="top" id="end_call_btn" onclick="JanusServer.hangUp(true)" class="btn btn-warning pt-1 pb-0 px-2"><i class="fas fa-times-circle fa-2x"></i></button>
                     </li>
                     <li class="nav-item mr-2">
-                        <button data-toggle="tooltip" title="Leave Call" data-placement="top" id="hang_up_btn" onclick="JanusServer.hangUp(false)" class="btn btn-danger pt-1 pb-0 px-2"><i class="fas fa-phone-slash fa-2x"></i></button>
+                        <button data-toggle="tooltip" title="{{ __('Leave call') }}" data-placement="top" id="hang_up_btn" onclick="JanusServer.hangUp(false)" class="btn btn-danger pt-1 pb-0 px-2"><i class="fas fa-phone-slash fa-2x"></i></button>
                     </li>
                 </ul>
             </div>
             <ul id="video_main_nav2" class="navbar-nav justify-content-end">
                 <li class="nav-item mr-2 rtc_nav_opt rtc_nav_video NS">
-                    <button onclick="JanusServer.toggleVideo()" data-toggle="tooltip" title="Disable video" data-placement="top" class="btn btn-outline-success pt-1 pb-0 px-2 rtc_video_on rtc_nav_opt NS"><i class="fas fa-video fa-2x"></i></button>
-                    <button onclick="JanusServer.toggleVideo()" data-toggle="tooltip" title="Enable video" data-placement="top" class="btn btn-outline-danger pt-1 pb-0 px-2 rtc_video_off rtc_nav_opt NS"><i class="fas fa-video-slash fa-2x"></i></button>
+                    <button onclick="JanusServer.toggleVideo()" data-toggle="tooltip" title="{{ __('Disable video') }}" data-placement="top" class="btn btn-outline-success pt-1 pb-0 px-2 rtc_video_on rtc_nav_opt NS"><i class="fas fa-video fa-2x"></i></button>
+                    <button onclick="JanusServer.toggleVideo()" data-toggle="tooltip" title="{{ __('Enable video') }}" data-placement="top" class="btn btn-outline-danger pt-1 pb-0 px-2 rtc_video_off rtc_nav_opt NS"><i class="fas fa-video-slash fa-2x"></i></button>
                 </li>
                 <li class="nav-item mr-2 rtc_nav_opt rtc_nav_audio NS">
-                    <button onclick="JanusServer.toggleMute()" data-tooltip="tooltip" title="Mute mic" data-placement="top" class="btn btn-outline-success pt-1 pb-0 px-3 rtc_audio_on rtc_nav_opt NS"><i class="fas fa-microphone fa-2x"></i></button>
-                    <button onclick="JanusServer.toggleMute()" data-tooltip="tooltip" title="Unmute mic" data-placement="top" class="btn btn-outline-danger pt-1 pb-0 px-2 rtc_audio_off rtc_nav_opt NS"><i class="fas fa-microphone-slash fa-2x"></i></button>
+                    <button onclick="JanusServer.toggleMute()" data-tooltip="tooltip" title="{{ __('Mute mic') }}" data-placement="top" class="btn btn-outline-success pt-1 pb-0 px-3 rtc_audio_on rtc_nav_opt NS"><i class="fas fa-microphone fa-2x"></i></button>
+                    <button onclick="JanusServer.toggleMute()" data-tooltip="tooltip" title="{{ __('Unmute mic') }}" data-placement="top" class="btn btn-outline-danger pt-1 pb-0 px-2 rtc_audio_off rtc_nav_opt NS"><i class="fas fa-microphone-slash fa-2x"></i></button>
                 </li>
                 <li class="nav-item mr-2 rtc_nav_opt rtc_nav_screen NS">
-                    <button onclick="JanusServer.toggleScreenShare()" data-tooltip="tooltip" title="Share screen" data-placement="top" class="btn btn-outline-info pt-1 pb-0 px-2 rtc_screen_off rtc_nav_opt NS"><i class="fas fa-desktop fa-2x"></i></button>
-                    <button onclick="JanusServer.toggleScreenShare()" data-tooltip="tooltip" title="Stop screen share" data-placement="top" class="btn btn-outline-success pt-1 pb-0 px-2 rtc_screen_on rtc_nav_opt glowing_warning_btn NS"><i class="fas fa-desktop fa-2x"></i></button>
+                    <button onclick="JanusServer.toggleScreenShare()" data-tooltip="tooltip" title="{{ __('Share screen') }}" data-placement="top" class="btn btn-outline-info pt-1 pb-0 px-2 rtc_screen_off rtc_nav_opt NS"><i class="fas fa-desktop fa-2x"></i></button>
+                    <button onclick="JanusServer.toggleScreenShare()" data-tooltip="tooltip" title="{{ __('Stop screen share') }}" data-placement="top" class="btn btn-outline-success pt-1 pb-0 px-2 rtc_screen_on rtc_nav_opt glowing_warning_btn NS"><i class="fas fa-desktop fa-2x"></i></button>
                 </li>
             </ul>
         </nav>

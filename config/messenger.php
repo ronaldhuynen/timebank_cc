@@ -78,7 +78,15 @@ return [
         'api' => [
             'domain' => null,
             'prefix' => 'api/messenger',
-            'middleware' => ['web', 'auth', 'registration-complete', 'messenger.provider:required'],
+            'middleware' => [
+                'web', 
+                'auth', 
+                'registration-complete', 
+                'messenger.provider:required',
+                // 'localeSessionRedirect', 
+                // 'localizationRedirect', 
+                // 'localeViewPath'
+            ],
             'invite_api_middleware' => ['web', 'messenger.provider'],
         ],
         'assets' => [
@@ -90,7 +98,15 @@ return [
             'enabled' => true,
             'domain' => null,
             'prefix' => 'api',
-            'middleware' => ['web', 'auth', 'registration-complete', 'messenger.provider:required'],
+            'middleware' => [
+                'web', 
+                'auth', 
+                'registration-complete', 
+                'messenger.provider:required',
+                // 'localeSessionRedirect', 
+                // 'localizationRedirect', 
+                // 'localeViewPath'
+                ],
         ],
     ],
 

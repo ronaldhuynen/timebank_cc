@@ -127,7 +127,7 @@
                             </div>
 
                             <div class="mt-6 grid grid-cols-1 gap-6" wire:loading wire:target="translationVisible">
-                                {{ __('Loading...') }}
+                                <x-mini-button rounded icon="" flat primary spinner /> <span> {{__('Loading...')}} </span>
                             </div>
 
                             <!-- Tag Translation --->

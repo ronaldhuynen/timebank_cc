@@ -13,8 +13,8 @@
                     <div class="dropdown">
                         <button data-tooltip="tooltip" title="Messenger Options" data-placement="right" class="btn btn-lg text-secondary btn-light pt-1 pb-0 px-2 dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cogs fa-2x"></i></button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="ThreadManager.load().search(); return false;" href="#"><i class="fas fa-user-friends"></i> &nbsp; {{__('New Conversation')}}</a>
-                            <a class="dropdown-item" onclick="ThreadManager.load().createGroup(); return false;" href="#"><i class="fas fa-users"></i> &nbsp; {{__('New Group')}}</a>
+                            <a class="dropdown-item" onclick="ThreadManager.load().search(); return false;" href="#"><i class="fas fa-user-friends"></i> &nbsp; {{__('New conversation')}}</a>
+                            <a class="dropdown-item" onclick="ThreadManager.load().createGroup(); return false;" href="#"><i class="fas fa-users"></i> &nbsp; {{__('New group')}}</a>
                             <a class="dropdown-item" onclick="ThreadManager.load().contacts(); return false;" href="#"><i class="fas fa-user-check"></i> &nbsp; {{__('Friends')}}</a>
                             <a class="dropdown-item" onclick="MessengerSettings.show(); return false;" href="#"><i class="fas fa-wrench"></i> &nbsp; {{__('Settings')}}</a>
                         </div>

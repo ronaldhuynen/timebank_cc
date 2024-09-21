@@ -36,11 +36,16 @@ return [
     'users-overview' => 'users-overview',
     'user.show' => 'user/{userId}',
     'search.show' => 'search',
-    'messenger.join' => 'messenger/join/{invite}',
     'terms.show' => 'terms-of-service',
     'policy.show' => 'privacy-policy',
     'profile.show' => 'user/settings',
     'show.by.name' => '{name}',
+
+    'messenger.portal' => 'messenger',
+    'messenger.show' => 'messenger/{thread}',
+    'messenger.private.create' => 'messenger/recipient/{alias}/{id}',
+    'messenger.threads.show.call' => 'messenger/threads/{thread}/calls/{call}',
+    'messenger.join.invite' => 'messenger/join/{invite}',
 
 
 

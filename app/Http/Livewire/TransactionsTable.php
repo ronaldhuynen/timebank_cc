@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\TransactionsExport;
 use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -285,9 +286,10 @@ class TransactionsTable extends Component
             return $item->toArray();
         });
 
-        // Store the modified data in the session
-        Session::put('export_data', $data->toArray()); // Convert back to array if needed
-        return redirect()->route('export-transactions-pdf', ['type' => $type]);
+       
+        // Pass the data directly to the export route
+        return (new TransactionsExport($data))->download('transactions.' . $type);
+
     }
 
 
@@ -303,4 +305,5 @@ class TransactionsTable extends Component
             'transactions' => collect($transactions),
         ]);
     }
+
 }

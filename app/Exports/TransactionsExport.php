@@ -26,6 +26,7 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
     {
         return $this->data;
     }
+    
 
     public function headings(): array
     {
@@ -37,12 +38,12 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
             __('Type'),
             __('Account nr.'),
             __('Account name'),
-            __('Holder'),
-            __('Holder full name'),
+            __('Acc. holder'),
+            __('Acc. holder full name'),
             __('Counter acc. nr.'),
             __('Counter acc. name'),
             __('Relation name'),
-            __('Relation fulle name'),
+            __('Relation full name'),
             __('Description'),
             __('Balance'),
             __('Balance in minutes')
@@ -51,8 +52,6 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
 
     public function map($transaction): array
     {
-        // dd($transaction);
-
         return [
             $transaction['trans_id'],
             $transaction['datetime'],
@@ -76,6 +75,6 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
 
     public function title(): string
     {
-        return 'Transactions';
+        return __('Transactions');
     }
 }

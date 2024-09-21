@@ -14,7 +14,7 @@
     <div class="container">
         <div class="jumbotron bg-gradient-dark text-white">
             <div id="inv_loading" class="text-center">
-                <h2>{{ __('Join with Invite') }} <div class="spinner-grow text-primary" role="status"></div></h2>
+                <h2>{{ __('Join with invite') }} <div class="spinner-grow text-primary" role="status"></div></h2>
             </div>
             <div id="inv_loaded"></div>
         </div>

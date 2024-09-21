@@ -54,7 +54,7 @@
             </div>
             <div class="col-12 text-center mt-2 pb-4 pb-lg-3">
                 <hr class="mb-1 mt-0">
-                <span class="float-right"><a class="nav-search-link text-dark" href="#"><i class="fas fa-search"></i>{{ __('Find Friends!') }} </a></span>
+                <span class="float-right"><a class="nav-search-link text-dark" href="#"><i class="fas fa-search"></i>{{ __('Find Friends') }} </a></span>
             </div>
         </div>
     </li>

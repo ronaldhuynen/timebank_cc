@@ -12,6 +12,7 @@ window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Include Messenger translation keys by replacing texts by translation keys
+console.log('BOOTSTRAP-1');
 document.addEventListener('DOMContentLoaded', function () {
     const updateTranslations = () => {
         if (!window.translations) {
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     el.placeholder?.trim() === key || el.textContent.trim() === key
                 );
 
-                console.log(`Found ${elements.length} elements for key: "${key}"`);
+                // console.log(`Found ${elements.length} elements for key: "${key}"`);
 
                 elements.forEach(el => {
                     // Exclude the specific element from translation
@@ -46,10 +47,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     if (el.placeholder?.trim() === key) {
-                        console.log(`Updating placeholder for element:`, el);
+                        // console.log(`Updating placeholder for element:`, el);
                         el.placeholder = translations[key];
                     } else if (el.textContent.trim() === key) {
-                        console.log(`Updating text content for element:`, el);
+                        // console.log(`Updating text content for element:`, el);
                         el.innerHTML = el.innerHTML.replace(key, translations[key]);
                     }
                 });
@@ -62,11 +63,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initial call to handle elements already in the DOM
     updateTranslations();
+    console.log('BOOTSTRAP-2');
+
 
     // Observe changes in the DOM to handle dynamically added elements
     const observer = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
             if (mutation.addedNodes.length) {
+                console.log('BOOTSTRAP-3')
                 updateTranslations();
             }
         });
@@ -97,3 +101,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     },100); // Check every X ms
 });
+

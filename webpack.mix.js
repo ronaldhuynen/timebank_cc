@@ -18,6 +18,7 @@ mix.js('resources/js/echo.js', 'public/js')
     .js('node_modules/@yaireo/tagify/dist/tagify.js', 'public/js')
     .js('node_modules/@yaireo/tagify/dist/tagify.polyfills.min.js', 'public/js')
     .js('resources/js/app.js', 'public/js')
+    // .js('vendor/rtippin/messenger/resources/js/app.js', 'public/js/messenger.js')
     // .js('resources/js/lang.js', 'public/js')
     // .js('resources/js/joypixels.min.js', 'public/js')            // there's a tracker cdn inside! 
     .sass('resources/sass/app.scss', 'public/css/app.css')

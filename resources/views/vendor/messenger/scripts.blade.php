@@ -1,5 +1,6 @@
 <!--- Load Messenger script ---->
 <script src="{{ asset(mix('app.js', 'vendor/messenger')) }}"></script>
+
 @stack('js')
 @if(auth()->check())
 <!--- Load Emoji script. TODO: replace with alternative! Joypixels is not even free for non-profits! Cdn has tracker inside! ---->

@@ -43,6 +43,7 @@
         </x-app-layout>
    <!-- Pass translations to JavaScript -->
     <script>
+    console.log('APP.BLADE');
         window.translations = {
             searchProfiles: "{{ __('Search profiles...') }}",
             searchAboveForProfiles: "{{ __('Search above other Timebankers') }}",
@@ -51,6 +52,7 @@
             create: "{{ __('Create') }}"
         };
         window.appName = "{{ env('APP_NAME') }}";
+        
     </script>
     </body>
 </html>

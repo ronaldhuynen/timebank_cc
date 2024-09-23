@@ -35,12 +35,22 @@
 
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white  shadow-xl sm:rounded-lg">
+                    <div class="bg-white  shadow-xl sm:rounded-lg id="messenger-content">
                         @yield('content')
                     </div>
                 </div>
             </div>
         </x-app-layout>
-
+   <!-- Pass translations to JavaScript -->
+    <script>
+        window.translations = {
+            searchProfiles: "{{ __('Search profiles...') }}",
+            searchAboveForProfiles: "{{ __('Search above other Timebankers') }}",
+            nameGroupConversation: "{{ __('Name the group conversation') }}",
+            createGroup: "{{ __('Create a group') }}",
+            create: "{{ __('Create') }}"
+        };
+        window.appName = "{{ env('APP_NAME') }}";
+    </script>
     </body>
 </html>

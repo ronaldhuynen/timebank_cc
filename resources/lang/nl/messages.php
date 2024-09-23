@@ -30,4 +30,6 @@ return [
     'Your_profile_has_been_deleted' => 'Je profiel is verwijderd',
 
 
+
+
 ];

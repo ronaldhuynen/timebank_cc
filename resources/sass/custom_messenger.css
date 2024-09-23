@@ -518,7 +518,8 @@ messenger-style-overrides .message hr {
 
 /* Overall Messenger styles */
 #messenger-style-overrides .text-info {
-    color: #1f2937 !important
+    /* color: #1f2937 !important */
+    display: none;
 }
 
 #messenger-style-overrides b,

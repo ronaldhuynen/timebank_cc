@@ -44,9 +44,9 @@ return [
             'web', 
             'auth:sanctum', 
             'messenger.provider:required',
-            'localeSessionRedirect', 
-            'localizationRedirect', 
-            'localeViewPath'
+            // 'localeSessionRedirect', 
+            // 'localizationRedirect', 
+            // 'localeViewPath'
         ],
         'invite_middleware' => ['web', 'messenger.provider'],
     ],

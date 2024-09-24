@@ -1,10 +1,8 @@
 <!--- Load Messenger script ---->
 <script src="{{ asset(mix('app.js', 'vendor/messenger')) }}"></script>
-
+<script> console.log('messenger scripts in vendor/messenger/app.js are loaded') </script>
 @stack('js')
 @if(auth()->check())
-<!--- Load Emoji script. TODO: replace with alternative! Joypixels is not even free for non-profits! Cdn has tracker inside! ---->
-{{-- <script src="https://cdn.jsdelivr.net/npm/emoji-toolkit@6.5.1/lib/js/joypixels.min.js"></script> --}}
 @endif
 <script>
 @if(auth()->check())
@@ -62,6 +60,7 @@
         },
         common : {
             app_name : '{{config('messenger-ui.site_name')}}',
+            app_name2 : '{{ __('Friends')}}',
             api_endpoint : '{{messenger()->getApiEndpoint()}}',
             web_endpoint : '{{'/'.config('messenger-ui.routing.prefix')}}',
             socket_endpoint : '{{config('messenger-ui.socket_endpoint')}}',

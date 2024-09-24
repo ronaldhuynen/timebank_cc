@@ -197,7 +197,8 @@ Route::group([
             Route::get(LaravelLocalization::transRoute('routes.messenger.invites.join'), [ViewPortalController::class, 'showJoinWithInvite'])
                 ->name('messenger.invites.join')
                 ->middleware('auth');
-
+            
+            // TODO NEXT: Create api routes for friends: add a friend and check error message in toaster
                 
 
 

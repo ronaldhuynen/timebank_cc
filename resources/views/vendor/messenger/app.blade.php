@@ -49,7 +49,9 @@
             searchAboveForProfiles: "{{ __('Search above other Timebankers') }}",
             nameGroupConversation: "{{ __('Name the group conversation') }}",
             createGroup: "{{ __('Create a group') }}",
-            create: "{{ __('Create') }}"
+            create: "{{ __('Create') }}",
+            friends: "{{ __('Friends') }}",
+            noFriendsToSHow: "{{ __('No friends to show') }}"
         };
         window.appName = "{{ env('APP_NAME') }}";
         

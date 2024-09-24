@@ -13,6 +13,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Include Messenger translation keys by replacing texts by translation keys
 console.log('BOOTSTRAP-1');
+console.log('BOOTSTRAP-1');
 document.addEventListener('DOMContentLoaded', function () {
     const updateTranslations = () => {
         if (!window.translations) {
@@ -27,7 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 [`Search above for other profiles on ${window.appName}`]: window.translations.searchAboveForProfiles,
                 'Name the group conversation': window.translations.nameGroupConversation,
                 'Create a group': window.translations.createGroup,
-                'Create': window.translations.create
+                'Create': window.translations.create,
+                'Friends': window.translations.friends,
+                'No friends to show': window.translations.noFriendsToShow
+
             };
 
             // Handle other translations generically
@@ -65,23 +69,9 @@ document.addEventListener('DOMContentLoaded', function () {
     updateTranslations();
     console.log('BOOTSTRAP-2');
 
-
-    // Observe changes in the DOM to handle dynamically added elements
-    const observer = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
-            if (mutation.addedNodes.length) {
-                console.log('BOOTSTRAP-3')
-                updateTranslations();
-            }
-        });
-    });
-
-    const config = { childList: true, subtree: true };
-    observer.observe(document.body, config);
-
     // Wait for ThreadManager to be fully loaded
     const checkThreadManagerLoaded = setInterval(() => {
-        if (window.ThreadManager && window.ThreadManager.load) {
+        if (window.ThreadManager && window.ThreadTemplates) {
             clearInterval(checkThreadManagerLoaded);
 
             // Create a proxy to intercept all method calls on ThreadManager
@@ -99,6 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Replace ThreadManager with the proxy
             window.ThreadManager = new Proxy(window.ThreadManager, proxyHandler);
         }
-    },100); // Check every X ms
+    }, 100); // Check every 100ms
 });
 

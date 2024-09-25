@@ -60,7 +60,6 @@
         },
         common : {
             app_name : '{{config('messenger-ui.site_name')}}',
-            app_name2 : '{{ __('Friends')}}',
             api_endpoint : '{{messenger()->getApiEndpoint()}}',
             web_endpoint : '{{'/'.config('messenger-ui.routing.prefix')}}',
             socket_endpoint : '{{config('messenger-ui.socket_endpoint')}}',

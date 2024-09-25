@@ -53,14 +53,22 @@
 
 
 /* Set messenger container to match space viewport */
+
+#messenger-style-overrides .py-12 {
+    padding-top: 3rem;
+    padding-bottom: 0rem;
+}
+
+
 #messenger-style-overrides #thread_header_area {
     position: initial;
 }
 
 #messenger-style-overrides .chat-body {
-    max-height: calc(75vh - 180px);
+    max-height: calc(75vh - 210px);
     margin: 1px 0px 10px 0px;
     padding: 30px 10px 10px;
+    scrollbar-width: revert;
 }
 
 #messenger-style-overrides #messenger_container {
@@ -70,6 +78,18 @@
 
 #messenger-style-overrides #chat-footer {
     position: initial;
+}
+
+#messenger-style-overrides #chat-footer .chat-footer {
+    position: relative;
+    width: 100%;
+    bottom: 10px;
+}
+
+#messenger-style-overrides .form-inline {
+    align-items: center;
+    display: flex;
+    flex-flow: column-reverse;
 }
 
 /* Side-bar avatars and threads */
@@ -166,7 +186,7 @@
 }
 
 #messenger-style-overrides #messenger_container .btn {
-    border-color: #dee2e6
+    border-color: #dee2e6;
 }
 
 #messenger-style-overrides .badge-info {
@@ -194,7 +214,7 @@
 
 /* Bars (Hamburger menu) */
 #messenger-style-overrides .fas.fa-cogs::before {
-    content: "\f4ad" !important;
+    content: "\f0c9" !important;
 }
 
 /* Comment dots (Conversation menu) */
@@ -299,8 +319,11 @@ messenger-style-overrides .message hr {
 
 /* Message container avatars */
 #messenger-style-overrides #thread_header_area img {
-    height: 50px;
-    width: 50px;
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    z-index: 1000;
+    transform: rotate(-2deg);
 }
 
 #messenger-style-overrides img.bobble-image {
@@ -437,6 +460,29 @@ messenger-style-overrides .message hr {
     color: #212529;
 }
 
+
+#messenger-style-overrides .btn-light {
+    background: white;
+    border-color: #333;
+    box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, .15), 0 1px 1px rgba(0, 0, 0, .075);
+    color: #212529;
+    border-width: 1px;
+    border-radius: 8px;
+}
+
+
+#messenger-style-overrides .btn-light:hover {
+    background: #e5e5e5;
+    border-color: black;
+    color: black;
+}
+
+#messenger-style-overrides .btn-light:focus {
+    border-color: black;
+    border-width: 2px;
+    color: black;
+}
+
 #messenger-style-overrides #message_container .bg-warning,
 .bg-outline-warning {
     background: #fff !important;
@@ -453,8 +499,20 @@ messenger-style-overrides .message hr {
 }
 
 /* Settings modal*/
+
+#messenger-style-overrides .modal {
+    opacity: 1;
+}
+
+
+
 #messenger-style-overrides .switch input:checked+label::before {
-    background-color: #38c172;
+    background-color: #333;
+}
+
+#messenger-style-overrides .switch input:focus+label::before {
+    box-shadow: 0 0 0 .15rem #999;
+    outline: none;
 }
 
 #messenger-style-overrides #online_status_switch .glowing_btn {
@@ -473,7 +531,7 @@ messenger-style-overrides .message hr {
     color: #fff;
 }
 
-#messenger-style-overrides #online_status_switch .btn-secondary {
+#messenger-style-overrides #online_status_switch.btn-secondary {
     background: #dee2e6;
     border-color: #808080;
     color: #d7d9da;
@@ -485,24 +543,26 @@ messenger-style-overrides .message hr {
 
 #messenger-style-overrides .modal-footer .btn-success:focus,
 .btn-outline-success:focus {
-    background: #e2e6ea linear-gradient(180deg, #e5e9ed, #e2e6ea) repeat-x;
-    border-color: #dae0e5;
-    color: #212529;
+    border-color: black;
+    border-width: 2px;
+    color: black;
 }
 
 #messenger-style-overrides .modal-footer .btn-success:hover,
 .btn-outline-success:hover {
-    background: #e2e6ea linear-gradient(180deg, #e5e9ed, #e2e6ea) repeat-x;
-    border-color: #dae0e5;
-    color: #212529;
+    background: #e5e5e5;
+    border-color: black;
+    color: black;
 }
 
 #messenger-style-overrides .modal-footer .btn-success,
 .btn-outline-success {
-    background: #f8f9fa linear-gradient(180deg, #f8f9fa, #f8f9fa) repeat-x;
-    border-color: #f8f9fa;
+    background: white;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 8px;
     box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, .15), 0 1px 1px rgba(0, 0, 0, .075);
-    color: #212529;
+    color: black;
 }
 
 #messenger-style-overrides #body_modal div.col-6:nth-child(2) {
@@ -519,7 +579,7 @@ messenger-style-overrides .message hr {
 /* Overall Messenger styles */
 #messenger-style-overrides .text-info {
     color: #1f2937 !important
-    /* display: none; */
+        /* display: none; */
 }
 
 #messenger-style-overrides b,

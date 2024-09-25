@@ -114,13 +114,13 @@
     @livewireScripts
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ mix('js/echo.js') }}"></script>
-    @stack('modals')
-    {{-- @stack('scripts') --}}
+    @stack('scripts')
     @yield('scripts_body')
+    @yield('js')
     @include('messenger-translations')
     @include('messenger::scripts')
+    @stack('modals')
 
-    {{-- @yield('js') --}}
 
     <!-- Debug section for Events --->
     {{-- <script>

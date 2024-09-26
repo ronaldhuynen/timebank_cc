@@ -64,10 +64,15 @@
     position: initial;
 }
 
+#messenger-style-overrides .card-header {
+
+    padding: 1rem 0.4rem;
+}
+
 #messenger-style-overrides .chat-body {
-    max-height: calc(75vh - 210px);
-    margin: 1px 0px 10px 0px;
-    padding: 30px 10px 10px;
+    max-height: calc(75vh - 195px);
+    margin: 0px 0px 10px 0px;
+    padding: 10px 10px 10px;
     scrollbar-width: revert;
 }
 
@@ -149,8 +154,8 @@
 }
 
 #messenger-style-overrides .inbox ul.messages-list li[class*="alert-"] {
-    background: #494d50;
-    border: 0px solid #dfdfdf;
+    background: dimgrey;
+    border: 1px solid #black;
 }
 
 #messenger-style-overrides .inbox ul.messages-list li:hover {
@@ -187,6 +192,21 @@
 
 #messenger-style-overrides #messenger_container .btn {
     border-color: #dee2e6;
+}
+
+#messenger-style-overrides .btn-lg {
+    /* height: 0rem; */
+    min-height: 3.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    font-size: 1.125rem;
+    min-width: 3.5rem;
+}
+
+#messenger-style-overrides .btn {
+    /* height: 0rem; */
+    min-height: 3rem;
+    min-width: 3rem;
 }
 
 #messenger-style-overrides .badge-info {
@@ -267,12 +287,27 @@
 
 #messenger-style-overrides .message .message-body {
     border-radius: 6px;
+    margin: 5px 5px 5px 5px;
 }
 
 /* Left messages (others) */
+
+#messenger-style-overrides .timeago {
+    color: white;
+}
+
+#messenger-style-overrides .message.info .message-info>h4 {
+    color: white;
+}
+
+#messenger-style-overrides .message .message-body a {
+    color: white;
+}
+
 #messenger-style-overrides .message.info .message-body {
     color: #fff !important;
-    background: #494d50 !important;
+    background: dimgrey;
+    border-color: black;
 }
 
 messenger-style-overrides .message hr {
@@ -281,17 +316,30 @@ messenger-style-overrides .message hr {
 
 /* Right messages (self) */
 #messenger-style-overrides .my-message .message-body {
-    color: #fff;
-    background: #808080;
+    color: white;
+    background: black;
+    border-color: black;
 }
 
 #messenger-style-overrides .my-message .timeago {
     color: #fff;
 }
 
+#messenger-style-overrides ul.messages-list li .timeago {
+    color: #3d3f42;
+}
+
+#messenger-style-overrides ul.messages-list li:hover .timeago {
+    color: #fff;
+}
+
+#messenger-style-overrides .thread_list_item.alert-warning.shadow-sm.rounded a .timeago {
+    color: white;
+}
+
 #messenger-style-overrides .my-message a {
     color: #fff;
-    background: #808080;
+    background: black;
 }
 
 #messenger-style-overrides .my-message a:hover {
@@ -364,9 +412,6 @@ messenger-style-overrides .message hr {
     background-color: #fff !important;
 }
 
-#messenger-style-overrides #thread_form .btn {
-    margin-top: 10px;
-}
 
 /* Modals like editing a message */
 #messenger-style-overrides .bg-gradient-dark {

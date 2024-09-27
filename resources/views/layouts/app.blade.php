@@ -10,8 +10,6 @@
     <title>@yield('title', config('messenger-ui.site_name'))</title>
 
     <!-- Scripts head -->
-    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
-    {{-- <script src="{{ asset('js/lang.js') }}" defer></script> --}}
     <script src="{{ route('lang.js') }}"></script>
 
     <!-- Fonts -->
@@ -24,13 +22,6 @@
     <link href="{{ asset('css/trix.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tagify.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom_tagify.css') }}" rel="stylesheet">
-
-    {{-- <link rel="stylesheet" href="{{ asset('css/filepond.min.css') }}">
-        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/> --}}
-    {{-- <script src="https://cdn.jsdeivr.net/npm/@yaireo/tagify"></script> --}}
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.8/tagify.min.js" integrity="sha512-7vyDVrzHbIl2MbbDj2lgeXUVSe4NSbY5jn030+QN321CTl8XEc3J5Qlq976YY5gs+Ifwff9Q2SrDXLPWxAp2oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script> --}}
-    {{-- <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" /> --}}
     @livewireStyles
     @wireUiScripts
 
@@ -41,6 +32,7 @@
         window.i18n = {!! json_encode(__('messages')) !!};
     </script>
 
+{{-- TODO: Move styles below to seperate css file, that can be compiled --}}
     <style>
         input[type=file]::file-selector-button {
             border-style: none;

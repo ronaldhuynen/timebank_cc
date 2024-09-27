@@ -41,11 +41,10 @@ return [
         'domain' => null,
         'prefix' => 'messenger',
         'middleware' => [
-            'web', 
-            'auth:sanctum', 
+            'web',
             'messenger.provider:required',
-            // 'localeSessionRedirect', 
-            // 'localizationRedirect', 
+            // 'localeSessionRedirect',
+            // 'localizationRedirect',
             // 'localeViewPath'
         ],
         'invite_middleware' => ['web', 'messenger.provider'],

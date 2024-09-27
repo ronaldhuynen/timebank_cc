@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test-api', function() {
+Route::get('/test-api', function () {
     return 'This is the test api';
 });
 
@@ -28,6 +28,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //            'recipient_alias' => 'user',
 //            'recipient_id' => 4
 //        ])->name('friend');
-
-
-

@@ -80,7 +80,7 @@ return [
             'prefix' => 'api/messenger',
             'middleware' => [
                 'web',
-                'auth',
+                'auth:sanctum',
                 'registration-complete',
                 'messenger.provider:required',
                 // 'localeSessionRedirect',
@@ -100,7 +100,7 @@ return [
             'prefix' => 'api',
             'middleware' => [
                 'web',
-                'auth',
+                'auth:sanctum',
                 'registration-complete',
                 'messenger.provider:required',
                 // 'localeSessionRedirect',

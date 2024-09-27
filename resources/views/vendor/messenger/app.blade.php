@@ -14,11 +14,7 @@
 
         <!-- Styles -->
         @livewireStyles
-        @auth
-        {{-- <link id="main_css" href="{{ asset(mix(messenger()->getProviderMessenger()->dark_mode ? 'dark.css' : 'app.css', 'vendor/messenger')) }}" rel="stylesheet"> --}}
-        @else
-        {{-- <link id="main_css" href="{{ asset(mix('dark.css', 'vendor/messenger')) }}" rel="stylesheet"> --}}
-        @endauth
+     
 
     </head>
 

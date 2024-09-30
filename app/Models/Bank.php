@@ -33,6 +33,34 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
 
 
     /**
+     * The attributes that should be hidden for serialization.
+     * BEWARE: THE MESSENGER API CAN POTENTIALLY EXPOSE ALL VISIBLE FIELDS
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'email',
+        'email_verified_at',
+        'full_name',
+        'password',
+        'remember_token',
+        'phone',
+        'cyclos_id',
+        'cyclos_salt',
+        'two_factor_confirmed_at',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+        'limit_min',
+        'limit_max',
+        'created_at',
+        'updated_at',
+        'last_login_at',
+        'inactive_at',
+        'deleted_at',
+    ];
+    
+    
+    /**
     * Get the index name for the model.
     *
     * @return string

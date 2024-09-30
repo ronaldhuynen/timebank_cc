@@ -66,19 +66,30 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
 
     /**
      * The attributes that should be hidden for serialization.
+     * BEWARE: THE MESSENGER API CAN POTENTIALLY EXPOSE ALL VISIBLE FIELDS
      *
      * @var array
      */
     protected $hidden = [
         'email',
-        'phone',
+        'email_verified_at',
+        'full_name',
         'password',
         'remember_token',
-        'email_verified_at',
+        'phone',
+        'cyclos_id',
+        'cyclos_salt',
         'two_factor_confirmed_at',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'limit_min',
+        'limit_max',
+        'created_at',
+        'updated_at',
+        'last_login_at',
         'last_login_ip',
+        'inactive_at',
+        'deleted_at',
     ];
 
     /**
@@ -248,7 +259,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
      * @return bool Returns true if the user has accounts, false otherwise.
      */
     public function hasAccounts()
-    {        
+    {
         $accountsExists = DB::table('accounts')
                             ->where('accountable_id', $this->id)
                             ->where('accountable_type', 'App\Models\User')
@@ -257,7 +268,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
     }
 
 
-    
+
     /**
      * Get all related languages of the user.
      * Many-to-many polymorphic.

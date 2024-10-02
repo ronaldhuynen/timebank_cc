@@ -4,9 +4,6 @@ const colors = require('tailwindcss/colors');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     //...
-    daisyui: {
-        themes: ["cmyk"],
-    },
 
     presets: [
         require('./vendor/wireui/wireui/tailwind.config.js')
@@ -52,6 +49,5 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
-        require('daisyui')
     ],
 };

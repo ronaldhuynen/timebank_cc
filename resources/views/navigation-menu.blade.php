@@ -69,7 +69,7 @@
 
                                 <!-- Team Settings -->
                                 <x-jetstream.dropdown-link
-                                                           href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                             href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
                                     {{ __('Team Settings') }}
                                 </x-jetstream.dropdown-link>
 
@@ -133,7 +133,8 @@
                                            hreflang="{{ $localeCode }}" rel="alternate">
                                             {{ $language->flag }}
                                             <span
-                                                  class="ml-3 text-gray-400">{{ Lang::get($language->name, [], $localeCode) }}</span>
+                                                  class="ml-3 text-gray-400">{{ Lang::get($language->name, [], $localeCode) }}
+                                            </span>
                                         </a>
                                     </div>
                                 @endif

@@ -175,20 +175,20 @@ Route::group([
                 ->name('search.show');
 
 
-            
-            //  Translated Messenger routes 
+
+            //  Translated Messenger routes
             Route::get(LaravelLocalization::transRoute('routes.messenger.portal'), [ViewPortalController::class, 'index'])
                 ->middleware('auth')
                 ->name('messenger.portal');
-                        
+
             Route::get(LaravelLocalization::transRoute('routes.messenger.show'), [ViewPortalController::class, 'showThread'])
-                ->middleware('auth')    
+                ->middleware('auth')
                 ->name('messenger.show');
 
             Route::get(LaravelLocalization::transRoute('routes.messenger.private.create'), [ViewPortalController::class, 'showCreatePrivate'])
                 ->middleware('auth')
                 ->name('messenger.private.create');
-                
+
             Route::get(LaravelLocalization::transRoute('routes.messenger.threads.show.call'), [ViewPortalController::class, 'showVideoCall'])
                 ->middleware('auth')
                 ->name('messenger.threads.show.call');
@@ -197,9 +197,9 @@ Route::group([
             Route::get(LaravelLocalization::transRoute('routes.messenger.invites.join'), [ViewPortalController::class, 'showJoinWithInvite'])
                 ->name('messenger.invites.join')
                 ->middleware('auth');
-            
+
             // TODO NEXT: Create api routes for friends: add a friend and check error message in toaster
-                
+
 
 
 

@@ -1,7 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-900">
+        @if (count($results) > 1)
             {{ __('Search') . ': ' . count($results) . ' ' . __('results') }}
+        @elseif (count($results) === 1)
+            {{ __('Search') . ': ' . count($results) . ' ' . __('result') }}
+        @else
+            {{ __('Search') . ': ' . __('No results found, please search again') }}
+        @endif
         </h2>
     </x-slot>
 

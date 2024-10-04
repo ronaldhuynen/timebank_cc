@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Traits\AccountInfoTrait;
 
-
 class TransactionController extends Controller
 {
     use AccountInfoTrait;
 
-    
+
     /**
     * Create a new controller instance.
     *
@@ -40,7 +39,7 @@ class TransactionController extends Controller
 
 
     public function transactions()
-    {       
+    {
         $profileAccounts = $this->getAccountsInfo();
 
         return view('transactions.show', compact('profileAccounts'));
@@ -64,6 +63,15 @@ class TransactionController extends Controller
         //TODO: add permission check
         //TODO: if 403, but has permission, redirect with message to switch profile
         //TODO: replace 403 with custom redirect page incl explanation
-        return ($results != null ? view('transactions.statement', compact(['transactionId'])) : abort(403));
+
+        // Check if the transaction exists
+        if ($transactionId) {
+            // Pass the transactionId and transaction details to the view
+            return view('transactions.statement', compact('transactionId'));
+        } else {
+            // Abort with a 403 status code if the transaction does not exist
+            return abort(403);
+        }
+
     }
 }

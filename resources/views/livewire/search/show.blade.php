@@ -3,8 +3,7 @@
     <section class="">
             <div class="grid w-full grid-cols-1 gap-0 md:grid-cols-3">
                     @foreach ($results as $result)
-
-                <div class="border-b border-gray-400 px-8 py-6 md:border-r">
+                <div wire:click="showProfile('{{ $result['id'] }}', '{{ class_basename($result['model']) }}')" class="border-b border-gray-400 px-8 py-6 md:border-r cursor-pointer">
 
                     <div class="mb-4 flex items-start justify-between gap-6">
                     @if ($result['status'] == 'online')

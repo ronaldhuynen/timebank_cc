@@ -9,7 +9,6 @@ class ProfileUserController extends Controller
     public function show()
     {
         return view('profile-user.show');
-            // compact('userAccounts')
     }
 
 }

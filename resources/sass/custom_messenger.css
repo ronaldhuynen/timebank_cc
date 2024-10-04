@@ -366,9 +366,7 @@ messenger-style-overrides .message hr {
 }
 
 /* Message container avatars */
-#messenger-style-overrides #thread_header_area img {
-    height: 100px;
-    width: 100px;
+#messenger-style-overrides #thread_header_area .large-image {
     position: absolute;
     z-index: 1000;
     transform: rotate(-2deg);

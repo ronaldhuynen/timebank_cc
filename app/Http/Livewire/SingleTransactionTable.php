@@ -12,11 +12,12 @@ class SingleTransactionTable extends Component
     public $balance = 0;
     public $transaction;
     public $qrModalVisible = false;
+    public $transactionId;
 
     public function mount($transactionId)
     {
         $this->transactionId = $transactionId;
-        $this->getTransaction();
+        $this->getTransaction($transactionId);
     }
 
     public function getTransaction()
@@ -35,8 +36,6 @@ class SingleTransactionTable extends Component
                     'description' => $results->description,
                     'datetime' => $results->created_at,
                 ];
-
-        // dd($transaction);
 
         return Arr::collapse($transaction);
     }

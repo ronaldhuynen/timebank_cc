@@ -142,6 +142,9 @@ class MainSearchBar extends Component
 
                 $firstLocation = $model->locations->first();  // TODO: Update this method when we have multiple locations for users and organizations
                  
+                $locationShort = null;
+                $location = '';
+
                 // Construct location strings 
                 if ($firstLocation) {
 
@@ -149,8 +152,8 @@ class MainSearchBar extends Component
                     $district = null;
                     $division = null;
                     $country = null;
-                    $locationShort = null;
-                    $location = '';
+                    // $locationShort = null;
+                    // $location = '';
 
                     if ($firstLocation->city) {
                         $city = $firstLocation->city->translations->first()->name;
@@ -183,6 +186,7 @@ class MainSearchBar extends Component
                         }
                     }
                 }
+
 
                 // Check online status of the user
                 $messenger = app(Messenger::class);
@@ -237,20 +241,11 @@ class MainSearchBar extends Component
 
         }
 
-
-        // info('cardData: ' . json_encode($cardData, JSON_PRETTY_PRINT));
-        // info('rawOutput: ' . json_encode($rawOutput, JSON_PRETTY_PRINT));
-
         $rawData = $rawOutput['hits']['hits'];
-
 
         $results = array_map(function ($rawItem, $cardItem) {
             return array_merge($rawItem, $cardItem);
         }, $rawData, $cardData);
-
-
-        info('results: ' . json_encode($results, JSON_PRETTY_PRINT));
-
 
         $extractedData = array_map(function ($result) use ($cardData) {
 
@@ -302,8 +297,6 @@ class MainSearchBar extends Component
     {
         $this->search = $value;
         $this->results = $this->fetchedResults;
-        // $this->showResults = true;
-
 
         // Flash the results to the session, so it can be retrieved in the SearchController
         session()->flash('results', $this->results);

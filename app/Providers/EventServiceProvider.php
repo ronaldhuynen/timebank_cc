@@ -3,18 +3,17 @@
 namespace App\Providers;
 
 use App\Events\ProfileSwitchEvent;
+use App\Listeners\LogProfileSwitch;
 use App\Listeners\LoginSuccessful;
 use App\Listeners\ReactionCreatedListener;
-use App\Listeners\RedirectToDashboard;
 use App\Listeners\SendEmailNewMessage;
 use Cog\Laravel\Love\Reaction\Events\ReactionHasBeenAdded;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 // use RTippin\Messenger\Events\PushNotificationEvent;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use RTippin\Messenger\Events\NewMessageEvent;
-use RTippin\Messenger\Events\ParticipantsAddedEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -36,12 +35,15 @@ class EventServiceProvider extends ServiceProvider
             ReactionCreatedListener::class
         ],
 
-        // Rtippin Messenger events:
-        // ParticipantsAddedEvent::class => [
-        //    SendEmailParticipantsAdded::class,
-        // ],
+        // Rtippin Messenger events
         NewMessageEvent::class => [
            SendEmailNewMessage::class,
+        ],
+
+        // Log the date and ip of the profile that is switched to:
+        // When the ProfileSwitchEvent triggers the LogProfileSwitch listens
+        ProfileSwitchEvent::class => [
+            LogProfileSwitch::class,
         ],
     ];
 

@@ -32,7 +32,7 @@ class SocialsForm extends Component
 
     public function getSocials()
     {
-        $this->socials = session('activeProfileType')::find(session('activeProfileId'))->socials;
+        $this->socials = getActiveProfile()->socials;
     }
 
     public function store()
@@ -60,9 +60,9 @@ class SocialsForm extends Component
     public function edit($id)
     {
         $this->sociables_id = $id;
-        $this->socialsOptionSelected = session('activeProfileType')::find(session('activeProfileId'))->socials->where('pivot.id', $id)->first()->pivot->social_id;
-        $this->userOnSocial = session('activeProfileType')::find(session('activeProfileId'))->socials->where('pivot.id', $id)->first()->pivot->user_on_social;
-        $this->serverOfSocial = session('activeProfileType')::find(session('activeProfileId'))->socials->where('pivot.id', $id)->first()->pivot->server_of_social;
+        $this->socialsOptionSelected = getActiveProfile()->socials->where('pivot.id', $id)->first()->pivot->social_id;
+        $this->userOnSocial = getActiveProfile()->socials->where('pivot.id', $id)->first()->pivot->user_on_social;
+        $this->serverOfSocial = getActiveProfile()->socials->where('pivot.id', $id)->first()->pivot->server_of_social;
         $this->selectedPlaceholder = Social::find($this->socialsOptionSelected);
         $this->updateMode = true;
 

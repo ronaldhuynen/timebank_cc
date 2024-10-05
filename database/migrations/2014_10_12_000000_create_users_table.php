@@ -34,7 +34,9 @@ return new class () extends Migration {
             $table->integer('limit_min')->nullable();
             $table->integer('limit_max')->nullable();
             $table->timestamps();
-            $table->datetime('inactive_at')->nullable();
+            $table->datetime('inactive_at')->nullable();            
+            $table->datetime('last_login_at')->nullable();
+            $table->string('last_login_ip')->nullable();
             $table->softDeletes();
         });
     }

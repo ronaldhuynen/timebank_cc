@@ -26,7 +26,7 @@ Broadcast::channel('change-lang.{toUserId}', function ($user, $toUserId) {
 
 
 Broadcast::channel('switch-profile.{userId}', function ($user, $userId) {
-    // Verify that the user listens to his/her channel and that his/her $user->id matches with the $data['userId'] that was broascasted.
+    // Verify that the user listens to his/her channel and that his/her $user->id matches with the $data['userId'] that was broadcasted.
     // If this returns true, the channel is authorized.
     return (int) $user->id == (int) $userId;
 });

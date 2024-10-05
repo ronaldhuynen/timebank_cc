@@ -74,6 +74,7 @@
             "app/Helpers/TimeFormat.php",
             "app/Helpers/StringHelper.php",
             "app/Helpers/StyleHelper.php",
+            "app/Helpers/ProfileHelper.php",
             "app/Overrides/Rtippin/Messenger/Http/Middleware/SetMessengerProvider.php",
             "app/Overrides/Laravel/Jetstream/Src/HasProfilePhoto.php",
             "app/Overrides/Matchish/ScoutElasticSearch/ElasticSearch/EloquentHitsIteratorAggregate.php"

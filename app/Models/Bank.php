@@ -58,6 +58,16 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
         'inactive_at',
         'deleted_at',
     ];
+
+        /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'last_login_at',
+        'last_login_ip'
+    ];
     
     
     /**

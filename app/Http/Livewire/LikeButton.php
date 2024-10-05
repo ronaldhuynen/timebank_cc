@@ -17,7 +17,7 @@ class LikeButton extends Component
         $this->model = $model;
         $likedCounter ? $this->count = $likedCounter : $this->count = 0 ;
         // check if the active profile has liked the model using the laravel-love facade viaLoveReacter()
-        $this->activeProfile = session('activeProfileType')::find(session('activeProfileId'));
+        $this->activeProfile = getActiveProfile();
         $this->likedByReacter = $this->activeProfile->viaLoveReacter()->hasReactedTo($this->model);
 }
 

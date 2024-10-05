@@ -73,6 +73,8 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
         'motivation',
         'website',
         'phone',
+        'last_login_at',
+        'last_login_ip'
     ];
 
 

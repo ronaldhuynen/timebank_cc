@@ -182,7 +182,7 @@
                     <x-slot name="content">
 
                         <!---- Switch Profile --->
-                        @if (App\Models\User::with('organizations')->find(Auth::user()->id)->organizations->find(1) != null)
+                         @if (Auth::user()->organizations->isNotEmpty())
                             <livewire:select-organization>
                         @endif
 
@@ -321,7 +321,7 @@
                 <!-- Account Management -->
 
                 <!---- Switch Profile --->
-                @if (App\Models\User::with('organizations')->find(Auth::user()->id)->organizations->find(1) != null)
+                @if (Auth::user()->organizations->isNotEmpty())
                     <livewire:select-organization>
                 @endif
 

@@ -5,8 +5,6 @@ namespace App\Listeners;
 use App\Events\ProfileSwitchEvent;
 use App\Models\User;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 

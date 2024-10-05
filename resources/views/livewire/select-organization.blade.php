@@ -3,7 +3,7 @@
         <option value="null" disabled>{{ __('Switch Profile') }}</option>
         <option value={{ null }}>{{ \Illuminate\Support\Str::limit($user['name'], 25, $end='...') }}</option>
         @foreach($userOrganizations as $index => $userOrganization)
-        <option wire:key="{{ $index }}" value={{ $userOrganization['id'] }}> {{ \Illuminate\Support\Str::limit($userOrganization['name'], 25, $end='...') }}</option>
+        <option wire:key="{{ $index }}" value="{{ $userOrganization['id'] }}"> {{ \Illuminate\Support\Str::limit($userOrganization['name'], 25, $end='...') }}</option>
         @endforeach
     </select>
 </div>

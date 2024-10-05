@@ -6,7 +6,12 @@ use App\Actions\Jetstream\DeleteUser;
 use App\Http\Livewire\ProfileUser\UpdateProfilePersonalForm;
 use App\Http\Livewire\ProfileUser\UpdateProfilePhoneForm;
 use App\Http\Livewire\Profile\DeleteUserForm;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
@@ -55,8 +60,6 @@ class JetstreamServiceProvider extends ServiceProvider
             \Laravel\Fortify\Contracts\TwoFactorLoginResponse::class,
             \App\Http\Responses\LoginResponse::class
         );
-
-
     }
 
     /**

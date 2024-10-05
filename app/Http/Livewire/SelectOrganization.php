@@ -13,7 +13,6 @@ class SelectOrganization extends Component
 {
     use WireUiActions;
 
-
     public $user;
     public $userOrganizations = [];
     public $organizationId;
@@ -47,37 +46,42 @@ class SelectOrganization extends Component
     }
 
 
-    public function organizationSelected()
-    {
-        $organizationId = $this->organizationId;
+ public function organizationSelected()
+{
+    $organizationId = $this->organizationId;
 
-        if ($organizationId != null) {
+    if ($organizationId != null) {
+        $organization = collect($this->userOrganizations)->firstWhere('id', $organizationId);
+
+        if ($organization) {
             Session([
                 'activeProfileType' => Organization::class,
                 'activeProfileId' => $organizationId,
-                'activeProfileName' => $this->userOrganizations[$organizationId - 1]['name'],
-                'activeProfilePhoto' => $this->userOrganizations[$organizationId - 1]['photo'],
+                'activeProfileName' => $organization['name'],
+                'activeProfilePhoto' => $organization['photo'],
                 'activeProfileAccounts' => Organization::find($organizationId)->accounts()->pluck('id')->toArray()
             ]);
-        } else {
-            Session([
-                'activeProfileType' => User::class,
-                'activeProfileId' => Auth::user()->id,
-                'activeProfileName' => $this->user->name,
-                'activeProfilePhoto' => $this->user->profile_photo_path,
-                'activeProfileAccounts' => User::find($this->user->id)->accounts()->pluck('id')->toArray()
-            ]);
         }
-        $activeProfile = [
-            'userId' => Auth::user()->id,
-            'type' => Session('activeProfileType'),
-            'id' => Session('activeProfileId'),
-            'name' => Session('activeProfileName'),
-            'photo' => Session('activeProfilePhoto')
-          ];
-
-        return event(new ProfileSwitchEvent($activeProfile));
+    } else {
+        Session([
+            'activeProfileType' => User::class,
+            'activeProfileId' => Auth::user()->id,
+            'activeProfileName' => $this->user->name,
+            'activeProfilePhoto' => $this->user->profile_photo_path,
+            'activeProfileAccounts' => User::find($this->user->id)->accounts()->pluck('id')->toArray()
+        ]);
     }
+
+    $activeProfile = [
+        'userId' => Auth::user()->id,
+        'type' => Session('activeProfileType'),
+        'id' => Session('activeProfileId'),
+        'name' => Session('activeProfileName'),
+        'photo' => Session('activeProfilePhoto')
+    ];
+
+    return event(new ProfileSwitchEvent($activeProfile));
+}
 
 
     public function notifySwitchProfile($activeProfile)
@@ -91,7 +95,8 @@ class SelectOrganization extends Component
                     'activeProfilePhoto' => $activeProfile['photo']
                 ]);
 
-        redirect('/dashboard')->with('success', 'Active profile has switched!');
+
+        return redirect()->route('dashboard')->with('success', 'Active profile is switched!');
 
     }
 

@@ -115,7 +115,7 @@
 
 
     <!-- Debug section for Events --->
-    {{-- <script>
+    <script>
         console.log('Inside app.blade.php');
             window.Pusher.logToConsole = false;
             window.Echo.private('switch-profile.{{ auth()->id() }}')
@@ -123,7 +123,7 @@
                     console.log('ProfileSwitchEvent received.');
                     console.log(e);
                   });
-        </script> --}}
+        </script>
 
 </body>
 

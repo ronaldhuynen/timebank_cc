@@ -1,6 +1,5 @@
 <!--- Load Messenger script ---->
 <script src="{{ asset(mix('app.js', 'vendor/messenger')) }}"></script>
-<script> console.log('messenger scripts in vendor/messenger/app.js are loaded') </script>
 @stack('js')
 @if(auth()->check())
 @endif

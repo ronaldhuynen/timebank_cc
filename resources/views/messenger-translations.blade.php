@@ -49,5 +49,4 @@
             cancelFriendRequest: "{{ __('Cancel friend request') }}",
         };
         window.appName = "{{ env('APP_NAME') }}";
-        console.log('window.translations are loaded');
     </script>

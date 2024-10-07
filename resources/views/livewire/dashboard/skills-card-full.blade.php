@@ -170,14 +170,14 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                window.livewire.on('disableSelect', () => {
+                window.Livewire.on('disableSelect', () => {
                     document.getElementById('select-translation').style.opacity = '0.4';
                     document.getElementById('select-translation').style.cursor = 'pointer';
                     document.getElementById('select-translation').style.pointerEvents = 'none';
                     document.getElementById('input-translation').style.opacity = '1';
                     {{-- console.log('disableSelect'); --}}
                 });
-                window.livewire.on('disableInput', () => {
+                window.Livewire.on('disableInput', () => {
                     document.getElementById('input-translation').style.opacity = '0.4';
                     document.getElementById('select-translation').style.cursor = 'default';
                     document.getElementById('select-translation').style.pointerEvents = 'auto';

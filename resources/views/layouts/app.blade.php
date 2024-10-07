@@ -26,8 +26,11 @@
     @wireUiScripts
 
     {{-- TODO: replace with self-hosted scripts --}}
-    <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    {{-- Leavlet is aan open-source JavaScript library
+    for mobile-friendly interactive maps.
+    It can be self hosted by installing: "npm install leaflet" }}
+    {{-- <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script> --}}
     <script>
         window.i18n = {!! json_encode(__('messages')) !!};
     </script>
@@ -103,19 +106,20 @@
     </div>
 
     <!-- Scripts body-->
+    <!-- Be careful with changing the loading order! -->
     @livewireScripts
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ mix('js/echo.js') }}"></script>
     @stack('scripts')
     @yield('scripts_body')
     @yield('js')
     @include('messenger-translations')
     @include('messenger::scripts')
     @stack('modals')
+    <script src="{{ mix('js/echo.js') }}"></script>
 
 
     <!-- Debug section for Events --->
-    <script>
+    {{-- <script>
         console.log('Inside app.blade.php');
             window.Pusher.logToConsole = false;
             window.Echo.private('switch-profile.{{ auth()->id() }}')
@@ -123,7 +127,7 @@
                     console.log('ProfileSwitchEvent received.');
                     console.log(e);
                   });
-        </script>
+        </script> --}}
 
 </body>
 

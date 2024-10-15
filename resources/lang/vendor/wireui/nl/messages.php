@@ -11,6 +11,6 @@ return [
         'yesterday' => 'Gisteren',
     ],
     'errors' => [
-        'title' => 'Er zaten {errors} fouten in uw inzending',
+        'title' => 'Er zaten {errors} fouten in je inzending',
     ],
 ];

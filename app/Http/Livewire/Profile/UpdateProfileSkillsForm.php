@@ -23,7 +23,6 @@ class UpdateProfileSkillsForm extends Component
     use TaggableWithLocale;
     use WireUiActions;
 
-
     public $tagsArray = [];
     public $initialIds = [];
     public $initTagsArray = [];
@@ -50,7 +49,6 @@ class UpdateProfileSkillsForm extends Component
     protected $langDetector;
     protected $listeners = ['save', 'cancelCreateTag'];
 
-
     protected function rules()
     {
         return [
@@ -61,7 +59,12 @@ class UpdateProfileSkillsForm extends Component
                     // Check if newTag is not an empty array
                     return count($input['newTag']) > 0;
                 },
-                [    'sometimes', 'required', 'string', 'min:3', 'max:80',
+                [
+                    'sometimes',
+                    'required',
+                    'string',
+                    'min:3',
+                    'max:80',
                     function ($attribute, $value, $fail) {
                         if (!preg_match('/\S+\s+\S+/', $value)) {
                             // If the input doesn't have at least 2 words, fail the validation for this field
@@ -75,7 +78,7 @@ class UpdateProfileSkillsForm extends Component
                             $fail(__('We can not detect that this is in :locale. Check also your example below.', ['locale' => $locale]));
                         }
                     },
-                ]
+                ],
             ),
             'newTag.example' => Rule::when(
                 function ($input) {
@@ -83,46 +86,51 @@ class UpdateProfileSkillsForm extends Component
                     return count($input['newTag']) > 0;
                 },
                 [
-                    'required', 'string', 'min:10', 'max:100',
+                    'required',
+                    'string',
+                    'min:10',
+                    'max:100',
                     function ($attribute, $value, $fail) {
                         if ($this->sessionLanguageOk !== true) {
-
                             $currentLocale = app()->getLocale();
                             $locale = \Locale::getDisplayName($currentLocale, $currentLocale);
                             $fail(__('We can not detect that this is in :locale. Try to use more words.', ['locale' => $locale]));
                         }
                     },
-                ]
+                ],
             ),
             'newTag.check' => Rule::when(
                 function ($input) {
                     // Check if newTag is not an empty array
                     return count($input['newTag']) > 0;
                 },
-                ['required', 'accepted']
+                ['required', 'accepted'],
             ),
             'newTagCategory' => Rule::when(
                 function ($input) {
                     // Check if newTag is not an empty array
                     return count($input['newTag']) > 0;
                 },
-                ['required', 'int']
+                ['required', 'int'],
             ),
             'selectTagTranslation' => Rule::when(
                 function ($input) {
                     // Check if existing tag translation is selected
-                    return ($this->translationVisible === true && $this->translateRadioButton == 'select');
+                    return $this->translationVisible === true && $this->translateRadioButton == 'select';
                 },
-                ['required', 'int']
+                ['required', 'int'],
             ),
             'inputTagTranslation' => 'array',
             'inputTagTranslation.name' => Rule::when(
                 function ($input) {
                     // Check if existing tag translation is selected
-                    return ($this->translationVisible === true && $this->translateRadioButton == 'input');
+                    return $this->translationVisible === true && $this->translateRadioButton == 'input';
                 },
                 [
-                    'required', 'string', 'min:3', 'max:80',
+                    'required',
+                    'string',
+                    'min:3',
+                    'max:80',
                     function ($attribute, $value, $fail) {
                         if (!preg_match('/\S+\s+\S+/', $value)) {
                             // If the input doesn't have at least 2 words, fail the validation for this field
@@ -138,16 +146,18 @@ class UpdateProfileSkillsForm extends Component
                             $fail(__('We can not detect that this is in :locale , please modify.', ['locale' => $locale]));
                         }
                     },
-
-                ]
+                ],
             ),
             'inputTagTranslation.example' => Rule::when(
                 function ($input) {
                     // Check if existing tag translation is selected
-                    return ($this->translationVisible === true && $this->translateRadioButton == 'input');
+                    return $this->translationVisible === true && $this->translateRadioButton == 'input';
                 },
                 [
-                    'required', 'string', 'min:10', 'max:100',
+                    'required',
+                    'string',
+                    'min:10',
+                    'max:100',
                     function ($attribute, $value, $fail) {
                         if ($this->baseLanguageOk !== true) {
                             $baseLocale = config('timebank-cc.base_language');
@@ -157,14 +167,10 @@ class UpdateProfileSkillsForm extends Component
                             $fail(__('We can not detect that this is in :locale , please modify.', ['locale' => $locale]));
                         }
                     },
-
-
-                ]
+                ],
             ),
-
         ];
     }
-
 
     public function mount()
     {
@@ -174,33 +180,32 @@ class UpdateProfileSkillsForm extends Component
             return StringHelper::DutchTitleCase($value);
         });
 
-        $this->initialIds = session('activeProfileType')::find(session('activeProfileId'))
-            ->tags()
-            ->orderBy('name')
-            ->get()
-            ->pluck('tag_id');
+        $this->initialIds = session('activeProfileType')::find(session('activeProfileId'))->tags()->orderBy('name')->get()->pluck('tag_id');
 
         $this->initTagsArray = TaggableLocale::whereIn('taggable_tag_id', $this->initialIds)
             ->select('taggable_tag_id', 'locale', 'example', 'updated_by_user')
-            ->get()->toArray();
+            ->get()
+            ->toArray();
 
-        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initialIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
+        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initialIds, App::getLocale(), App::getFallbackLocale())); // Translate to app locale, if not available to fallback locale, if not available do not translate
 
         $tags = $translatedTags->map(function ($item, $key) {
-
             return [
                 'tag_id' => $item['tag_id'],
                 'value' => $item['tag'],
-                'readonly' => ($item['locale']['locale'] ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
+                'readonly' => $item['locale']['locale'] == App::getLocale() ? false : true, // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
                 'locale' => $item['locale']['locale'],
-                'example' =>  $item['locale']['example'],
+                'example' => $item['locale']['example'],
                 'category' => $item['category'],
-                'category_path' =>  $item['category_path'],
-                'category_color' =>  $item['category_color'],
-                'title' =>  $item['category_path'],     // 'title' is used by Tagify script for text that shows on hover
-                'style' =>  '--tag-bg:' . tailwindColorToHex($item['category_color'] . '-300') .
+                'category_path' => $item['category_path'],
+                'category_color' => $item['category_color'],
+                'title' => $item['category_path'], // 'title' is used by Tagify script for text that shows on hover
+                'style' =>
+                    '--tag-bg:' .
+                    tailwindColorToHex($item['category_color'] . '-300') .
                     '; --tag-text-color:#111827' . // #111827 is gray-900
-                    '; --tag-hover:' . tailwindColorToHex($item['category_color'] . '-200'),   // 'style' is used by Tagify script for background color, tailwindColorToHex is a helper function in app/Helpers/StyleHelper.php
+                    '; --tag-hover:' .
+                    tailwindColorToHex($item['category_color'] . '-200'), // 'style' is used by Tagify script for background color, tailwindColorToHex is a helper function in app/Helpers/StyleHelper.php
             ];
         });
 
@@ -209,7 +214,6 @@ class UpdateProfileSkillsForm extends Component
         $this->tagsArray = json_encode($tags->toArray());
         $this->dispatch('load');
     }
-
 
     protected function getLanguageDetector()
     {
@@ -220,14 +224,12 @@ class UpdateProfileSkillsForm extends Component
         return $this->langDetector;
     }
 
-
     public function updatedNewTagName()
     {
         $this->resetErrorBag('newTag.name');
         $this->newTagsArray = $this->initTagsArray;
         $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
     }
-
 
     public function updatedNewTagExample()
     {
@@ -245,7 +247,6 @@ class UpdateProfileSkillsForm extends Component
         }
     }
 
-
     public function updatedNewTagCategory()
     {
         $this->selectTagTranslation = [];
@@ -253,13 +254,11 @@ class UpdateProfileSkillsForm extends Component
         $this->translationOptions = $this->relatedTag($this->newTagCategory, config('timebank-cc.base_language'));
     }
 
-
     public function updatedInputTagTranslationName()
     {
         $this->resetErrorBag('inputTagTranslation.name');
         $this->inputTagTranslation['name'] = StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
     }
-
 
     public function updatedInputTagTranslationExample()
     {
@@ -274,18 +273,17 @@ class UpdateProfileSkillsForm extends Component
         $this->inputTagTranslation['example'] = StringHelper::DutchTitleCase($this->inputTagTranslation['example']);
     }
 
-
-    public function updatingTagsArray()  // Note this is updating, not updated, as Tagify catches the json too soon.
+    public function updatingTagsArray()
     {
+        // Note this is updating, not updated, as Tagify catches the json too soon.
         // $this->tagsArray = json_encode(json_decode($this->tagsArray));    // re-encode the json
     }
 
-
     public function updatedTagsArray()
     {
-        $this->newTagsArray = collect(json_decode($this->tagsArray, true));
+        $this->newTagsArray = json_encode(collect(json_decode($this->tagsArray, true))->toArray());
 
-        $localesToCheck = [app()->getLocale(), ''];     // Only current locale and tags without locale should be checked for any new tag keywords
+        $localesToCheck = [app()->getLocale(), '']; // Only current locale and tags without locale should be checked for any new tag keywords
         $newTagsArrayLocal = $this->newTagsArray->whereIn('locale', $localesToCheck);
         $suggestions = collect($this->suggestions);
         // Retrieve new tag entries not present in suggestions
@@ -295,14 +293,14 @@ class UpdateProfileSkillsForm extends Component
 
         // Add a new skill modal if there are new entries
         if (count($newEntries) > 0) {
-
             // $this->newTag['name'] = ucfirst($newEntries->flatten()->first());
             $this->newTag['name'] = $newEntries->flatten()->first();
 
-
-            $this->categoryOptions = Category::with(['translations' => function ($query) {
-                $query->where('locale', app()->getLocale())->select('id', 'category_id', 'name');
-            }])
+            $this->categoryOptions = Category::with([
+                'translations' => function ($query) {
+                    $query->where('locale', app()->getLocale())->select('id', 'category_id', 'name');
+                },
+            ])
                 ->whereHas('translations', function ($query) {
                     $query->where('locale', app()->getLocale());
                 })
@@ -317,17 +315,17 @@ class UpdateProfileSkillsForm extends Component
                 ->map(function ($name, $index) {
                     return [
                         'category_id' => $index, // +1 removed!
-                        'name' =>  StringHelper::DutchTitleCase($name)
+                        'name' => StringHelper::DutchTitleCase($name),
                     ];
                 })
-                ->sortBy('name')->values();
+                ->sortBy('name')
+                ->values();
 
             $this->modalVisible = true;
         } else {
             $newEntries = false;
         }
     }
-
 
     public function updatedTranslationVisible()
     {
@@ -336,35 +334,31 @@ class UpdateProfileSkillsForm extends Component
         }
     }
 
-
     public function updatedTranslateRadioButton()
     {
-        if ($this->translateRadioButton === "select") {
+        if ($this->translateRadioButton === 'select') {
             $this->inputDisabled = true;
             $this->dispatch('disableInput');
-        } elseif ($this->translateRadioButton === "input") {
+        } elseif ($this->translateRadioButton === 'input') {
             $this->inputDisabled = false;
-            $this->dispatch('disableSelect');   // Script inside view skills-form.blade.php
+            $this->dispatch('disableSelect'); // Script inside view skills-form.blade.php
         }
     }
 
-
     public function updatedSelectTagTranslation()
     {
-        $this->translateRadioButton = "select";
+        $this->translateRadioButton = 'select';
         $this->inputDisabled = true;
         $this->baseLanguageOk = true;
-        $this->dispatch('disableInput');    // Script inside view skills-form.blade.php
+        $this->dispatch('disableInput'); // Script inside view skills-form.blade.php
     }
-
 
     public function updatedInputTagTranslation()
     {
-        $this->translateRadioButton = "input";
+        $this->translateRadioButton = 'input';
         $this->inputDisabled = false;
-        $this->dispatch('disableSelect');   // Script inside view skills-form.blade.php
+        $this->dispatch('disableSelect'); // Script inside view skills-form.blade.php
     }
-
 
     public function relatedTag($category, $locale = null)
     {
@@ -376,10 +370,7 @@ class UpdateProfileSkillsForm extends Component
             // A category is selected: suggest related tags (family bloodline) within this category in $locale language
             $related = Category::find($category)->bloodline->pluck('id');
 
-            $suggestions = Tag::with([
-                'locale',
-                'contexts'
-            ])
+            $suggestions = Tag::with(['locale', 'contexts'])
                 ->whereHas('locale', function ($query) use ($locale) {
                     $query->whereIn('locale', [$locale]);
                 })
@@ -390,15 +381,14 @@ class UpdateProfileSkillsForm extends Component
                 ->map(function ($name, $index) {
                     return [
                         'tag_id' => $index,
-                        'name' => StringHelper::DutchTitleCase($name)
+                        'name' => StringHelper::DutchTitleCase($name),
                     ];
-                })->sortBy('name')->values();
+                })
+                ->sortBy('name')
+                ->values();
         } else {
             // No category is selected: suggest all tags in $locale language
-            $suggestions = Tag::with([
-                'locale',
-                'contexts'
-            ])
+            $suggestions = Tag::with(['locale', 'contexts'])
                 ->whereHas('locale', function ($query) use ($locale) {
                     $query->where('locale', $locale);
                 })
@@ -406,13 +396,14 @@ class UpdateProfileSkillsForm extends Component
                 ->map(function ($name, $index) {
                     return [
                         'tag_id' => $index,
-                        'name' => StringHelper::DutchTitleCase($name)
+                        'name' => StringHelper::DutchTitleCase($name),
                     ];
-                })->sortBy('name')->values();
+                })
+                ->sortBy('name')
+                ->values();
         }
         return $suggestions;
     }
-
 
     public function cancelCreateTag()
     {
@@ -422,14 +413,13 @@ class UpdateProfileSkillsForm extends Component
         $this->newTagCategory = null;
         $this->translationVisible = false;
 
-        $this->dispatch('cancelCreateTag'); // Removes last value of the tagsArray on front-end only
+        $this->dispatch('cancel'); // Removes last value of the tagsArray on front-end only
 
         $this->newTagsArray = $this->initTagsArray;
         $this->tagsArray = json_encode($this->initTagsArray);
 
         $this->modalVisible = false;
     }
-
 
     public function createTag()
     {
@@ -438,34 +428,35 @@ class UpdateProfileSkillsForm extends Component
 
         $owner = session('activeProfileType')::find(session('activeProfileId'));
         $owner->tag($this->newTag['name']);
-        $name = str_replace("-", " ", (new TagService())->normalize($this->newTag['name']));  // Use the normalized name that is stored in db
+        $name = str_replace('-', ' ', (new TagService())->normalize($this->newTag['name'])); // Use the normalized name that is stored in db
 
         $tag = Tag::whereHas('locale', function ($query) {
             $query->where('locale', app()->getLocale());
-        })->where('name', $name)->first();
+        })
+            ->where('name', $name)
+            ->first();
 
         $locale = ['example' => $this->newTag['example']];
         $tagLocale = $tag->locale()->update($locale);
         $context = [
             'category_id' => $this->newTagCategory,
-            'updated_by_user' => auth()->user()->id
+            'updated_by_user' => auth()->user()->id,
         ];
 
         if ($this->translateRadioButton === 'select') {
-
             // Attach an existing context in the base language to the new tag. See config('timebank-cc.base_language')
             // Note that the category_id and updated_by_user is not updated when selecting an existing context!
-            $tagContext = Tag::find($this->selectTagTranslation)->contexts()->first();
+            $tagContext = Tag::find($this->selectTagTranslation)
+                ->contexts()
+                ->first();
             $tag->contexts()->attach($tagContext->id);
-
         } elseif ($this->translateRadioButton === 'input') {
-
             // Create a new context for the new tag
             $tagContext = $tag->contexts()->create($context);
 
             // Create a new (English) translation of the tag
             $owner->tag($this->inputTagTranslation['name']);
-            $nameTranslation = str_replace("-", " ", Str::slug($this->inputTagTranslation['name']));  // Use the normalized name that is stored in db
+            $nameTranslation = str_replace('-', ' ', Str::slug($this->inputTagTranslation['name'])); // Use the normalized name that is stored in db
             $tagTranslation = Tag::where('name', $nameTranslation)->first();
 
             $locale = [
@@ -478,14 +469,12 @@ class UpdateProfileSkillsForm extends Component
             $tag->contexts()->attach($tagContext->id);
             $tagTranslation->contexts()->attach($tagContext->id);
         } else {
-
             // Create a new context for the new tag without translation
             $tagContext = $tag->contexts()->create($context);
         }
 
         // Update newTagsArray with the new tag for save method
         $this->newTagsArray = collect($this->newTagsArray)->transform(function ($item, $key) {
-
             if (isset($item['value']) && ucfirst($item['value']) == ucfirst($this->newTag['name'])) {
                 $item['value'] = StringHelper::DutchTitleCase($this->newTag['name']);
                 $item['title'] = $this->newTag['example'];
@@ -506,9 +495,7 @@ class UpdateProfileSkillsForm extends Component
         $this->dispatch('saved');
         $this->mount();
         $this->dispatch('tagifyChange', ['tagsArray' => $this->tagsArray]);
-
     }
-
 
     /**
      * Update the user's skill tags information.
@@ -519,7 +506,6 @@ class UpdateProfileSkillsForm extends Component
     {
         if ($this->newTagsArray) {
             if (count($this->newTagsArray) > 0) {
-
                 try {
                     // Use a transaction for saving skill tags
                     DB::transaction(function () {
@@ -538,9 +524,12 @@ class UpdateProfileSkillsForm extends Component
 
                         // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
                         if (count($this->initTagsArray) > 0) {
-                            $retagReadOnly = collect($this->initTagsArrayTranslated)->where('readonly', true)->pluck('tag_id')->toArray();
+                            $retagReadOnly = collect($this->initTagsArrayTranslated)
+                                ->where('readonly', true)
+                                ->pluck('tag_id')
+                                ->toArray();
 
-                            $retagForeign = (implode(", ", $retagReadOnly));
+                            $retagForeign = implode(', ', $retagReadOnly);
                             $untagForeign = $untagForeign->diff($retagReadOnly);
                         }
                         // untag the result of the selection(s), the tags marked read-only are not untagged
@@ -549,36 +538,35 @@ class UpdateProfileSkillsForm extends Component
                         // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
                         $this->newTagsArray = collect($this->newTagsArray);
 
-                        $tag = collect($this->newTagsArray)->filter(function ($item) {
-                            // Select items that do not have the 'readonly' key or have it set to false
-                            return !isset($item['readonly']) || $item['readonly'] !== true;
-                        })->pluck('value')->toArray();
+                        $tag = collect($this->newTagsArray)
+                            ->filter(function ($item) {
+                                // Select items that do not have the 'readonly' key or have it set to false
+                                return !isset($item['readonly']) || $item['readonly'] !== true;
+                            })
+                            ->pluck('value')
+                            ->toArray();
 
                         $owner->tag($tag);
 
                         // WireUI notification
-                        $this->notification()->success(
-                            $title = __('Your have updated your profile successfully!'),
-                        );
+                        $this->notification()->success($title = __('Your have updated your profile successfully!'));
                     });
                     // end of transaction
-
                 } catch (Throwable $e) {
-
                     // WireUI notification
                     // TODO!: create event to send error notification to admin
                     $this->notification([
                         'title' => __('Update failed!'),
                         'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
                         'icon' => 'error',
-                        'timeout' => 100000
+                        'timeout' => 100000,
                     ]);
                 }
             }
         }
         // $this->initTagsArray = [];
-        // $this->forgetCachedSkills();
-        // $this->cacheSkills();
+        $this->forgetCachedSkills();
+        $this->cacheSkills();
         // $this->newTag = [];
         // $this->newTagsArray = [];
         // $this->newTagCategory = null;
@@ -587,36 +575,39 @@ class UpdateProfileSkillsForm extends Component
         $this->dispatch('tagifyChange', ['tagsArray' => $this->tagsArray]);
     }
 
-
     public function forgetCachedSkills()
     {
-        //  Remove cached skills for all supported locales of the active profile type.
-        $localization = new LaravelLocalization();
-        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));  // Get the profile type (user / organization) from the session and convert to lowercase
-        foreach (collect($localization->getSupportedLocales())->keys() as $locale) {
-            Cache::forget('skills-' . $profileType . '-' . auth()->id() . '-lang-' . $locale);
+        // Get the profile type (user / organization) from the session and convert to lowercase
+        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));
+        // Get the supported locales from the config
+        $locales = config('app.supported_locales', [app()->getLocale()]);
+        // Iterate over each locale and forget the cache
+        foreach ($locales as $locale) {
+            Cache::forget('skills-' . $profileType . '-' . session('activeProfileId') . '-lang-' . $locale);
         }
     }
 
-
     public function cacheSkills()
     {
-        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType')))); // Get the profile type (user / organization) from the session and convert to lowercase
+        // Get the profile type (user / organization) from the session and convert to lowercase
+        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));
 
-        $skillsCache = Cache::remember('skills-' . $profileType . '-' . session('activeProfileId') . '-lang-' . app()->getLocale(), now()->addDays(7), function () { // remember cache for 7 days
+        $skillsCache = Cache::remember('skills-' . $profileType . '-' . session('activeProfileId') . '-lang-' . app()->getLocale(), now()->addDays(7), function () {
+            // remember cache for 7 days
             $tagIds = session('activeProfileType')::find(session('activeProfileId'))->tags->pluck('tag_id');
-            $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));     // Translate to app locale, if not available to fallback locale, if not available do not translate
+            // Translate to app locale, if not available to fallback locale, if not available do not translate
+            $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));
 
             $skills = $translatedTags->map(function ($item, $key) {
                 return [
                     'tag_id' => $item['tag_id'],
                     'name' => $item['tag'],
-                    'foreign' => ($item['locale']['locale'] ==  App::getLocale()) ? false : true,    // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
+                    'foreign' => $item['locale']['locale'] == App::getLocale() ? false : true, // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
                     'locale' => $item['locale']['locale'],
-                    'example' =>  $item['locale']['example'],
+                    'example' => $item['locale']['example'],
                     'category' => $item['category'],
-                    'category_path' =>  $item['category_path'],
-                    'category_color' =>  $item['category_color'],
+                    'category_path' => $item['category_path'],
+                    'category_color' => $item['category_color'],
                 ];
             });
             $skills = collect($skills);
@@ -626,7 +617,6 @@ class UpdateProfileSkillsForm extends Component
 
         $this->tagsArray = json_encode($skillsCache->toArray());
     }
-
 
     public function render()
     {

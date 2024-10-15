@@ -16,12 +16,13 @@
 
     "Removed message": "Verwijderd bericht",
 
-    "Add a new activity or skill to Timebank.cc": "Voeg een nieuwe activiteit of vaardigheid toe aan Timebak.cc",
+    "Activities or skills you offer to other Timebankers": "Activiteiten of vaardigheden die je aan andere Timebankers aanbied",
+    "Add a new activity or skill to Timebank.cc": "Voeg een nieuwe activiteit of vaardigheid toe aan Timebank.cc",
     "Accurate and unique tag title for this activity, avoid vague or general keywords": "Exacte en unieke labelnaam voor deze activiteit, vermijd vage of algemene sleutelwoorden",
     "Activity tag (min. 2 words)": "Activiteit label (min. 2 woorden)",
     "Descriptive example": "Beschrijvend voorbeeld",
-    "Give a practical example that unmistakably illustrates this activity": "Geef een praktisch voorbeeld dat een onmiskenbare beschrijving is voor deze activiteit",
-    "This example matches unmistakably the Activity tag": "Dit voorbeeld komt onmiskenbaar overeen met deze activiteit",
+    "Give a practical example that clearly illustrates this activity": "Geef een praktisch voorbeeld dat een heldere beschrijving is voor deze activiteit",
+    "This example matches exactly the activity tag": "Dit voorbeeld komt exact overeen met dit activiteit label",
     "Attach an English translation to this tag (recommended)": "Koppel een Engelse vertaling aan dit label (aanbevolen)",
     "Select an existing Activity tag in English": "Selecteer een bestaande activiteit-label in het Engels",
     "Or create a new Activity tag in English": "Of maak een nieuwe activiteit label in het Engels",

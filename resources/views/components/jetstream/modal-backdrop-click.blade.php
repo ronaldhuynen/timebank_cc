@@ -55,6 +55,7 @@ $maxWidth = [
                     x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0"
+                    x-on:click="show = false; $dispatch('backdrop-click')" {{--  This line emits the Livewire closeModal event, and it is a Timebank.cc customization --}}
                     >
         <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
     </div>

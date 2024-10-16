@@ -24,17 +24,17 @@ class UpdateProfileSkillsForm extends Component
     use WireUiActions;
 
     public $tagsArray = [];
-    public $initialIds = [];
+    public $initTagIds = [];
     public $initTagsArray = [];
     public $initTagsArrayTranslated = [];
-    public $newTagsArray = [];
+    public $newTagsArray;
     public $suggestions = [];
 
     public $modalVisible = false;
     public $translationVisible = false;
 
     public $newTag = [];
-    public $newTagCategory = null;
+    public $newTagCategory;
     public $categoryOptions = [];
     public $translationOptions = [];
 
@@ -43,11 +43,11 @@ class UpdateProfileSkillsForm extends Component
     public $inputDisabled = true;
     public $translateRadioButton = false;
 
-    public $baseLanguageOk = false;
-    public $sessionLanguageOk = false;
+    public $baseLanguageOk = null;
+    public $sessionLanguageOk = null;
 
-    protected $langDetector;
-    protected $listeners = ['save', 'cancelCreateTag'];
+    protected $langDetector = null;
+    protected $listeners = ['save', 'cancelCreateTag', 'refreshComponent' => '$refresh'];
 
     protected function rules()
     {
@@ -134,7 +134,7 @@ class UpdateProfileSkillsForm extends Component
                     function ($attribute, $value, $fail) {
                         if (!preg_match('/\S+\s+\S+/', $value)) {
                             // If the input doesn't have at least 2 words, fail the validation for this field
-                            $fail(__('The :attribute must be at least 2 words.'));
+                            $fail(__('The :attribute must be at least 2 words.', ['attribute' => $attribute]));
                         }
                     },
                     function ($attribute, $value, $fail) {
@@ -174,20 +174,30 @@ class UpdateProfileSkillsForm extends Component
 
     public function mount()
     {
+        $this->getSuggestions();
+        $this->getInitialTags();
+        $this->dispatch('load');
+    }
+
+    protected function getSuggestions()
+    {
         $suggestions = (new Tag())->localTagArray(app()->getLocale());
 
         $this->suggestions = collect($suggestions)->map(function ($value) {
             return StringHelper::DutchTitleCase($value);
         });
+    }
 
-        $this->initialIds = session('activeProfileType')::find(session('activeProfileId'))->tags()->orderBy('name')->get()->pluck('tag_id');
+    protected function getInitialTags()
+    {
+        $this->initTagIds = getActiveProfile()->tags()->orderBy('name')->get()->pluck('tag_id');
 
-        $this->initTagsArray = TaggableLocale::whereIn('taggable_tag_id', $this->initialIds)
+        $this->initTagsArray = TaggableLocale::whereIn('taggable_tag_id', $this->initTagIds)
             ->select('taggable_tag_id', 'locale', 'example', 'updated_by_user')
             ->get()
             ->toArray();
 
-        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initialIds, App::getLocale(), App::getFallbackLocale())); // Translate to app locale, if not available to fallback locale, if not available do not translate
+        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initTagIds, App::getLocale(), App::getFallbackLocale())); // Translate to app locale, if not available to fallback locale, if not available do not translate
 
         $tags = $translatedTags->map(function ($item, $key) {
             return [
@@ -212,7 +222,6 @@ class UpdateProfileSkillsForm extends Component
         $tags = $tags->sortBy('category_color')->values();
         $this->initTagsArrayTranslated = $tags->toArray();
         $this->tagsArray = json_encode($tags->toArray());
-        $this->dispatch('load');
     }
 
     protected function getLanguageDetector()
@@ -234,6 +243,8 @@ class UpdateProfileSkillsForm extends Component
     public function updatedNewTagExample()
     {
         $this->resetErrorBag('newTag.example');
+        $this->newTag['example'] = StringHelper::DutchTitleCase($this->newTag['example']);
+
         $langDetector = $this->getLanguageDetector();
         $detectedLanguage = $langDetector->detectSimple($this->newTag['name'] . ' ' . $this->newTag['example']);
         if ($detectedLanguage === session('locale')) {
@@ -264,6 +275,7 @@ class UpdateProfileSkillsForm extends Component
     {
         $this->resetErrorBag('inputTagTranslation.example');
         $langDetector = $this->getLanguageDetector();
+        $this->inputTagTranslation['name'] ?? ($this->inputTagTranslation['name'] = '');
         $detectedLanguage = $langDetector->detectSimple($this->inputTagTranslation['name'] . ' ' . $this->inputTagTranslation['example']);
         if ($detectedLanguage === config('timebank-cc.base_language')) {
             $this->baseLanguageOk = true;
@@ -281,10 +293,11 @@ class UpdateProfileSkillsForm extends Component
 
     public function updatedTagsArray()
     {
-        $this->newTagsArray = json_encode(collect(json_decode($this->tagsArray, true))->toArray());
+        $this->newTagsArray = collect(json_decode($this->tagsArray, true));
 
         $localesToCheck = [app()->getLocale(), '']; // Only current locale and tags without locale should be checked for any new tag keywords
         $newTagsArrayLocal = $this->newTagsArray->whereIn('locale', $localesToCheck);
+
         $suggestions = collect($this->suggestions);
         // Retrieve new tag entries not present in suggestions
         $newEntries = $newTagsArrayLocal->filter(function ($newItem) use ($suggestions) {
@@ -293,8 +306,7 @@ class UpdateProfileSkillsForm extends Component
 
         // Add a new skill modal if there are new entries
         if (count($newEntries) > 0) {
-            // $this->newTag['name'] = ucfirst($newEntries->flatten()->first());
-            $this->newTag['name'] = $newEntries->flatten()->first();
+            $this->newTag['name'] = ucfirst($newEntries->flatten()->first());
 
             $this->categoryOptions = Category::with([
                 'translations' => function ($query) {
@@ -315,7 +327,7 @@ class UpdateProfileSkillsForm extends Component
                 ->map(function ($name, $index) {
                     return [
                         'category_id' => $index, // +1 removed!
-                        'name' => StringHelper::DutchTitleCase($name),
+                        'name' => ucfirst($name),
                     ];
                 })
                 ->sortBy('name')
@@ -329,6 +341,7 @@ class UpdateProfileSkillsForm extends Component
 
     public function updatedTranslationVisible()
     {
+        // dd($this->translationVisible);
         if ($this->translationVisible) {
             $this->updatedNewTagCategory();
         }
@@ -349,7 +362,6 @@ class UpdateProfileSkillsForm extends Component
     {
         $this->translateRadioButton = 'select';
         $this->inputDisabled = true;
-        $this->baseLanguageOk = true;
         $this->dispatch('disableInput'); // Script inside view skills-form.blade.php
     }
 
@@ -408,17 +420,13 @@ class UpdateProfileSkillsForm extends Component
     public function cancelCreateTag()
     {
         $this->resetErrorBag();
-
-        $this->newTag = null;
+        $this->newTag = [];
         $this->newTagCategory = null;
         $this->translationVisible = false;
-
-        $this->dispatch('cancel'); // Removes last value of the tagsArray on front-end only
-
         $this->newTagsArray = $this->initTagsArray;
         $this->tagsArray = json_encode($this->initTagsArray);
-
         $this->modalVisible = false;
+        $this->dispatch('remove'); // Removes last value of the tagsArray on front-end only
     }
 
     public function createTag()
@@ -475,8 +483,7 @@ class UpdateProfileSkillsForm extends Component
 
         // Update newTagsArray with the new tag for save method
         $this->newTagsArray = collect($this->newTagsArray)->transform(function ($item, $key) {
-            if (isset($item['value']) && ucfirst($item['value']) == ucfirst($this->newTag['name'])) {
-                $item['value'] = StringHelper::DutchTitleCase($this->newTag['name']);
+            if (isset($item['value']) && $item['value'] === $this->newTag['name']) {
                 $item['title'] = $this->newTag['example'];
                 $item['locale'] = app()->getLocale();
             }
@@ -485,16 +492,8 @@ class UpdateProfileSkillsForm extends Component
 
         $this->modalVisible = false;
         $this->save();
-
-        $this->initTagsArray = [];
-        $this->forgetCachedSkills();
-        $this->cacheSkills();
-        $this->newTag = [];
-        $this->newTagsArray = [];
-        $this->newTagCategory = null;
-        $this->dispatch('saved');
-        $this->mount();
-        $this->dispatch('tagifyChange', ['tagsArray' => $this->tagsArray]);
+        // Emit an event to reinitialize the component
+        $this->dispatch('reinitializeComponent');
     }
 
     /**
@@ -537,14 +536,7 @@ class UpdateProfileSkillsForm extends Component
 
                         // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
                         $this->newTagsArray = collect($this->newTagsArray);
-
-                        $tag = collect($this->newTagsArray)
-                            ->filter(function ($item) {
-                                // Select items that do not have the 'readonly' key or have it set to false
-                                return !isset($item['readonly']) || $item['readonly'] !== true;
-                            })
-                            ->pluck('value')
-                            ->toArray();
+                        $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
 
                         $owner->tag($tag);
 
@@ -562,17 +554,16 @@ class UpdateProfileSkillsForm extends Component
                         'timeout' => 100000,
                     ]);
                 }
+                $this->forgetCachedSkills();
+                $this->cacheSkills();
+                $this->initTagsArray = [];
+                $this->newTag = null;
+                $this->newTagsArray = null;
+                $this->newTagCategory = null;
+                $this->dispatch('refreshComponent');
+                $this->dispatch('saved');
             }
         }
-        // $this->initTagsArray = [];
-        $this->forgetCachedSkills();
-        $this->cacheSkills();
-        // $this->newTag = [];
-        // $this->newTagsArray = [];
-        // $this->newTagCategory = null;
-        $this->dispatch('saved');
-        $this->mount();
-        $this->dispatch('tagifyChange', ['tagsArray' => $this->tagsArray]);
     }
 
     public function forgetCachedSkills()
@@ -589,15 +580,12 @@ class UpdateProfileSkillsForm extends Component
 
     public function cacheSkills()
     {
-        // Get the profile type (user / organization) from the session and convert to lowercase
-        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType'))));
+        $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType')))); // Get the profile type (user / organization) from the session and convert to lowercase
 
         $skillsCache = Cache::remember('skills-' . $profileType . '-' . session('activeProfileId') . '-lang-' . app()->getLocale(), now()->addDays(7), function () {
             // remember cache for 7 days
             $tagIds = session('activeProfileType')::find(session('activeProfileId'))->tags->pluck('tag_id');
-            // Translate to app locale, if not available to fallback locale, if not available do not translate
-            $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale()));
-
+            $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale())); // Translate to app locale, if not available to fallback locale, if not available do not translate
             $skills = $translatedTags->map(function ($item, $key) {
                 return [
                     'tag_id' => $item['tag_id'],
@@ -617,6 +605,7 @@ class UpdateProfileSkillsForm extends Component
 
         $this->tagsArray = json_encode($skillsCache->toArray());
     }
+
 
     public function render()
     {

@@ -553,7 +553,6 @@ class SkillsCardFull extends Component
                         'timeout' => 100000,
                     ]);
                 }
-
                 $this->forgetCachedSkills();
                 $this->cacheSkills();
                 $this->initTagsArray = [];

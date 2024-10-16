@@ -24,6 +24,7 @@ return [
     'dashboard' => 'overzicht',
     'pay' => 'betaal',
     'pay-to-name' => 'betaal/{name}',
+    'pay-amount-to-name' => 'betaal/{hours}/{minutes}/to/{name}',
     'transactions' => 'transacties',
     'statement' => 'transactie/{transactionId}',
     'posts.manage' => 'artikelen/beheren',

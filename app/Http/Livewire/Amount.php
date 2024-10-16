@@ -14,11 +14,31 @@ class Amount extends Component
 
     protected $listeners = ['resetForm'];
 
-
     public function mount()
     {
-        $this->hours = '';
-        $this->minutes = '';
+        // Ensure hours is a positive integer or set to null
+        if (!is_null($this->hours) && (!is_numeric($this->hours) || $this->hours <= 0 || intval($this->hours) != $this->hours)) {
+            $this->hours = null;
+        }
+
+        // Ensure minutes is a positive integer or set to null
+        if (!is_null($this->minutes) && (!is_numeric($this->minutes) || $this->minutes < 0 || intval($this->minutes) != $this->minutes)) {
+            $this->minutes = null;
+        } elseif ($this->minutes > 59) {
+            // If minutes is more than 59, adjust hours and minutes
+            $additionalHours = intdiv($this->minutes, 60);
+            $remainingMinutes = $this->minutes % 60;
+
+            $this->hours = is_null($this->hours) ? 0 : $this->hours;
+            $this->hours += $additionalHours;
+            $this->minutes = $remainingMinutes;
+        }
+
+        // Add leading zero to minutes if less than 10
+        if (!is_null($this->minutes) && $this->minutes < 10) {
+            $this->minutes = str_pad($this->minutes, 2, '0', STR_PAD_LEFT);
+        }
+
         $this->amount = 0;
     }
 
@@ -27,24 +47,21 @@ class Amount extends Component
         $this->reset();
     }
 
-
     public function updatedHours()
     {
         $this->calculateAmount();
     }
-
 
     public function updatedMinutes()
     {
         $this->calculateAmount();
     }
 
-
     protected function calculateAmount()
     {
-        $hours = is_numeric($this->hours) ? (int)$this->hours : 0;
-        $minutes = is_numeric($this->minutes) ? (int)$this->minutes : 0;
-        $this->amount = ($hours * 60) + $minutes;
+        $hours = is_numeric($this->hours) ? (int) $this->hours : 0;
+        $minutes = is_numeric($this->minutes) ? (int) $this->minutes : 0;
+        $this->amount = $hours * 60 + $minutes;
         $this->dispatch('amount', $this->amount);
         // Format the inputs for empty values
         if ($this->amount === 0) {
@@ -57,9 +74,7 @@ class Amount extends Component
                 $this->minutes = '00';
             }
         }
-
     }
-
 
     public function render()
     {

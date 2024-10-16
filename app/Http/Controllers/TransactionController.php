@@ -28,13 +28,14 @@ class TransactionController extends Controller
     }
 
 
-    public function payToName($toName = null)
+    public function payToName($name = null)
     {
-        //TODO: add permission check
-        //TODO: if 403, but has permission, redirect with message to switch profile
-        //TODO: replace 403 with custom redirect page incl explanation
-        return view('pay.show', compact(['toName']));
+        return view('pay.show', compact(['name']));
+    }
 
+    public function payAmountToName($hours = null, $minutes = null, $name = null)
+    {
+        return view('pay.show', compact(['hours', 'minutes', 'name']));
     }
 
 

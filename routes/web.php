@@ -121,6 +121,13 @@ Route::group([
                         return view('pay.profile_not_found');
                     });
 
+            Route::get(LaravelLocalization::transRoute('routes.pay-amount-to-name'), 'App\Http\Controllers\TransactionController@payAmountToName')
+                    ->name('pay-amount-to-name')
+                    ->missing(function () {
+                        return view('pay.profile_not_found');
+                    });
+
+
             Route::get(LaravelLocalization::transRoute('routes.transactions'), 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
 
             Route::get(LaravelLocalization::transRoute('routes.statement'), 'App\Http\Controllers\TransactionController@statement')

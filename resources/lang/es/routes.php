@@ -24,6 +24,7 @@ return [
     'dashboard' => 'salpicadero',
     'pay' => 'pagar',
     'pay-to-name' => 'pagar/{name}',
+    'pay-amount-to-name' => 'paga/{hours}/{minutes}/a/{name}',
     'transactions' => 'transacciones',
     'statement' => 'estado/{transactionId}',
     'posts.manage' => 'publicaciones/administrar',

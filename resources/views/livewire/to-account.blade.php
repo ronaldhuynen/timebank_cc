@@ -17,7 +17,9 @@
                           fill-rule="evenodd" />
                 </svg>
             </div>
-            <input autocomplete="off"
+            <input 
+                    id="searchInput"
+                    autocomplete="off"
                    class="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 leading-5 placeholder-gray-300 shadow-sm transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-700 sm:text-sm"
                    placeholder="{{ __('Search name or account') }}" type="search"
                    wire:model.live.debounce.500ms="search" x-on:blur="$wire.checkValidation()"
@@ -78,4 +80,17 @@
         @endif
 
     </div>
+{{-- 
+Script to raise focus on searchInput when $search already exsists during page load. 
+This is for the 'pay-to-name' route where the account holder's name is set in the url.
+The user should verify the name and account in the payment form. 
+--}}
+<script>
+    window.onload = function() {
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput && searchInput.value) {
+            searchInput.focus();
+        }
+    };
+</script>
 </div>

@@ -24,6 +24,7 @@ return [
     "dashboard"    =>  "dashboard",
     "pay" => "pay",
     'pay-to-name' => 'pay/{name}',
+    'pay-amount-to-name' => 'pay/{hours}/{minutes}/to/{name}',
     'transactions' => 'transactions',
     'statement' => 'statement/{transactionId}',
     'posts.manage' => 'posts/manage',

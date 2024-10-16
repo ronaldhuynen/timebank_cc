@@ -15,6 +15,10 @@ class Pay extends Component
 {
     use WireUiActions;
 
+    public $hours;
+    public $minutes;
+    public $name;
+    
     public $amount;
     public $fromAccountId;
     public $toAccountId;
@@ -119,7 +123,7 @@ class Pay extends Component
         try {
             $this->validate();
         } catch (\Illuminate\Validation\ValidationException $errors) {
-            dump($errors);  //TODO! Replace dump and render error message nicely for user
+            // dump($errors);  //TODO! Replace dump and render error message nicely for user
             $this->validate();
             // Execution stops here if validation fails.
         }

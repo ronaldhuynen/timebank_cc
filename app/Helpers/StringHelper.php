@@ -29,11 +29,6 @@ class StringHelper
      */
     public static function DutchTitleCase(string $value): string
     {
-        $value = strtolower($value);
-        $value = ucfirst($value);
-        if (substr($value, -1) === '.') {
-            $value = substr($value, 0, -1);
-        }
-        return $value;
+        return ucfirst(strtolower($value));
     }
 }

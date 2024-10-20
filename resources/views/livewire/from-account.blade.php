@@ -1,4 +1,4 @@
-<div wire:init="preSelected({{ $profileAccounts }})" class="max-w-md mt-4" x-data="{ open: false, selected: null }">
+<div wire:init="preSelected" class="max-w-md mt-4" x-data="{ open: false, selected: @entangle('selectedAccount') }">
     @isset($label)
         <x-jetstream.label :value="$label" for="account" />
     @else
@@ -6,8 +6,8 @@
     @endisset
 
     <div class="relative">
-        <button @click="open = !open" class="text-left mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-        <div :class="selected ? 'text-gray-900' : 'text-gray-300'" class="flex justify-between">
+        <button type="button" @click="open = !open" class="text-left mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <div :class="selected ? 'text-gray-900' : 'text-gray-300'" class="flex justify-between">
                 <span x-text="selected ? selected.name : '{{ __('Select Account') }}'"></span>
                 <span x-text="selected ? selected.balance : ''"></span>
             </div>

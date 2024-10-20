@@ -24,6 +24,8 @@ class Amount extends Component
         // Ensure minutes is a positive integer or set to null
         if (!is_null($this->minutes) && (!is_numeric($this->minutes) || $this->minutes < 0 || intval($this->minutes) != $this->minutes)) {
             $this->minutes = null;
+            $this->calculateAmount();
+
         } elseif ($this->minutes > 59) {
             // If minutes is more than 59, adjust hours and minutes
             $additionalHours = intdiv($this->minutes, 60);
@@ -32,11 +34,13 @@ class Amount extends Component
             $this->hours = is_null($this->hours) ? 0 : $this->hours;
             $this->hours += $additionalHours;
             $this->minutes = $remainingMinutes;
+            $this->calculateAmount();
         }
 
         // Add leading zero to minutes if less than 10
         if (!is_null($this->minutes) && $this->minutes < 10) {
             $this->minutes = str_pad($this->minutes, 2, '0', STR_PAD_LEFT);
+            $this->calculateAmount();
         }
 
         $this->amount = 0;

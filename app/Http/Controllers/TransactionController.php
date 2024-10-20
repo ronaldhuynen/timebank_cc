@@ -38,6 +38,11 @@ class TransactionController extends Controller
         return view('pay.show', compact(['hours', 'minutes', 'name']));
     }
 
+    public function payAmountToNameWithDescr($hours = null, $minutes = null, $name = null, $description = null)
+    {
+        return view('pay.show', compact(['hours', 'minutes', 'name', 'description']));
+    }
+
 
     public function transactions()
     {

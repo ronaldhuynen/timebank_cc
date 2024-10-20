@@ -33,7 +33,7 @@
                 @enderror
 
                 <!--- Description --->
-                @livewire('description')
+                @livewire('description', ['description' => $description])
                 @error('description')
                     <div class="mb-3 text-sm text-red-700" role="alert">
                         {{ __($message) }}
@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="text-right">
-            <x-jetstream.button wire:click="showModal">
+            <x-jetstream.button type="submit">
                 {{ __('Pay') }}
             </x-jetstream.button>
         </div>

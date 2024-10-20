@@ -21,7 +21,8 @@
                         @livewire('pay', [
                             'hours' => $hours ?? null,
                             'minutes' => $minutes ?? null,
-                            'toHolderName' => $name ?? null
+                            'toHolderName' => $name ?? null,
+                            'description' => $description ?? null,
                         ])
                     </div>
                 </div>

@@ -139,6 +139,8 @@ return [
     |
     */
 
+    
+    //TODO: Translate messages! See examples in en and nl folder
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
@@ -156,6 +158,8 @@ return [
     |
     */
 
+    
+    //TODO: Translate messages! See examples in en and nl folder
     'attributes' => ['
         state.about' => __('About field'),
     

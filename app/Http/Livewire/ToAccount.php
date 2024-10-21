@@ -20,7 +20,7 @@ class ToAccount extends Component
     public $toHolderPhoto;
     public $userAccounts;
 
-    protected $listeners = ['fromAccountId', 'resetForm'];
+    protected $listeners = ['fromAccountId', 'resetForm', 'removeSelectedAccount'];
 
     public function mount($toHolderName = null, $toAccountId = null)
     {
@@ -46,6 +46,7 @@ class ToAccount extends Component
         $this->reset();
     }
 
+    // Needed to exclude this account from the available to account options
     public function fromAccountId($fromAccount)
     {
         $this->fromAccountId = $fromAccount;
@@ -117,9 +118,10 @@ class ToAccount extends Component
     }
 
     public function removeSelectedAccount()
-    {
+    {            
         $this->toAccountId = null;
-        $this->dispatch('toAccountId', $this->toAccountId);
+        $this->toHolderName = null;
+        $this->dispatch('toAccountId', null);
     }
 
     public function render()

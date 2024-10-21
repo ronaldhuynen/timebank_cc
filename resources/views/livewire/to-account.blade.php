@@ -72,7 +72,7 @@
                             {{ $toAccountName }}
                         </div>
                     </div>
-                    <button class="ml-auto text-gray-600 hover:text-red-600" wire:click="removeSelectedAccount">
+                    <button type="button" class="ml-auto text-gray-600 hover:text-red-600" wire:click="removeSelectedAccount">
                         <x-icon class="h-5 w-5" name="x-circle" />
                     </button>
                 </div>

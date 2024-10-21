@@ -39,6 +39,7 @@ class Pay extends Component
         'toAccountDetails',
         'description',
         'resetForm',
+        'removeSelectedAccount',
     ];
 
     protected $rules = [
@@ -51,6 +52,8 @@ class Pay extends Component
 
     public function mount($amount = null, $hours = null, $minutes = null)
     {
+        $this->modalVisible = false;
+
         if ($amount !== null && is_numeric($amount) && $amount > 0) {
             $this->amount = $amount;
         } else {
@@ -287,6 +290,14 @@ class Pay extends Component
         $this->modalVisible = false;
     }
 
+
+    public function removeSelectedAccount()
+    {
+        $this->toAccountId = null;
+        $this->toAccountName = null;
+        $this->toHolderId = null;
+        $this->toHolderName = null;
+    }
 
 
     /**

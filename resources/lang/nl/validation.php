@@ -159,6 +159,11 @@ return [
         'district' => [
             'required_if' => ':Attribute is verplicht.',
         ],
+
+        // pay.blade.php
+        'amount.min' => 'Bedrag moet minimaal :min minuut zijn.',
+        'fromAccountId.*' => 'Vanaf rekening is verplicht.',    
+        'toAccountId.*' => 'Naar rekening is verlicht.',
     ],
 
     /*
@@ -202,7 +207,10 @@ return [
         'newTagCategory' => 'Categorie',
         'selectTagTranslation' => 'Geselecteerde vertaling',
         'inputTagTranslation.name' => 'vertaalde activiteit label',
-        'inputTagTranslation.example' => 'vertaalde voorbeeld'
+        'inputTagTranslation.example' => 'vertaalde voorbeeld',
+
+        // pay.blade.php
+        'description' => 'Omschrijving',
     ],
 
 ];

@@ -159,6 +159,11 @@ return [
         'district' => [
             'required_if' => 'The :attribute field is required.',
         ],
+
+        // pay.blade.php
+        'amount.min' => 'Amount must be at least :min minute.',
+        'fromAccountId.required' => 'From account is required.',  
+        'toAccountId.*' => 'To account is required.',
     ],
 
     /*
@@ -202,7 +207,10 @@ return [
         'newTagCategory' => 'category',
         'selectTagTranslation' => 'selected translation',
         'inputTagTranslation.name' => 'translation of the activity tag',
-        'inputTagTranslation.example' => 'translation of the example'
+        'inputTagTranslation.example' => 'translation of the example',
+
+        // pay.blade.php
+        'description' => 'description',
 
     ],
 ];

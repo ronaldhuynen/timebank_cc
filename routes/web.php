@@ -4,6 +4,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\LangJsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\TransactionController;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -132,6 +133,11 @@ Route::group([
                     ->missing(function () {
                         return view('pay.profile_not_found');
                     });
+
+            // Legacy Cyclos payment link, as used by Lekkernasuh
+            Route::get('/do/member/payment', [TransactionController::class, 'doCyclosPayment']);
+
+            
 
 
 

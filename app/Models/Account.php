@@ -28,4 +28,15 @@ class Account extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public static function accountsCyclosMember($cyclos_id)
+    {
+        return  Account::with('accountable')
+                    ->whereHas('accountable', function ($query) use ($cyclos_id) {
+                        $query->where('cyclos_id', $cyclos_id)
+                            ->whereNull('inactive_at');
+                    })
+                    ->pluck('name', 'id');
+
+    }
+
 }

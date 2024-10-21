@@ -8,7 +8,8 @@
                 @livewire('amount', [
                                     'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user'),
                                     'hours' => $hours,
-                                    'minutes' => $minutes
+                                    'minutes' => $minutes,
+                                    'amount' => $amount
                                     ])
                 @error('amount')
                     <div class="mb-3 text-sm text-red-700" role="alert">
@@ -25,7 +26,7 @@
                 @enderror
 
                 <!--- To Account --->
-                @livewire('to-account', ['search' => $toHolderName])
+                @livewire('to-account', ['toHolderName' => $toHolderName, 'toAccountId' => $toAccountId])
                 @error('toAccountId')
                     <div class="mb-3 text-sm text-red-700" role="alert">
                         {{ __($message) }}

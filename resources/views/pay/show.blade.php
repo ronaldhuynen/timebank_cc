@@ -19,8 +19,10 @@
                     </div>
                     <div class="mt-0 md:col-span-2 md:mt-0">
                         @livewire('pay', [
+                            'amount' => $amount ?? null,
                             'hours' => $hours ?? null,
                             'minutes' => $minutes ?? null,
+                            'toAccountId' => $toAccountId ?? null,
                             'toHolderName' => $name ?? null,
                             'description' => $description ?? null,
                         ])

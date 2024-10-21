@@ -17,7 +17,7 @@ class Pay extends Component
 
     public $hours;
     public $minutes;
-    
+
     public $amount;
     public $fromAccountId;
     public $toAccountId;
@@ -49,12 +49,17 @@ class Pay extends Component
     ];
 
 
-    public function mount($hours = null, $minutes = null)
-    {        
-        $hours = is_numeric($this->hours) ? (int) $this->hours : 0;
-        $minutes = is_numeric($this->minutes) ? (int) $this->minutes : 0;
-        $this->amount = $hours * 60 + $minutes;
+    public function mount($amount = null, $hours = null, $minutes = null)
+    {
+        if ($amount !== null && is_numeric($amount) && $amount > 0) {
+            $this->amount = $amount;
+        } else {
+            $hours = is_numeric($this->hours) ? (int) $this->hours : 0;
+            $minutes = is_numeric($this->minutes) ? (int) $this->minutes : 0;
+            $this->amount = $hours * 60 + $minutes;
+        }
     }
+
 
     /**
      * Extra validation when amount looses focus

@@ -6,6 +6,7 @@ use App\Http\Controllers\TransactionController;
 use App\Mail\TransferReceived;
 use App\Models\Account;
 use App\Models\Transaction;
+use App\Models\TransactionType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
@@ -17,14 +18,19 @@ class Pay extends Component
 
     public $hours;
     public $minutes;
-
     public $amount;
     public $fromAccountId;
+    public $fromAccountName;
+    public $fromAccountBalance;
     public $toAccountId;
     public $toAccountName;
     public $toHolderId;
     public $toHolderName;
+    public $toHolderPhoto;
+    public $type;
+    public $typeOptions = [];
     public $description;
+    public $transTypeRadio;
     public $limitError;
     public $requiredError = false;
     public $submitEnabled = false;
@@ -38,6 +44,7 @@ class Pay extends Component
         'toAccountId',
         'toAccountDetails',
         'description',
+        'transTypeRadio',
         'resetForm',
         'removeSelectedAccount',
     ];
@@ -83,10 +90,12 @@ class Pay extends Component
      * @param  mixed $toAccount
      * @return void
      */
-    public function fromAccountId($fromAccountId)
+    public function fromAccountId($selectedAccount)
     {
         $this->modalVisible = false;
-        $this->fromAccountId = $fromAccountId;
+        $this->fromAccountId = $selectedAccount['id'];
+        $this->fromAccountName = $selectedAccount['name'];
+        $this->fromAccountBalance = $selectedAccount['balance'];
         $this->validateOnly('fromAccountId');
     }
 
@@ -118,8 +127,19 @@ class Pay extends Component
         $this->toAccountName = $details['accountName'];
         $this->toHolderId = $details['holderId'];
         $this->toHolderName = $details['holderName'];
-    }
+        $this->toHolderPhoto = url($details['holderPhoto']);
 
+        if ($details['holderType'] == 'App\Models\User') {
+            $this->typeOptions = ['work', 'gift'];
+        } elseif ($details['holderType'] == 'App\Models\Organization') {
+            $this->typeOptions = ['work', 'donation'];
+        } elseif ($details['holderType'] == 'App\Models\Bank') {
+            $this->typeOptions = ['work', 'currency removal'];
+        }
+        // TODO: Add Currency creation transaction types for banks
+
+        $this->dispatch('setTransactionTypeOptions', $this->typeOptions);
+    }
 
     /**
      * Sets description after it is updated
@@ -131,6 +151,19 @@ class Pay extends Component
     {
         $this->description = $description;
         $this->validateOnly('description');
+    }
+
+        
+    /**
+     * Sets transTypeRadio after it is updated
+     *
+     * @param  mixed $content
+     * @return void
+     */
+    public function transTypeRadio($transTypeRadio)
+    {
+        $this->transTypeRadio = $transTypeRadio;
+        // $this->validateOnly('transTypeRadio');
     }
 
 
@@ -202,6 +235,7 @@ class Pay extends Component
         $toAccountId = $this->toAccountId;
         $amount = $this->amount;
         $description = $this->description;
+        $transType = $this->transTypeRadio;
 
         $transactions = new TransactionController();
         $balanceFrom = $transactions->getBalance($fromAccountId);
@@ -243,12 +277,16 @@ class Pay extends Component
                 $this->limitError = 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
                 return $this->modalErrorVisible = true;
             }
+            
+            $transactionType = TransactionType::where('name', $transType)->first();
+            $transactionTypeId = $transactionType ? $transactionType->id : 1;
 
             $transfer = new Transaction();
             $transfer->from_account_id = $fromAccountId;
             $transfer->to_account_id = $transferToAccount;
             $transfer->amount = $amount;
             $transfer->description = $description;
+            $transfer->transaction_type_id = $transactionTypeId;
             $transfer->creator_user_id = Auth::user()->id;
             $save = $transfer->save();
             if ($save) {

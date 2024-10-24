@@ -12,18 +12,6 @@ class Transaction extends Model
     use HasFactory;
     use Searchable; // laravel/scout with ElasticSearch
 
-    public function __construct(array $attributes = [])
-    {
-            // // Log the attributes being passed to the constructor
-            // info('Transaction model constructor called with attributes: ', $attributes);
-
-            // parent::__construct($attributes);
-
-            // // Log the state of the model after instantiation
-            // info('Transaction model instantiated with ID: ' . ($this->id ?? 'N/A'), [
-            //     'attributes' => $this->getAttributes(),
-            // ]);
-    }
 
 
     /**
@@ -104,5 +92,13 @@ class Transaction extends Model
         return $this->belongsTo(User::class, 'creator_user_id');
     }
 
+
+    /**
+     * Get the transaction type that owns the transaction.
+     */
+    public function transactionType()
+    {
+        return $this->belongsTo(TransactionType::class);
+    }
 
 }

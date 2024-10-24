@@ -29,6 +29,10 @@ return [
     'Your_profile_has_received_a_star' => 'Je profiel heeft een ster ontvangen',
     'Your_profile_has_been_deleted' => 'Je profiel is verwijderd',
 
+    // pay.blade.php
+    'pay_confirm' => 'Maak :amount over naar de :toAccountName rekening van :toHolderName?',
+
+
 
 
 

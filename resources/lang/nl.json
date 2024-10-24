@@ -133,8 +133,11 @@
     "Transaction History": "Transactie-overzicht",
     "Search transactions": "Zoek transacties",
     "Description": "Omschrijving",
-    "Payment description": "Betalingsomschrijving",
     "Transaction Statement": "Transactie-bewijs",
+    "Confirm your payment": "Bevestig je betaling",
+    "account": "rekening",
+    "For the total time worked or helped": "Voor de totale tijd gewerkt of geholpen",
+    "As a gift, without something in return": "Als gift, zonder iets hier voor terug",
 
     "Nr.": "Nr.",
     "Amount in minutes": "Bedrag in minuten",
@@ -182,6 +185,7 @@
 
     "Transfer Timebank.cc Hours": "Betaal Timebank.cc uren",
     "Amount": "Bedrag",
+    "Amount of time": "Bedrag aan tijd",
     "Account": "Rekening",
     "Select Account": "Seleceer rekening",
     "From account": "Vanaf rekening",

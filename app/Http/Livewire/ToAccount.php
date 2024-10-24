@@ -17,6 +17,7 @@ class ToAccount extends Component
     public $toAccountId;
     public $toAccountName;
     public $toHolderName;
+    public $toHolderType;
     public $toHolderPhoto;
     public $userAccounts;
 
@@ -65,6 +66,7 @@ class ToAccount extends Component
             ->first();
         $this->toAccountName = $toAccountDetails['accountName'];
         $this->toHolderName = $toAccountDetails['holderName'];
+        $this->toHolderType = $toAccountDetails['holderType'];
         $this->toHolderPhoto = $toAccountDetails['holderPhoto'];
         $this->showDropdown = false;
         $this->search = '';
@@ -107,6 +109,7 @@ class ToAccount extends Component
                     'accountName' => $account->name,
                     'holderId' => $account->accountable->id,
                     'holderName' => $account->accountable->name,
+                    'holderType' => $account->accountable_type,
                     'holderPhoto' => url(Storage::url($account->accountable->profile_photo_path)),
                 ];
             })

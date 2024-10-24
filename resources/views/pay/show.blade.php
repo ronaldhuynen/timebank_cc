@@ -25,6 +25,7 @@
                             'toAccountId' => $toAccountId ?? null,
                             'toHolderName' => $name ?? null,
                             'description' => $description ?? null,
+                            'type' => $type ?? null,
                         ])
                     </div>
                 </div>

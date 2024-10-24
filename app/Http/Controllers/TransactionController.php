@@ -49,7 +49,7 @@ class TransactionController extends Controller
     }
 
 
-    public function doCyclosPayment(Request $request, $minutes = null, $toAccoundId = null, $name =null, $description = null)
+    public function doCyclosPayment(Request $request, $minutes = null, $toAccoundId = null, $name = null, $description = null, $type = null)
     {
         $cyclos_id = $request->query('to');
         // Retrieve the amount from the query and replace comma with dot
@@ -58,16 +58,17 @@ class TransactionController extends Controller
         // Convert the amount to minutes
         $minutes = $amountNumeric * 60;
         $toAccountId = Account::accountsCyclosMember($request->query('to'));
-        if (count($toAccountId) > 1 ) {
+        if (count($toAccountId) > 1) {
             // More than 1 account is found with this cyclos_id, do not use accountId but search by name
             // so user can select the proper account from the toAccount component
             $name = $this->getNameByCyclosId($cyclos_id);
         } else {
             $toAccountId = $toAccountId->keys()->first();
-        }        
+        }
         $description = $request->query('description');
+        $type = $request->query('type');
 
-        return view('pay.show', compact(['minutes', 'toAccountId', 'name', 'description']));
+        return view('pay.show', compact(['minutes', 'toAccountId', 'name', 'description', 'type']));
     }
 
     public static function getNameByCyclosId($cyclos_id)

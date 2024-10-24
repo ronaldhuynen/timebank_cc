@@ -28,4 +28,8 @@ return [
     'Your_profile_has_received_a_star' => 'Your profile received a star',
     'Your_profile_has_been_deleted' => 'Your profile has been deleted',
 
+    // pay.blade.php
+    'pay_confirm' => 'Transfer :amount to the :toAccountName account of :toHolderName?',
+
+
 ];

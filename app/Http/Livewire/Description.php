@@ -36,16 +36,7 @@ class Description extends Component
 
     public function updated()
     {
-        // try {
-        //     $this->validateOnly('description');
-        // } catch (\Illuminate\Validation\ValidationException $errors) {
-        //     $this->requiredError = true;
-        //     $this->validateOnly('description');
-        // }
-        // // Execution stops here if validation fails.
-        // $this->requiredError = false;
         $this->dispatch('description', $this->description);
-
     }
 
 

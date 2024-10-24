@@ -44,8 +44,7 @@ class FromAccount extends Component
                 'balance' => tbFormat($this->profileAccounts[0]['balance']),
             ];
             
-            $this->dispatch('fromAccountId', $this->fromAccountId);
-
+            $this->dispatch('fromAccountId', $this->selectedAccount);
         }
     }
 
@@ -59,8 +58,7 @@ class FromAccount extends Component
             'balance' => tbFormat($selected['balance']),
         ];
         
-        $this->dispatch('fromAccountId', $this->fromAccountId);
-
+        $this->dispatch('fromAccountId', $this->selectedAccount);
     }
 
     public function render()

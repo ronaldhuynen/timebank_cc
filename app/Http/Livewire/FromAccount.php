@@ -43,7 +43,6 @@ class FromAccount extends Component
                 'name' => ucfirst(strtolower($this->profileAccounts[0]['name'])),
                 'balance' => tbFormat($this->profileAccounts[0]['balance']),
             ];
-            
             $this->dispatch('fromAccountId', $this->selectedAccount);
         }
     }

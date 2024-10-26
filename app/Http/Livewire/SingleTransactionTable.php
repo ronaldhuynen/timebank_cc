@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Transaction;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class SingleTransactionTable extends Component
@@ -22,7 +23,24 @@ class SingleTransactionTable extends Component
 
     public function getTransaction()
     {
-        $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->findOrFail($this->transactionId);
+        $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable', 'transactionType')->findOrFail($this->transactionId);
+        
+        $fromType = get_class($results->accountFrom->accountable);
+        $toType = get_class($results->accountTo->accountable);
+        $fromId = $results->accountFrom->accountable->id;
+        $toId = $results->accountTo->accountable->id;
+
+        
+
+// Check if the user is authorized to view the transaction
+if (
+    !in_array(Session::get('activeProfileType'), [$fromType, $toType]) ||
+    !in_array(Session::get('activeProfileId'), [$fromId, $toId])
+) {
+    abort(403, 'Unauthorized action.');
+}
+
+
 
                 $transaction[] = [
                     'trans_id' => $results->id,
@@ -34,6 +52,7 @@ class SingleTransactionTable extends Component
                     'to_relation' => $results->accountTo->accountable->name,
                     'to_profile_photo' => $results->accountTo->accountable->profile_photo_path,
                     'description' => $results->description,
+                    'type' => $results->transactionType->name ?? 'work',
                     'datetime' => $results->created_at,
                 ];
 

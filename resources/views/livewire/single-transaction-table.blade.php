@@ -1,138 +1,189 @@
 <div class="mt-6">
-    <div class="px-0 py-2 text-gray-900 font-bold text-sm">
-    {{ __('Transaction # ') }} {{ $transaction['trans_id'] }}
+    <div class="px-0 py-2 text-sm font-bold text-gray-900">
+        {{ __('Transaction # ') }} {{ $transaction['trans_id'] }}
     </div>
 
     <!--Statement table -->
-    <table class="min-w-full w-full leading-normal" id="transaction">
+    <table class="w-full min-w-full leading-normal" id="transaction">
         <thead>
             <tr>
-                <th class="py-6 border-b border-gray-200">
-                    <a wire:click.prevent="sortBy('datetime')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
+                <th class="py-6">
+                    <div class="px-0 py-2 text-sm font-normal text-gray-500">
                         {{ __('Date') }}
-                    </a>
+                    </div>
                 </th>
-                <th class="py-6 border-b border-gray-200">
-                    <a wire:click.prevent="sortBy('relation')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
+                <th class="py-6">
+                    <div class="px-0 py-2 text-sm font-normal text-gray-500">
                         {{ __('From') }}
-                    </a>
+                    </div>
                 </th>
-                <th class="py-6 border-b border-gray-200">
-                    <a wire:click.prevent="sortBy('description')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
+                <th class="py-6">
+                    <div class="px-0 py-2 text-sm font-normal text-gray-500">
                         {{ __('To') }}
-                    </a>
+                    </div>
                 </th>
-                <th class="py-6 border-b border-gray-200">
-                    <a wire:click.prevent="sortBy('amount')" href="#" role="button" scope="col" class="px-0 py-2 text-gray-500 text-sm font-normal">
+                <th class="py-6">
+                    <div class="px-0 py-2 text-sm font-normal text-gray-500">
                         {{ __('Amount') }}
-                    </a>
+                    </div>
                 </th>
             </tr>
         </thead>
 
-        <!--FIXME: mobile lay-out! -->
+        <!--TODO: mobile lay-out! -->
         <tbody>
-            <tr onclick="window.location='{{ url()->previous() }}'" style="cursor: pointer;">
-                <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-2/16 align-top">
-                    <p class="text-gray-900 whitespace-no-wrap font-bold">
+            <tr class="px-1" onclick="window.location='{{ url()->previous() }}'" style="cursor: pointer;">
+                <td class="w-2/16 align-top text-sm">
+                    <p class="whitespace-no-wrap font-bold text-gray-900">
                         {{ date('D d-m-Y', strtotime($transaction['datetime'])) }}
                     </p>
-                    <p class="text-gray-900 whitespace-no-wrap">
+                    <p class="whitespace-no-wrap text-gray-900">
                         {{ __('on ') . date('H:i:s', strtotime($transaction['datetime'])) }}
 
                     </p>
                 </td>
-                <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-6/16 align-top">
+                <td class="w-6/16 align-top text-sm">
 
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <p href="#" class="block relative">
-                                <img alt="profile" src="{{ Storage::url($transaction['from_profile_photo']) }}" class="mx-auto object-cover rounded-full w-16 h-16 " />
+                            <p class="relative block" href="#">
+                                <img alt="profile"
+                                     class="mx-auto h-16 w-16 rounded-full object-cover outline outline-1 outline-offset-1 outline-gray-600"
+                                     src="{{ Storage::url($transaction['from_profile_photo']) }}" />
                             </p>
                         </div>
                         <div class="ml-3">
-                            <p class="text-gray-900 whitespace-no-wrap font-bold">
+                            <p class="whitespace-no-wrap font-bold text-gray-900">
                                 {{ $transaction['from_relation'] }}
                             </p>
-                            <p class="text-gray-900 whitespace-no-wrap ">
+                            <p class="whitespace-no-wrap text-gray-900">
                                 {{ $transaction['from_account'] }}
                             </p>
                         </div>
                     </div>
                 </td>
 
-                <td class="px-2 py-2 border-b border-gray-200 bg-white text-sm w-6/16 align-top">
+                <td class="w-6/16 align-top text-sm">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <p href="#" class="block relative">
-                                <img alt="profile" src="{{ Storage::url($transaction['to_profile_photo']) }}" class="mx-auto object-cover rounded-full w-16 h-16 " />
+                            <p class="relative block" href="#">
+                                <img alt="profile"
+                                     class="mx-auto h-16 w-16 rounded-full object-cover outline outline-1 outline-offset-1 outline-gray-600"
+                                     src="{{ Storage::url($transaction['to_profile_photo']) }}" />
                             </p>
                         </div>
                         <div class="ml-3">
-                            <p class="text-gray-900 whitespace-no-wrap font-bold">
+                            <p class="whitespace-no-wrap font-bold text-gray-900">
 
                                 {{ $transaction['to_relation'] }}
                             </p>
-                            <p class="text-gray-900 whitespace-no-wrap ">
+                            <p class="whitespace-no-wrap text-gray-900">
                                 {{ $transaction['to_account'] }}
                             </p>
                         </div>
                     </div>
                 </td>
 
-                <td class="px-2 py-2 border-b border-gray-200 bg-white w-2/16 text-semibold text-sm font-bold  align-top">
+                <td class="w-2/16 text-semibold align-top text-sm font-bold">
 
-                    <p class="text-gray-900 whitespace-no-wrap">
+                    <p class="whitespace-no-wrap text-gray-900">
                         {{ tbFormat($transaction['amount']) }}
                     </p>
                 </td>
             </tr>
         </tbody>
     </table>
-    <div class="px-0 mt-12 text-gray-500 text-sm font-normal">
-    {{ __('Description') }}
+    <!-- Description --->
+    <div class="mt-12 px-0 text-sm font-normal text-gray-500">
+        {{ __('Description') }}
     </div>
-    <div class="text-gray-900 my-6 text-base leading-10">
+    <div class="my-6 text-base leading-10 text-gray-900">
         {{ $transaction['description'] }}
     </div>
 
-    <div class="my-6 text-gray-900 text-right align-bottom">
-        <span wire:click="$toggle('qrModalVisible')" class="float-right my-12" style="cursor: pointer;" onclick="qrModal()">
+    <!-- Transaction type -->
+    <div class="mt-12 px-0 text-sm font-normal text-gray-500">
+        {{ __('Transaction type') }}
+    </div>
+    <div class="my-6 text-base leading-10 text-gray-900">
+        @if ($transaction['type'] == 'work')
+            <div class="flex items-center">
+                <div
+                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
+                    <x-icon class="" mini name="clock" />
+                </div>
+                <span class="mx-2">{{ __('For the total time worked or helped') }}</span>
+            </div>
+        @elseif ($transaction['type'] == 'gift')
+            <div class="flex items-center">
+                <div
+                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
 
+                    <x-icon mini name="gift" />
+                </div>
+                <span class="mx-2">{{ __('As a gift, without something in return') }}</span>
+            </div>
+        @elseif ($transaction['type'] == 'donation')
+            <div class="flex items-center">
+                <div
+                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
+                    <x-icon mini name="hand-thumb-up" />
+                </div>
+                <span class="mx-2">{{ __('As a donation, to support the cause of this organization') }}</span>
+            </div>
+        @elseif ($transaction['type'] == 'currency creation')
+            <div class="flex items-center">
+                <div
+                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
+                    <x-icon mini name="bolt" />
+                </div>
+                <span class="mx-2">{{ __('Currency creation') }}</span>
+            </div>
+        @elseif ($transaction['type'] == 'currency removal')
+            <div class="flex items-center">
+                <div
+                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
+                    <x-icon mini name="bolt-slash" />
+                </div>
+                <span class="mx-2">{{ __('Currency removal') }}</span>
+            </div>
+        @endif
+    </div>
+
+    <div class="my-6 text-right align-bottom text-gray-900">
+        <span class="float-right my-12" onclick="qrModal()" style="cursor: pointer;"
+              wire:click="$toggle('qrModalVisible')">
 
             {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(60)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
         </span>
 
     </div>
 
-
-    <!---- Confirmation Modal ---->
+    <!---- QR Modal ---->
     <x-jetstream.dialog-modal wire:model.live="qrModalVisible">
 
         <x-slot name="title">
+            {{ __('QR code') }} {{ strtolower(__('Transaction # ')) }} {{ $transaction['trans_id'] }}
         </x-slot>
 
         <x-slot name="content">
-        <div class="absolute"></div>
-
-            <!-- TODO: Align qr in center and scale to max width -->
-            <div wire:click="$toggle('qrModalVisible')" class="object-cover relative inset-0" id="qr-container">
-                {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(280)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
-               <script>
-                   function qrModal() {
-                        document.getElementById('qr-container').firstElementChild.setAttribute("width", "100%");
-                        document.getElementById('qr-container').firstElementChild.setAttribute("height", "100%");
-                        document.getElementById('qr-container').firstElementChild.setAttribute("viewBox", "0 0 600 600");
-                        console.log(document.getElementById('qr-container').firstElementChild);
-                   }
-               </script>
-
+            <div class="py-6">
+                {{ __('messages.qr_transaction_info', ['from_relation' => $transaction['from_relation'], 'to_relation' => $transaction['to_relation']]) }}
             </div>
-            {{ route('transaction.show', ['transactionId' => $transactionId]) }}
+            <div class="flex flex-col items-center justify-center h-full">
+                <!-- Align QR code in center and scale to max width -->
+                <div class="relative object-cover mb-4" id="qr-container" wire:click="$toggle('qrModalVisible')">
+                    {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(280)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
+                </div>
+                <!-- Route Link -->
+                {{ route('transaction.show', ['transactionId' => $transactionId]) }}
+            </div>
+        </x-slot>
+        
+        <x-slot name="footer">
         </x-slot>
 
         <x-slot name="footer">
         </x-slot>
     </x-jetstream.dialog-modal>
 </div>
-

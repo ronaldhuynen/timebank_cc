@@ -31,5 +31,8 @@ return [
     // pay.blade.php
     'pay_confirm' => 'Transfer :amount to the :toAccountName account of :toHolderName?',
 
+    // single-transaction.blade.php
+    'qr_transaction_info' => ':from_relation en :to_relation kunnen deze transactie verifiëren door de code te scannen.',
+
 
 ];

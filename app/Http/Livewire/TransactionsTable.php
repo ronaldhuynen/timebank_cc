@@ -6,7 +6,6 @@ use App\Exports\TransactionsExport;
 use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -68,9 +67,9 @@ class TransactionsTable extends Component
     }
 
 
-    public function fromAccountId($fromAccount)
+    public function fromAccountId($selectedAccount)
     {
-        $this->fromAccountId = $fromAccount;
+        $this->fromAccountId = $selectedAccount['id'];
     }
 
 
@@ -85,12 +84,14 @@ class TransactionsTable extends Component
         $transactions = [];
         $balance = 0;
         $accountId = $this->fromAccountId;
+        
+// $accountId = 846;
+
         $account = Account::with(['accountable' => function ($query) {
             $query->select('id', 'name', 'full_name'); // Ensure 'id' is selected for the relationship to work
         }])->find($accountId);
-
+        // dd($account);
         $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->where('to_account_id', $accountId)->orWhere('from_account_id', $accountId)->get();
-
         foreach ($results as $t) {
             if ($t->to_account_id === $accountId) {
                 // Credit transfer

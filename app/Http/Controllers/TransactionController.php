@@ -123,7 +123,7 @@ class TransactionController extends Controller
             return view('transactions.statement', compact('transactionId'));
         } else {
             // Abort with a 403 status code if the transaction does not exist
-            return abort(403);
+            return abort(403, 'Unauthorized action.');
         }
 
     }

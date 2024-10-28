@@ -58,7 +58,7 @@
             @endif
 
         <!----- When a To account is selected ---->
-        @else
+            @else
             <div
                  class="focus:shadow-outline-blue mt-2 w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-0 pr-3 leading-5 shadow-sm transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-300 focus:outline-none sm:text-sm">
                 <!-- Add cursor-default class here -->

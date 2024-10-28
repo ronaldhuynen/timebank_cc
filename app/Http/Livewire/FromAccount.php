@@ -36,12 +36,12 @@ class FromAccount extends Component
 
     public function preSelected()
     {
-        if (!empty($this->profileAccounts)) {
-            $this->fromAccountId = $this->profileAccounts[0]['id'];
+        if (count($this->profileAccounts) > 0) {
+            $this->fromAccountId = $this->profileAccounts->first()['id'];
             $this->selectedAccount = [
-                'id' => $this->profileAccounts[0]['id'],
-                'name' => ucfirst(strtolower($this->profileAccounts[0]['name'])),
-                'balance' => tbFormat($this->profileAccounts[0]['balance']),
+                'id' => $this->profileAccounts->first()['id'],
+                'name' => ucfirst(strtolower($this->profileAccounts->first()['name'])),
+                'balance' => tbFormat($this->profileAccounts->first()['balance']),
             ];
             $this->dispatch('fromAccountId', $this->selectedAccount);
         }

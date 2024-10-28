@@ -20,12 +20,38 @@ class MigrateCyclosCommand extends Command
         $sourceDb = 'timebank_2024_06_11';
         $destinationDb = env('DB_DATABASE');
 
-        $userLimitMin = config('timebank-cc.accounts.user.limit_min');
-        $userLimitMax = config('timebank-cc.accounts.user.limit_max');
-        $orgLimitMin = config('timebank-cc.accounts.organization.limit_min');
-        $orgLimitMax = config('timebank-cc.accounts.organization.limit_max');
-        $bankLimitMin = config('timebank-cc.accounts.bank.limit_min');
-        $bankLimitMax = config('timebank-cc.accounts.bank.limit_max');
+        $userAccountName = config('timebank-cc.accounts.user.name');
+        $userLimitMin = config('timebank-cc.accounts.user.limit_min') === null ? 'NULL' : config('timebank-cc.accounts.user.limit_min');
+        $userLimitMax = config('timebank-cc.accounts.user.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.user.limit_max');
+        
+        $userProjectAccountName = config('timebank-cc.accounts.user.name');
+        $userProjectLimitMin = config('timebank-cc.accounts.userProject.limit_min') === null ? 'NULL' : config('timebank-cc.accounts.userProject.limit_min');
+        $userProjectLimitMax = config('timebank-cc.accounts.userProject.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.userProject.limit_max');
+
+        $giftAccountName = 'gift'; // Temporary name as this account will be removed after migration
+        $giftLimitMin = 0;
+        $giftLimitMax = 5 * 60;        
+        $giftAccountName = $giftAccountName === null ? 'NULL' : "'$giftAccountName'";
+        $giftLimitMin = $giftLimitMin === null ? 'NULL' : $giftLimitMin;
+        $giftLimitMax = $giftLimitMax === null ? 'NULL' : $giftLimitMax;
+
+        $orgAccountName = config('timebank-cc.accounts.organization.name');
+        $orgLimitMin = config('timebank-cc.accounts.organization.limit_min') === null ? 'NULL' : config('timebank-cc.accounts.organization.limit_min');
+        $orgLimitMax = config('timebank-cc.accounts.organization.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.organization.limit_max');
+
+        $bankAccountName = config('timebank-cc.accounts.bank.name');
+        $bankLimitMin = config('timebank-cc.accounts.bank.limit_min') === null ? 'NULL' : config('timebank-cc.accounts.bank.limit_min');
+        $bankLimitMax = config('timebank-cc.accounts.bank.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.bank.limit_max');
+ 
+        $communityAccountName = config('timebank-cc.accounts.community.name');
+        $communityLimitMin = config('timebank-cc.accounts.community.limit_min') === null ? 'NULL' : config('timebank-cc.accounts.community.limit_min');
+        $communityLimitMax = config('timebank-cc.accounts.community.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.community.limit_max');
+
+        $debitAccountName = config('timebank-cc.accounts.debit.name');
+        $debitLimitMin = config('timebank-cc.accounts.debit.limit_min') === null ? 'NULL' : config('timebank-cc.accounts.debit.limit_min');
+        $debitLimitMax = config('timebank-cc.accounts.debit.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.debit.limit_max');
+
+
 
 
         // MIGRATE MEMBERS
@@ -512,14 +538,14 @@ class MigrateCyclosCommand extends Command
             $accounts = DB::affectingStatement("
                 INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
-                    'Debit' AS name,
+                    '{$debitAccountName}' AS name,
                     'App\\\\Models\\\\Bank' AS accountable_type,
                     1 AS accountable_id,
                     a.id AS cyclos_id,
                     a.creation_date AS created_at,
                     a.last_closing_date AS updated_at,
-                    NULL AS limit_min,
-                    0 AS limit_max
+                    " . $debitLimitMin . " AS limit_min,
+                    " . $debitLimitMax . " AS limit_max
                 FROM {$sourceDb}.accounts a
                 WHERE a.type_id = 1;
             ");
@@ -539,14 +565,14 @@ class MigrateCyclosCommand extends Command
             $accounts = DB::affectingStatement("
                 INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
-                    'Community' AS name,
+                    '{$communityAccountName}' AS name,
                     'App\\\\Models\\\\Bank' AS accountable_type,
                     1 AS accountable_id,
                     a.id AS cyclos_id,
                     a.creation_date AS created_at,
                     a.last_closing_date AS updated_at,
-                    0 AS limit_min,
-                    NULL AS limit_max
+                    " . $communityLimitMin . " AS limit_min,
+                    " . $communityLimitMax . " AS limit_max
                 FROM {$sourceDb}.accounts a
                 WHERE a.type_id = 2;
             ");
@@ -567,8 +593,9 @@ class MigrateCyclosCommand extends Command
 
         try {
             $accounts = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.accounts (accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
+                INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
+                    '{$userAccountName}' AS name,
                     'App\\\\Models\\\\User' AS accountable_type,
                     u.id AS accountable_id,
                     a.id AS cyclos_id,
@@ -596,8 +623,9 @@ class MigrateCyclosCommand extends Command
 
         try {
             $accounts = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.accounts (accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
+                INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
+                    '{$orgAccountName}' AS name,
                     'App\\\\Models\\\\Organization' AS accountable_type,
                     u.id AS accountable_id,
                     a.id AS cyclos_id,
@@ -627,8 +655,9 @@ class MigrateCyclosCommand extends Command
 
         try {
             $accounts = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.accounts (accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
+                INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
+                    '{$bankAccountName}' AS name,
                     'App\\\\Models\\\\Bank' AS accountable_type,
                     u.id AS accountable_id,
                     a.id AS cyclos_id,
@@ -662,14 +691,14 @@ class MigrateCyclosCommand extends Command
             $accounts = DB::affectingStatement("
                 INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
-                    'Gift' AS name,
+                    {$giftAccountName} AS name,
                     'App\\\\Models\\\\User' AS accountable_type,
                     u.id AS accountable_id,
                     a.id AS cyclos_id,
                     a.creation_date AS created_at,
                     a.last_closing_date AS updated_at,
-                    " . $userLimitMin . " as limit_min,
-                    " . $userLimitMax . " as limit_max
+                    " . $giftLimitMin . " as limit_min,
+                    " . $giftLimitMax . " as limit_max
                 FROM {$sourceDb}.accounts a
                 JOIN {$destinationDb}.users u ON a.member_id = u.cyclos_id
                 WHERE a.type_id = 6;
@@ -685,8 +714,6 @@ class MigrateCyclosCommand extends Command
         //TODO Remove this account on each user if it contains 0 transactions!
 
 
-
-
                 
         // Gift account organizations (cyclos type_id 6)
         // Note that because of cyclos permission group changes, a Gift account can also be owned by Projects, Local banks etc.
@@ -696,7 +723,7 @@ class MigrateCyclosCommand extends Command
             $accounts = DB::affectingStatement("
                     INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                     SELECT
-                        'Gift' AS name,
+                        {$giftAccountName} AS name,
                         'App\\\\Models\\\\Organization' AS accountable_type,
                         u.id AS accountable_id,
                         a.id AS cyclos_id,
@@ -729,7 +756,7 @@ class MigrateCyclosCommand extends Command
             $accounts = DB::affectingStatement("
                     INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                     SELECT
-                        'Gift' AS name,
+                        {$giftAccountName} AS name,
                         'App\\\\Models\\\\Bank' AS accountable_type,
                         u.id AS accountable_id,
                         a.id AS cyclos_id,
@@ -758,15 +785,16 @@ class MigrateCyclosCommand extends Command
 
         try {
             $accounts = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.accounts (accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
+                INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
+                    '{$userProjectAccountName}' AS name,
                     'App\\\\Models\\\\User' AS accountable_type,
                     o.id AS accountable_id,
                     a.id AS cyclos_id,
                     a.creation_date AS created_at,
                     a.last_closing_date AS updated_at,
-                    " . $userLimitMin . " as limit_min,
-                    " . $userLimitMax . " as limit_max
+                    " . $userProjectLimitMin . " as limit_min,
+                    " . $userProjectLimitMax . " as limit_max
                 FROM {$sourceDb}.accounts a
                 JOIN {$destinationDb}.users o ON a.member_id = o.cyclos_id
                 WHERE a.type_id = 7;
@@ -788,8 +816,9 @@ class MigrateCyclosCommand extends Command
 
         try {
             $accounts = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.accounts (accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
+                INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
+                    '{$orgAccountName}' AS name,
                     'App\\\\Models\\\\Organization' AS accountable_type,
                     o.id AS accountable_id,
                     a.id AS cyclos_id,
@@ -817,8 +846,9 @@ class MigrateCyclosCommand extends Command
 
         try {
             $accounts = DB::affectingStatement("
-                INSERT INTO {$destinationDb}.accounts (accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
+                INSERT INTO {$destinationDb}.accounts (name, accountable_type, accountable_id, cyclos_id, created_at, updated_at, limit_min, limit_max)
                 SELECT
+                    '{$orgAccountName}' AS name,
                     'App\\\\Models\\\\Bank' AS accountable_type,
                     o.id AS accountable_id,
                     a.id AS cyclos_id,

@@ -8,9 +8,12 @@ use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\TransactionType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
+
+use function Laravel\Prompts\error;
 
 class Pay extends Component
 {
@@ -37,7 +40,6 @@ class Pay extends Component
     public $modalVisible = false;
     public $modalErrorVisible = false;
 
-
     protected $listeners = [
         'amount' => 'amountValidation',
         'fromAccountId',
@@ -51,11 +53,11 @@ class Pay extends Component
 
     protected $rules = [
         'amount' => 'required|integer|min:1',
-        'fromAccountId' => 'required|integer',
+        'fromAccountId' => 'required|integer|exists:accounts,id',
         'toAccountId' => 'required|integer',
-        'description' => 'required|string|min:3|max:1500'
+        'description' => 'required|string|min:3|max:1500',
+        'transTypeRadio' => 'required|string|exists:transaction_types,name',
     ];
-
 
     public function mount($amount = null, $hours = null, $minutes = null)
     {
@@ -70,7 +72,6 @@ class Pay extends Component
         }
     }
 
-
     /**
      * Extra validation when amount looses focus
      *
@@ -82,7 +83,6 @@ class Pay extends Component
         $this->amount = $amount ?? $this->amount;
         $this->validateOnly('amount');
     }
-
 
     /**
      * Sets fromAccountId after From Account drop down is selected
@@ -99,7 +99,6 @@ class Pay extends Component
         $this->validateOnly('fromAccountId');
     }
 
-
     /**
      * Sets fromAccountId after To Account drop down is selected
      *
@@ -113,32 +112,40 @@ class Pay extends Component
         $this->validateOnly('toAccountId');
     }
 
-
     /**
-    * Sets To account details after it is selected
-    *
-    * @param  mixed $details
-    * @return void
-    */
+     * Sets To account details after it is selected
+     *
+     * @param  mixed $details
+     * @return void
+     */
     public function toAccountDetails($details)
     {
-        $this->requiredError = false;
-        $this->toAccountId = $details['accountId'];
-        $this->toAccountName = $details['accountName'];
-        $this->toHolderId = $details['holderId'];
-        $this->toHolderName = $details['holderName'];
-        $this->toHolderPhoto = url($details['holderPhoto']);
+        if ($details) {
+            // Check if we have a to account
+            $this->requiredError = false;
+            $this->toAccountId = $details['accountId'];
+            $this->toAccountName = $details['accountName'];
+            $this->toHolderId = $details['holderId'];
+            $this->toHolderName = $details['holderName'];
+            $this->toHolderPhoto = url($details['holderPhoto']);
 
-        if ($details['holderType'] == 'App\Models\User') {
-            $this->typeOptions = ['work', 'gift'];
-        } elseif ($details['holderType'] == 'App\Models\Organization') {
-            $this->typeOptions = ['work', 'donation'];
-        } elseif ($details['holderType'] == 'App\Models\Bank') {
-            $this->typeOptions = ['work', 'currency removal'];
+            if ($details['holderType'] == 'App\Models\User') {
+                $this->typeOptions = ['work', 'gift'];
+            } elseif ($details['holderType'] == 'App\Models\Organization') {
+                $this->typeOptions = ['work', 'donation'];
+            } elseif ($details['holderType'] == 'App\Models\Bank') {
+                $this->typeOptions = ['work', 'currency removal'];
+            }
+            // TODO: Add Currency creation transaction types for banks
+
+            $this->validateOnly('toAccountId');
+
+            $this->dispatch('setTransactionTypeOptions', $this->typeOptions);
+        } else {
+            // if no to account is present, set id to null and validate so the user received an error
+            $this->toAccountId = null;
+            $this->validateOnly('toAccountId');
         }
-        // TODO: Add Currency creation transaction types for banks
-
-        $this->dispatch('setTransactionTypeOptions', $this->typeOptions);
     }
 
     /**
@@ -153,7 +160,6 @@ class Pay extends Component
         $this->validateOnly('description');
     }
 
-        
     /**
      * Sets transTypeRadio after it is updated
      *
@@ -163,9 +169,8 @@ class Pay extends Component
     public function transTypeRadio($transTypeRadio)
     {
         $this->transTypeRadio = $transTypeRadio;
-        // $this->validateOnly('transTypeRadio');
+        $this->validateOnly('transTypeRadio');
     }
-
 
     public function showModal()
     {
@@ -202,7 +207,6 @@ class Pay extends Component
             $transferBudgetFrom = $balanceFrom - $limitMinFrom;
             $transferBudgetTo = $limitMaxTo - $balanceTo;
 
-
             if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
                 $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
                 return $this->modalErrorVisible = true;
@@ -237,87 +241,130 @@ class Pay extends Component
         $description = $this->description;
         $transType = $this->transTypeRadio;
 
+        // Livewire public properties can be changed client side!
+        // Check therefore check again ownership of the fromAccountId.
+        // The getAccountsInfo() from the AccountInfoTrait checks the active profile sessions.
+        $transactionController = new TransactionController();
+        $accountsInfo = collect($transactionController->getAccountsInfo());
+
+        if (!$accountsInfo->contains('id', $fromAccountId)) {
+            // Log this event and mail to admin
+            Log::warning('Unauthorized account payment attempt', [
+                'fromAccountId' => $fromAccountId,
+                'fromAccountHolder' => Account::find($fromAccountId)->accountable()->value('name'),
+                'toAccountId' => $toAccountId,
+                'toAccountHolder' => Account::find($toAccountId)->accountable()->value('name'),
+                'userId' => Auth::id(),
+                'userName' => Auth::user()->name,
+                'activeProfileId' => session('activeProfileId'),
+                'activeProfileType' => session('activeProfileType'),
+                'activeProfileName' => session('activeProfileName'),
+            ]);
+            Mail::raw(
+                'Unauthorized account payment attempt detected with the following details:' . "\n\n" . 'From Account ID: ' . $fromAccountId . "\n" . 'From Account Holder: ' . Account::find($fromAccountId)->accountable()->value('name') . "\n" . 'To Account ID: ' . $toAccountId . "\n" . 'To Account Holder: ' . Account::find($toAccountId)->accountable()->value('name') . "\n" . 'User ID: ' . Auth::id() . "\n" . 'User Name: ' . Auth::user()->name . "\n" . 'Active Profile ID: ' . session('activeProfileId') . "\n" . 'Active Profile Type: ' . session('activeProfileType') . "\n" . 'Active Profile Name: ' . session('activeProfileName') . "\n" . 'Event Time: ' . now()->toDateTimeString(), // Include the time of the event
+                function ($message) {
+                    $message->to(config('timebank-cc.mail.system_admin'))->subject('Unauthorized Account Access Attempt');
+                },
+            );
+
+            return redirect()
+                ->back()
+                ->with('error', __('Unauthorized action') . '! ' . __('This event has been logged and reported to our system administrator') . '.');
+        }
+
         $transactions = new TransactionController();
         $balanceFrom = $transactions->getBalance($fromAccountId);
         $balanceTo = $transactions->getBalance($toAccountId);
 
         if ($toAccountId === $fromAccountId) {
-            return redirect()->back()->with('error', 'You cannot transfer Hours from and to the same account');
+            // Log this event and mail to admin
+            Log::warning('Unauthorized account payment attempt', [
+                'fromAccountId' => $fromAccountId,
+                'fromAccountHolder' => Account::find($fromAccountId)->accountable()->value('name'),
+                'toAccountId' => $toAccountId,
+                'toAccountHolder' => Account::find($toAccountId)->accountable()->value('name'),
+                'userId' => Auth::id(),
+                'userName' => Auth::user()->name,
+                'activeProfileId' => session('activeProfileId'),
+                'activeProfileType' => session('activeProfileType'),
+                'activeProfileName' => session('activeProfileName'),
+            ]);
+            Mail::raw(
+                'Unauthorized account payment attempt detected with the following details:' . "\n\n" . 'From Account ID: ' . $fromAccountId . "\n" . 'From Account Holder: ' . Account::find($fromAccountId)->accountable()->value('name') . "\n" . 'To Account ID: ' . $toAccountId . "\n" . 'To Account Holder: ' . Account::find($toAccountId)->accountable()->value('name') . "\n" . 'User ID: ' . Auth::id() . "\n" . 'User Name: ' . Auth::user()->name . "\n" . 'Active Profile ID: ' . session('activeProfileId') . "\n" . 'Active Profile Type: ' . session('activeProfileType') . "\n" . 'Active Profile Name: ' . session('activeProfileName') . "\n" . 'Event Time: ' . now()->toDateTimeString(), // Include the time of the event
+                function ($message) {
+                    $message->to(config('timebank-cc.mail.system_admin'))->subject('Unauthorized Account Access Attempt');
+                },
+            );
+
+            return redirect()
+                ->back()
+                ->with('error', __('Unauthorized action') . '! ' . __('This event has been logged and reported to our system administrator') . '.');
+    
+        //TODO next: Refactor above method into private function that can be re-used below
+        }
+
+        $account_exists = Account::where('id', $toAccountId)->first();
+        if (!$account_exists) {
+            return redirect()->back()->with('error', _('Account not found'));
+        }
+
+        $transferToAccount = $account_exists->id;
+
+        $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
+        $limitMinFrom = $f->limit_min;
+        $t = Account::where('id', $transferToAccount)->select('limit_max')->first();
+        $limitMaxTo = $t->limit_max;
+
+        $transferBudgetFrom = $balanceFrom - $limitMinFrom;
+        $transferBudgetTo = $limitMaxTo - $balanceTo;
+
+        // TODO: Line breaks in error message of modal
+        // TODO: Translation keys
+        if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
+            $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
+            return $this->modalErrorVisible = true;
+        }
+        if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
+            $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
+            return $this->modalErrorVisible = true;
+        }
+        if ($amount > $transferBudgetFrom) {
+            $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
+            return $this->modalErrorVisible = true;
+        }
+        if ($amount > $transferBudgetTo) {
+            $this->limitError = 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
+            return $this->modalErrorVisible = true;
+        }
+
+        $transactionType = TransactionType::where('name', $transType)->first();
+        $transactionTypeId = $transactionType ? $transactionType->id : 1;
+
+        $transfer = new Transaction();
+        $transfer->from_account_id = $fromAccountId;
+        $transfer->to_account_id = $transferToAccount;
+        $transfer->amount = $amount;
+        $transfer->description = $description;
+        $transfer->transaction_type_id = $transactionTypeId;
+        $transfer->creator_user_id = Auth::user()->id;
+        $save = $transfer->save();
+        if ($save) {
+            // WireUI notification
+            $this->notification()->success($title = __('Transfer complete!'), $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />' . '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>');
+
+            $this->dispatch('resetForm');
+
+            //Send TransferReceived mail
+            $now = now();
+            Mail::to($transfer->accountTo->accountable)->later($now->addSeconds(1), new TransferReceived($transfer));
         } else {
-            $account_exists = Account::where('id', $toAccountId)->first();
-            if (!$account_exists) {
-                return redirect()->back()->with('error', 'Account not found.');
-            } else {
-                $transferToAccount = $account_exists->id;
-            }
+            // WireUI notification
+            $this->notification()->error($title = __('Transfer failed!'), $description = __('Sorry, we have an error: the transfer was not saved!'));
+            // TODO: send email with error info to admin and also log this event
 
-            $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
-            $limitMinFrom = $f->limit_min;
-            $t = Account::where('id', $transferToAccount)->select('limit_max')->first();
-            $limitMaxTo = $t->limit_max;
-
-            $transferBudgetFrom = $balanceFrom - $limitMinFrom;
-            $transferBudgetTo = $limitMaxTo - $balanceTo;
-
-            // TODO: Line breaks in error message of modal
-            // TODO: Translation keys
-            if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
-                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
-                return $this->modalErrorVisible = true;
-            }
-            if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
-                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
-                return $this->modalErrorVisible = true;
-            }
-            if ($amount > $transferBudgetFrom) {
-                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
-                return $this->modalErrorVisible = true;
-            }
-            if ($amount > $transferBudgetTo) {
-                $this->limitError = 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
-                return $this->modalErrorVisible = true;
-            }
-            
-            $transactionType = TransactionType::where('name', $transType)->first();
-            $transactionTypeId = $transactionType ? $transactionType->id : 1;
-
-            $transfer = new Transaction();
-            $transfer->from_account_id = $fromAccountId;
-            $transfer->to_account_id = $transferToAccount;
-            $transfer->amount = $amount;
-            $transfer->description = $description;
-            $transfer->transaction_type_id = $transactionTypeId;
-            $transfer->creator_user_id = Auth::user()->id;
-            $save = $transfer->save();
-            if ($save) {
-
-                // WireUI notification
-                $this->notification()->success(
-                    $title = __('Transfer complete!'),
-                    $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />'. '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>'
-                );
-
-                $this->dispatch('resetForm');
-
-                //Send TransferReceived mail
-                $now = now();
-                Mail::to($transfer->accountTo->accountable)->later(
-                    $now->addSeconds(1),
-                    new TransferReceived($transfer)
-                );
-            } else {
-
-                // WireUI notification
-                $this->notification()->error(
-                    $title = __('Transfer failed!'),
-                    $description = __('Sorry, we have an error: the transfer was not saved!')
-                );
-
-                return back();
-            }
+            return back();
         }
     }
-
 
     public function resetForm()
     {
@@ -328,7 +375,6 @@ class Pay extends Component
         $this->modalVisible = false;
     }
 
-
     public function removeSelectedAccount()
     {
         $this->toAccountId = null;
@@ -337,12 +383,11 @@ class Pay extends Component
         $this->toHolderName = null;
     }
 
-
     /**
-       * Render the livewire component
-       *
-       * @return void
-       */
+     * Render the livewire component
+     *
+     * @return void
+     */
     public function render()
     {
         return view('livewire.pay');

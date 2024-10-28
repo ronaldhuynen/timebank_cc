@@ -61,17 +61,24 @@ class ToAccount extends Component
     public function toAccountSelected($toAccountId)
     {
         $this->toAccountId = $toAccountId;
-        $toAccountDetails = collect($this->searchResults)
-            ->where('accountId', '=', $toAccountId)
-            ->first();
-        $this->toAccountName = $toAccountDetails['accountName'];
-        $this->toHolderName = $toAccountDetails['holderName'];
-        $this->toHolderType = $toAccountDetails['holderType'];
-        $this->toHolderPhoto = $toAccountDetails['holderPhoto'];
-        $this->showDropdown = false;
+        $toAccountDetails = collect($this->searchResults)->firstWhere('accountId', $toAccountId);
+
+        
+        if ($toAccountDetails) {
+            $this->toAccountName = $toAccountDetails['accountName'];
+            $this->toHolderName = $toAccountDetails['holderName'];
+            $this->toHolderType = $toAccountDetails['holderType'];
+            $this->toHolderPhoto = $toAccountDetails['holderPhoto'];
+            $this->dispatch('toAccountDetails', $toAccountDetails);
+        } else {
+            // Handle the case where $toAccountDetails is null
+            $this->toAccountName = null;
+            $this->toHolderName = null;
+            $this->toHolderType = null;
+            $this->toHolderPhoto = null;
+            $this->dispatch('toAccountDetails', null);
+        }
         $this->search = '';
-        $this->dispatch('toAccountDetails', $toAccountDetails);
-        $this->dispatch('toAccountId', $this->toAccountId);
     }
 
     /**
@@ -84,6 +91,9 @@ class ToAccount extends Component
     {
         $excludeAccount = $this->fromAccountId;
         $search = $this->search;
+
+        // Find the accounts that are currently not inactive,
+        // note that accounts can be set to inactive for a the future datetime.
         if ($search) {
             $this->showDropdown = true;
             $accounts = Account::with('accountable')
@@ -92,13 +102,19 @@ class ToAccount extends Component
                         $query->where('name', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%');
                     });
                 })
-                ->whereNull('owner_deleted_at')
+                ->where(function ($query) {
+                    $query->whereNull('inactive_at')
+                        ->orWhere('inactive_at', '>', now());
+                }) 
                 ->get();
         } else {
             // No search, because a toAccountId is already known
             $accounts = Account::with('accountable')
                 ->where('id', $this->toAccountId)
-                ->whereNull('owner_deleted_at')
+                ->where(function ($query) {
+                    $query->whereNull('inactive_at')
+                        ->orWhere('inactive_at', '>', now());
+                }) 
                 ->get();
         }
 

@@ -174,7 +174,11 @@
                     </div>
                 </div>
             </div>
-
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         </x-slot>
         <x-slot name="footer">
             <x-jetstream.secondary-button class="w-32 justify-center" wire:click="$toggle('modalVisible')"

@@ -44,7 +44,11 @@ trait AccountInfoTrait
             $profileId = session('activeProfileId');
         }
 
-        $accounts = $profileType::find($profileId)->accounts;
+        // Get the accounts for the active profile, that are currently not inactive,
+        // note that accounts can be set to inactive for a the future datetime. 
+        $accounts = $profileType::find($profileId)->accounts->filter(function ($account) {
+            return is_null($account->inactive_at) || $account->inactive_at > now();
+        });
         $accounts = $accounts->map(function ($account) {
             return [
                 'id' => $account->id,

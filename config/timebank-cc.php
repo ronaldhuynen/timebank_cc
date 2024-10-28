@@ -2,6 +2,20 @@
 
 return [
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mail addresses
+    |--------------------------------------------------------------------------
+    |
+    */
+    'mail' => [
+        'system_admin' => 'admin@timebank.cc',
+        'user_admin' => 'admin@timebank.cc',
+        'content_admin' => 'admin@timebank.cc',
+    ],
+
+
     /*
     |--------------------------------------------------------------------------
     | Default Account Properties
@@ -12,19 +26,34 @@ return [
     */
     'accounts' => [
         'user' => [
-            'name' =>  'Personal Account',
+            'name' =>  'personal',
             'limit_min' => 0,
             'limit_max' => 6000, // 100 H
         ],
+        'userProject' => [
+            'name' =>  'personal project',
+            'limit_min' => 0,
+            'limit_max' => 3000, // 50 H //TODO: Discuss with board!
+        ],
         'organization' => [
-            'name' => 'Organization Account',
+            'name' => 'organization',
             'limit_min' => 0,
             'limit_max' => 6000, // 100 H, default value,  manually set organizations with a big turn-over to a higher limit
         ],
         'bank' => [
-            'name' => 'Organization Account',
+            'name' => 'bank',
             'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
             'limit_max' => 600000, //  10,000 H
+        ],
+        'community' => [
+            'name' => 'community',
+            'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
+            'limit_max' => null, 
+        ],
+        'debit' => [
+            'name' => 'debit',
+            'limit_min' => null,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
+            'limit_max' => 0, 
         ],
     ],
     'maxLengthHoursInput' => [  // Sets the default max length the amount component can have for the hours input box 

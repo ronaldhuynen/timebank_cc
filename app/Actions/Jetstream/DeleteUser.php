@@ -84,7 +84,7 @@ class DeleteUser implements DeletesUsers
                 $user->save();
 
                 // Mark associated accounts
-                $user->accounts()->update(['owner_deleted_at' => now()]);
+                $user->accounts()->update(['inactive_at' => now()]);
 
 
                 // Remove participant from messenger threads and  remove threads where user is sole admin.

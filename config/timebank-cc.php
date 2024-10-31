@@ -22,7 +22,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | The default account properties that will be set into the database when new accounts are created.
-    | The balance limits are in minutes.
+    | The balance limits are in minutes. A negative balance limit should be set as 'limit_min' = -300
     */
     'accounts' => [
         'user' => [
@@ -73,12 +73,16 @@ return [
     */
 
     'account_info' => [
-        'personal' => [
+        'user' => [
             'balance_public' =>  true,
         ],
         'organization' => [
-            'balance_public' =>  true,
+            'balance_public' =>  false,
         ],
+        'bank' => [
+            'balance_public' =>  false,
+        ],
+
         'account_totals' => [
             'sumBalances_public' => false,
             'countTransfersSince' => 365,   // days ago

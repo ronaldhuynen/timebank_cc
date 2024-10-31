@@ -61,6 +61,7 @@
     <!----Transfer limit error Modal ---->
     <x-jetstream.dialog-modal wire:model.live="modalErrorVisible">
         <x-slot name="title">
+            {{ __('Payment limit') }}
         </x-slot>
 
         <x-slot name="content">
@@ -74,6 +75,7 @@
     </x-jetstream.dialog-modal>
 
     <!---- Confirmation Modal ---->
+    @if (!$limitError)
     <x-jetstream.dialog-modal wire:model.live="modalVisible">
         <x-slot name="title">
             {{ __('Confirm your payment') }}
@@ -181,6 +183,11 @@
         @endif
         </x-slot>
         <x-slot name="footer">
+            @if (session('error'))
+            <x-jetstream.secondary-button wire:click="$toggle('modalVisible')" wire:loading.attr="disabled">
+                {{ __('Back') }}
+            </x-jetstream.secondary-button>
+            @else
             <x-jetstream.secondary-button class="w-32 justify-center" wire:click="$toggle('modalVisible')"
                                           wire:loading.attr="disabled">
                 {{ __('Cancel') }}
@@ -190,7 +197,9 @@
                                           wire:loading.attr="disabled">
                 {{ __('Ok') }}
             </x-jetstream.secondary-button>
+            @endif
         </x-slot>
     </x-jetstream.dialog-modal>
+    @endif
 
 </form>

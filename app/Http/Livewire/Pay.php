@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 use Stevebauman\Location\Facades\Location as IpLocation;
 
@@ -31,6 +30,7 @@ class Pay extends Component
     public $toAccountId;
     public $toAccountName;
     public $toHolderId;
+    public $toHolderType;
     public $toHolderName;
     public $toHolderPhoto;
     public $type;
@@ -129,6 +129,7 @@ class Pay extends Component
             $this->toAccountId = $details['accountId'];
             $this->toAccountName = $details['accountName'];
             $this->toHolderId = $details['holderId'];
+            $this->toHolderType = $details['holderType'];
             $this->toHolderName = $details['holderName'];
             $this->toHolderPhoto = url($details['holderPhoto']);
 
@@ -204,28 +205,17 @@ class Pay extends Component
 
             $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
             $limitMinFrom = $f->limit_min;
-            $t = Account::where('id', $transferToAccount)->select('limit_max')->first();
-            $limitMaxTo = $t->limit_max;
+            $t = Account::where('id', $transferToAccount)->select('limit_max', 'limit_min')->first();
+            $limitMaxTo = $t->limit_max - $t->limit_min;
 
             $transferBudgetFrom = $balanceFrom - $limitMinFrom;
-            $transferBudgetTo = $limitMaxTo - $balanceTo;
+            if (config('timebank-cc.account_info.' . strtolower(class_basename($this->toHolderType)) . '.balance_public')) {
+                $transferBudgetTo = $limitMaxTo - $balanceTo;
+            } else {
+                $transferBudgetTo = null;
+            }
 
-            if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
-                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
-                return $this->modalErrorVisible = true;
-            }
-            if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
-                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
-                return $this->modalErrorVisible = true;
-            }
-            if ($amount > $transferBudgetFrom) {
-                $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
-                return $this->modalErrorVisible = true;
-            }
-            if ($amount > $transferBudgetTo) {
-                $this->limitError = 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
-                return $this->modalErrorVisible = true;
-            }
+            $this->checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom);
 
             $this->modalVisible = true;
         }
@@ -272,34 +262,22 @@ class Pay extends Component
 
         $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
         $limitMinFrom = $f->limit_min;
-        $t = Account::where('id', $transferToAccount)->select('limit_max')->first();
-        $limitMaxTo = $t->limit_max;
+        $t = Account::where('id', $transferToAccount)->select('limit_max', 'limit_min')->first();
+        $limitMaxTo = $t->limit_max - $t->limit_min;
         
         $balanceFrom = $transactionController->getBalance($fromAccountId);
         $balanceTo = $transactionController->getBalance($toAccountId);
 
         $transferBudgetFrom = $balanceFrom - $limitMinFrom;
-        $transferBudgetTo = $limitMaxTo - $balanceTo;
-
-        // TODO: Line breaks in error message of modal
-        // TODO: Translation keys
-        if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
-            $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
-            return $this->modalErrorVisible = true;
-        }
-        if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
-            $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Moreover, it would also exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
-            return $this->modalErrorVisible = true;
-        }
-        if ($amount > $transferBudgetFrom) {
-            $this->limitError = 'Sorry, your balance (' . tbFormat($balanceFrom) . ') is too low for this transfer. Your balance can not go below ' . tbFormat($limitMinFrom) . '. Maximum transfer amount possible: ' . tbFormat($transferBudgetFrom);
-            return $this->modalErrorVisible = true;
-        }
-        if ($amount > $transferBudgetTo) {
-            $this->limitError = 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: ' . tbFormat($transferBudgetTo);
-            return $this->modalErrorVisible = true;
+        if (config('timebank-cc.account_info.' . strtolower(class_basename($this->toHolderType)) . '.balance_public')) {
+            $transferBudgetTo = $limitMaxTo - $balanceTo;
+        } else {
+            $transferBudgetTo = null;
         }
 
+        //Check balance limits
+        $this->checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom);
+    
         $transactionType = TransactionType::where('name', $transType)->first();
         $transactionTypeId = $transactionType ? $transactionType->id : 1;
 
@@ -329,6 +307,79 @@ class Pay extends Component
         }
     }
 
+
+    /**
+     * Check balance limits for a transfer operation.
+     *
+     * This method checks if the transfer amount exceeds the allowed budget limits
+     * for both the source and destination accounts. It sets an appropriate error
+     * message and makes the error modal visible if any limit is exceeded.
+     *
+     * @param float $amount The amount to be transferred.
+     * @param float $transferBudgetTo The budget limit for the destination account.
+     * @param float $transferBudgetFrom The budget limit for the source account.
+     * @param float $limitMinFrom The minimum limit for the source account.
+     *
+     * @return bool Returns true if any limit is exceeded and the error modal is made visible.
+     */
+    private function checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom)
+    {        
+        if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
+            $this->limitError = __('messages.pay_limit_error_budget_from', [
+                        'limitMinFrom' => tbFormat($limitMinFrom),
+                        'transferBudgetFrom' => tbFormat($transferBudgetFrom),
+                    ]);
+            return $this->modalErrorVisible = true;
+        }
+        if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
+            if ($transferBudgetTo) {
+            $this->limitError = __('messages.pay_limit_error_budget_from_and_to', [
+                    'limitMinFrom' => tbFormat($limitMinFrom),
+                    'transferBudgetTo' => tbFormat($transferBudgetTo),
+                ]);
+            } else {                 
+            $this->limitError = __('messages.pay_limit_error_budget_from_and_to_without_budget_to', [
+                            'limitMinFrom' => tbFormat($limitMinFrom),
+                        ]);
+            }
+            return $this->modalErrorVisible = true;
+        }
+        if ($amount > $transferBudgetFrom) {
+            $this->limitError = __('messages.pay_limit_error_budget_from', [
+                        'limitMinFrom' => tbFormat($limitMinFrom),
+                        'transferBudgetFrom' => tbFormat($transferBudgetFrom),
+                    ]);
+            return $this->modalErrorVisible = true;
+        }
+        if ($amount > $transferBudgetTo) {
+            if ($transferBudgetTo) {
+                    $this->limitError = __('messages.pay_limit_error_budget_to', [
+                        'transferBudgetTo' => tbFormat($transferBudgetTo),
+                    ]);
+                } else {                    
+                    $this->limitError = __('messages.pay_limit_error_budget_to_without_budget_to', [
+                        'transferBudgetTo' => tbFormat($transferBudgetTo),
+                        'toHolderName' => $this->toHolderName,
+                    ]);
+                }
+            return $this->modalErrorVisible = true;
+        }
+        $this->limitError = null;
+    }
+
+
+    /**
+     * Logs a warning message and reports it via email to the system administrator.
+     *
+     * This method logs a warning message with detailed information about the event,
+     * including account details, user details, IP address, and location. It also
+     * sends an email to the system administrator with the same information.
+     *
+     * @param string $warningMessage The warning message to log and report.
+     * @param int $fromAccountId The ID of the account from which the event originated.
+     * @param int $toAccountId The ID of the account to which the event is directed.
+     * @return \Illuminate\Http\RedirectResponse A redirect response back to the previous page with an error message.
+     */
     private function logAndReport($warningMessage, $fromAccountId, $toAccountId, )
     {
         $ip = request()->ip();    

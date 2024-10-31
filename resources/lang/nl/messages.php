@@ -31,9 +31,12 @@ return [
 
     // pay.blade.php
     'pay_confirm' => 'Maak :amount over naar de :toAccountName rekening van :toHolderName?',
+    'pay_limit_error_budget_from' => 'Sorry, je saldo is te laag voor deze transactie. Je saldo kan niet lager zijn dan :limitMinFrom. Het maximale transactie bedrag dat mogelijk is: :transferBudgetFrom.',
+    'pay_limit_error_budget_from_and_to' => 'Sorry, je saldo is te laag voor deze transactie. Je saldo kan niet lager zijn dan :limitMinFrom. Bovendien zou deze transactie het maximale saldo van de ontvanger overschrijden. Het maximale transactie bedrag dat mogelijk is: :transferBudgetTo.',
+    'pay_limit_error_budget_to' => 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: :transferBudgetTo.',
 
     // single-transaction.blade.php
-    'qr_transaction_info' => ':from_relation and :to_relation can verify this transaction by scanning the code.',
+    'qr_transaction_info' => ':from_relation en :to_relation kunnen deze transactie controleren door de code te scannen.',
 
 
 

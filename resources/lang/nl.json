@@ -159,9 +159,11 @@
     "Relation name": "Relatie-naam",
     "Relation full name": "Relatie volledige naam",
     "Balance in minutes": "Saldo in minuten", 
+    "Payment limit": "Betalingslimiet",
 
     "Unauthorized action": "Niet toegestaan",
     "This event has been logged and reported to our system administrator": "Deze gebeurtenis is gerapporteerd aan onze systeem administrator",
+
 
     "Previous login": "Vorige login",
     "First login session": "Eerste login sessie",

@@ -44,20 +44,34 @@ trait AccountInfoTrait
             $profileId = session('activeProfileId');
         }
 
-        // Get the accounts for the active profile, that are currently not inactive,
-        // note that accounts can be set to inactive for a the future datetime. 
-        $accounts = $profileType::find($profileId)->accounts->filter(function ($account) {
-            return is_null($account->inactive_at) || $account->inactive_at > now();
+        // Get the profile and its accounts in a single query
+        $profile = $profileType::with(['accounts' => function ($query) {
+            $query->where(function ($query) {
+                $query->whereNull('inactive_at')
+                      ->orWhere('inactive_at', '>', now());
+            });
+        }])->find($profileId);
+
+        // Calculate the total balance of all accounts of the profile
+        $sumAccounts = $profile->accounts->sum(function ($account) {
+            return $this->getBalance($account->id);
         });
-        $accounts = $accounts->map(function ($account) {
+
+        $maxBalanceAvailableByProfile = $profile->limit_max - $sumAccounts - $profile->limit_min;
+
+        // Map the collection to include the total balance
+        $accounts = $profile->accounts->map(function ($account) use ($maxBalanceAvailableByProfile) {
             return [
                 'id' => $account->id,
                 'name' => $account->name,
-                'balance' => $this->getBalance($account->id)
-                ];
+                'balance' => $this->getBalance($account->id),
+                'limitMin' => $account->limit_min,
+                'limitMax' => $account->limit_max,
+                'maxBalanceAvailableByProfile' => $maxBalanceAvailableByProfile
+            ];
         });
-        return $accounts;
 
+        return $accounts;
     }
 
 

@@ -38,5 +38,12 @@ class Account extends Model
                     ->pluck('name', 'id');
 
     }
-
+    
+    //get all accounts owned by the same accountable
+    public function getAccountsBySameAccountable()
+    {
+        return Account::where('accountable_id', $this->accountable_id)
+                      ->where('accountable_type', $this->accountable_type)
+                      ->get();
+    }
 }

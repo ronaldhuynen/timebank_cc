@@ -8,12 +8,20 @@
  * @param int $minutes The number of minutes to format.
  * @return string The formatted time string.
  */
+
 function tbFormat($minutes)
 {
+    $isNegative = $minutes < 0;
+    $minutes = abs($minutes);
+
     $wholeHours = intdiv($minutes, 60);
-    $restMinutes = sprintf("%02d", abs($minutes % 60));
-    return __('H') . ' ' . $wholeHours . ':' . $restMinutes;
+    $restMinutes = sprintf("%02d", $minutes % 60);
+
+    $formattedTime = __('H') . ' ' . ($isNegative ? '-' : '') . $wholeHours . ':' . $restMinutes;
+
+    return $formattedTime;
 }
+
 
 
 
@@ -23,13 +31,22 @@ function tbFormat($minutes)
  * @param string $hhh_mm The time string to convert.
  * @return int The time in minutes.
  */
+
 function dbFormat($hhh_mm)
 {
-  list($wholeHours, $restMinutes) = explode(':', $hhh_mm);
-  $hours = ($wholeHours == null) ? 0 : $wholeHours;
-  $minutes = ($hours * 60) + $restMinutes;
-  return $minutes;
+    list($wholeHours, $restMinutes) = explode(':', $hhh_mm);
+
+    // Check if the wholeHours part is negative
+    $isNegative = $wholeHours < 0;
+    // Convert the values to absolute for calculation
+    $wholeHours = abs($wholeHours);
+    $restMinutes = abs($restMinutes);
+    // Calculate the total minutes
+    $minutes = ($wholeHours * 60) + $restMinutes;
+    // Adjust the sign if the original value was negative
+    return $isNegative ? -$minutes : $minutes;
 }
+
 
 function hoursAndMinutes($time, $format = '%02d:%02d')
 // Usage: echo hoursAndMinutes('188', '%02d Hours, %02d Minutes');

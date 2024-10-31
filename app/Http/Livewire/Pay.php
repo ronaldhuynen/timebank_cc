@@ -7,12 +7,15 @@ use App\Mail\TransferReceived;
 use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\TransactionType;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Request;
 use Livewire\Component;
-use WireUi\Traits\WireUiActions;
+use Stevebauman\Location\Facades\Location as IpLocation;
 
+use WireUi\Traits\WireUiActions;
 use function Laravel\Prompts\error;
 
 class Pay extends Component
@@ -185,9 +188,9 @@ class Pay extends Component
         $fromAccountId = $this->fromAccountId;
         $toAccountId = $this->toAccountId;
         $amount = $this->amount;
-        $transactions = new TransactionController();
-        $balanceFrom = $transactions->getBalance($fromAccountId);
-        $balanceTo = $transactions->getBalance($toAccountId);
+        $transactionController = new TransactionController();
+        $balanceFrom = $transactionController->getBalance($fromAccountId);
+        $balanceTo = $transactionController->getBalance($toAccountId);
 
         if ($toAccountId === $fromAccountId) {
             return redirect()->back()->with('error', 'You cannot transfer Hours from and to the same account');
@@ -241,71 +244,28 @@ class Pay extends Component
         $description = $this->description;
         $transType = $this->transTypeRadio;
 
-        // Livewire public properties can be changed client side!
+        // NOTICE: Livewire public properties can be changed / hacked on the client side!
         // Check therefore check again ownership of the fromAccountId.
         // The getAccountsInfo() from the AccountInfoTrait checks the active profile sessions.
         $transactionController = new TransactionController();
         $accountsInfo = collect($transactionController->getAccountsInfo());
-
+        // Check if the session's active profile owns the submitted fromAccountId
         if (!$accountsInfo->contains('id', $fromAccountId)) {
-            // Log this event and mail to admin
-            Log::warning('Unauthorized account payment attempt', [
-                'fromAccountId' => $fromAccountId,
-                'fromAccountHolder' => Account::find($fromAccountId)->accountable()->value('name'),
-                'toAccountId' => $toAccountId,
-                'toAccountHolder' => Account::find($toAccountId)->accountable()->value('name'),
-                'userId' => Auth::id(),
-                'userName' => Auth::user()->name,
-                'activeProfileId' => session('activeProfileId'),
-                'activeProfileType' => session('activeProfileType'),
-                'activeProfileName' => session('activeProfileName'),
-            ]);
-            Mail::raw(
-                'Unauthorized account payment attempt detected with the following details:' . "\n\n" . 'From Account ID: ' . $fromAccountId . "\n" . 'From Account Holder: ' . Account::find($fromAccountId)->accountable()->value('name') . "\n" . 'To Account ID: ' . $toAccountId . "\n" . 'To Account Holder: ' . Account::find($toAccountId)->accountable()->value('name') . "\n" . 'User ID: ' . Auth::id() . "\n" . 'User Name: ' . Auth::user()->name . "\n" . 'Active Profile ID: ' . session('activeProfileId') . "\n" . 'Active Profile Type: ' . session('activeProfileType') . "\n" . 'Active Profile Name: ' . session('activeProfileName') . "\n" . 'Event Time: ' . now()->toDateTimeString(), // Include the time of the event
-                function ($message) {
-                    $message->to(config('timebank-cc.mail.system_admin'))->subject('Unauthorized Account Access Attempt');
-                },
-            );
-
-            return redirect()
-                ->back()
-                ->with('error', __('Unauthorized action') . '! ' . __('This event has been logged and reported to our system administrator') . '.');
+            $warningMessage = 'Unauthorized account payment attempt:  illegal access of From account';
+            return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
 
-        $transactions = new TransactionController();
-        $balanceFrom = $transactions->getBalance($fromAccountId);
-        $balanceTo = $transactions->getBalance($toAccountId);
-
-        if ($toAccountId === $fromAccountId) {
-            // Log this event and mail to admin
-            Log::warning('Unauthorized account payment attempt', [
-                'fromAccountId' => $fromAccountId,
-                'fromAccountHolder' => Account::find($fromAccountId)->accountable()->value('name'),
-                'toAccountId' => $toAccountId,
-                'toAccountHolder' => Account::find($toAccountId)->accountable()->value('name'),
-                'userId' => Auth::id(),
-                'userName' => Auth::user()->name,
-                'activeProfileId' => session('activeProfileId'),
-                'activeProfileType' => session('activeProfileType'),
-                'activeProfileName' => session('activeProfileName'),
-            ]);
-            Mail::raw(
-                'Unauthorized account payment attempt detected with the following details:' . "\n\n" . 'From Account ID: ' . $fromAccountId . "\n" . 'From Account Holder: ' . Account::find($fromAccountId)->accountable()->value('name') . "\n" . 'To Account ID: ' . $toAccountId . "\n" . 'To Account Holder: ' . Account::find($toAccountId)->accountable()->value('name') . "\n" . 'User ID: ' . Auth::id() . "\n" . 'User Name: ' . Auth::user()->name . "\n" . 'Active Profile ID: ' . session('activeProfileId') . "\n" . 'Active Profile Type: ' . session('activeProfileType') . "\n" . 'Active Profile Name: ' . session('activeProfileName') . "\n" . 'Event Time: ' . now()->toDateTimeString(), // Include the time of the event
-                function ($message) {
-                    $message->to(config('timebank-cc.mail.system_admin'))->subject('Unauthorized Account Access Attempt');
-                },
-            );
-
-            return redirect()
-                ->back()
-                ->with('error', __('Unauthorized action') . '! ' . __('This event has been logged and reported to our system administrator') . '.');
-    
-        //TODO next: Refactor above method into private function that can be re-used below
+        // Check if From and To Account is different 
+        if ($toAccountId === $fromAccountId) {            
+            $warningMessage = 'Impossible account payment attempt: To and From account are the same';
+            return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
 
+        // Check if the To Account exists
         $account_exists = Account::where('id', $toAccountId)->first();
         if (!$account_exists) {
-            return redirect()->back()->with('error', _('Account not found'));
+            $warningMessage = 'Impossible account payment attempt: To account not found';
+            return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
 
         $transferToAccount = $account_exists->id;
@@ -314,6 +274,9 @@ class Pay extends Component
         $limitMinFrom = $f->limit_min;
         $t = Account::where('id', $transferToAccount)->select('limit_max')->first();
         $limitMaxTo = $t->limit_max;
+        
+        $balanceFrom = $transactionController->getBalance($fromAccountId);
+        $balanceTo = $transactionController->getBalance($toAccountId);
 
         $transferBudgetFrom = $balanceFrom - $limitMinFrom;
         $transferBudgetTo = $limitMaxTo - $balanceTo;
@@ -365,6 +328,59 @@ class Pay extends Component
             return back();
         }
     }
+
+    private function logAndReport($warningMessage, $fromAccountId, $toAccountId, )
+    {
+        $ip = request()->ip();    
+        $ipLocationInfo = IpLocation::get($ip);        
+        // Escape ipLocation errors when not in production
+        if (!$ipLocationInfo || App::environment(['local', 'development', 'staging'])) {
+            $ipLocationInfo = (object) [
+                'cityName' => 'local City',
+                'regionName' => 'local Region',
+                'countryName' => 'local Country',
+            ];
+        }
+        $eventTime = now()->toDateTimeString();
+        
+        // Log this event and mail to admin
+        Log::warning($warningMessage, [
+            'fromAccountId' => $fromAccountId,
+            'fromAccountHolder' => Account::find($fromAccountId)->accountable()->value('name'),
+            'toAccountId' => $toAccountId,
+            'toAccountHolder' => Account::find($toAccountId)->accountable()->value('name'),
+            'userId' => Auth::id(),
+            'userName' => Auth::user()->name,
+            'activeProfileId' => session('activeProfileId'),
+            'activeProfileType' => session('activeProfileType'),
+            'activeProfileName' => session('activeProfileName'),
+            'IP address' => $ip,
+            'IP location' => $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName,
+            'Event Time' => $eventTime,
+        ]);
+        Mail::raw(
+            $warningMessage . '.' . "\n\n" . 
+            'From Account ID: ' . $fromAccountId . "\n" . 
+            'From Account Holder: ' . Account::find($fromAccountId)->accountable()->value('name') . "\n" . 
+            'To Account ID: ' . $toAccountId . "\n" . 
+            'To Account Holder: ' . Account::find($toAccountId)->accountable()->value('name') . "\n" . 
+            'User ID: ' . Auth::id() . "\n" . 'User Name: ' . Auth::user()->name . "\n" . 
+            'Active Profile ID: ' . session('activeProfileId') . "\n" . 
+            'Active Profile Type: ' . session('activeProfileType') . "\n" . 
+            'Active Profile Name: ' . session('activeProfileName') . "\n" .
+            'IP address: ' . $ip . "\n" .
+            'IP location: ' . $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName . "\n" . 
+            'Event Time: ' . $eventTime,
+            function ($message) use ($warningMessage) {
+                $message->to(config('timebank-cc.mail.system_admin'))->subject($warningMessage);
+            },
+        );
+
+        return redirect()
+            ->back()
+            ->with('error', __($warningMessage) . '. ' . __('This event has been logged and reported to our system administrator') . '.');
+    }
+
 
     public function resetForm()
     {

@@ -9,11 +9,12 @@ use App\Models\Transaction;
 use App\Models\TransactionType;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
-use Stevebauman\Location\Facades\Location as IpLocation;
 
+use Stevebauman\Location\Facades\Location as IpLocation;
 use WireUi\Traits\WireUiActions;
 use function Laravel\Prompts\error;
 
@@ -211,11 +212,13 @@ class Pay extends Component
             $transferBudgetFrom = $balanceFrom - $limitMinFrom;
             if (config('timebank-cc.account_info.' . strtolower(class_basename($this->toHolderType)) . '.balance_public')) {
                 $transferBudgetTo = $limitMaxTo - $balanceTo;
+                $balanceToPublic = true;
             } else {
-                $transferBudgetTo = null;
+                $transferBudgetTo = $limitMaxTo - $balanceTo;
+                $balanceToPublic = false;
             }
 
-            $this->checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom);
+            $this->checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom, $balanceToPublic);
 
             $this->modalVisible = true;
         }
@@ -233,33 +236,33 @@ class Pay extends Component
         $amount = $this->amount;
         $description = $this->description;
         $transType = $this->transTypeRadio;
-
+    
         // NOTICE: Livewire public properties can be changed / hacked on the client side!
         // Check therefore check again ownership of the fromAccountId.
         // The getAccountsInfo() from the AccountInfoTrait checks the active profile sessions.
         $transactionController = new TransactionController();
         $accountsInfo = collect($transactionController->getAccountsInfo());
         // Check if the session's active profile owns the submitted fromAccountId
-        if (!$accountsInfo->contains('id', $fromAccountId)) {
-            $warningMessage = 'Unauthorized account payment attempt:  illegal access of From account';
+        if ($accountsInfo->contains('id', $fromAccountId)) {
+            $warningMessage = 'Unauthorized account payment attempt: illegal access of From account';
             return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
-
+    
         // Check if From and To Account is different 
         if ($toAccountId === $fromAccountId) {            
             $warningMessage = 'Impossible account payment attempt: To and From account are the same';
             return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
-
+    
         // Check if the To Account exists
         $account_exists = Account::where('id', $toAccountId)->first();
         if (!$account_exists) {
             $warningMessage = 'Impossible account payment attempt: To account not found';
             return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
-
+    
         $transferToAccount = $account_exists->id;
-
+    
         $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
         $limitMinFrom = $f->limit_min;
         $t = Account::where('id', $transferToAccount)->select('limit_max', 'limit_min')->first();
@@ -267,42 +270,65 @@ class Pay extends Component
         
         $balanceFrom = $transactionController->getBalance($fromAccountId);
         $balanceTo = $transactionController->getBalance($toAccountId);
-
+    
         $transferBudgetFrom = $balanceFrom - $limitMinFrom;
         if (config('timebank-cc.account_info.' . strtolower(class_basename($this->toHolderType)) . '.balance_public')) {
             $transferBudgetTo = $limitMaxTo - $balanceTo;
         } else {
             $transferBudgetTo = null;
         }
-
-        //Check balance limits
+    
+        // Check balance limits
         $this->checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom);
     
-        $transactionType = TransactionType::where('name', $transType)->first();
-        $transactionTypeId = $transactionType ? $transactionType->id : 1;
+        // Use a database transaction for saving the payment
+        DB::beginTransaction();
+        try {
+            $transactionType = TransactionType::where('name', $transType)->first();
+            $transactionTypeId = $transactionType ? $transactionType->id : 1;
+    
+            $transfer = new Transaction();
+            $transfer->from_account_id = $fromAccountId;
+            $transfer->to_account_id = $transferToAccount;
+            $transfer->amount = $amount;
+            $transfer->description = $description;
+            $transfer->transaction_type_id = $transactionTypeId;
+            $transfer->creator_user_id = Auth::user()->id;
 
-        $transfer = new Transaction();
-        $transfer->from_account_id = $fromAccountId;
-        $transfer->to_account_id = $transferToAccount;
-        $transfer->amount = $amount;
-        $transfer->description = $description;
-        $transfer->transaction_type_id = $transactionTypeId;
-        $transfer->creator_user_id = Auth::user()->id;
-        $save = $transfer->save();
-        if ($save) {
+            $save = $transfer->save();
+            // TODO: remove testing comment for production
+            // Uncomment to test a failed transaction
+            //$save = false;
+    
+            if ($save) {
+                // Commit the database transaction
+                DB::commit();
+                // WireUI notification
+                $this->notification()->success($title = __('Transaction done!'), $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />' . '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>');
+                $this->dispatch('resetForm');
+    
+                // Send TransferReceived mail
+                $now = now();
+                Mail::to($transfer->accountTo->accountable)->later($now->addSeconds(1), new TransferReceived($transfer));
+    
+            } else {
+                throw new \Exception('Transaction could not be saved');
+                
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
             // WireUI notification
-            $this->notification()->success($title = __('Transfer complete!'), $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />' . '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>');
-
-            $this->dispatch('resetForm');
-
-            //Send TransferReceived mail
-            $now = now();
-            Mail::to($transfer->accountTo->accountable)->later($now->addSeconds(1), new TransferReceived($transfer));
-        } else {
-            // WireUI notification
-            $this->notification()->error($title = __('Transfer failed!'), $description = __('Sorry, we have an error: the transfer was not saved!'));
-            // TODO: send email with error info to admin and also log this event
-
+            $this->notification()->send([
+                'title' => __('Transaction failed') . '!',
+                'description' => __('Sorry we have an error: this transaction could not be saved!') . '<br /><br />' . __('Our team has ben notified. Please try again later.') . '<br /><br />' . __('Error') . ': ' . $e->getMessage(),
+                'icon' => 'error',
+                'timeout' => 50000
+            ]);
+    
+            $warningMessage = 'Transaction failed';
+            $this->logAndReport($warningMessage, $fromAccountId, $toAccountId, $e);
+    
             return back();
         }
     }
@@ -314,15 +340,8 @@ class Pay extends Component
      * This method checks if the transfer amount exceeds the allowed budget limits
      * for both the source and destination accounts. It sets an appropriate error
      * message and makes the error modal visible if any limit is exceeded.
-     *
-     * @param float $amount The amount to be transferred.
-     * @param float $transferBudgetTo The budget limit for the destination account.
-     * @param float $transferBudgetFrom The budget limit for the source account.
-     * @param float $limitMinFrom The minimum limit for the source account.
-     *
-     * @return bool Returns true if any limit is exceeded and the error modal is made visible.
      */
-    private function checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom)
+    private function checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom, $balanceToPublic)
     {        
         if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
             $this->limitError = __('messages.pay_limit_error_budget_from', [
@@ -332,7 +351,7 @@ class Pay extends Component
             return $this->modalErrorVisible = true;
         }
         if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
-            if ($transferBudgetTo) {
+            if ($balanceToPublic) {
             $this->limitError = __('messages.pay_limit_error_budget_from_and_to', [
                     'limitMinFrom' => tbFormat($limitMinFrom),
                     'transferBudgetTo' => tbFormat($transferBudgetTo),
@@ -352,7 +371,7 @@ class Pay extends Component
             return $this->modalErrorVisible = true;
         }
         if ($amount > $transferBudgetTo) {
-            if ($transferBudgetTo) {
+            if ($balanceToPublic) {
                     $this->limitError = __('messages.pay_limit_error_budget_to', [
                         'transferBudgetTo' => tbFormat($transferBudgetTo),
                     ]);
@@ -374,13 +393,8 @@ class Pay extends Component
      * This method logs a warning message with detailed information about the event,
      * including account details, user details, IP address, and location. It also
      * sends an email to the system administrator with the same information.
-     *
-     * @param string $warningMessage The warning message to log and report.
-     * @param int $fromAccountId The ID of the account from which the event originated.
-     * @param int $toAccountId The ID of the account to which the event is directed.
-     * @return \Illuminate\Http\RedirectResponse A redirect response back to the previous page with an error message.
      */
-    private function logAndReport($warningMessage, $fromAccountId, $toAccountId, )
+    private function logAndReport($warningMessage, $fromAccountId, $toAccountId, $error = '' )
     {
         $ip = request()->ip();    
         $ipLocationInfo = IpLocation::get($ip);        
@@ -408,6 +422,7 @@ class Pay extends Component
             'IP address' => $ip,
             'IP location' => $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName,
             'Event Time' => $eventTime,
+            'Message' => $error,
         ]);
         Mail::raw(
             $warningMessage . '.' . "\n\n" . 
@@ -421,7 +436,8 @@ class Pay extends Component
             'Active Profile Name: ' . session('activeProfileName') . "\n" .
             'IP address: ' . $ip . "\n" .
             'IP location: ' . $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName . "\n" . 
-            'Event Time: ' . $eventTime,
+            'Event Time: ' . $eventTime . "\n\n" .
+            $error,
             function ($message) use ($warningMessage) {
                 $message->to(config('timebank-cc.mail.system_admin'))->subject($warningMessage);
             },

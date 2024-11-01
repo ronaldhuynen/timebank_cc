@@ -225,9 +225,9 @@ class Registration extends Component implements CreatesNewUsers
 
             // WireUI notification
             // TODO!: create event to send error notification to admin
-            $this->notification([
+            $this->notification()->send([
             'title' => __('Registration failed!'),
-            'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
+            'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified. Please try again later.') . '<br /><br />' . $e->getMessage(),
             'icon' => 'error',
             'timeout' => 100000
             ]);

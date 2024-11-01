@@ -243,7 +243,7 @@ class Pay extends Component
         $transactionController = new TransactionController();
         $accountsInfo = collect($transactionController->getAccountsInfo());
         // Check if the session's active profile owns the submitted fromAccountId
-        if ($accountsInfo->contains('id', $fromAccountId)) {
+        if (!$accountsInfo->contains('id', $fromAccountId)) {
             $warningMessage = 'Unauthorized account payment attempt: illegal access of From account';
             return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
@@ -274,12 +274,14 @@ class Pay extends Component
         $transferBudgetFrom = $balanceFrom - $limitMinFrom;
         if (config('timebank-cc.account_info.' . strtolower(class_basename($this->toHolderType)) . '.balance_public')) {
             $transferBudgetTo = $limitMaxTo - $balanceTo;
+            $balanceToPublic = true;
         } else {
-            $transferBudgetTo = null;
+            $transferBudgetTo = $limitMaxTo - $balanceTo;
+            $balanceToPublic = false;
         }
     
         // Check balance limits
-        $this->checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom);
+        $this->checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom, $balanceToPublic);
     
         // Use a database transaction for saving the payment
         DB::beginTransaction();

@@ -30,7 +30,7 @@
         </x-jetstream.section-title>
 
         <div class="mt-5 md:col-span-2 md:mt-0">
-            <x-validation-errors class="mb-4" />
+            <x-jetstream.validation-errors class="mb-4" />
 
             <!---- Right section --->
             <div class="bg-white px-4 py-5 shadow sm:rounded-tl-md sm:rounded-tr-md sm:p-6">

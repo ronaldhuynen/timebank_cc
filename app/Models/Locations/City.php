@@ -7,6 +7,7 @@ use App\Models\Locations\CityLocale;
 use App\Models\Locations\Country;
 use App\Models\Locations\DistrictLocale;
 use App\Models\Locations\Division;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

@@ -1,5 +1,6 @@
 {
     "Registration": "Registeren",
+    "Register": "Registreer",
     "Name": "Naam",
     "Email": "Email",
     "Email or Username": "Email of gebruikersnaam",
@@ -125,12 +126,12 @@
 
     "Error": "Fout",
     "Error message": "Foutmelding",
-    "Registration failed!": "Registratie mislukt!",
+    "Registration failed": "Registratie mislukt",
     "Sorry we have an error: your data could not be saved!": "Sorry we hebben een fout: je gegevens konden niet worden opgeslagen!",
     "Transaction done!": "Transactie voltooid!",
     "Transaction failed": "Transactie mislukt",
     "Sorry we have an error: this transaction could not be saved!": "Sorry we hebben een fout: deze transactie kon niet worden opgeslagen!",
-    "Our team has ben notified. Please try again later.": "Ons team is op de hoogte gebracht. Probeer het alsjeblieft later nog eens.",
+    "Our team has been notified. Please try again later.": "Ons team is op de hoogte gebracht. Probeer het alsjeblieft later nog eens.",
 
     "Dashboard": "Overzicht",
     "Pay": "Betalen",

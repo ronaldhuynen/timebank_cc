@@ -296,8 +296,8 @@ class Pay extends Component
             $transfer->description = $description;
             $transfer->transaction_type_id = $transactionTypeId;
             $transfer->creator_user_id = Auth::user()->id;
-
             $save = $transfer->save();
+            
             // TODO: remove testing comment for production
             // Uncomment to test a failed transaction
             //$save = false;
@@ -323,7 +323,7 @@ class Pay extends Component
             // WireUI notification
             $this->notification()->send([
                 'title' => __('Transaction failed') . '!',
-                'description' => __('Sorry we have an error: this transaction could not be saved!') . '<br /><br />' . __('Our team has ben notified. Please try again later.') . '<br /><br />' . __('Error') . ': ' . $e->getMessage(),
+                'description' => __('Sorry we have an error: this transaction could not be saved!') . '<br /><br />' . __('Our team has been notified. Please try again later.') . '<br /><br />' . __('Error') . ': ' . $e->getMessage(),
                 'icon' => 'error',
                 'timeout' => 50000
             ]);

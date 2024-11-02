@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Component;
 use Stevebauman\Location\Facades\Location as IpLocation;
@@ -78,12 +80,10 @@ class Registration extends Component implements CreatesNewUsers
                 $this->country = $country->id;
             }
 
-
             $division = DB::table('division_locales')->select('division_id')->where('name', 'LIKE', $IpLocationInfo->regionName)->where('locale', app()->getLocale())->first(); //We only need the city_id, therefore we use the default app locale in the where query.
             if ($division) {
                 $this->division = $division->division_id;
             }
-
 
             $city = DB::table('city_locales')->select('city_id')->where('name', $IpLocationInfo->cityName)->where('locale', app()->getLocale())->first(); //We only need the city_id, therefore we use the default app locale in the where query.
             if ($city) {
@@ -115,7 +115,6 @@ class Registration extends Component implements CreatesNewUsers
     {
         $this->division = $value;
         $this->setValidationOptions();
-
     }
 
 
@@ -174,7 +173,6 @@ class Registration extends Component implements CreatesNewUsers
     public function create($input = null)
     {
         $this->waitMessage = true;
-
         $valid = $this->validate();
 
         try {
@@ -198,11 +196,16 @@ class Registration extends Component implements CreatesNewUsers
                 $user->locations()->save($location); // save the new location for the user
 
                 $account = new Account();
-                $account->name = __(config('timebank-cc.accounts.personal.name'));
-                $account->limit_min = config('timebank-cc.accounts.personal.limit_min');
-                $account->limit_max = config('timebank-cc.accounts.personal.limit_max');
-                $user->accounts()->save($account); // create the new account for the user
+                $account->name = __(config('timebank-cc.accounts.user.name'));
+                $account->limit_min = config('timebank-cc.accounts.user.limit_min');
+                $account->limit_max = config('timebank-cc.accounts.user.limit_max');
 
+                // TODO: remove testing comment for production
+                // Uncomment to test a failed transaction
+                // Simulate an error by throwing an exception
+                // throw new \Exception('Simulated error before saving account');
+
+                $user->accounts()->save($account); // create the new account for the user
 
                 // WireUI notification
                 $this->notification()->success(
@@ -220,17 +223,66 @@ class Registration extends Component implements CreatesNewUsers
             return redirect()->route('verification.notice');
 
         } catch (Throwable $e) {
-
             $this->waitMessage = false;
 
             // WireUI notification
-            // TODO!: create event to send error notification to admin
             $this->notification()->send([
-            'title' => __('Registration failed!'),
-            'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified. Please try again later.') . '<br /><br />' . $e->getMessage(),
+            'title' => __('Registration failed') . '! ',
+            'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has been notified. Please try again later.') . '<br /><br />' . __('Error') . ': ' . $e->getMessage(),
             'icon' => 'error',
             'timeout' => 100000
             ]);
+
+            $warningMessage = 'User registration failed';
+            $error = $e;
+            $eventTime = now()->toDateTimeString();
+            $ip = request()->ip();
+            $ipLocationInfo = IpLocation::get($ip);
+            // Escape ipLocation errors when not in production
+            if (!$ipLocationInfo || App::environment(['local', 'development', 'staging'])) {
+                $ipLocationInfo = (object) [
+                    'cityName' => 'local City',
+                    'regionName' => 'local Region',
+                    'countryName' => 'local Country',
+                ];
+            }
+            $lang_preference = app()->getLocale();
+            $country = DB::table('country_locales')->where('country_id', $valid['country'])->where('locale', config('timebank-cc.base_language'))->value('name');
+            $division = DB::table('division_locales')->where('division_id', $valid['division'])->where('locale', config('timebank-cc.base_language'))->value('name');
+            $city = DB::table('city_locales')->where('city_id', $valid['city'])->where('locale', config('timebank-cc.base_language'))->value('name');
+            $district = DB::table('district_locales')->where('district_id', $valid['district'])->where('locale', config('timebank-cc.base_language'))->value('name');
+            
+                // Log this event and mail to admin
+            Log::warning($warningMessage, [
+                'name' => $valid['name'],
+                'email' => $valid['email'],
+                'lang_preference' => $lang_preference,
+                'country' => $country,
+                'division' => $division,
+                'city' => $city,
+                'district' => $district,
+                'IP address' => $ip,
+                'IP location' => $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName,
+                'Event Time' => $eventTime,
+                'Message' => $error,
+            ]);
+            Mail::raw(
+                $warningMessage . '.' . "\n\n" .
+                'Name: ' . $valid['name'] . "\n" .
+                'Email: ' . $valid['email'] . "\n" .
+                'Language preference: ' . $lang_preference . "\n" .
+                'Country: ' . $country . "\n" .
+                'Division: ' . $division . "\n" .
+                'City: ' . $city . "\n" .
+                'District: ' . $district . "\n" .
+                'IP address: ' . $ip . "\n" .
+                'IP location: ' . $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName . "\n" .
+                'Event Time: ' . $eventTime . "\n\n" .
+                $error,
+                function ($message) use ($warningMessage) {
+                    $message->to(config('timebank-cc.mail.system_admin'))->subject($warningMessage);
+                },
+            );
 
             return back();
         }

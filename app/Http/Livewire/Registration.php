@@ -183,8 +183,10 @@ class Registration extends Component implements CreatesNewUsers
                     'name' => $valid['name'],
                     'email' => $valid['email'],
                     'password' => Hash::make($valid['password']),
-                    'profile_photo_path' => config('timebank-cc.files.profile_user.photo_new'),
-                    'lang_preference' => app()->getLocale()     // App locale is set by mcamara/laravel-localization package: set app locale according to browser language
+                    'profile_photo_path' => config('timebank-cc.profiles.user.profile_photo_path_new'),
+                    'lang_preference' => app()->getLocale(),     // App locale is set by mcamara/laravel-localization package: set app locale according to browser language
+                    'limit_min' => config('timebank-cc.profiles.user.limit_min'),
+                    'limit_max' => config('timebank-cc.profiles.user.limit_max'),
                 ]);
 
                 $location = new Location();

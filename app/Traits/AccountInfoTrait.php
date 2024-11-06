@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 trait AccountInfoTrait
 {
@@ -14,17 +16,19 @@ trait AccountInfoTrait
      */
     public function getBalance($accountId)
     {
-        $balance = 0;
-        $transactions = Transaction::where('from_account_id', $accountId)->orWhere('to_account_id', $accountId)->select('from_account_id', 'to_account_id', 'amount')->get();
-        foreach ($transactions as $transaction) {
-            if ($transaction->to_account_id === $accountId) {
-                $balance += $transaction->amount;
-            } else {
-                $balance -= $transaction->amount;
-            }
-        }
-        //TODO store current balance in cache until it it is updated?
-        return $balance;
+        // TODO: Store balance in extra column of transactions table with model events for create/update/delete
+        // a new getBalanceFast() method could read this column for fast access of balance.
+        // This new method would then be used for non-critical balance info.
+        $cacheKey = "account_balance_{$accountId}";
+        return Cache::remember($cacheKey, 60, function () use ($accountId) {
+            $balance = Transaction::where('from_account_id', $accountId)
+                ->orWhere('to_account_id', $accountId)
+                // selectRaw query, secured with input sanitization ans parameter binding [$accountId}]
+                ->selectRaw('SUM(CASE WHEN to_account_id = ? THEN amount ELSE -amount END) as balance', [$accountId])
+                ->value('balance');
+
+            return $balance ?? 0;
+        });
     }
 
 
@@ -44,34 +48,46 @@ trait AccountInfoTrait
             $profileId = session('activeProfileId');
         }
 
-        // Get the profile and its accounts in a single query
-        $profile = $profileType::with(['accounts' => function ($query) {
-            $query->where(function ($query) {
-                $query->whereNull('inactive_at')
-                      ->orWhere('inactive_at', '>', now());
+        $cacheKey = "accounts_info_{$profileType}_{$profileId}";
+        return Cache::remember($cacheKey, 60, function () use ($profileType, $profileId) {
+            // Get the profile and its accounts in a single query
+            $profile = $profileType::with(['accounts' => function ($query) {
+                $query->where(function ($query) {
+                    $query->whereNull('inactive_at')
+                          ->orWhere('inactive_at', '>', now());
+                });
+            }])->find($profileId);
+
+            if (!$profile) {
+                return collect();
+            }
+
+            // Calculate the total balance of all accounts of the profile in a single query
+            $accountIds = $profile->accounts->pluck('id')->toArray();
+            // Convert array to comma-separated string for selectRaw sanitization and parameter binding
+            $accountIdsString = implode(',', $accountIds); 
+            $sumAccounts = DB::table('transactions')
+                ->whereIn('from_account_id', $accountIds)
+                ->orWhereIn('to_account_id', $accountIds)
+                ->selectRaw("SUM(CASE WHEN to_account_id IN ($accountIdsString) THEN amount ELSE -amount END) as balance")
+                ->value('balance');
+
+            $maxBalanceAvailableByProfile = $profile->limit_max - $sumAccounts - $profile->limit_min;
+
+            // Map the collection to include the total balance
+            $accounts = $profile->accounts->map(function ($account) use ($maxBalanceAvailableByProfile) {
+                return [
+                    'id' => $account->id,
+                    'name' => $account->name,
+                    'balance' => $this->getBalance($account->id), // Use getBalance function
+                    'limitMin' => $account->limit_min,
+                    'limitMax' => $account->limit_max,
+                    'maxBalanceAvailableByProfile' => $maxBalanceAvailableByProfile
+                ];
             });
-        }])->find($profileId);
 
-        // Calculate the total balance of all accounts of the profile
-        $sumAccounts = $profile->accounts->sum(function ($account) {
-            return $this->getBalance($account->id);
+            return $accounts;
         });
-
-        $maxBalanceAvailableByProfile = $profile->limit_max - $sumAccounts - $profile->limit_min;
-
-        // Map the collection to include the total balance
-        $accounts = $profile->accounts->map(function ($account) use ($maxBalanceAvailableByProfile) {
-            return [
-                'id' => $account->id,
-                'name' => $account->name,
-                'balance' => $this->getBalance($account->id),
-                'limitMin' => $account->limit_min,
-                'limitMax' => $account->limit_max,
-                'maxBalanceAvailableByProfile' => $maxBalanceAvailableByProfile
-            ];
-        });
-
-        return $accounts;
     }
 
 

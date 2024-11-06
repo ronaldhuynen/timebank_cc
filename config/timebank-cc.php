@@ -15,6 +15,40 @@ return [
         'content_admin' => 'admin@timebank.cc',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Profile Properties
+    |--------------------------------------------------------------------------
+    |
+    */
+    'profiles' => [
+        'user' => [
+            'limit_min' => 0,
+            'limit_max' => 6000, // 100 H
+            'profile_photo_path_new' => 'app-images/profile-user-new.svg',
+            'profile_photo_path_default' => 'app-images/profile-user-default.svg',
+
+        ],
+        'organization' => [
+            'limit_min' => 0,
+            'limit_max' => 6000, // 100 H
+            'profile_photo_path_new' => 'app-images/profile-user-new.svg',
+            'profile_photo_path_default' => 'app-images/profile-user-default.svg',
+        ],
+        'bank' => [
+            'limit_min' => 0,
+            'limit_max' => null, // unlimited H
+            'profile_photo_path_new' => 'app-images/profile-user-new.svg',
+            'profile_photo_path_default' => 'app-images/profile-user-default.svg',
+        ],
+        'admin' => [
+            'limit_min' => 0,
+            'limit_max' => 0,
+            'profile_photo_path_new' => 'app-images/profile-user-new.svg',
+            'profile_photo_path_default' => 'app-images/profile-user-default.svg',
+        ],
+    ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -222,14 +256,6 @@ return [
         //     'content' => 'required|string',
         //     'locale' => 'string|unique:post_translations,locale'
         // ],
-    ],
-
-    'files' => [
-        'profile_user' => [
-            'photo_new' => 'app-images/profile-user-new.svg',
-            'photo_default' => 'app-images/profile-user-default.svg',
-        ],
-
     ],
 
     /*

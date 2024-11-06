@@ -176,7 +176,7 @@ class UpdateProfilePersonalForm extends Component
             Storage::disk(isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('jetstream.profile_photo_disk', 'public'))->delete($this->user->profile_photo_path);
 
             $this->user->forceFill([
-                'profile_photo_path' =>  config('timebank-cc.files.profile_user.photo_default'),
+                'profile_photo_path' =>  config('timebank-cc.profiles.user.profile_photo_path_default'),
             ])->save();
 
             Session(['activeProfilePhoto' => $this->user->profile_photo_path ]);

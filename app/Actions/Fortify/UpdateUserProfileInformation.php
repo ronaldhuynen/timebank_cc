@@ -29,7 +29,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
         } else {
-            $user->forcefill(['profile_photo_path' => config('timebank-cc.files.profile_user.photo_default')])->save();
+            $user->forcefill(['profile_photo_path' => config('timebank-cc.profiles.user.profile_photo_path_default')])->save();
         }
 
         if ($input['email'] !== $user->email &&

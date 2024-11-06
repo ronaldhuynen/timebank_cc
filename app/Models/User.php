@@ -60,6 +60,8 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         'website',
         'phone',
         'password',
+        'limit_min',
+        'limit_max',
         'lang_preference',
         'last_login_at',
         'last_login_ip'

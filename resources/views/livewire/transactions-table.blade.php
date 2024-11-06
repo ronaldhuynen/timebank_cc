@@ -1,6 +1,6 @@
 <div class="my-4">
 
-    <!-- Accordion Item 1 -->
+    <!-- Accordion Item -->
     <div class="rounded-md border border-gray-300 px-6 py-3 shadow-md">
         <button class="flex w-full items-center justify-between py-2" onclick="toggleAccordion(1)">
             <span class="text-xs font-semibold uppercase tracking-widest text-gray-700">
@@ -9,7 +9,7 @@
                 <x-icon class="h-5 w-5 text-gray-700 hover:text-gray-600" name="chevron-down" />
             </span>
         </button>
-        <!-- Content 1 of open accordion -->
+        <!-- Content of open accordion -->
         <div class="max-h-0 transition-all duration-300 ease-in-out" id="content-1" wire:ignore>
             <div class="my-3 flex space-x-12">
                 <div class="w-2/4 flex-none">
@@ -64,8 +64,8 @@
         </div>
 
         <div class="absolute right-0 top-0 my-1">
-            <x-button label="{{ __('HTML') }}" outline right-icon="arrow-down-tray" secondary
-                      wire:click="exportTransactions('html')" xs />
+            {{-- <x-button label="{{ __('HTML') }}" outline right-icon="arrow-down-tray" secondary
+                      wire:click="exportTransactions('html')" xs /> --}}
             <x-button label="{{ __('ODS') }}" outline right-icon="arrow-down-tray" secondary
                       wire:click="exportTransactions('ods')" xs />
             <x-button label="{{ __('XLSX') }}" outline right-icon="arrow-down-tray" secondary
@@ -197,8 +197,8 @@
         <div class="flex">
             <select class="w-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
                     wire:model.live="perPage">
+                <option value="25">25</option>
                 <option value="50">50</option>
-                <option value="100">100</option>
                 <option value="200">200</option>
             </select>
             <div class="mt-2 flex-auto px-3 text-gray-400">{{ __('results') }}</div>

@@ -38,10 +38,12 @@ class TransactionController extends Controller
         return view('pay.show', compact(['name']));
     }
 
+
     public function payAmountToName($hours = null, $minutes = null, $name = null)
     {
         return view('pay.show', compact(['hours', 'minutes', 'name']));
     }
+
 
     public function payAmountToNameWithDescr($hours = null, $minutes = null, $name = null, $description = null)
     {
@@ -71,6 +73,7 @@ class TransactionController extends Controller
         return view('pay.show', compact(['minutes', 'toAccountId', 'name', 'description', 'type']));
     }
 
+
     public static function getNameByCyclosId($cyclos_id)
     {
         $user = User::where('cyclos_id', $cyclos_id)->first();
@@ -91,6 +94,7 @@ class TransactionController extends Controller
         return null;
     }
 
+    
     public function transactions()
     {
         $profileAccounts = $this->getAccountsInfo();

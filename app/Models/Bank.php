@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Helpers\StringHelper;
-use App\Models\Language;
+
 use App\Models\Locations\Location;
-use App\Models\Post;
 use App\Models\User;
 use App\Traits\TaggableWithLocale;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;

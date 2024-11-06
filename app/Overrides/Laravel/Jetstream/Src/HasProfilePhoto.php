@@ -2,6 +2,7 @@
 
 namespace Laravel\Jetstream;
 
+use App\Models\Organization;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Jetstream\Features;
@@ -52,7 +53,7 @@ trait HasProfilePhoto
             Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
 
             $this->forceFill([
-                'profile_photo_path' =>  config('timebank-cc.files.profile_user.photo_default'),
+                'profile_photo_path' =>  config('timebank-cc.profiles.user.profile_photo_path_default'),
             ])->save();
 
             Session(['activeProfilePhoto'=> $this->profile_photo_path ]);
@@ -79,9 +80,9 @@ trait HasProfilePhoto
     protected function defaultProfilePhotoUrl()
     {
         if (session('activeProfileType') == Organization::class) {
-            return config('timebank-cc.files.profile_organization.photo_default');
+            return config('timebank-cc.profiles.organization.profile_photo_path_default');
         } else {
-            return config('timebank-cc.files.profile_user.photo_default');
+            return config('timebank-cc.profiles.user.profile_photo_path_default');
         }
     }
 

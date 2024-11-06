@@ -85,13 +85,15 @@ class TransactionsTable extends Component
         $balance = 0;
         $accountId = $this->fromAccountId;
         
-// $accountId = 846;
-
         $account = Account::with(['accountable' => function ($query) {
             $query->select('id', 'name', 'full_name'); // Ensure 'id' is selected for the relationship to work
         }])->find($accountId);
-        // dd($account);
-        $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')->where('to_account_id', $accountId)->orWhere('from_account_id', $accountId)->get();
+
+        $results = Transaction::with('accountTo.accountable', 'accountFrom.accountable')
+            ->where('to_account_id', $accountId)
+            ->orWhere('from_account_id', $accountId)
+            ->get();
+        
         foreach ($results as $t) {
             if ($t->to_account_id === $accountId) {
                 // Credit transfer
@@ -287,7 +289,7 @@ class TransactionsTable extends Component
             return $item->toArray();
         });
 
-       
+
         // Pass the data directly to the export route
         return (new TransactionsExport($data))->download('transactions.' . $type);
 

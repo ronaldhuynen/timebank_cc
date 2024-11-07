@@ -62,7 +62,6 @@ class ToAccount extends Component
     {
         $this->toAccountId = $toAccountId;
         $toAccountDetails = collect($this->searchResults)->firstWhere('accountId', $toAccountId);
-
         
         if ($toAccountDetails) {
             $this->toAccountName = $toAccountDetails['accountName'];

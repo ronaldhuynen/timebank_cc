@@ -15,7 +15,7 @@
                 <div class="w-2/4 flex-none">
                     <x-jetstream.label for="search" value="{{ __('Keywords') }}" />
                     <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                                       placeholder="Search keywords" right-icon="search" wire:model.live="search" />
+                                       placeholder="Search keywords" right-icon="search" wire:model.defer="search" />
                     @error('search')
                         <div class="mb-3 text-sm text-red-700" role="alert">
                             {{ __($message) }}
@@ -41,12 +41,12 @@
                 <div class="z-50 my-6 flex-auto">
                     <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
                                        display-format="DD-MM-YYYY" label="{{ __('From date') }}"
-                                       placeholder="{{ __('Select a date') }}" wire:model.live="fromDate" />
+                                       placeholder="{{ __('Select a date') }}" wire:model.defer="fromDate" />
                 </div>
                 <div class="z-50 my-6 flex-auto">
                     <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
                                        display-format="DD-MM-YYYY" label="{{ __('To date') }}"
-                                       placeholder="{{ __('Select a date') }}" wire:model.live="toDate" />
+                                       placeholder="{{ __('Select a date') }}" wire:model.defer="toDate" />
                 </div>
             </div>
 
@@ -121,7 +121,7 @@
             </thead>
             <tbody>
                 @if ($transactions)
-                    @foreach ($transactions['data'] as $transaction)
+                    @foreach ($transactions as $transaction)
                         <tr onclick="window.location='{{ route('transaction.show', $transaction['trans_id']) }}'"
                             style="cursor: pointer;">
                             <td class="w-2/16 border-b border-gray-200 bg-white px-2 py-2 text-sm">
@@ -201,18 +201,20 @@
                 <option value="50">50</option>
                 <option value="200">200</option>
             </select>
-            <div class="mt-2 flex-auto px-3 text-gray-400">{{ __('results') }}</div>
+            <div class="mt-2 flex-auto px-3 text-gray-500">{{ __('results') }}</div>
         </div>
         @if ($transactions)
-            <div class="absolute right-0">
+            {{-- <div class="absolute right-0">
                 {{ (new \Illuminate\Pagination\LengthAwarePaginator(
                     $transactions['data'],
                     $transactions['total'],
                     $transactions['per_page'],
                     $transactions['current_page'],
-                    ['path' => $transactions['path']],
+                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()],
                 ))->links('vendor.livewire.tailwind') }}
-            </div>
+                {{ 'test: ' . $transactions['current_page'] }}
+            </div> --}}
+            {{ $transactions->links('livewire.long-paginator') }}
         @endif
     </div>
 

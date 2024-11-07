@@ -54,7 +54,7 @@ trait AccountInfoTrait
             $profile = $profileType::with(['accounts' => function ($query) {
                 $query->where(function ($query) {
                     $query->whereNull('inactive_at')
-                          ->orWhere('inactive_at', '>', now());
+                        ->orWhere('inactive_at', '>', now());
                 });
             }])->find($profileId);
 

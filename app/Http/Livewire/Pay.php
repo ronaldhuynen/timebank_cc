@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
-
 use Stevebauman\Location\Facades\Location as IpLocation;
 use WireUi\Traits\WireUiActions;
 use function Laravel\Prompts\error;

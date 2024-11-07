@@ -56,6 +56,14 @@
         </div>
     </div>
 
+    <!-- General error section -->
+    @if (session('error'))
+        <div class="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    @endif
+
     <!-- Results table -->
     <div class="relative mb-20 mt-12 w-full min-w-full leading-normal">
 

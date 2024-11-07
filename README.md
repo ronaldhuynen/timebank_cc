@@ -1,3 +1,6 @@
+Mysql / MariaDB depency warning:
+The methods used to get transactions including their running balances require MySQL 8.0+ or MariaDB 10.2+ for window function support.
+
 ## TODO !
 - Check Redis security: use a password etc!
 

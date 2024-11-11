@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <x-jetstream.secondary-button class="my-3" type="button" wire:click="searchTransactions">
+            <x-jetstream.secondary-button class="my-3" type="button" wire:click="getTransactions">
                 {{ __('Search') }}
             </x-jetstream.secondary-button>
         </div>

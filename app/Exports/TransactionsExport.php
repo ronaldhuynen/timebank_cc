@@ -67,10 +67,9 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
             $transaction['relation'],
             $transaction['relation_full_name'],
             $transaction['description'],
-            tbFormat($transaction['balance']),
-            $transaction['balance'],
+            ($transaction['balance'] != null ) ? tbFormat($transaction['balance']) : '',
+            ($transaction['balance'] != null ) ? $transaction['balance'] : '',
         ];
-
     }
 
     public function title(): string

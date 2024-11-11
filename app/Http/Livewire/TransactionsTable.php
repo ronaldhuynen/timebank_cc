@@ -27,7 +27,7 @@ class TransactionsTable extends Component
     public $searchAccount;
     public $fromDate;
     public $toDate;
-    public $perPage = 25;
+    public $perPage = 15;
     public $sortField;
     public $sortAsc = true;
     public $fromAccountId;
@@ -104,7 +104,7 @@ class TransactionsTable extends Component
             $this->searchState = false;
         }
 
-        if (!empty($this->search) || !empty($this->searchAmount)) {
+        if ($this->searchState) {
             $this->hideBalance = true;
         } else {
             $this->hideBalance = false;
@@ -114,7 +114,6 @@ class TransactionsTable extends Component
         if (!isset($accountId)) {
             return ;    // return empty if accountId is not set yet
         }
-
 
         $accountId = $this->fromAccountId;
 
@@ -238,65 +237,73 @@ class TransactionsTable extends Component
     }
 
 
+public function exportTransactions($type)
+{    
+    if ($this->searchState) {
+        $this->hideBalance = true;
+    } else {
+        $this->hideBalance = false;
+    }
 
-    public function exportTransactions($type)
-{
     $accountId = $this->fromAccountId;
 
     // Check if accountId is owned by active profile
-    if (!$this->checkAccountHolder($accountId)) {
-        session()->flash('error', __('Unauthorized access.'));
-        return;
+    $check = $this->checkAccountHolder($accountId);
+    if (!$check) {
+        return ;
     }
 
-    // Build the query using the same logic as in getTransactionsProperty()
-    $query = Transaction::with([
-        'accountTo.accountable:id,name,full_name,profile_photo_path',
-        'accountFrom.accountable:id,name,full_name,profile_photo_path',
-    ])->where(function ($query) use ($accountId) {
-        $query->where('to_account_id', $accountId)
-              ->orWhere('from_account_id', $accountId);
+    // Fetch the account with its accountable relationship
+    $account = Account::with(['accountable:id,name,full_name'])->find($accountId);
+
+ 
+// Build the query
+$query = Transaction::with([
+    'accountTo.accountable:id,name,full_name,profile_photo_path',
+    'accountFrom.accountable:id,name,full_name,profile_photo_path',
+])->where(function ($query) use ($accountId) {
+    $query->where('to_account_id', $accountId)
+          ->orWhere('from_account_id', $accountId);
+});
+
+// Apply search filters if any
+if (!empty($this->search)) {
+    $search = strtolower(trim($this->search));
+    $query->where(function ($query) use ($search) {
+        $query->whereRaw('LOWER(description) LIKE ?', ["%{$search}%"])
+              ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
+                  $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(full_name) LIKE ?', ["%{$search}%"]);
+              })
+              ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
+                  $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(full_name) LIKE ?', ["%{$search}%"]);
+              });
     });
+}
 
-    if ($this->searchState) {
-        // Apply search filters (copy your existing search logic here)
-        $search = strtolower(trim($this->search));
-        
-        if (!empty($search)) {
-            $query->where(function ($query) use ($search) {
-                $query->whereRaw('LOWER(description) LIKE ?', ["%{$search}%"])
-                      ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
-                          $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
-                                ->orWhereRaw('LOWER(full_name) LIKE ?', ["%{$search}%"]);
-                      })
-                      ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
-                          $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
-                                ->orWhereRaw('LOWER(full_name) LIKE ?', ["%{$search}%"]);
-                      });
-            });
-        }
+if (!empty($this->searchAccount)) {
+    $query->where(function ($query) {
+        $query->where('from_account_id', $this->searchAccount)
+              ->orWhere('to_account_id', $this->searchAccount);
+    });
+}
 
-        if (!empty($this->searchAccount)) {
-            $query->where(function ($query) {
-                $query->where('from_account_id', $this->searchAccount)
-                      ->orWhere('to_account_id', $this->searchAccount);
-            });
-        }
+if (!empty($this->searchAmount)) {
+    $query->where('amount', $this->searchAmount);
+}
 
-        if (!empty($this->searchAmount)) {
-            $query->where('amount', $this->searchAmount);
-        }
+if (!empty($this->fromDate)) {
+    $query->whereDate('created_at', '>=', $this->fromDate);
+}
 
-        if (!empty($this->fromDate)) {
-            $query->whereDate('created_at', '>=', $this->fromDate);
-        }
+if (!empty($this->toDate)) {
+    $query->whereDate('created_at', '<=', $this->toDate);
+}
 
-        if (!empty($this->toDate)) {
-            $query->whereDate('created_at', '<=', $this->toDate);
-        }
-    } else {
-        // Include window function for running balance if not in search mode
-        $query->selectRaw("
+// Include balance calculation when not in search state
+if (!$this->hideBalance) {
+    $query->selectRaw("
             transactions.*,
             SUM(
                 CASE
@@ -306,62 +313,69 @@ class TransactionsTable extends Component
                 END
             ) OVER (ORDER BY created_at ASC) AS balance
         ", [$accountId, $accountId]);
-    }
+}
 
-    // Order by created_at descending for newest transactions first
-    $query->orderBy('created_at', 'desc');
 
-    // Fetch all transactions without pagination for export
-    $transactions = $query->get();
+    // Get all transactions without pagination
+    $transactions = $query->orderBy('created_at', 'desc')->get();
 
-    // Transform the transactions (reuse your existing transformation logic)
-    $transactions = $transactions->map(function ($t) use ($accountId) {
+    // Transform the transactions as needed
+    $data = $transactions->map(function ($t) use ($account, $accountId) {
         $transaction = [
             'trans_id' => $t->id,
             'datetime' => $t->created_at,
             'amount' => $t->amount,
             'type' => $t->to_account_id === $accountId ? 'Credit' : 'Debit',
+            'account_id' => $account->id,
+            'account_name' => $account->name,
+            'account_holder_name' => $account->accountable->name,
+            'account_holder_full_name' => $account->accountable->full_name,
             'description' => $t->description,
-            'balance' => $t->balance ?? null, // Include balance if available
-            // ... other fields as needed ...
+            'balance' => ($this->hideBalance == false) ? $t->balance : null, // Running balance from window function
         ];
 
         if ($t->to_account_id === $accountId) {
-            // Credit transaction
+            // Credit transaction details
             $transaction += [
                 'account_from' => $t->from_account_id,
+                'account_counter_id' => $t->from_account_id,
                 'account_from_name' => $t->accountFrom->name ?? '',
+                'account_counter_name' => $t->accountFrom->name ?? '',
                 'relation' => $t->accountFrom->accountable->name ?? '',
                 'relation_full_name' => $t->accountFrom->accountable->full_name ?? '',
-                // ... other fields ...
+                'profile_photo' => $t->accountFrom->accountable->profile_photo_path ?? '',
             ];
         } else {
-            // Debit transaction
+            // Debit transaction details
             $transaction += [
                 'account_to' => $t->to_account_id,
+                'account_counter_id' => $t->to_account_id,
                 'account_to_name' => $t->accountTo->name ?? '',
+                'account_counter_name' => $t->accountTo->name ?? '',
                 'relation' => $t->accountTo->accountable->name ?? '',
                 'relation_full_name' => $t->accountTo->accountable->full_name ?? '',
-                // ... other fields ...
+                'profile_photo' => $t->accountTo->accountable->profile_photo_path ?? '',
             ];
         }
 
         return $transaction;
     });
 
-    // Remove unnecessary keys if needed
-    $transactions = $transactions->map(function ($item) {
+    // Remove unnecessary keys
+    $data = $data->map(function ($item) {
         return collect($item)->except([
             'account_from',
             'account_to',
+            'account_from_name',
+            'account_to_name',
             'profile_photo',
-            // Add any other keys you want to exclude
         ])->toArray();
     });
 
-    // Use your export functionality
-    return (new TransactionsExport($transactions))->download('transactions.' . $type);
+    // Use the TransactionsExport to export data
+    return (new TransactionsExport($data))->download('transactions.' . $type);
 }
+
 
     private function checkAccountHolder($accountId)
     {        

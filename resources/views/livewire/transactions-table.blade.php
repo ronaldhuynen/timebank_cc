@@ -205,23 +205,13 @@
         <div class="flex">
             <select class="w-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
                     wire:model.live="perPage">
-                <option value="25">25</option>
+                <option value="15">15</option>
                 <option value="50">50</option>
-                <option value="200">200</option>
+                <option value="100">100</option>
             </select>
             <div class="mt-2 flex-auto px-3 text-gray-500">{{ __('results') }}</div>
         </div>
         @if ($transactions)
-            {{-- <div class="absolute right-0">
-                {{ (new \Illuminate\Pagination\LengthAwarePaginator(
-                    $transactions['data'],
-                    $transactions['total'],
-                    $transactions['per_page'],
-                    $transactions['current_page'],
-                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()],
-                ))->links('vendor.livewire.tailwind') }}
-                {{ 'test: ' . $transactions['current_page'] }}
-            </div> --}}
             {{ $transactions->links('livewire.long-paginator') }}
         @endif
     </div>

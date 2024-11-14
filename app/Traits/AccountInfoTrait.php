@@ -75,10 +75,11 @@ trait AccountInfoTrait
             $maxBalanceAvailableByProfile = $profile->limit_max - $sumAccounts - $profile->limit_min;
 
             // Map the collection to include the total balance
-            $accounts = $profile->accounts->map(function ($account) use ($maxBalanceAvailableByProfile) {
+            $accounts = $profile->accounts->map(function ($account) use ($profileType, $maxBalanceAvailableByProfile) {
                 return [
                     'id' => $account->id,
                     'name' => $account->name,
+                    'type' => strtolower(class_basename($profileType)),
                     'balance' => $this->getBalance($account->id), // Use getBalance function
                     'limitMin' => $account->limit_min,
                     'limitMax' => $account->limit_max,

@@ -38,15 +38,7 @@ class FromAccount extends Component
     {
         if (count($this->profileAccounts) > 0) {
             $this->fromAccountId = $this->profileAccounts->first()['id'];
-            $this->selectedAccount = [
-                'id' => $this->profileAccounts->first()['id'],
-                'name' => ucfirst(strtolower($this->profileAccounts->first()['name'])),
-                'balanceH' => tbFormat($this->profileAccounts->first()['balance']),
-                'balance' => $this->profileAccounts->first()['balance'],
-                'limitMin' => $this->profileAccounts->first()['limitMin'],
-                'limitMax' => $this->profileAccounts->first()['limitMax'],
-                'maxBalanceAvailableByProfile' => $this->profileAccounts->first()['maxBalanceAvailableByProfile'],
-            ];
+            $this->selectedAccount = $this->profileAccounts->first();
             $this->dispatch('fromAccountId', $this->selectedAccount);
         }
     }
@@ -54,17 +46,7 @@ class FromAccount extends Component
     public function fromAccountSelected($fromAccountId)
     {
         $this->fromAccountId = $fromAccountId;
-        $selected = collect($this->profileAccounts)->firstWhere('id', $fromAccountId);
-        $this->selectedAccount = [
-            'id' => $selected['id'],
-            'name' => ucfirst(strtolower($selected['name'])),
-            'balanceH' => tbFormat($selected['balance']),
-            'balance' => $selected['balance'],
-            'limitMin' => $selected['limitMin'],
-            'limitMax' => $selected['limitMax'],
-            'maxBalanceAvailableByProfile' => $selected['maxBalanceAvailableByProfile'],
-        ];
-        
+        $this->selectedAccount = collect($this->profileAccounts)->firstWhere('id', $fromAccountId);
         $this->dispatch('fromAccountId', $this->selectedAccount);
     }
 

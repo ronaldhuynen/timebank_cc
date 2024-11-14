@@ -57,37 +57,51 @@ return [
     |
     | The default account properties that will be set into the database when new accounts are created.
     | The balance limits are in minutes. A negative balance limit should be set as 'limit_min' = -300
+    |
+    | Receiving types - defines which transaction types the account can receive:
+    | 1 => work
+    | 2 => gift
+    | 3 => donation
+    | 4 => currency creation
+    | 5 => currency removal
+    |
     */
+    // TODO JOERI: Check transaction types
     'accounts' => [
         'user' => [
             'name' =>  'personal',
             'limit_min' => 0,
             'limit_max' => 6000, // 100 H
+            'receiving_types' => [1,2],
         ],
         'userProject' => [
             'name' =>  'personal project',
             'limit_min' => 0,
-            'limit_max' => 3000, // 50 H //TODO: Discuss with board!
+            'receiving_types' => [1,3],
         ],
         'organization' => [
             'name' => 'organization',
             'limit_min' => 0,
             'limit_max' => 6000, // 100 H, default value,  manually set organizations with a big turn-over to a higher limit
+            'receiving_types' => [1,3],
         ],
         'bank' => [
             'name' => 'bank',
             'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
             'limit_max' => 600000, //  10,000 H
+            'receiving_types' => [1,5],
         ],
         'community' => [
             'name' => 'community',
             'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
             'limit_max' => null, 
+            'receiving_types' => [3,4,5],
         ],
         'debit' => [
             'name' => 'debit',
             'limit_min' => null,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
             'limit_max' => 0, 
+            'receiving_types' => [5],
         ],
     ],
     'maxLengthHoursInput' => [  // Sets the default max length the amount component can have for the hours input box 
@@ -95,15 +109,47 @@ return [
         'organization' => 3,
         'bank' => 5,
         'admin' => 10,
+        'transaction_types' => [],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | User type permission settings  
+    |--------------------------------------------------------------------------
+    |
+    | Payment types - defines which transaction types the user type can pay:
+    | 1 => work
+    | 2 => gift
+    | 3 => donation
+    | 4 => currency creation
+    | 5 => currency removal
+    |
+    */
+    // TODO JOERI: Check transaction types
+    'permissions' => [
+        'user' => [
+            'payment_types' => [1,2,3],
+        ],
+        'userProject' => [
+            'payment_types' => [1,2,3],
+        ],
+        'organization' => [
+            'payment_types' => [1,2,3],
+        ],
+        'bank' => [
+            'payment_types' => [1,2,3,4,5],
+        ],
+        'admin' => [
+            'payment_types' => [],
+        ],
+    ],
+
 
     /*
     |--------------------------------------------------------------------------
     | Public / Private settings
     |--------------------------------------------------------------------------
     |
-    | The default account properties that will be set into the database when new accounts are created.
-    | The balance limits are in minutes.
     */
 
     'account_info' => [

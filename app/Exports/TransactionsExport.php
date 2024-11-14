@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -35,7 +34,7 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
             __('Date'),
             __('Amount'),
             __('Amount in minutes'),
-            __('Type'),
+            __('Debit/Credit'),
             __('Account nr.'),
             __('Account name'),
             __('Acc. holder'),
@@ -45,8 +44,6 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
             __('Relation name'),
             __('Relation full name'),
             __('Description'),
-            __('Balance'),
-            __('Balance in minutes')
         ];
     }
 
@@ -57,7 +54,7 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
             $transaction['datetime'],
             tbFormat($transaction['amount']),
             $transaction['amount'],
-            $transaction['type'],
+            $transaction['c/d'],
             $transaction['account_id'],
             $transaction['account_name'],
             $transaction['account_holder_name'],
@@ -66,9 +63,8 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
             $transaction['account_counter_name'],
             $transaction['relation'],
             $transaction['relation_full_name'],
+            $transaction['type'],
             $transaction['description'],
-            ($transaction['balance'] != null ) ? tbFormat($transaction['balance']) : '',
-            ($transaction['balance'] != null ) ? $transaction['balance'] : '',
         ];
     }
 

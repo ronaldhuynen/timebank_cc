@@ -23,9 +23,22 @@ class Account extends Model
         return $this->morphTo();
     }
 
+    // Define the relationship for transactions where the account is the sender
+    public function transactionsFrom()
+    {
+        return $this->hasMany(Transaction::class, 'from_account_id');
+    }
+
+    // Define the relationship for transactions where the account is the receiver
+    public function transactionsTo()
+    {
+        return $this->hasMany(Transaction::class, 'to_account_id');
+    }
+
+    // Define a combined relationship for all transactions involving the account
     public function transactions()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->transactionsFrom()->union($this->transactionsTo());
     }
 
     public static function accountsCyclosMember($cyclos_id)

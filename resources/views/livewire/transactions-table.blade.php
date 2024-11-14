@@ -10,6 +10,7 @@
             </span>
         </button>
         <!-- Content of open accordion -->
+        <form wire:submit.prevent="getTransactions">
         <div class="max-h-0 transition-all duration-300 ease-in-out" id="content-1" wire:ignore>
             <div class="my-3 flex space-x-12">
                 <div class="w-2/4 flex-none">
@@ -49,11 +50,28 @@
                                        placeholder="{{ __('Select a date') }}" wire:model.defer="toDate" />
                 </div>
             </div>
+                  <!--- Transaction type --->
+                <div>
+                    <x-select
+                        wire:model="searchTypes"  
+                        placeholder="{{ __('Select (multiple) types') }}"
+                        multiselect
+                        :options="$typeOptions"
+                        option-label="name"
+                        option-value="id"
+                    />
+                </div>
+                @error('searchTypes')
+                    <div class="mb-3 text-sm text-red-700" role="alert">
+                        {{ __($message) }}
+                    </div>
+                @enderror
 
-            <x-jetstream.secondary-button class="my-3" type="button" wire:click="getTransactions">
+            <x-jetstream.secondary-button class="my-3" type="submit">
                 {{ __('Search') }}
             </x-jetstream.secondary-button>
         </div>
+        </form>
     </div>
 
     <!-- General error section -->
@@ -66,11 +84,9 @@
 
     <!-- Results table -->
     <div class="relative mb-20 mt-12 w-full min-w-full leading-normal">
-
         <div wire:loading class="absolute left-0 top-0 my-1">
             <x-mini-button rounded icon="" flat primary spinner /> <span> {{__('Loading...')}} </span>
         </div>
-
         <div class="absolute right-0 top-0 my-1">
             {{-- <x-button label="{{ __('HTML') }}" outline right-icon="arrow-down-tray" secondary
                       wire:click="exportTransactions('html')" xs /> --}}
@@ -85,7 +101,6 @@
         </div>
     </div>
     <div class="relative mb-20 mt-12 w-full min-w-full leading-normal">
-
         <table class="w-full" id="transactions">
             <thead>
                 <tr>

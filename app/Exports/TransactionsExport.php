@@ -43,6 +43,7 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
             __('Counter acc. name'),
             __('Relation name'),
             __('Relation full name'),
+            __('Type'),
             __('Description'),
         ];
     }
@@ -54,16 +55,16 @@ class TransactionsExport implements FromCollection, WithTitle, WithHeadings, Wit
             $transaction['datetime'],
             tbFormat($transaction['amount']),
             $transaction['amount'],
-            $transaction['c/d'],
+            __($transaction['c/d']),
             $transaction['account_id'],
-            $transaction['account_name'],
+            __(ucfirst(strtolower($transaction['account_name']))),
             $transaction['account_holder_name'],
             $transaction['account_holder_full_name'],
             $transaction['account_counter_id'],
-            $transaction['account_counter_name'],
+            __(ucfirst(strtolower($transaction['account_counter_name']))),
             $transaction['relation'],
             $transaction['relation_full_name'],
-            $transaction['type'],
+            __(ucfirst(strtolower($transaction['type']))),
             $transaction['description'],
         ];
     }

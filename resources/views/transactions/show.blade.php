@@ -10,19 +10,14 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
 
-                    <div class="mt-4 text-2xl">
+                    <!--- Change account -->
+                    @livewire('from-account', ['label' => __('Change account')])
+                    <div class="mt-12 text-2xl">
                         {{ __('Table Title (with period etc)') }}
                     </div>
-
-                    <div class="mt-6 text-gray-500">
-                        {{__('Here we can write some additional info about this page. Of course only if we need to. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in vol ')}}
-                    </div>
-
+                    
                     <!-- Balance limits --->
                     @livewire('account-usage-bar')
-
-                    <!--- From account -->
-                    @livewire('from-account', ['label' => __('Account')])
 
                     <!--- Transactions table -->
                     @livewire('transactions-table')

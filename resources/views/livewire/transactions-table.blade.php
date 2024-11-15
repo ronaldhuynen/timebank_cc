@@ -166,9 +166,9 @@
                                         </p>
                                         <p class="whitespace-no-wrap text-gray-500">
                                             @if (isset($transaction['account_to_name']))
-                                                {{ $transaction['account_to_name'] }}
+                                                {{ __(ucfirst(strtolower($transaction['account_to_name']))) }}
                                             @else
-                                                {{ $transaction['account_from_name'] }}
+                                                {{ __(ucfirst(strtolower($transaction['account_from_name']))) }}
                                             @endif
                                         </p>
                                     </div>
@@ -187,7 +187,7 @@
                             </td>
                             <td class="w-2/16 border-b border-gray-200 bg-white px-2 py-2 text-right text-sm">
                                 <p class="whitespace-no-wrap text-gray-900">
-                                    @if ($transaction['type'] === 'Debit')
+                                    @if ($transaction['c/d'] === 'Debit')
                                         <span class="text-red-700"> {{ tbFormat($transaction['amount']) }} -</span>
                                     @else
                                         <span class="text-gray-900"> {{ tbFormat($transaction['amount']) }}

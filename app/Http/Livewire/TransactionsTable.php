@@ -61,7 +61,7 @@ class TransactionsTable extends Component
         'fromDate.date' => 'The from date must be a valid date.',
         'toDate.date' => 'The to date must be a valid date.',
     ];
-    
+
 
     public function mount($toAccountType = null)
     {
@@ -79,7 +79,7 @@ class TransactionsTable extends Component
 
         $this->typeOptions = TransactionType::whereIn('id', $typeIds)->get();
     }
-    
+
 
     public function amountDispatched($amount)
     {
@@ -109,10 +109,10 @@ class TransactionsTable extends Component
      */
     public function getTransactions()
     {
-        if (!empty($this->search) || 
-            !empty($this->searchAmount) || 
-            !empty($this->searchAccount || 
-            !empty($this->fromDate) || 
+        if (!empty($this->search) ||
+            !empty($this->searchAmount) ||
+            !empty($this->searchAccount ||
+            !empty($this->fromDate) ||
             !empty($this->searchTypes))) {
             $this->hideBalance = true;
         } else {
@@ -291,10 +291,10 @@ class TransactionsTable extends Component
         $query = Transaction::with([
             'accountTo.accountable:id,name,full_name,profile_photo_path',
             'accountFrom.accountable:id,name,full_name,profile_photo_path',
-            'transactionType:id.name'
+            'transactionType:id,name'
         ])->where(function ($query) use ($accountId) {
             $query->where('to_account_id', $accountId)
-                  ->orWhere('from_account_id', $accountId);
+                ->orWhere('from_account_id', $accountId);
         });
 
         // Apply search filters if any
@@ -302,21 +302,21 @@ class TransactionsTable extends Component
             $search = strtolower(trim($this->search));
             $query->where(function ($query) use ($search) {
                 $query->whereRaw('LOWER(description) LIKE ?', ["%{$search}%"])
-                      ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
-                          $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                    ->orWhereHas('accountFrom.accountable', function ($query) use ($search) {
+                        $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
                                 ->orWhereRaw('LOWER(full_name) LIKE ?', ["%{$search}%"]);
-                      })
-                      ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
-                          $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                    })
+                    ->orWhereHas('accountTo.accountable', function ($query) use ($search) {
+                        $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
                                 ->orWhereRaw('LOWER(full_name) LIKE ?', ["%{$search}%"]);
-                      });
+                    });
             });
         }
 
         if (!empty($this->searchAccount)) {
             $query->where(function ($query) {
                 $query->where('from_account_id', $this->searchAccount)
-                      ->orWhere('to_account_id', $this->searchAccount);
+                    ->orWhere('to_account_id', $this->searchAccount);
             });
         }
 
@@ -335,9 +335,10 @@ class TransactionsTable extends Component
         if (!empty($searchTypes)) {
             $query->whereIn('transaction_type_id', $searchTypes);
         }
-        
-        //TODO NEXT: fix export with type names
-        // Get all transactions without pagination
+
+        // Get all transactions without pagination and balance as this is for export
+        // Running balance is not calculated as for accounts with many transactions this would take too long 
+        // to query and php's time limit would throw an error.
         $transactions = $query->orderBy('created_at', 'desc')->get();
 
         // Transform the transactions as needed
@@ -352,8 +353,7 @@ class TransactionsTable extends Component
                 'account_holder_name' => $account->accountable->name,
                 'account_holder_full_name' => $account->accountable->full_name,
                 'description' => $t->description,
-                'type' => $t->transactionType->name,
-                'balance' => ($this->hideBalance == false) ? $t->balance : null, // Running balance from window function
+                'type' => $t->transactionType ? $t->transactionType->name : '',
             ];
 
             if ($t->to_account_id === $accountId) {

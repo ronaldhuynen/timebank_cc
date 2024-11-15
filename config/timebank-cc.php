@@ -69,30 +69,30 @@ return [
     // TODO JOERI: Check transaction types
     'accounts' => [
         'user' => [
-            'name' =>  'personal',
+            'name' =>  'personal account',
             'limit_min' => 0,
             'limit_max' => 6000, // 100 H
             'receiving_types' => [1,2],
         ],
         'userProject' => [
-            'name' =>  'personal project',
+            'name' =>  'personal project account',
             'limit_min' => 0,
             'receiving_types' => [1,3],
         ],
         'organization' => [
-            'name' => 'organization',
+            'name' => 'organization account',
             'limit_min' => 0,
             'limit_max' => 6000, // 100 H, default value,  manually set organizations with a big turn-over to a higher limit
             'receiving_types' => [1,3],
         ],
         'bank' => [
-            'name' => 'bank',
+            'name' => 'banking system account',
             'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
             'limit_max' => 600000, //  10,000 H
             'receiving_types' => [1,5],
         ],
         'community' => [
-            'name' => 'community',
+            'name' => 'community account',
             'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
             'limit_max' => null, 
             'receiving_types' => [3,4,5],

@@ -9,12 +9,8 @@ class FromAccount extends Component
 {
     public $profileAccounts = [];
     public $fromAccountId;
-    public $selectedAccount;
+    public $selectedAccount = null;
     public $label;
-
-    protected $listeners = [
-        'resetForm'
-    ];
 
     public function mount()
     {
@@ -38,7 +34,12 @@ class FromAccount extends Component
     {
         if (count($this->profileAccounts) > 0) {
             $this->fromAccountId = $this->profileAccounts->first()['id'];
-            $this->selectedAccount = $this->profileAccounts->first();
+            $firstAccount = $this->profileAccounts->first();
+
+            // Translate the 'name' field
+            $firstAccount['name'] = __(ucfirst(strtolower($firstAccount['name'])));
+
+            $this->selectedAccount = $firstAccount;
             $this->dispatch('fromAccountId', $this->selectedAccount);
         }
     }
@@ -46,7 +47,13 @@ class FromAccount extends Component
     public function fromAccountSelected($fromAccountId)
     {
         $this->fromAccountId = $fromAccountId;
-        $this->selectedAccount = collect($this->profileAccounts)->firstWhere('id', $fromAccountId);
+
+        $selectedAccount = collect($this->profileAccounts)->firstWhere('id', $fromAccountId);
+
+        // Translate the 'name' field
+        $selectedAccount['name'] = __(ucfirst(strtolower($selectedAccount['name'])));
+
+        $this->selectedAccount = $selectedAccount;
         $this->dispatch('fromAccountId', $this->selectedAccount);
     }
 

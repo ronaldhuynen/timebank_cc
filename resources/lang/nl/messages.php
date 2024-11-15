@@ -38,6 +38,6 @@ return [
     // single-transaction.blade.php
     'qr_transaction_info' => ':from_relation en :to_relation kunnen deze transactie controleren door de code te scannen.',
 
-
+    'personal account' => 'Prive rekening',
 
 ];

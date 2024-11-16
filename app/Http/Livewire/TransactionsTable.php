@@ -27,6 +27,7 @@ class TransactionsTable extends Component
     public $search;
     public $searchAmount;
     public $searchAccount;
+    public $amountType = 'credit/debit';
     public $fromDate;
     public $toDate;
     public $typeOptions = [];
@@ -77,7 +78,10 @@ class TransactionsTable extends Component
             $typeIds = $canPay;
         }
 
-        $this->typeOptions = TransactionType::whereIn('id', $typeIds)->get();
+        $this->typeOptions = TransactionType::whereIn('id', $typeIds)->get()->map(function ($type) {
+            $type->name = __(ucfirst(strtolower($type->name)));
+            return $type;
+        });
     }
 
 
@@ -109,8 +113,10 @@ class TransactionsTable extends Component
      */
     public function getTransactions()
     {
+        // Hide the balance column if transactions are skipped because of a search filter
         if (!empty($this->search) ||
             !empty($this->searchAmount) ||
+            !empty($this->amountType) ||
             !empty($this->searchAccount ||
             !empty($this->fromDate) ||
             !empty($this->searchTypes))) {
@@ -185,6 +191,14 @@ class TransactionsTable extends Component
             $query->where('amount', $searchAmount);
         }
 
+        if ($this->amountType == 'credit' || $this->amountType == 'debit') {
+            if ($this->amountType == 'credit') {
+                $query->where('to_account_id', $accountId);
+            } else {
+                $query->where('from_account_id', $accountId);
+            }
+        }
+
         if (!empty($fromDate)) {
             $query->whereDate('created_at', '>=', $fromDate);
         }
@@ -253,9 +267,12 @@ class TransactionsTable extends Component
 
     public function exportTransactions($type)
     {
+
+        // Hide the balance column if transactions are skipped because of a search filter
         if (!empty($this->search) ||
                     !empty($this->searchAmount) ||
                     !empty($this->searchAccount ||
+                    !empty($this->amountType) ||
                     !empty($this->fromDate) ||
                     !empty($this->searchTypes))) {
             $this->hideBalance = true;
@@ -276,12 +293,6 @@ class TransactionsTable extends Component
             return ;
         }
 
-        $search = $this->search;
-        $searchAccount = $this->searchAccount;
-        $searchAmount = $this->searchAmount !== null ? $this->searchAmount : null;
-        $fromDate = $this->fromDate;
-        $toDate = $this->toDate;
-        $searchTypes = $this->searchTypes;
         $this->validate();
 
         // Fetch the account with its accountable relationship
@@ -324,6 +335,14 @@ class TransactionsTable extends Component
             $query->where('amount', $this->searchAmount);
         }
 
+        if ($this->amountType == 'credit' || $this->amountType == 'debit') {
+            if ($this->amountType == 'credit') {
+                $query->where('to_account_id', $accountId);
+            } else {
+                $query->where('from_account_id', $accountId);
+            }
+        }
+
         if (!empty($this->fromDate)) {
             $query->whereDate('created_at', '>=', $this->fromDate);
         }
@@ -332,12 +351,12 @@ class TransactionsTable extends Component
             $query->whereDate('created_at', '<=', $this->toDate);
         }
 
-        if (!empty($searchTypes)) {
-            $query->whereIn('transaction_type_id', $searchTypes);
+        if (!empty($this->searchTypes)) {
+            $query->whereIn('transaction_type_id', $this->searchTypes);
         }
 
         // Get all transactions without pagination and balance as this is for export
-        // Running balance is not calculated as for accounts with many transactions this would take too long 
+        // Running balance is not calculated as for accounts with many transactions this would take too long
         // to query and php's time limit would throw an error.
         $transactions = $query->orderBy('created_at', 'desc')->get();
 

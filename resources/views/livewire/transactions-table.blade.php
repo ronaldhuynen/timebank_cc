@@ -11,72 +11,86 @@
         </button>
         <!-- Content of open accordion -->
         <form wire:submit.prevent="getTransactions">
-        <div class="max-h-0 transition-all duration-300 ease-in-out" id="content-1" wire:ignore>
-            <div class="my-3 flex space-x-12">
-                <div class="w-2/4 flex-none">
-                    <x-jetstream.label for="search" value="{{ __('Keywords') }}" />
-                    <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                                       placeholder="Search keywords" right-icon="search" wire:model.defer="search" />
-                    @error('search')
-                        <div class="mb-3 text-sm text-red-700" role="alert">
-                            {{ __($message) }}
-                        </div>
-                    @enderror
-
-                    @livewire('to-account', ['label' => __('From / to account')])
-                    @error('account')
-                        <div class="mb-3 text-sm text-red-700" role="alert">
-                            {{ __($message) }}
-                        </div>
-                    @enderror
-
-                    <div class="my-6 flex-auto">
-                        @livewire('amount', ['label' => __('Amount'), 'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')]) {{-- TODO: if user is admin or bank:  <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')"> --}}
-                        @error('amount')
+            <div class="max-h-0 transition-all duration-300 ease-in-out" id="content-1" wire:ignore>
+                <div class="my-3 flex space-x-12">
+                    <div class="w-2/4 flex-none">
+                        <x-jetstream.label for="search" value="{{ __('Keywords') }}" />
+                        <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
+                                    placeholder="Search keywords" right-icon="search"
+                                    wire:model.defer="search" />
+                        @error('search')
                             <div class="mb-3 text-sm text-red-700" role="alert">
                                 {{ __($message) }}
                             </div>
                         @enderror
+
+                        @livewire('to-account', ['label' => __('From / to account')])
+                        @error('account')
+                            <div class="mb-3 text-sm text-red-700" role="alert">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+
+           <div class="flex items-center my-6">
+    <!-- Amount Component -->
+    <div class="flex-shrink-0">
+        @livewire('amount', [
+            'label' => __('Amount'),
+            'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')
+        ])
+        {{-- TODO: if user is admin or bank:
+            <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')">
+        --}}
+        @error('amount')
+            <div class="mb-3 text-sm text-red-700" role="alert">
+                {{ __($message) }}
+            </div>
+        @enderror
+    </div>
+
+    <!-- Radio Buttons -->
+    <div class="flex items-center space-x-4 ml-4 mt-10">
+        <x-radio id="credit-debit" label="{{ strtolower(__('Credit/debit')) }}" wire:model="amountType" value=null />
+        <x-radio id="credit" label="{{ strtolower(__('Credit')) }}" wire:model="amountType" value="credit" />
+        <x-radio id="debit" label="{{ strtolower(__('Debit')) }}" wire:model="amountType" value="debit" />
+    </div>
+</div>
+</div>
+                    <div class="z-50 my-6 flex-auto">
+                        <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                            display-format="DD-MM-YYYY" label="{{ __('From date') }}"
+                            placeholder="{{ __('Select a date') }}" wire:model.defer="fromDate" />
+                    </div>
+                    <div class="z-50 my-6 flex-auto">
+                        <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                            display-format="DD-MM-YYYY" label="{{ __('To date') }}"
+                            placeholder="{{ __('Select a date') }}" wire:model.defer="toDate" />
                     </div>
                 </div>
-                <div class="z-50 my-6 flex-auto">
-                    <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
-                                       display-format="DD-MM-YYYY" label="{{ __('From date') }}"
-                                       placeholder="{{ __('Select a date') }}" wire:model.defer="fromDate" />
-                </div>
-                <div class="z-50 my-6 flex-auto">
-                    <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
-                                       display-format="DD-MM-YYYY" label="{{ __('To date') }}"
-                                       placeholder="{{ __('Select a date') }}" wire:model.defer="toDate" />
-                </div>
-            </div>
-                  <!--- Transaction type --->
-                <div>
-                    <x-select
-                        wire:model="searchTypes"  
-                        placeholder="{{ __('Select (multiple) types') }}"
-                        multiselect
-                        :options="$typeOptions"
-                        option-label="name"
-                        option-value="id"
-                    />
+
+                <!--- Transaction type --->
+                <div class="w-2/4 flex-none">
+                    <x-jetstream.label for="searchTypes" value="{{ __('Transaction types') }}" />
+                    <x-select :options="$typeOptions" multiselect option-label="name" option-value="id"
+                            placeholder="{{ __('Select (multiple) types') }}" wire:model="searchTypes" />
                 </div>
                 @error('searchTypes')
                     <div class="mb-3 text-sm text-red-700" role="alert">
                         {{ __($message) }}
                     </div>
                 @enderror
-
-            <x-jetstream.secondary-button class="my-3" type="submit">
-                {{ __('Search') }}
-            </x-jetstream.secondary-button>
-        </div>
+                <div class="py-6">
+                    <x-jetstream.secondary-button class="my-3" type="submit">
+                        {{ __('Search') }}
+                    </x-jetstream.secondary-button>
+                </div>
+            </div>
         </form>
     </div>
 
     <!-- General error section -->
     @if (session('error'))
-        <div class="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <div class="relative mt-6 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
             <strong class="font-bold">Error!</strong>
             <span class="block sm:inline">{{ session('error') }}</span>
         </div>
@@ -84,8 +98,8 @@
 
     <!-- Results table -->
     <div class="relative mb-20 mt-12 w-full min-w-full leading-normal">
-        <div wire:loading class="absolute left-0 top-0 my-1">
-            <x-mini-button rounded icon="" flat primary spinner /> <span> {{__('Loading...')}} </span>
+        <div class="absolute left-0 top-0 my-1" wire:loading>
+            <x-mini-button flat icon="" primary rounded spinner /> <span> {{ __('Loading...') }} </span>
         </div>
         <div class="absolute right-0 top-0 my-1">
             {{-- <x-button label="{{ __('HTML') }}" outline right-icon="arrow-down-tray" secondary
@@ -144,7 +158,7 @@
             </thead>
             <tbody>
                 @if ($transactions)
-                    @foreach ($transactions as $transaction)
+                    @forelse ($transactions as $transaction)
                         <tr onclick="window.location='{{ route('transaction.show', $transaction['trans_id']) }}'"
                             style="cursor: pointer;">
                             <td class="w-2/16 border-b border-gray-200 bg-white px-2 py-2 text-sm">
@@ -208,9 +222,15 @@
                                     </p>
                                 </td>
                             @endif
+                        @empty
+                        <tr>
+                            <td class="py-4" colspan="5">
+                                {{ __('No results found') }}
+                            </td>
                         </tr>
-                    @endforeach
-                @endif
+                    @endforelse
+                    @endif
+
             </tbody>
         </table>
     </div>

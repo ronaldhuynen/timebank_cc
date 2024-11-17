@@ -16,8 +16,8 @@
                     <div class="w-2/4 flex-none">
                         <x-jetstream.label for="search" value="{{ __('Keywords') }}" />
                         <x-jetstream.input :clearable="true" class="text-sm text-gray-900 placeholder-gray-300"
-                                    placeholder="Search keywords" right-icon="search"
-                                    wire:model.defer="search" />
+                                           placeholder="Search keywords" right-icon="search"
+                                           wire:model.defer="search" />
                         @error('search')
                             <div class="mb-3 text-sm text-red-700" role="alert">
                                 {{ __($message) }}
@@ -31,40 +31,43 @@
                             </div>
                         @enderror
 
-           <div class="flex items-center my-6">
-    <!-- Amount Component -->
-    <div class="flex-shrink-0">
-        @livewire('amount', [
-            'label' => __('Amount'),
-            'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user')
-        ])
-        {{-- TODO: if user is admin or bank:
+                        <div class="my-6 flex items-center">
+                            <!-- Amount Component -->
+                            <div class="flex-shrink-0">
+                                @livewire('amount', [
+                                    'label' => __('Amount'),
+                                    'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user'),
+                                ])
+                                {{-- TODO: if user is admin or bank:
             <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')">
         --}}
-        @error('amount')
-            <div class="mb-3 text-sm text-red-700" role="alert">
-                {{ __($message) }}
-            </div>
-        @enderror
-    </div>
+                                @error('amount')
+                                    <div class="mb-3 text-sm text-red-700" role="alert">
+                                        {{ __($message) }}
+                                    </div>
+                                @enderror
+                            </div>
 
-    <!-- Radio Buttons -->
-    <div class="flex items-center space-x-4 ml-4 mt-10">
-        <x-radio id="credit-debit" label="{{ strtolower(__('Credit/debit')) }}" wire:model="amountType" value=null />
-        <x-radio id="credit" label="{{ strtolower(__('Credit')) }}" wire:model="amountType" value="credit" />
-        <x-radio id="debit" label="{{ strtolower(__('Debit')) }}" wire:model="amountType" value="debit" />
-    </div>
-</div>
-</div>
-                    <div class="z-50 my-6 flex-auto">
-                        <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
-                            display-format="DD-MM-YYYY" label="{{ __('From date') }}"
-                            placeholder="{{ __('Select a date') }}" wire:model.defer="fromDate" />
+                            <!-- Radio Buttons -->
+                            <div class="ml-4 mt-10 flex items-center space-x-4">
+                                <x-radio id="credit-debit" label="{{ strtolower(__('Credit/debit')) }}" value=""
+                                         wire:model="amountType" />
+                                <x-radio id="credit" label="{{ strtolower(__('Credit')) }}" value="credit"
+                                         wire:model="amountType" />
+                                <x-radio id="debit" label="{{ strtolower(__('Debit')) }}" value="debit"
+                                         wire:model="amountType" />
+                            </div>
+                        </div>
                     </div>
                     <div class="z-50 my-6 flex-auto">
                         <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
-                            display-format="DD-MM-YYYY" label="{{ __('To date') }}"
-                            placeholder="{{ __('Select a date') }}" wire:model.defer="toDate" />
+                                           display-format="DD-MM-YYYY" label="{{ __('From date') }}"
+                                           placeholder="{{ __('Select a date') }}" wire:model.defer="fromDate" />
+                    </div>
+                    <div class="z-50 my-6 flex-auto">
+                        <x-datetime-picker :shadowless="true" :without-time="true" class="placeholder-gray-300"
+                                           display-format="DD-MM-YYYY" label="{{ __('To date') }}"
+                                           placeholder="{{ __('Select a date') }}" wire:model.defer="toDate" />
                     </div>
                 </div>
 
@@ -72,7 +75,7 @@
                 <div class="w-2/4 flex-none">
                     <x-jetstream.label for="searchTypes" value="{{ __('Transaction types') }}" />
                     <x-select :options="$typeOptions" multiselect option-label="name" option-value="id"
-                            placeholder="{{ __('Select (multiple) types') }}" wire:model="searchTypes" />
+                              placeholder="{{ __('Select (multiple) types') }}" wire:model="searchTypes" />
                 </div>
                 @error('searchTypes')
                     <div class="mb-3 text-sm text-red-700" role="alert">
@@ -82,6 +85,9 @@
                 <div class="py-6">
                     <x-jetstream.secondary-button class="my-3" type="submit">
                         {{ __('Search') }}
+                    </x-jetstream.secondary-button>
+                    <x-jetstream.secondary-button class="my-3 ml-4" wire:click.prevent="resetSearch">
+                        {{ __('Clear all') }}
                     </x-jetstream.secondary-button>
                 </div>
             </div>
@@ -97,11 +103,12 @@
     @endif
 
     <!-- Results table -->
-    <div class="relative mb-20 mt-12 w-full min-w-full leading-normal">
+    <div class="relative mb-20 mt-6 w-full min-w-full leading-normal">
         <div class="absolute left-0 top-0 my-1" wire:loading>
             <x-mini-button flat icon="" primary rounded spinner /> <span> {{ __('Loading...') }} </span>
         </div>
         <div class="absolute right-0 top-0 my-1">
+            {{-- TODO: Add pdf /html export for prints }}
             {{-- <x-button label="{{ __('HTML') }}" outline right-icon="arrow-down-tray" secondary
                       wire:click="exportTransactions('html')" xs /> --}}
             <x-button label="{{ __('ODS') }}" outline right-icon="arrow-down-tray" secondary
@@ -110,11 +117,9 @@
                       wire:click="exportTransactions('xlsx')" xs />
             <x-button label="{{ __('CSV') }}" outline right-icon="arrow-down-tray" secondary
                       wire:click="exportTransactions('csv')" xs />
-            {{-- <x-button label="{{ __('MT940') }}" outline right-icon="arrow-down-tray" secondary xs 
-                wire:click="exportTransactions('mt940')" /> --}}
         </div>
     </div>
-    <div class="relative mb-20 mt-12 w-full min-w-full leading-normal">
+    <div class="relative mb-12 mt-12 w-full min-w-full leading-normal">
         <table class="w-full" id="transactions">
             <thead>
                 <tr>
@@ -158,7 +163,7 @@
             </thead>
             <tbody>
                 @if ($transactions)
-                    @forelse ($transactions as $transaction)
+                    @foreach ($transactions as $transaction)
                         <tr onclick="window.location='{{ route('transaction.show', $transaction['trans_id']) }}'"
                             style="cursor: pointer;">
                             <td class="w-2/16 border-b border-gray-200 bg-white px-2 py-2 text-sm">
@@ -222,34 +227,47 @@
                                     </p>
                                 </td>
                             @endif
-                        @empty
-                        <tr>
+                    @endforeach
+                     <tr>
                             <td class="py-4" colspan="5">
-                                {{ __('No results found') }}
+                                <!-- Display the results found message -->
+                                <div class="text-gray-500">
+                                    {{ trans_choice('messages.transactions_found', $transactions->total(), ['count' => $transactions->total()]) }}
+                                </div>
                             </td>
                         </tr>
-                    @endforelse
-                    @endif
-
+                @else
+                    <tr>
+                        <td class="py-4" colspan="5">
+                            <!-- Display the results found message -->
+                            <div class="text-gray-500">
+                                {{ __('No transactions found') }}
+                            </div>
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>
 
     <!-- Pagination -->
-    <div class="row relative">
-        <div class="flex">
-            <select class="w-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
-                    wire:model.live="perPage">
-                <option value="15">15</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <div class="mt-2 flex-auto px-3 text-gray-500">{{ __('results') }}</div>
-        </div>
-        @if ($transactions)
-            {{ $transactions->links('livewire.long-paginator') }}
-        @endif
+<div class="flex justify-between items-center relative mb-4">
+    <!-- Left Side: perPage Dropdown -->
+    <div class="flex items-center">
+        <select class="w-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 shadow-sm focus:border-gray-500 focus:outline-none focus:ring focus:ring-gray-500 sm:text-sm"
+                wire:model.live="perPage">
+            <option value="15">15</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span class="ml-2 text-gray-500">{{ __('per page') }}</span>
     </div>
+
+    <!-- Right Side: Paginator -->
+    @if ($transactions)
+        {{ $transactions->links('livewire.long-paginator') }}
+    @endif
+</div>
 
     <!-- Accordion script -->
     <script>

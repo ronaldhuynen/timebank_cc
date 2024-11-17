@@ -39,5 +39,7 @@ return [
     // single-transaction.blade.php
     'qr_transaction_info' => ':from_relation and :to_relation can verify this transaction by scanning the code.',
 
+    // transactions-table.blade.php
+    'transactions_found' => '{0} No transactions|{1} :count transaction in total|[2,*] :count transactions in total',
 
 ];

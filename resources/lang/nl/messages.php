@@ -38,6 +38,7 @@ return [
     // single-transaction.blade.php
     'qr_transaction_info' => ':from_relation en :to_relation kunnen deze transactie controleren door de code te scannen.',
 
-    'personal account' => 'Prive rekening',
+    // transactions-table.blade.php
+    'transactions_found' => '{0} Geen transacties|{1} Totaal :count transactie|[2,*] Totaal :count transacties',
 
 ];

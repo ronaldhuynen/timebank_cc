@@ -21,13 +21,13 @@ class TransactionsTable extends Component
 {
     use WithPagination;
 
-    public $searchState = false;
-    public $hideBalance = false;
+    public $searchStatus;
+    public $hideBalance;
     public $showSearchSection = false;
     public $search;
     public $searchAmount;
     public $searchAccount;
-    public $amountType = 'credit/debit';
+    public $amountType;
     public $fromDate;
     public $toDate;
     public $typeOptions = [];
@@ -57,7 +57,7 @@ class TransactionsTable extends Component
         'searchTypes.*' => 'integer',
     ];
 
-
+    // TODO: translate
     protected $messages = [
         'fromDate.date' => 'The from date must be a valid date.',
         'toDate.date' => 'The to date must be a valid date.',
@@ -94,6 +94,11 @@ class TransactionsTable extends Component
     public function fromAccountId($selectedAccount)
     {
         $this->fromAccountId = $selectedAccount['id'];
+        $title = [
+            'header'=> $selectedAccount['name'],
+            'sub' => __('Current balance') . ': ' . tbFormat($selectedAccount['balance'])
+        ];
+        $this->dispatch('tableTitle', $title);
     }
 
 
@@ -117,13 +122,19 @@ class TransactionsTable extends Component
         if (!empty($this->search) ||
             !empty($this->searchAmount) ||
             !empty($this->amountType) ||
-            !empty($this->searchAccount ||
+            !empty($this->searchAccount) ||
             !empty($this->fromDate) ||
-            !empty($this->searchTypes))) {
+            !empty($this->searchTypes)) {
             $this->hideBalance = true;
+            $this->searchStatus = true;
         } else {
-            $this->hideBalance = false;
+            $this->searchStatus = false;
+            $this->hideBalance = false;      
         }
+
+        if (!empty($this->toDate)) {
+            $this->searchStatus = true;
+        } 
 
         $accountId = $this->fromAccountId;
         if (!isset($accountId)) {
@@ -211,14 +222,22 @@ class TransactionsTable extends Component
             $query->whereIn('transaction_type_id', $searchTypes);
         }
 
+        // Get total records before pagination, if no results, return empty $transaction
+        // This is needed because the paginator does not refresh if no results.
+        $totalRecords = $query->count();
+        if ($totalRecords === 0) {
+            $this->resetPage();
+            return $transactions = null;
+        }
 
         // Paginate the search results
         $transactions = $query
             ->orderBy('created_at', 'desc')
             ->paginate($this->perPage);
 
+
         // Transform the transactions to include necessary data
-        $transactions->getCollection()->transform(function ($t) use ($accountId, $account) {
+        $transactionsCollection = $transactions->getCollection()->map(function ($t) use ($accountId, $account) {
             $transaction = [
                 'trans_id' => $t->id,
                 'datetime' => $t->created_at,
@@ -259,6 +278,9 @@ class TransactionsTable extends Component
 
             return $transaction;
         });
+        
+        // Set the transformed collection back to the paginator
+        $transactions->setCollection($transactionsCollection);
 
         // Return the paginated items
         return $transactions;
@@ -267,7 +289,6 @@ class TransactionsTable extends Component
 
     public function exportTransactions($type)
     {
-
         // Hide the balance column if transactions are skipped because of a search filter
         if (!empty($this->search) ||
                     !empty($this->searchAmount) ||
@@ -400,16 +421,6 @@ class TransactionsTable extends Component
             return $transaction;
         });
 
-        // Remove unnecessary keys
-        $data = $data->map(function ($item) {
-            return collect($item)->except([
-                'account_from',
-                'account_to',
-                'account_from_name',
-                'account_to_name',
-            ])->toArray();
-        });
-
         // Use the TransactionsExport to export data
         return (new TransactionsExport($data))->download('transactions.' . $type);
     }
@@ -497,12 +508,28 @@ class TransactionsTable extends Component
         session()->flash('error', __($warningMessage) . '. ' . __('This event has been logged and reported to our system administrator') . '.');
     }
 
+    // This method is called whenever any property is updated.
+    public function updated($propertyName)
+    {
+        $this->resetPage();
+    }
 
-    // public function updated()
-    // {
-    //     $this->resetPage();
-    // }
-
+    public function resetSearch()
+    {
+        $this->resetPage();
+        $this->searchStatus = false;
+        $this->hideBalance = false;
+        $this->showSearchSection = false;
+        $this->search = null;
+        $this->searchAmount = null;
+        $this->searchAccount = null;
+        $this->dispatch('resetForm');
+        $this->amountType = null;
+        $this->fromDate = null;
+        $this->toDate = null;
+        $this->typeOptions = [];
+        $this->searchTypes = [];
+    }
 
     public function render()
     {

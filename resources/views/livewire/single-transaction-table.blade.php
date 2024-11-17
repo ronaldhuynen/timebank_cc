@@ -57,7 +57,7 @@
                                 {{ $transaction['from_relation'] }}
                             </p>
                             <p class="whitespace-no-wrap text-gray-900">
-                                {{ $transaction['from_account'] }}
+                                {{ __(ucfirst(strtolower($transaction['from_account']))) }}
                             </p>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                                 {{ $transaction['to_relation'] }}
                             </p>
                             <p class="whitespace-no-wrap text-gray-900">
-                                {{ $transaction['to_account'] }}
+                                {{ __(ucfirst(strtolower($transaction['to_account']))) }}
                             </p>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                      class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
                     <x-icon class="" mini name="clock" />
                 </div>
-                <span class="mx-2">{{ __('For the total time worked or helped') }}</span>
+                <span class="ml-3">{{ __('Worked time: for the total time worked or helped') }}</span>
             </div>
         @elseif ($transaction['type'] == 'gift')
             <div class="flex items-center">
@@ -121,7 +121,7 @@
 
                     <x-icon mini name="gift" />
                 </div>
-                <span class="mx-2">{{ __('As a gift, without something in return') }}</span>
+                <span class="ml-3">{{ __('Gift: without something in return') }}</span>
             </div>
         @elseif ($transaction['type'] == 'donation')
             <div class="flex items-center">
@@ -129,7 +129,7 @@
                      class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
                     <x-icon mini name="hand-thumb-up" />
                 </div>
-                <span class="mx-2">{{ __('As a donation, to support the cause of this organization') }}</span>
+                <span class="ml-3">{{ __('Donation: to support the cause of this organization') }}</span>
             </div>
         @elseif ($transaction['type'] == 'currency creation')
             <div class="flex items-center">
@@ -137,7 +137,7 @@
                      class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
                     <x-icon mini name="bolt" />
                 </div>
-                <span class="mx-2">{{ __('Currency creation') }}</span>
+                <span class="ml-3">{{ __('Currency creation') }}</span>
             </div>
         @elseif ($transaction['type'] == 'currency removal')
             <div class="flex items-center">
@@ -145,7 +145,7 @@
                      class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
                     <x-icon mini name="bolt-slash" />
                 </div>
-                <span class="mx-2">{{ __('Currency removal') }}</span>
+                <span class="ml-3">{{ __('Currency removal') }}</span>
             </div>
         @endif
     </div>

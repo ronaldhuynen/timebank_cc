@@ -98,7 +98,7 @@
     "Mobile phone number": "Mobiele telefoon",
     "Mobile phone (visible public for friends)": "Mobiele telefoon (zichtaar voor vrienden)",
 
-
+    "Loading...": "Laden...",
     "Submit": "Verzenden",
     "Save": "Opslaan",
     "Saved": "Opgeslagen",
@@ -117,10 +117,12 @@
     "Not available": "Niet beschikbaar",
     "results": "resultaten",
     "result": "resultaat",
+    "per page": "per pagina",
     "No results found": "Geen resultaten gevonden",
     "No results found, please search again": "Geen resultaten gevonden, zoek alsjeblieft opnieuw",
     "Browse": "Bladeren",
     "Search": "Zoeken",
+    "Clear all": "Wis alles",
 
     "Error": "Fout",
     "Error message": "Foutmelding",
@@ -135,6 +137,7 @@
     "Pay": "Betalen",
     "Transactions": "Transacties",
     "Transaction History": "Transactie-overzicht",
+    "Current balance": "Huidig saldo",
     "Search transactions": "Zoek transacties",
     "Description": "Omschrijving",
     "Transaction Statement": "Transactie-bewijs",
@@ -294,8 +297,9 @@
     "Cancel friend request": "Annuleer vriendschapverzoek",
 
     "Close": "Sluiten",
+    "Previous": "Vorige",
+    "Next": "Volgende",
 
-    
     "is preferred": "heeft de voorkeur",
     "Exchanges": "Uitwisselingen",
     "available": "beschikbaar",

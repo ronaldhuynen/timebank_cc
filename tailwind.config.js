@@ -50,4 +50,18 @@ module.exports = {
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
     ],
+
+    transitionDelay: {
+    '500': '500ms',
+    '700': '700',
+    '1000': '1000ms',
+    },
+
+    transitionDuration: {
+    '500': '500ms',
+    '700': '700ms',
+    '1000': '1000ms',
+    },
+
+    
 };

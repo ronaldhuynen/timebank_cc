@@ -12,10 +12,10 @@
 
                     <!--- Change account -->
                     @livewire('from-account', ['label' => __('Change account')])
-                    <div class="mt-12 text-2xl">
-                        {{ __('Table Title (with period etc)') }}
-                    </div>
                     
+                    <!-- Table title -->
+                    @livewire('table-title')
+
                     <!-- Balance limits --->
                     @livewire('account-usage-bar')
 

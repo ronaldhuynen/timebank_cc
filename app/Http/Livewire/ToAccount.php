@@ -43,8 +43,19 @@ class ToAccount extends Component
     }
 
     public function resetForm()
-    {
-        $this->reset();
+    {   // Reset all properties except $label
+        $this->reset([
+            'search', 
+            'searchResults', 
+            'showDropdown',
+            'fromAccountId',
+            'toAccountId',
+            'toAccountName',
+            'toHolderName',
+            'toHolderType',
+            'toHolderPhoto',
+            'userAccounts'
+        ]);
     }
 
     // Needed to exclude this account from the available to account options

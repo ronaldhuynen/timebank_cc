@@ -30,17 +30,13 @@ class SingleTransactionTable extends Component
         $fromId = $results->accountFrom->accountable->id;
         $toId = $results->accountTo->accountable->id;
 
-        
-
-// Check if the user is authorized to view the transaction
-if (
-    !in_array(Session::get('activeProfileType'), [$fromType, $toType]) ||
-    !in_array(Session::get('activeProfileId'), [$fromId, $toId])
-) {
-    abort(403, 'Unauthorized action.');
-}
-
-
+        // Check if the user is authorized to view the transaction
+        if (
+            !in_array(Session::get('activeProfileType'), [$fromType, $toType]) ||
+            !in_array(Session::get('activeProfileId'), [$fromId, $toId])
+        ) {
+            abort(403, 'Unauthorized action.');
+        }
 
                 $transaction[] = [
                     'trans_id' => $results->id,

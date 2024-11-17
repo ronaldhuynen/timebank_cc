@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 sm:px-20 bg-white ">
 
-                    <div class="mt-8 text-2xl text-gray-900">
+                    <div class="mt-8 text-2xl font-semibold text-gray-900">
                         {{ __('Transaction Statement') }}
                     </div>
 

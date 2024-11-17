@@ -151,6 +151,7 @@ class ToAccount extends Component
         $this->toAccountId = null;
         $this->toHolderName = null;
         $this->dispatch('toAccountId', null);
+        $this->dispatch('toAccountDetails', null);
     }
 
     public function render()

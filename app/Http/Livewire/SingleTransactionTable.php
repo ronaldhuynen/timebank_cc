@@ -48,7 +48,8 @@ class SingleTransactionTable extends Component
                     'to_relation' => $results->accountTo->accountable->name,
                     'to_profile_photo' => $results->accountTo->accountable->profile_photo_path,
                     'description' => $results->description,
-                    'type' => $results->transactionType->name ?? 'work',
+                    'type_label' => $results->transactionType->label ?? '',
+                    'type_icon' => $results->transactionType->icon ?? '',
                     'datetime' => $results->created_at,
                 ];
 

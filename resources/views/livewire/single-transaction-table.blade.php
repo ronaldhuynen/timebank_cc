@@ -48,8 +48,8 @@
                         <div class="flex-shrink-0">
                             <p class="relative block" href="#">
                                 <img alt="profile"
-                                     class="mx-auto h-16 w-16 rounded-full object-cover outline outline-1 outline-offset-1 outline-gray-600"
-                                     src="{{ Storage::url($transaction['from_profile_photo']) }}" />
+                                    class="mx-auto h-16 w-16 rounded-full object-cover outline outline-1 outline-offset-1 outline-gray-600"
+                                    src="{{ Storage::url($transaction['from_profile_photo']) }}" />
                             </p>
                         </div>
                         <div class="ml-3">
@@ -68,8 +68,8 @@
                         <div class="flex-shrink-0">
                             <p class="relative block" href="#">
                                 <img alt="profile"
-                                     class="mx-auto h-16 w-16 rounded-full object-cover outline outline-1 outline-offset-1 outline-gray-600"
-                                     src="{{ Storage::url($transaction['to_profile_photo']) }}" />
+                                    class="mx-auto h-16 w-16 rounded-full object-cover outline outline-1 outline-offset-1 outline-gray-600"
+                                    src="{{ Storage::url($transaction['to_profile_photo']) }}" />
                             </p>
                         </div>
                         <div class="ml-3">
@@ -93,6 +93,7 @@
             </tr>
         </tbody>
     </table>
+
     <!-- Description --->
     <div class="mt-12 px-0 text-sm font-normal text-gray-500">
         {{ __('Description') }}
@@ -106,53 +107,18 @@
         {{ __('Transaction type') }}
     </div>
     <div class="my-6 text-base leading-10 text-gray-900">
-        @if ($transaction['type'] == 'work')
-            <div class="flex items-center">
-                <div
-                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
-                    <x-icon class="" mini name="clock" />
+        <div class="flex items-center">
+            <div
+                    class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
+                    <x-icon class="" mini name="{{ $transaction['type_icon'] }}" />
                 </div>
-                <span class="ml-3">{{ __('Worked time: for the total time worked or helped') }}</span>
+                <span class="ml-3">{{ __(ucfirst(strtolower(($transaction['type_label'])))) }}</span>
             </div>
-        @elseif ($transaction['type'] == 'gift')
-            <div class="flex items-center">
-                <div
-                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
-
-                    <x-icon mini name="gift" />
-                </div>
-                <span class="ml-3">{{ __('Gift: without something in return') }}</span>
-            </div>
-        @elseif ($transaction['type'] == 'donation')
-            <div class="flex items-center">
-                <div
-                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
-                    <x-icon mini name="hand-thumb-up" />
-                </div>
-                <span class="ml-3">{{ __('Donation: to support the cause of this organization') }}</span>
-            </div>
-        @elseif ($transaction['type'] == 'currency creation')
-            <div class="flex items-center">
-                <div
-                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
-                    <x-icon mini name="bolt" />
-                </div>
-                <span class="ml-3">{{ __('Currency creation') }}</span>
-            </div>
-        @elseif ($transaction['type'] == 'currency removal')
-            <div class="flex items-center">
-                <div
-                     class="flex items-center justify-center rounded-full outline outline-1 outline-offset-1 outline-gray-600">
-                    <x-icon mini name="bolt-slash" />
-                </div>
-                <span class="ml-3">{{ __('Currency removal') }}</span>
-            </div>
-        @endif
     </div>
 
     <div class="my-6 text-right align-bottom text-gray-900">
         <span class="float-right my-12" onclick="qrModal()" style="cursor: pointer;"
-              wire:click="$toggle('qrModalVisible')">
+            wire:click="$toggle('qrModalVisible')">
 
             {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(60)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
         </span>

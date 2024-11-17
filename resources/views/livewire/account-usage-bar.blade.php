@@ -20,9 +20,9 @@
             @endif
         </svg>
         <div class="flex justify-between py-1">
-            <span class="text-gray text-sm">{{ tbFormat($selectedAccount['balance']) . ' ' . __('of') . ' ' . tbFormat($selectedAccount['limitMax']) . ' ' . __('used') }}</span>
+            <span class="text-gray-500 text-sm">{{ tbFormat($selectedAccount['balance']) . ' ' . __('of') . ' ' . tbFormat($selectedAccount['limitMax']) . ' ' . __('used') }}</span>
             @if ($balancePct > 80)
-                <span class="text-gray text-sm">{{ tbFormat($selectedAccount['available']) . ' ' . __('available') }}</span>
+                <span class="text-gray-500 text-sm">{{ tbFormat($selectedAccount['available']) . ' ' . __('available') }}</span>
             @endif
         </div>
     </div>

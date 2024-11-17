@@ -75,7 +75,7 @@
     </x-jetstream.dialog-modal>
 
     <!---- Confirmation Modal ---->
-    @if (!$limitError)
+    @if (!$limitError && !empty($transactionTypeSelected))
     <x-jetstream.dialog-modal wire:model.live="modalVisible">
         <x-slot name="title">
             {{ __('Confirm your payment') }}
@@ -87,7 +87,7 @@
                 {{ __('messages.pay_confirm', ['amount' => tbFormat($amount), 'toAccountName' => $toAccountName, 'toHolderName' => $toHolderName]) }}
             </div>
 
-            <div class="grid grid-cols-3 items-center justify-center gap-6 py-3">
+            <div class="grid grid-cols-3 items-center justify-center gap-8 py-3">
                 <!-- Column 1: Images and Vertical Line -->
                 <div class="w-full place-items-end">
 
@@ -106,17 +106,7 @@
                             <div class="flex h-6 w-16 justify-center">
                                 <div
                                      class="flex h-6 w-6 items-center justify-center rounded-full text-gray-600 outline outline-1 outline-offset-1 outline-gray-600">
-                                    @if ($transTypeRadio == 'work')
-                                    <x-icon mini name="clock" />
-                                    @elseif ($transTypeRadio == 'gift')
-                                    <x-icon  mini name="gift" />
-                                    @elseif ($transTypeRadio == 'donation')
-                                    <x-icon  mini name="hand-thumb-up" />
-                                    @elseif ($transTypeRadio == 'currency creation')
-                                    <x-icon  mini name="bolt" />
-                                    @elseif ($transTypeRadio == 'currency removal')
-                                    <x-icon  mini name="bolt-slash" />
-                                    @endif
+                                        <x-icon mini name="{{ $transactionTypeSelected['icon'] }}" />
                                 </div>
                             </div>
                             <!-- Arrow Down -->
@@ -145,25 +135,15 @@
                             {{ session('activeProfileName') }}
                         </div>
                         <div class="text-gray-600">
-                            {{ $fromAccountName }} {{ __('account') }}
+                            {{ __(ucfirst(strtolower($fromAccountName))) }}
                         </div>
                     </div>
-                    <div class="grid h-16 content-center items-center leading-tight">
+                    <div class="grid h-16 mr-12 content-center items-center leading-tight">
                         <div class="font-semibold">
                             {{ tbFormat($amount) }}
                         </div>
                         <div class="text-gray-600">
-                            @if ($transTypeRadio == 'work')
-                            {{ __('For the total time worked or helped') }}
-                            @elseif ($transTypeRadio == 'gift')
-                            {{ __('As a gift, without something in return')}}
-                            @elseif ($transTypeRadio == 'donation')
-                            {{ __('As a donation, to support the cause of this organization')}}
-                            @elseif ($transTypeRadio == 'currency creation')
-                            {{ __('Currency creation')}}
-                            @elseif ($transTypeRadio == 'currency removal')
-                            {{ __('Currency removal')}}
-                            @endif
+                            {{ __($transactionTypeSelected['label']) }}
                         </div>
                     </div>
                     <div class="grid h-16 content-center items-center leading-tight">
@@ -171,7 +151,7 @@
                             {{ $toHolderName }}
                         </div>
                         <div class="text-gray-600">
-                            {{ $toAccountName }} {{ __('account') }}
+                            {{ $toAccountName }}
                         </div>
                     </div>
                 </div>
@@ -189,12 +169,12 @@
             </x-jetstream.secondary-button>
             @else
             <x-jetstream.secondary-button class="w-32 justify-center" wire:click="$toggle('modalVisible')"
-                                          wire:loading.attr="disabled">
+                    wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jetstream.secondary-button>
 
             <x-jetstream.secondary-button class="ml-3 w-32 justify-center" wire:click="doTransfer()"
-                                          wire:loading.attr="disabled">
+                    wire:loading.attr="disabled">
                 {{ __('Ok') }}
             </x-jetstream.secondary-button>
             @endif

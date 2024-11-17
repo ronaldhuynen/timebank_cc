@@ -59,7 +59,7 @@ return [
     | The balance limits are in minutes. A negative balance limit should be set as 'limit_min' = -300
     |
     | Receiving types - defines which transaction types the account can receive:
-    | 1 => work
+    | 1 => worked time
     | 2 => gift
     | 3 => donation
     | 4 => currency creation
@@ -73,7 +73,7 @@ return [
             'limit_min' => 0,
             'limit_max' => 6000, // 100 H
             'receiving_types' => [1,2],
-        ],
+        ], 
         'userProject' => [
             'name' =>  'personal project account',
             'limit_min' => 0,
@@ -89,13 +89,13 @@ return [
             'name' => 'banking system account',
             'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
             'limit_max' => 600000, //  10,000 H
-            'receiving_types' => [1,5],
+            'receiving_types' => [1,4],
         ],
         'community' => [
             'name' => 'community account',
             'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
             'limit_max' => null, 
-            'receiving_types' => [3,4,5],
+            'receiving_types' => [3,4],
         ],
         'debit' => [
             'name' => 'debit',
@@ -105,7 +105,7 @@ return [
         ],
     ],
     'maxLengthHoursInput' => [  // Sets the default max length the amount component can have for the hours input box 
-        'user' => 3,
+        'user' => 3,    
         'organization' => 3,
         'bank' => 5,
         'admin' => 10,
@@ -118,7 +118,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Payment types - defines which transaction types the user type can pay:
-    | 1 => work
+    | 1 => worked time
     | 2 => gift
     | 3 => donation
     | 4 => currency creation
@@ -137,7 +137,7 @@ return [
             'payment_types' => [1,2,3],
         ],
         'bank' => [
-            'payment_types' => [1,2,3,4,5],
+            'payment_types' => [1,2,3,5],
         ],
         'admin' => [
             'payment_types' => [],

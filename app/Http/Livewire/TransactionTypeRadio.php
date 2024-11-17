@@ -2,26 +2,27 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\TransactionType;
 use Livewire\Component;
 
 class TransactionTypeRadio extends Component
 {
     public $type;
     public $typeOptions;
-    public $transTypeRadio = 'work';
+    public $transactionTypeSelected;
 
-    protected $listeners = ['setTransactionTypeOptions'];
+    protected $listeners = ['transactionTypeOptions' => 'transactionTypeOptionsDispatched'];
 
 
     public function mount($type = null)
     {
         if ($type) {
-            $transType = ($type == 'w' || $type == 1) ? 'work' : $this->transTypeRadio; // default value ('work')
-            $transType = ($type == 'g' || $type == 2) ? 'gift' : $this->transTypeRadio;
-            $transType = ($type == 'd' || $type == 3) ? 'donation' : $this->transTypeRadio;            
-  
-            if ($transType) {
-                $this->transTypeRadio = $transType;
+            $typeSelected = ($type == 'worked time' || $type == 1) ? 'worked time' : $this->transactionTypeSelected; 
+            $typeSelected = ($type == 'gift' || $type == 2) ? 'gift' : $this->transactionTypeSelected;
+            $typeSelected = ($type == 'donation' || $type == 3) ? 'donation' : $this->transactionTypeSelected;            
+
+            if ($typeSelected) {
+                $this->transactionTypeSelected = $typeSelected;
             }
         }
         $this->updated();
@@ -30,14 +31,32 @@ class TransactionTypeRadio extends Component
 
     public function updated()
     {
-        $this->dispatch('transTypeRadio', $this->transTypeRadio);
+        $selected = TransactionType::where('name', $this->transactionTypeSelected)->first();
+        $this->dispatch('transactionTypeSelected', $selected);
     }
 
 
-    public function setTransactionTypeOptions($typeOptions)
+    public function transactionTypeOptionsDispatched($typeOptions)
     {
-        $this->typeOptions = $typeOptions;
+        if ($typeOptions == null) {
+            $this->reset('typeOptions');
+            $this->reset('transactionTypeSelected');
+        } else {
+            $this->typeOptions = TransactionType::find($typeOptions);
+            
+            // Check if 'worked time' exists in the options and pres-select this option
+            $workedTimeOption = $this->typeOptions->firstWhere('name', 'worked time');
+         if ($workedTimeOption) {
+                $this->transactionTypeSelected = 'worked time';
+            } else {
+                // Optionally set to the first available option
+                $this->transactionTypeSelected = $this->typeOptions->first()->name ?? null;
+            }
+
+        }
+        $this->updated();
     }
+
 
 
     public function render()

@@ -157,6 +157,10 @@
     "QR code": "QR code",
 
     "Change account": "Wissel rekening",
+    "Account usage": "Gebruik rekening",
+    "of": "van",
+    "used": "gebruikt",
+    "available": "beschikbaar",
     "Nr.": "Nr.",
     "Amount in minutes": "Bedrag in minuten",
     "Type": "Type",
@@ -302,7 +306,6 @@
 
     "is preferred": "heeft de voorkeur",
     "Exchanges": "Uitwisselingen",
-    "available": "beschikbaar",
     "× received": "× ontvangen",
     "× given": "× gegeven",
 

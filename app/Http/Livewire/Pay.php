@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Stevebauman\Location\Facades\Location as IpLocation;
+
 use WireUi\Traits\WireUiActions;
 use function Laravel\Prompts\error;
 
@@ -36,20 +37,22 @@ class Pay extends Component
     public $type;
     public $typeOptions = [];
     public $description;
-    public $transTypeRadio;
+    public $transactionTypeSelected;
     public $limitError;
     public $requiredError = false;
     public $submitEnabled = false;
     public $modalVisible = false;
     public $modalErrorVisible = false;
 
+    protected $typeOptionsProtected;
+
     protected $listeners = [
         'amount' => 'amountValidation',
         'fromAccountId',
         'toAccountId',
-        'toAccountDetails',
+        'toAccountDetails' => 'toAccountDispatched',
         'description',
-        'transTypeRadio',
+        'transactionTypeSelected',
         'resetForm',
         'removeSelectedAccount',
     ];
@@ -59,7 +62,7 @@ class Pay extends Component
         'fromAccountId' => 'required|integer|exists:accounts,id',
         'toAccountId' => 'required|integer',
         'description' => 'required|string|min:3|max:1500',
-        'transTypeRadio' => 'required|string|exists:transaction_types,name',
+        'transactionTypeSelected.name' => 'required|string|exists:transaction_types,name',
     ];
 
     public function mount($amount = null, $hours = null, $minutes = null)
@@ -121,35 +124,31 @@ class Pay extends Component
      * @param  mixed $details
      * @return void
      */
-    public function toAccountDetails($details)
+    public function toAccountDispatched($details)
     {
         if ($details) {
             // Check if we have a to account
             $this->requiredError = false;
             $this->toAccountId = $details['accountId'];
-            $this->toAccountName = $details['accountName'];
+            $this->toAccountName = __(ucfirst(strtolower($details['accountName'])));
             $this->toHolderId = $details['holderId'];
             $this->toHolderType = $details['holderType'];
             $this->toHolderName = $details['holderName'];
             $this->toHolderPhoto = url($details['holderPhoto']);
 
-            if ($details['holderType'] == 'App\Models\User') {
-                $this->typeOptions = ['work', 'gift'];
-            } elseif ($details['holderType'] == 'App\Models\Organization') {
-                $this->typeOptions = ['work', 'donation'];
-            } elseif ($details['holderType'] == 'App\Models\Bank') {
-                $this->typeOptions = ['work', 'currency removal'];
-            }
-            // TODO: Add Currency creation transaction types for banks
-
-            $this->validateOnly('toAccountId');
-
-            $this->dispatch('setTransactionTypeOptions', $this->typeOptions);
+            // Look up in config what transaction types are possible / allowed and dispatch
+            $canReceive = config('timebank-cc.accounts.' . strtolower(class_basename($details['holderType'])) . '.receiving_types');
+            $canPay = config('timebank-cc.permissions.' . strtolower(class_basename(session('activeProfileType'))) . '.payment_types');
+            $this->typeOptionsProtected = array_intersect($canPay, $canReceive);
+            $this->typeOptions = $this->typeOptionsProtected;
+            $this->dispatch('transactionTypeOptions', $this->typeOptions);
         } else {
             // if no to account is present, set id to null and validate so the user received an error
+            $this->typeOptions = null;
+            $this->dispatch('transactionTypeOptions', $this->typeOptions);
             $this->toAccountId = null;
-            $this->validateOnly('toAccountId');
         }
+        $this->validateOnly('toAccountId');
     }
 
     /**
@@ -165,16 +164,17 @@ class Pay extends Component
     }
 
     /**
-     * Sets transTypeRadio after it is updated
+     * Sets transactionTypeSelected after it is updated
      *
      * @param  mixed $content
      * @return void
      */
-    public function transTypeRadio($transTypeRadio)
+    public function transactionTypeSelected($selected)
     {
-        $this->transTypeRadio = $transTypeRadio;
-        $this->validateOnly('transTypeRadio');
+        $this->transactionTypeSelected = $selected;
+        $this->validateOnly('transactionTypeSelected');
     }
+
 
     public function showModal()
     {
@@ -234,8 +234,8 @@ class Pay extends Component
         $toAccountId = $this->toAccountId;
         $amount = $this->amount;
         $description = $this->description;
-        $transType = $this->transTypeRadio;
-    
+        $transactionTypeId = $this->transactionTypeSelected['id'];
+
         // NOTICE: Livewire public properties can be changed / hacked on the client side!
         // Check therefore check again ownership of the fromAccountId.
         // The getAccountsInfo() from the AccountInfoTrait checks the active profile sessions.
@@ -243,33 +243,40 @@ class Pay extends Component
         $accountsInfo = collect($transactionController->getAccountsInfo());
         // Check if the session's active profile owns the submitted fromAccountId
         if (!$accountsInfo->contains('id', $fromAccountId)) {
-            $warningMessage = 'Unauthorized account payment attempt: illegal access of From account';
+            $warningMessage = 'Unauthorized payment attempt: illegal access of From account';
             return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
-    
-        // Check if From and To Account is different 
-        if ($toAccountId === $fromAccountId) {            
-            $warningMessage = 'Impossible account payment attempt: To and From account are the same';
+
+        // Check if From and To Account is different
+        if ($toAccountId === $fromAccountId) {
+            $warningMessage = 'Impossible payment attempt: To and From account are the same';
             return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
-    
+
         // Check if the To Account exists
         $account_exists = Account::where('id', $toAccountId)->first();
         if (!$account_exists) {
-            $warningMessage = 'Impossible account payment attempt: To account not found';
+            $warningMessage = 'Impossible payment attempt: To account not found';
             return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId);
         }
-    
+
         $transferToAccount = $account_exists->id;
-    
+
+        // Check if the To transactionTypeSelected is allowed
+        if (in_array($this->typeOptionsProtected, array($transactionTypeId))); {
+            $transactionType = TransactionType::find($transactionTypeId)->pluck('name')->first() ?? 'id: '. $transactionTypeId;
+            $warningMessage = 'Impossible payment attempt: transaction type not allowed';
+            return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId, $transactionType);
+        }
+
         $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
         $limitMinFrom = $f->limit_min;
         $t = Account::where('id', $transferToAccount)->select('limit_max', 'limit_min')->first();
         $limitMaxTo = $t->limit_max - $t->limit_min;
-        
+
         $balanceFrom = $transactionController->getBalance($fromAccountId);
         $balanceTo = $transactionController->getBalance($toAccountId);
-    
+
         $transferBudgetFrom = $balanceFrom - $limitMinFrom;
         if (config('timebank-cc.account_info.' . strtolower(class_basename($this->toHolderType)) . '.balance_public')) {
             $transferBudgetTo = $limitMaxTo - $balanceTo;
@@ -278,16 +285,14 @@ class Pay extends Component
             $transferBudgetTo = $limitMaxTo - $balanceTo;
             $balanceToPublic = false;
         }
-    
+
         // Check balance limits
         $this->checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom, $balanceToPublic);
-    
+
         // Use a database transaction for saving the payment
         DB::beginTransaction();
         try {
-            $transactionType = TransactionType::where('name', $transType)->first();
-            $transactionTypeId = $transactionType ? $transactionType->id : 1;
-    
+
             $transfer = new Transaction();
             $transfer->from_account_id = $fromAccountId;
             $transfer->to_account_id = $transferToAccount;
@@ -296,29 +301,29 @@ class Pay extends Component
             $transfer->transaction_type_id = $transactionTypeId;
             $transfer->creator_user_id = Auth::user()->id;
             $save = $transfer->save();
-            
+
             // TODO: remove testing comment for production
             // Uncomment to test a failed transaction
             //$save = false;
-    
+
             if ($save) {
                 // Commit the database transaction
                 DB::commit();
                 // WireUI notification
                 $this->notification()->success($title = __('Transaction done!'), $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />' . '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>');
                 $this->dispatch('resetForm');
-    
+
                 // Send TransferReceived mail
                 $now = now();
                 Mail::to($transfer->accountTo->accountable)->later($now->addSeconds(1), new TransferReceived($transfer));
-    
+
             } else {
                 throw new \Exception('Transaction could not be saved');
-                
+
             }
         } catch (\Exception $e) {
             DB::rollBack();
-    
+
             // WireUI notification
             $this->notification()->send([
                 'title' => __('Transaction failed') . '!',
@@ -326,10 +331,10 @@ class Pay extends Component
                 'icon' => 'error',
                 'timeout' => 50000
             ]);
-    
+
             $warningMessage = 'Transaction failed';
             $this->logAndReport($warningMessage, $fromAccountId, $toAccountId, $e);
-    
+
             return back();
         }
     }
@@ -343,7 +348,7 @@ class Pay extends Component
      * message and makes the error modal visible if any limit is exceeded.
      */
     private function checkBalanceLimits($amount, $transferBudgetTo, $transferBudgetFrom, $limitMinFrom, $balanceToPublic)
-    {        
+    {
         if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom <= $transferBudgetTo) {
             $this->limitError = __('messages.pay_limit_error_budget_from', [
                         'limitMinFrom' => tbFormat($limitMinFrom),
@@ -353,14 +358,14 @@ class Pay extends Component
         }
         if ($amount > $transferBudgetFrom && $amount > $transferBudgetTo && $transferBudgetFrom > $transferBudgetTo) {
             if ($balanceToPublic) {
-            $this->limitError = __('messages.pay_limit_error_budget_from_and_to', [
-                    'limitMinFrom' => tbFormat($limitMinFrom),
-                    'transferBudgetTo' => tbFormat($transferBudgetTo),
-                ]);
-            } else {                 
-            $this->limitError = __('messages.pay_limit_error_budget_from_and_to_without_budget_to', [
-                            'limitMinFrom' => tbFormat($limitMinFrom),
-                        ]);
+                $this->limitError = __('messages.pay_limit_error_budget_from_and_to', [
+                        'limitMinFrom' => tbFormat($limitMinFrom),
+                        'transferBudgetTo' => tbFormat($transferBudgetTo),
+                    ]);
+            } else {
+                $this->limitError = __('messages.pay_limit_error_budget_from_and_to_without_budget_to', [
+                                'limitMinFrom' => tbFormat($limitMinFrom),
+                            ]);
             }
             return $this->modalErrorVisible = true;
         }
@@ -373,15 +378,15 @@ class Pay extends Component
         }
         if ($amount > $transferBudgetTo) {
             if ($balanceToPublic) {
-                    $this->limitError = __('messages.pay_limit_error_budget_to', [
-                        'transferBudgetTo' => tbFormat($transferBudgetTo),
-                    ]);
-                } else {                    
-                    $this->limitError = __('messages.pay_limit_error_budget_to_without_budget_to', [
-                        'transferBudgetTo' => tbFormat($transferBudgetTo),
-                        'toHolderName' => $this->toHolderName,
-                    ]);
-                }
+                $this->limitError = __('messages.pay_limit_error_budget_to', [
+                    'transferBudgetTo' => tbFormat($transferBudgetTo),
+                ]);
+            } else {
+                $this->limitError = __('messages.pay_limit_error_budget_to_without_budget_to', [
+                    'transferBudgetTo' => tbFormat($transferBudgetTo),
+                    'toHolderName' => $this->toHolderName,
+                ]);
+            }
             return $this->modalErrorVisible = true;
         }
         $this->limitError = null;
@@ -395,10 +400,10 @@ class Pay extends Component
      * including account details, user details, IP address, and location. It also
      * sends an email to the system administrator with the same information.
      */
-    private function logAndReport($warningMessage, $fromAccountId, $toAccountId, $error = '' )
+    private function logAndReport($warningMessage, $fromAccountId, $toAccountId, $transactionType = '', $error = '')
     {
-        $ip = request()->ip();    
-        $ipLocationInfo = IpLocation::get($ip);        
+        $ip = request()->ip();
+        $ipLocationInfo = IpLocation::get($ip);
         // Escape ipLocation errors when not in production
         if (!$ipLocationInfo || App::environment(['local', 'development', 'staging'])) {
             $ipLocationInfo = (object) [
@@ -408,7 +413,7 @@ class Pay extends Component
             ];
         }
         $eventTime = now()->toDateTimeString();
-        
+
         // Log this event and mail to admin
         Log::warning($warningMessage, [
             'fromAccountId' => $fromAccountId,
@@ -420,23 +425,25 @@ class Pay extends Component
             'activeProfileId' => session('activeProfileId'),
             'activeProfileType' => session('activeProfileType'),
             'activeProfileName' => session('activeProfileName'),
+            'transactionType' => ucfirst($transactionType),
             'IP address' => $ip,
             'IP location' => $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName,
             'Event Time' => $eventTime,
             'Message' => $error,
         ]);
         Mail::raw(
-            $warningMessage . '.' . "\n\n" . 
-            'From Account ID: ' . $fromAccountId . "\n" . 
-            'From Account Holder: ' . Account::find($fromAccountId)->accountable()->value('name') . "\n" . 
-            'To Account ID: ' . $toAccountId . "\n" . 
-            'To Account Holder: ' . Account::find($toAccountId)->accountable()->value('name') . "\n" . 
-            'User ID: ' . Auth::id() . "\n" . 'User Name: ' . Auth::user()->name . "\n" . 
-            'Active Profile ID: ' . session('activeProfileId') . "\n" . 
-            'Active Profile Type: ' . session('activeProfileType') . "\n" . 
+            $warningMessage . '.' . "\n\n" .
+            'From Account ID: ' . $fromAccountId . "\n" .
+            'From Account Holder: ' . Account::find($fromAccountId)->accountable()->value('name') . "\n" .
+            'To Account ID: ' . $toAccountId . "\n" .
+            'To Account Holder: ' . Account::find($toAccountId)->accountable()->value('name') . "\n" .
+            'User ID: ' . Auth::id() . "\n" . 'User Name: ' . Auth::user()->name . "\n" .
+            'Active Profile ID: ' . session('activeProfileId') . "\n" .
+            'Active Profile Type: ' . session('activeProfileType') . "\n" .
             'Active Profile Name: ' . session('activeProfileName') . "\n" .
+            'Transaction Type: ' . ucfirst($transactionType) . "\n" .
             'IP address: ' . $ip . "\n" .
-            'IP location: ' . $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName . "\n" . 
+            'IP location: ' . $ipLocationInfo->cityName . ', ' . $ipLocationInfo->regionName . ', ' . $ipLocationInfo->countryName . "\n" .
             'Event Time: ' . $eventTime . "\n\n" .
             $error,
             function ($message) use ($warningMessage) {

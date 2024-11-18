@@ -7,6 +7,7 @@ use App\Models\Language;
 use App\Models\Locations\Location;
 use App\Models\Post;
 use App\Models\User;
+use App\Traits\LocationTrait;
 use App\Traits\TaggableWithLocale;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
@@ -30,9 +31,9 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
     use Reacterable; // cybercog/laravel-love
     use Reactable; // cybercog/laravel-love
     use Searchable; // laravel/scout with ElasticSearch
+    use LocationTrait;
 
-
-    /**
+    /*
      * The attributes that should be hidden for serialization.
      * BEWARE: THE MESSENGER API CAN POTENTIALLY EXPOSE ALL VISIBLE FIELDS
      *

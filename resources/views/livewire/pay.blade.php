@@ -43,7 +43,7 @@
 
                 <!--- Transaction type --->
                 @livewire('transaction-type-radio', ['type' => $type, 'typeOptions' => $typeOptions])
-                @error('description')
+                @error('transactionTypeSelected')
                     <div class="mb-3 text-sm text-red-700" role="alert">
                         {{ __($message) }}
                     </div>

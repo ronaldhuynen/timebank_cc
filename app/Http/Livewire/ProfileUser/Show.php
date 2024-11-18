@@ -7,6 +7,7 @@ use App\Models\Friend;
 use App\Models\PendingFriend;
 use App\Models\Tag;
 use App\Models\User;
+use App\Traits\LocationTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
@@ -18,6 +19,8 @@ use Spatie\Activitylog\Models\Activity;
 
 class Show extends Component
 {
+    use LocationTrait;
+    
     public $user;
     public $inactive = false;
     public $showAboutFullText = false;
@@ -58,7 +61,7 @@ class Show extends Component
 
 
     public function isInactive()
-    {
+    {   //TODO: Update with email verified and inactive_at > now()
         if ($this->user->inactive_at !== null){
             $this->inactive = true;
         } 

@@ -2,135 +2,83 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 trait LocationTrait
 {
-
-    // default locale should be English
-    // The countries, devisions, cities, districts tables should have their local name
-
-
     /**
-     * default locale setting
+     * Get the profile's location and optionally generate a link to OpenStreetMap.
+     * Attention: do not extensively use the $lookUpOsmLocation as too many request will be rate-limited!
      *
-     * @var string
-     */
-    protected $defaultLocale = "en";
-
-    /**
-     * current locale setting
-     *
-     * @var string
-     */
-    protected $locale = "en";
-
-    protected $supported_locales = [
-        'en',
-        'nl',
-        'fr'
-    ];
-
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->setLocale(config('app.locale'));
-    }
-
-    /**
-     * setting locale
-     *
-     * @param string $locale
      * @return void
      */
-    public function setLocale($locale)
+    public function getLocationFirst($lookUpOsmLocation = false)
     {
-        $locale = str_replace('_', '-', strtolower($locale));
-        if (Str::startsWith($locale, 'en')) {
-            $locale = 'en';
+        // Initialize variables
+        $location = '';
+        $country = '';
+        $division = '';
+        $city = '';
+        $district = '';
+        $locationData = [];
+
+        $firstLocation = $this->locations->first();
+
+        if ($firstLocation) {
+            if (isset($firstLocation->city)) {
+                $cityTranslation = $firstLocation->city->translations->first();
+                $city = $cityTranslation ? $cityTranslation->name : '';
+                $location = $city;
+            }
+            if (isset($firstLocation->district)) {
+                $districtTranslation = $firstLocation->district->translations->first();
+                $district = $districtTranslation ? $districtTranslation->name : '';
+                $location = $city ? $city . ' ' . $district : $district;
+            }
+            if (isset($firstLocation->division)) {
+                $divisionTranslation = $firstLocation->division->translations->first();
+                $division = $divisionTranslation ? $divisionTranslation->name : '';
+                $location = $city || $district ? $location . ', ' . $division : $division;
+            }
+            if (isset($firstLocation->country)) {
+                $country = $firstLocation->country->code;
+                $location = $city || $district || $division ? $location . ', ' . $country : $country;
+            }
         }
-        if (!in_array($locale, $this->supported_locales)) {
-            $locale = 'en';
+
+        // Remove trailing comma and space
+        $locationName = rtrim($location, ', ');
+        $locationData['name'] = $locationName;
+        $locationData['name_short'] = $city . ' ' . $country;
+
+
+        if ($lookUpOsmLocation == true) {
+            // Construct the URL for Nominatim search
+            $searchUrl = 'https://nominatim.openstreetmap.org/search?format=json&q=' . urlencode($locationName);
+
+            // Define your User-Agent
+            $userAgent = 'Timebank.cc (admin@timebank.cc)';
+
+            // Send the HTTP request to the Nominatim API
+            $response = Http::withHeaders([
+                'User-Agent' => $userAgent,
+            ])->get($searchUrl);
+
+            // Parse the JSON response
+            $data = $response->json();
+
+            // Extract the first result's coordinates (if available)
+            if (!empty($data[0])) {
+                $latitude = $data[0]['lat'];
+                $longitude = $data[0]['lon'];
+
+                // Create the OpenStreetMap URL with the coordinates
+                $locationData['url'] = "https://www.openstreetmap.org/?mlat={$latitude}&mlon={$longitude}#map=12/{$latitude}/{$longitude}";
+            } else {
+                $locationData['url'] = null; // No location found
+            }
         }
-        $this->locale = $locale;
-        return $this;
-    }
 
-    /**
-     * get locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        // return $this->locale;
-        return 'test!';
+        return $locationData;
     }
-
-    /**
-     * Get localized instance
-     *
-     * @return object
-     */
-    protected function getLocalized()
-    {
-        return $this->locales()->where('locale', $this->locale)->first();
-    }
-
-    /**
-     * Get localized name of instance
-     *
-     * @return string
-     */
-    public function getLocalNameAttribute()
-    {
-        if ($this->locale == $this->defaultLocale) {
-            return $this->name;
-        }
-        $localized = $this->getLocalized();
-        return !is_null($localized) ? $localized->name : $this->name;
-    }
-
-    /**
-     * Get localized Full Name of instance
-     *
-     * @return string
-     */
-    public function getLocalFullNameAttribute()
-    {
-        if ($this->locale == $this->defaultLocale) {
-            return $this->full_name;
-        }
-        $localized = $this->getLocalized();
-        return !is_null($localized) ? $localized->full_name : $this->full_name;
-    }
-
-    /**
-     * Get alias of locale
-     *
-     * @return string
-     */
-    public function getLocalAliasAttribute()
-    {
-        if ($this->locale == $this->defaultLocale) {
-            return $this->name;
-        }
-        $localized = $this->getLocalized();
-        return !is_null($localized) ? $localized->alias : $this->name;
-    }
-
-    /**
-     * Get alias of locale
-     *
-     * @return string
-     */
-    public function getLocalAbbrAttribute()
-    {
-        if ($this->locale == $this->defaultLocale) {
-            return $this->name;
-        }
-        $localized = $this->getLocalized();
-        return !is_null($localized) ? $localized->code : $this->name;
-    }
-
 }

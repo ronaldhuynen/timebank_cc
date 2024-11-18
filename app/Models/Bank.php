@@ -5,6 +5,7 @@ namespace App\Models;
 
 use App\Models\Locations\Location;
 use App\Models\User;
+use App\Traits\LocationTrait;
 use App\Traits\TaggableWithLocale;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
@@ -28,6 +29,7 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
     use Reacterable; // cybercog/laravel-love
     use Reactable; // cybercog/laravel-love
     use Searchable; // laravel/scout with ElasticSearch
+    use LocationTrait;
 
 
     /**

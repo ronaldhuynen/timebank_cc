@@ -30,20 +30,26 @@
                     x-show="open">
                     @forelse ($searchResults as $result)
                         <li>
-                            <a class="flex items-center px-2 py-2 hover:bg-gray-100"
+                            <a class="flex items-center px-3 py-2 ml-2 hover:bg-gray-100"
                                wire:click="toAccountSelected({{ $result['accountId'] }})">
-                                <img class="w-10 rounded-full" src="{{ $result['holderPhoto'] }}">
-                                <div class="ml-4 leading-tight">
+                                <img class="w-12 rounded-full" src="{{ $result['holderPhoto'] }}">
+                                <div class="ml-3 leading-tight">
                                     <div class="font-semibold text-gray-900">
                                         @if (array_key_exists('holderName', $result))
-                                            {{ $result['holderName'] }}
+                                            @if ($result['holderFullName'] == $result['holderName']) 
+                                            {{ $result['holderName'] }} 
+                                            <div class="text-gray-500 font-normal text-2xs"> {{$result['holderLocation']}} </div>
+                                            @else
+                                            {{ $result['holderName'] }} 
+                                            <div class="text-gray-500 font-normal text-2xs"> {{ Illuminate\Support\Str::limit($result['holderFullName'] . ', ' . $result['holderLocation'], 35)}} </div>
+                                            @endif
                                         @else
                                             {{ __('No account holder found') }}
                                         @endif
                                     </div>
-                                    <div class="text-gray-600">
+                                    <div class="text-gray-900">
                                         @if (array_key_exists('accountName', $result))
-                                            {{ $result['accountName'] }}
+                                            {{ __(ucfirst(strtolower($result['accountName']))) }}
                                         @else
                                             {{ __('No accounts found') }}
                                         @endif
@@ -62,14 +68,19 @@
             <div
                  class="focus:shadow-outline-blue mt-2 w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-0 pr-3 leading-5 shadow-sm transition duration-150 ease-in-out focus:border-indigo-300 focus:placeholder-gray-300 focus:outline-none sm:text-sm">
                 <!-- Add cursor-default class here -->
-                <div class="flex items-center pl-2">
-                    <img class="w-10 rounded-full" src="{{ $toHolderPhoto }}">
-                    <div class="ml-4 leading-tight">
+                <div class="flex items-center pl-2 ml-2">
+                    <img class="w-12 rounded-full" src="{{ $toHolderPhoto }}">
+                    <div class="ml-3 leading-tight">
                         <div class="font-semibold" wire:model.live="toHolderName">
                             {{ $toHolderName }}
                         </div>
+                          @if ($toHolderFullName == $toHolderName) 
+                                            <div class="text-gray-500 font-normal text-2xs"> {{$toHolderLocation}} </div>
+                                            @else
+                                             <div class="text-gray-500 font-normal text-2xs"> {{ Illuminate\Support\Str::limit($toHolderFullName . ', ' . $toHolderLocation, 35) }} </div>
+                                            @endif
                         <div class="text-gray-600" wire:model.live="toAccountName">
-                            {{ $toAccountName }}
+                            {{ __(ucfirst(strtolower($toAccountName))) }}
                         </div>
                     </div>
                     <button type="button" class="ml-auto text-gray-600 hover:text-red-600" wire:click="removeSelectedAccount">

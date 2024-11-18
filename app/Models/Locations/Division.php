@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\App;
 
 class Division extends Model
 {
-    // use LocationTrait;
-
     /**
      * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
      *

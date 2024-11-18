@@ -169,7 +169,7 @@ class UpdateProfileLocationForm extends Component
         DB::transaction(function (): void {
 
             // For now we only use a single location. In the future this can become an array of locations.
-            if ($this->state->locations) {
+            if ($this->state->locations && $this->state->locations->isNotEmpty()) {
                 $location = Location::find($this->state->locations->first()->id);
             } else {
                 $location = new Location();

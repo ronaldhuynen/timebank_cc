@@ -42,6 +42,7 @@ trait LocationTrait
             }
             if (isset($firstLocation->country)) {
                 $country = $firstLocation->country->code;
+                $countryName = $firstLocation->country->translations->first()->name;
                 $location = $city || $district || $division ? $location . ', ' . $country : $country;
             }
         }
@@ -49,7 +50,25 @@ trait LocationTrait
         // Remove trailing comma and space
         $locationName = rtrim($location, ', ');
         $locationData['name'] = $locationName;
-        $locationData['name_short'] = $city . ' ' . $country;
+            
+        // Construct name_short based on available properties
+        $nameShortParts = [];
+
+        if ($district) {
+            $nameShortParts[] = $district;
+        }
+        if ($city && count($nameShortParts) < 2) {
+            $nameShortParts[] = $city;
+        }
+        if ($division && count($nameShortParts) < 2) {
+            $nameShortParts[] = $division;
+        }
+        if (!$city && $country && count($nameShortParts) < 2) {
+            $nameShortParts[] = $countryName;
+        }
+
+        // Join the parts with a comma and space
+        $locationData['name_short'] = implode(', ', $nameShortParts);
 
 
         if ($lookUpOsmLocation == true) {

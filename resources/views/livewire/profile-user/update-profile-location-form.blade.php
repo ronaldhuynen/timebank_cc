@@ -31,7 +31,7 @@
             {{ __('Saved') }}
         </x-jetstream.action-message>
 
-        <x-jetstream.button wire:loading.attr="disabled" wire:target="photo">
+        <x-jetstream.button wire:loading.attr="disabled" wire:target="updateProfileInformation" wire:click="updateProfileInformation">
             {{ __('Save') }}
         </x-jetstream.button>
     </x-slot>

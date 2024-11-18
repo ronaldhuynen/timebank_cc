@@ -97,34 +97,33 @@ class City extends Model
     }
 
 
-    /**
-     * Get the districst of the city in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
-     * The optional paramameter will filter the localized district names.
-     * @param string $search
+   /**
+     * Get the districts of the city in the App::getLocale, or if not exists, in the App::getFallbackLocale language.
+     *
      * @return void
      */
-    public function districts(string $search = '')
+    public function districts()
     {
-        $locale = collect(
-            $this->hasManyThrough(DistrictLocale::class, District::class, 'city_id', 'district_id')
-                    ->where('locale', App::getLocale())
-                    ->get()
-        )->keyBy('district_id');
+        // $locale = collect(
+        //     $this->hasManyThrough(DistrictLocale::class, District::class, 'city_id', 'district_id')
+        //             ->where('locale', App::getLocale())
+        //             ->get()
+        // )->keyBy('district_id');
 
-        $fallback = collect(
-            $this->hasManyThrough(DistrictLocale::class, District::class, 'city_id', 'district_id')
-            ->where('locale', App::getFallbackLocale())
-            ->get()
-        )->keyBy('district_id');
+        // $fallback = collect(
+        //     $this->hasManyThrough(DistrictLocale::class, District::class, 'city_id', 'district_id')
+        //     ->where('locale', App::getFallbackLocale())
+        //     ->get()
+        // )->keyBy('district_id');
 
-        $result = $locale
-            ->union($fallback)
-            ->filter(function ($item) use ($search) {
-                return false !== stripos($item->name, $search);
-            })
-            ->sortBy('name');
+        // $result = $locale
+        //     ->union($fallback)
+        //     ->filter(function ($item) use ($search) {
+        //         return false !== stripos($item->name, $search);
+        //     })
+        //     ->sortBy('name');
 
-        return $result;
+        return $this->hasMany(District::class);
     }
 
 

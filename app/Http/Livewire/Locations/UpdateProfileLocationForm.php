@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\ProfileUser;
+namespace App\Http\Livewire\Locations;
 
 use App\Models\Locations\City;
 use App\Models\Locations\Country;
@@ -193,6 +193,6 @@ class UpdateProfileLocationForm extends Component
 
     public function render()
     {
-        return view('livewire.profile-user.update-profile-location-form');
+        return view('livewire.locations.update-profile-location-form');
     }
 }

@@ -9,7 +9,7 @@
         
         @livewire('profile-user.update-profile-personal-form')
         <x-jetstream.section-border />
-        @livewire('profile-user.update-profile-location-form')
+        @livewire('locations.update-profile-location-form')
         <x-jetstream.section-border />
         @livewire('profile.update-profile-skills-form')
 

@@ -129,14 +129,27 @@
     </div>
     @endif
 
+
     <div class="my-6 text-right align-bottom text-gray-900">
-        <span class="float-right my-12" onclick="qrModal()" style="cursor: pointer;"
+        <!-- Created user -->
+    @if($transaction['creator_user'])
+    <div class="float-left mt-12 px-0 text-sm font-normal text-gray-500">
+        {{ __('Payment excuted by') . ': '}}
+        <a href="{{ url($transaction['creator_user']['path']) }}"> 
+        {{ $transaction['creator_user']['name'] }}
+        </a>
+    </div>
+    @endif
+
+        <span class="float-right mb-20 place-items-end" onclick="qrModal()" style="cursor: pointer;"
             wire:click="$toggle('qrModalVisible')">
 
             {{ SimpleSoftwareIO\QrCode\Facades\QrCode::size(60)->errorCorrection('L')->color(17, 24, 39)->generate(route('transaction.show', ['transactionId' => $transactionId])) }}
         </span>
 
     </div>
+
+
 
     <!---- QR Modal ---->
     <x-jetstream.dialog-modal wire:model.live="qrModalVisible">

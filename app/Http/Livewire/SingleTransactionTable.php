@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
@@ -58,12 +59,27 @@ class SingleTransactionTable extends Component
                     'description' => $results->description,
                     'type_label' => $results->transactionType->label ?? '',
                     'type_icon' => $results->transactionType->icon ?? '',
+                    'creator_user' => $results->creator_user_id ? $this->getCreatorUser($results->creator_user_id) : '',
                     'datetime' => $results->created_at,
                 ];
 
         return Arr::collapse($transaction);
     }
 
+
+    public function getCreatorUser($id)
+    {
+        if($id) {
+        $model = User::find($id);
+        $creator = [
+            'name' => $model->name,
+            'full_name' => $model->full_name,
+            'path' => URL::to('/') . '/' . 'user' .  '/' . $id,
+        ];
+        } 
+        
+        return $creator;
+    }
 
     public function qrModal()
     {

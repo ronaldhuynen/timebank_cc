@@ -1,7 +1,6 @@
 <nav class="border-b border-gray-100 bg-white" x-data="{ open: false }">
     <!-- Primary Navigation Menu -->
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <x-notifications />
         <div class="flex h-16 items-center justify-between">
             <!-- Logo -->
             <div class="flex shrink-0 items-center">
@@ -69,7 +68,7 @@
 
                                 <!-- Team Settings -->
                                 <x-jetstream.dropdown-link
-                             href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                                                           href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
                                     {{ __('Team Settings') }}
                                 </x-jetstream.dropdown-link>
 
@@ -184,11 +183,14 @@
                         <!---- Switch Profile --->
                         @php
                             $user = Auth::user();
-                            $hasOtherProfiles = $user->organizations()->exists() || $user->banks()->exists() || $user->admins()->exists();
+                            $hasOtherProfiles =
+                                $user->organizations()->exists() ||
+                                $user->banks()->exists() ||
+                                $user->admins()->exists();
                         @endphp
 
                         @if ($hasOtherProfiles)
-                        <livewire:profile-select>
+                            <livewire:profile-select>
                         @endif
 
                         <!---- Edit profile --->
@@ -200,65 +202,89 @@
                             <x-jetstream.dropdown-link :active="request()->routeIs('org.show')" href="{{ route('org.edit') }}">
                                 {{ __('Edit profile') }}
                             </x-jetstream.dropdown-link>
+                        @else
+                            <span class="block px-4 py-2 text-sm leading-5 text-gray-400 cursor-default">
+                                {{ __('Edit profile') }}
+                            </span>
                         @endif
 
                         <!--- Messenger --->
-                        <x-jetstream.dropdown-link href="{{ route('messenger.portal') }}">
-                            {{ __('Messages') }} <span class="badge-pill badge-danger mr-n2 badge"
-                                  id="nav_thread_count"></span>
-                        </x-jetstream.dropdown-link>
+                        @if (session('activeProfileType') != 'App\Models\Admin')
+                            <x-jetstream.dropdown-link href="{{ route('messenger.portal') }}">
+                                {{ __('Messages') }} <span class="badge-pill badge-danger mr-n2 badge"
+                                      id="nav_thread_count"></span>
+                            </x-jetstream.dropdown-link>
+                        @else
+                            <span class="block cursor-default px-4 py-2 text-sm leading-5 text-gray-400">
+                                {{ __('Messages') }}
+                            </span>
+                        @endif
 
                         <!--- Messender Friends --->
-                        <div class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-700 transition hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-                             id="pending_friends_nav">
-                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown block pb-0 pt-1"
-                               data-toggle="dropdown" href="#" id="click_friends_tab" onClick="drop()">
-                                {{ __('Friends') }} <span class="badge-pill badge-danger mr-n2 badge"
-                                      id="nav_friends_count"></span>
-                            </a>
+                        @if (in_array(session('activeProfileType'), ['App\Models\User', 'App\Models\Organization']))
+                            <div class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-900 transition hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                                 id="pending_friends_nav">
+                                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown block pb-0 pt-1"
+                                   data-toggle="dropdown" href="#" id="click_friends_tab" onClick="drop()">
+                                    {{ __('Friends') }} <span class="badge-pill badge-danger mr-n2 badge"
+                                          id="nav_friends_count"></span>
+                                </a>
 
-                            <div aria-labelledby="click_friends_tab"
-                                 class="dropdown-menu dropdown-menu-right notify-drop bg-light">
-                                <div class="row">
-                                    <div class="col-12 pill-tab-nav">
-                                        <nav class="nav nav-pills flex-column flex-sm-row" id="nav-friend-tabs"
-                                             role="tablist">
-                                            <a aria-controls="f_pending" aria-selected="true"
-                                               class="flex-sm-fill text-sm-center nav-link h6 active" data-toggle="pill"
-                                               href="#f_pending" id="tab-pending" role="tab"><i
-                                                   class="fas fa-user-friends"></i> Pending</a>
-                                            <a aria-controls="f_sent" aria-selected="false"
-                                               class="flex-sm-fill text-sm-center nav-link h6" data-toggle="pill"
-                                               href="#f_sent" id="tab-sent" role="tab"><i
-                                                   class="fas fa-user-friends"></i> Sent</a>
-                                        </nav>
+                                <div aria-labelledby="click_friends_tab"
+                                     class="dropdown-menu dropdown-menu-right notify-drop bg-light">
+                                    <div class="row">
+                                        <div class="col-12 pill-tab-nav">
+                                            <nav class="nav nav-pills flex-column flex-sm-row" id="nav-friend-tabs"
+                                                 role="tablist">
+                                                <a aria-controls="f_pending" aria-selected="true"
+                                                   class="flex-sm-fill text-sm-center nav-link h6 active"
+                                                   data-toggle="pill" href="#f_pending" id="tab-pending"
+                                                   role="tab"><i class="fas fa-user-friends"></i> Pending</a>
+                                                <a aria-controls="f_sent" aria-selected="false"
+                                                   class="flex-sm-fill text-sm-center nav-link h6" data-toggle="pill"
+                                                   href="#f_sent" id="tab-sent" role="tab"><i
+                                                       class="fas fa-user-friends"></i> Sent</a>
+                                            </nav>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="f_pending">
-                                        <div class="drop-content list-group" id="pending_friends_ctnr">
-                                            <div class="col-12 text-center">
-                                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="f_pending">
+                                            <div class="drop-content list-group" id="pending_friends_ctnr">
+                                                <div class="col-12 text-center">
+                                                    <div class="spinner-grow spinner-grow-sm text-primary"
+                                                         role="status">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="f_sent">
-                                        <div class="drop-content list-group" id="sent_friends_ctnr">
-                                            <div class="col-12 text-center">
-                                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                                        <div class="tab-pane fade" id="f_sent">
+                                            <div class="drop-content list-group" id="sent_friends_ctnr">
+                                                <div class="col-12 text-center">
+                                                    <div class="spinner-grow spinner-grow-sm text-primary"
+                                                         role="status">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <span class="block cursor-default px-4 py-2 text-sm leading-5 text-gray-400">
+                                {{ __('Friends') }}
+                            </span>
+                        @endif
 
                         <!---- Settings --->
-                        <x-jetstream.dropdown-link href="{{ route('profile.show') }}">
-                            {{ __('Settings') }}
-                        </x-jetstream.dropdown-link>
+                        @if (session('activeProfileType') == 'App\Models\User')
+                            <x-jetstream.dropdown-link href="{{ route('profile.show') }}">
+                                {{ __('Settings') }}
+                            </x-jetstream.dropdown-link>
+                        @else
+                            <span class="block cursor-default px-4 py-2 text-sm leading-5 text-gray-400">
+                                {{ __('Settings') }}
+                            </span>
+                        @endif
 
                         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                             <x-jetstream.dropdown-link href="{{ route('api-tokens.index') }}">
@@ -328,11 +354,12 @@
                 <!---- Switch Profile --->
                 @php
                     $user = Auth::user();
-                    $hasOtherProfiles = $user->organizations()->exists() || $user->banks()->exists() || $user->admins()->exists();
+                    $hasOtherProfiles =
+                        $user->organizations()->exists() || $user->banks()->exists() || $user->admins()->exists();
                 @endphp
 
                 @if ($hasOtherProfiles)
-                <livewire-profile-select>
+                    <livewire-profile-select>
                 @endif
 
                 <!---- Edit profile --->
@@ -344,6 +371,10 @@
                     <x-jetstream.dropdown-link :active="request()->routeIs('org.show')" href="{{ route('org.edit') }}">
                         {{ __('Edit profile') }}
                     </x-jetstream.dropdown-link>
+                @else
+                    <span class="block cursor-default px-4 py-2 text-sm leading-5 text-gray-400">
+                        {{ __('Settings') }}
+                    </span>
                 @endif
 
                 <!--- Messenger --->

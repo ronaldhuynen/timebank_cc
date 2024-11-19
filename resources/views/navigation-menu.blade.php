@@ -182,8 +182,13 @@
                     <x-slot name="content">
 
                         <!---- Switch Profile --->
-                         @if (Auth::user()->organizations->isNotEmpty())
-                            <livewire:select-organization>
+                        @php
+                            $user = Auth::user();
+                            $hasOtherProfiles = $user->organizations()->exists() || $user->banks()->exists() || $user->admins()->exists();
+                        @endphp
+
+                        @if ($hasOtherProfiles)
+                        <livewire:profile-select>
                         @endif
 
                         <!---- Edit profile --->
@@ -321,8 +326,13 @@
                 <!-- Account Management -->
 
                 <!---- Switch Profile --->
-                @if (Auth::user()->organizations->isNotEmpty())
-                    <livewire:select-organization>
+                @php
+                    $user = Auth::user();
+                    $hasOtherProfiles = $user->organizations()->exists() || $user->banks()->exists() || $user->admins()->exists();
+                @endphp
+
+                @if ($hasOtherProfiles)
+                <livewire-profile-select>
                 @endif
 
                 <!---- Edit profile --->

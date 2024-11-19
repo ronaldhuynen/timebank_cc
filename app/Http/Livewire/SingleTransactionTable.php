@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Transaction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Livewire\Component;
 
 class SingleTransactionTable extends Component
@@ -35,6 +36,7 @@ class SingleTransactionTable extends Component
             !in_array(Session::get('activeProfileType'), [$fromType, $toType]) ||
             !in_array(Session::get('activeProfileId'), [$fromId, $toId])
         ) {
+            // TODO: redirect to public custom page with more info
             abort(403, 'Unauthorized action.');
         }
 
@@ -42,10 +44,16 @@ class SingleTransactionTable extends Component
                     'trans_id' => $results->id,
                     'amount' => $results->amount,
                     'from_account' => $results->accountFrom->name,
-                    'from_relation' => $results->accountFrom->accountable->name,
+                    'from_relation_path' => URL::to('/') . '/' . strtolower(class_basename($fromType)) .  '/' . $results->accountFrom->accountable->id,
+                    'from_relation_name' => $results->accountFrom->accountable->name,
+                    'from_relation_full_name' => $results->accountFrom->accountable->full_name,
+                    'from_relation_location' => $results->accountFrom->accountable->getLocationFirst()['name_short'],
                     'from_profile_photo' => $results->accountFrom->accountable->profile_photo_path,
                     'to_account' => $results->accountTo->name,
-                    'to_relation' => $results->accountTo->accountable->name,
+                    'to_relation_path' => URL::to('/') . '/' . strtolower(class_basename($toType)) .  '/' . $results->accountTo->accountable->id,
+                    'to_relation_name' => $results->accountTo->accountable->name,
+                    'to_relation_full_name' => $results->accountTo->accountable->full_name,
+                    'to_relation_location' => $results->accountTo->accountable->getLocationFirst()['name_short'],
                     'to_profile_photo' => $results->accountTo->accountable->profile_photo_path,
                     'description' => $results->description,
                     'type_label' => $results->transactionType->label ?? '',

@@ -184,16 +184,8 @@ Route::group([
 
             // Route::get('/send-friend-request', SendFriendRequest::class);
 
-            Route::get(LaravelLocalization::transRoute('routes.user.show'), 'App\Http\Controllers\UserController@show')
-                        ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed
-                        ->name('user.show')
-                        ->missing(function () {
-                            return view('user.not_found');
-                        });
-
             Route::get(LaravelLocalization::transRoute('routes.search.show'), [SearchController::class, 'show'])
                 ->name('search.show');
-
 
 
             //  Translated Messenger routes
@@ -218,7 +210,7 @@ Route::group([
                 ->name('messenger.invites.join')
                 ->middleware('auth');
 
-            // TODO NEXT: Create api routes for friends: add a friend and check error message in toaster
+            // TODO NEXT: Create api routes for friends:add  a friend and check error message in toaster
 
 
 

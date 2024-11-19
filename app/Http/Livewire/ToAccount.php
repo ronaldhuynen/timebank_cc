@@ -80,7 +80,6 @@ class ToAccount extends Component
         $toAccountDetails = collect($this->searchResults)->firstWhere('accountId', $toAccountId);
         
         if ($toAccountDetails) {
-            //TODO: Test if public properties can be removed
             $this->toAccountName = $toAccountDetails['accountName'];
             $this->toHolderName = $toAccountDetails['holderName'];
             $this->toHolderFullName = $toAccountDetails['holderFullName'];

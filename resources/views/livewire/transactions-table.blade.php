@@ -175,21 +175,29 @@
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
                                         <p class="relative block" href="#">
-                                            <img alt="profile" class="mx-auto h-10 w-10 rounded-full object-cover"
-                                                 src="{{ Storage::url($transaction['profile_photo']) }}" />
+                                            <img alt="profile" class="mx-auto h-14 w-14 rounded-full object-cover"
+                                                src="{{ Storage::url($transaction['profile_photo']) }}" />
                                         </p>
                                     </div>
                                     <div class="ml-3">
-                                        <p class="whitespace-no-wrap text-gray-900">
-                                            {{ $transaction['type'] === 'Debit' ? __('To') . ' ' . $transaction['relation'] : __('From') . ' ' . $transaction['relation'] }}
-                                        </p>
-                                        <p class="whitespace-no-wrap text-gray-500">
+                                        <div class="whitespace-no-wrap text-gray-900">
+                                        
+                                            @if ($transaction['relation_full_name'] == $transaction['relation']) 
+                                                {{ $transaction['c/d'] === 'Debit' ? __('To') . ' ' . $transaction['relation'] : __('From') . ' ' . $transaction['relation'] }}
+                                                <div class="text-gray-500 font-normal text-2xs"> {{$transaction['relation_location']}} </div>
+                                            @else
+                                                {{ $transaction['c/d'] === 'Debit' ? __('To') . ' ' . $transaction['relation'] : __('From') . ' ' . $transaction['relation'] }} 
+                                                <div class="text-gray-500 font-normal text-2xs"> {{ Illuminate\Support\Str::limit($transaction['relation_full_name'] . ', ' . $transaction['relation_location'], 35)}} </div>
+                                            @endif
+                                        
+                                        </div>
+                                        <div class="whitespace-no-wrap text-gray-500">
                                             @if (isset($transaction['account_to_name']))
                                                 {{ __(ucfirst(strtolower($transaction['account_to_name']))) }}
                                             @else
                                                 {{ __(ucfirst(strtolower($transaction['account_from_name']))) }}
                                             @endif
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </td>

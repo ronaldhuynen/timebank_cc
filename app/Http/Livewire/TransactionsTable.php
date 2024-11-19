@@ -247,6 +247,7 @@ class TransactionsTable extends Component
                 'account_name' => $account->name,
                 'account_holder_name' => $account->accountable->name,
                 'account_holder_full_name' => $account->accountable->full_name,
+                'account_holder_location' => $account->accountable->getLocationFirst()['name_short'],
                 'description' => $t->description,
                 'type' => $t->transactionType->name ?? '',
                 'balance' => $t->balance, // Running balance from window function
@@ -261,6 +262,7 @@ class TransactionsTable extends Component
                     'account_counter_name' => $t->accountFrom->name ?? '',
                     'relation' => $t->accountFrom->accountable->name ?? '',
                     'relation_full_name' => $t->accountFrom->accountable->full_name ?? '',
+                    'relation_location' => $t->accountFrom->accountable->getLocationFirst()['name_short'] ?? '',
                     'profile_photo' => $t->accountFrom->accountable->profile_photo_path ?? '',
                 ];
             } else {
@@ -272,6 +274,7 @@ class TransactionsTable extends Component
                     'account_counter_name' => $t->accountTo->name ?? '',
                     'relation' => $t->accountTo->accountable->name ?? '',
                     'relation_full_name' => $t->accountTo->accountable->full_name ?? '',
+                    'relation_location' => $t->accountTo->accountable->getLocationFirst()['name_short'] ?? '',
                     'profile_photo' => $t->accountTo->accountable->profile_photo_path ?? '',
                 ];
             }

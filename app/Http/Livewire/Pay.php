@@ -44,7 +44,7 @@ class Pay extends Component
     public $modalVisible = false;
     public $modalErrorVisible = false;
 
-    protected $typeOptionsProtected;
+    public $typeOptionsProtected;
 
     protected $listeners = [
         'amount' => 'amountValidation',
@@ -262,12 +262,14 @@ class Pay extends Component
 
         $transferToAccount = $account_exists->id;
 
+
         // Check if the To transactionTypeSelected is allowed
-        if (in_array($this->typeOptionsProtected, array($transactionTypeId))); {
-            $transactionType = TransactionType::find($transactionTypeId)->pluck('name')->first() ?? 'id: '. $transactionTypeId;
+        if (!in_array($transactionTypeId, $this->typeOptionsProtected)) {
+            $transactionType = TransactionType::find($transactionTypeId)->name ?? 'id: '. $transactionTypeId;
             $warningMessage = 'Impossible payment attempt: transaction type not allowed';
             return $this->logAndReport($warningMessage, $fromAccountId, $toAccountId, $transactionType);
         }
+
 
         $f = Account::where('id', $fromAccountId)->select('limit_min')->first();
         $limitMinFrom = $f->limit_min;
@@ -334,6 +336,8 @@ class Pay extends Component
 
             $warningMessage = 'Transaction failed';
             $this->logAndReport($warningMessage, $fromAccountId, $toAccountId, $e);
+
+            $this->resetForm();
 
             return back();
         }

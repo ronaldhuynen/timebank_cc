@@ -35,7 +35,7 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
 
     /*
      * The attributes that should be hidden for serialization.
-     * BEWARE: THE MESSENGER API CAN POTENTIALLY EXPOSE ALL VISIBLE FIELDS
+     * WARNING: THE MESSENGER API CAN POTENTIALLY EXPOSE ALL VISIBLE FIELDS
      *
      * @var array
      */

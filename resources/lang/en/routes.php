@@ -39,7 +39,8 @@ return [
     'search.show' => 'search',
     'terms.show' => 'terms-of-service',
     'policy.show' => 'privacy-policy',
-    'profile.show' => 'user/settings',
+    'profile.user.show' => 'user/settings',
+    'profile.admin.show' => 'admin/settings',
     'show.by.name' => '{name}',
 
     'messenger.portal' => 'messenger',

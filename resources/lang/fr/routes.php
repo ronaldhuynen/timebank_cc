@@ -42,6 +42,7 @@ return [
     'terms.show' => 'conditions-d-utilisation',
     'policy.show' => 'politique-de-confidentialite',
     'profile.show' => 'utilisateur/parametres',
+    'profile.show' => 'administration/parametres',
     'show.by.name' => '{name}',
 
 

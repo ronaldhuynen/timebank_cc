@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
 use App\Models\Bank;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use RTippin\Messenger\Facades\Messenger;
-use RTippin\Messenger\Facades\MessengerBots;
 
 /**
  * Laravel Messenger System, Created by: Richard Tippin.
@@ -29,7 +29,8 @@ class MessengerServiceProvider extends ServiceProvider
         Messenger::registerProviders([
             User::class,
             Organization::class,
-            Bank::class
+            Bank::class,
+            Admin::class
         ]);
 
     }

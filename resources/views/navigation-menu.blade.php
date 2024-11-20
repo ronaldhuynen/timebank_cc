@@ -209,16 +209,17 @@
                         @endif
 
                         <!--- Messenger --->
-                        @if (session('activeProfileType') != 'App\Models\Admin')
+                        {{-- Uncomment to exclude Messages link from profile models --}}
+                        {{-- @if (session('activeProfileType') != 'App\Models\Admin') --}}
                             <x-jetstream.dropdown-link href="{{ route('messenger.portal') }}">
                                 {{ __('Messages') }} <span class="badge-pill badge-danger mr-n2 badge"
                                       id="nav_thread_count"></span>
                             </x-jetstream.dropdown-link>
-                        @else
+                        {{-- @else
                             <span class="block cursor-default px-4 py-2 text-sm leading-5 text-gray-400">
                                 {{ __('Messages') }}
                             </span>
-                        @endif
+                        @endif --}}
 
                         <!--- Messender Friends --->
                         @if (in_array(session('activeProfileType'), ['App\Models\User', 'App\Models\Organization']))
@@ -277,7 +278,11 @@
 
                         <!---- Settings --->
                         @if (session('activeProfileType') == 'App\Models\User')
-                            <x-jetstream.dropdown-link href="{{ route('profile.show') }}">
+                            <x-jetstream.dropdown-link href="{{ route('profile.user.show') }}">
+                                {{ __('Settings') }}
+                            </x-jetstream.dropdown-link>
+                        @elseif (session('activeProfileType') == 'App\Models\Admin')
+                            <x-jetstream.dropdown-link href="{{ route('profile.admin.show') }}">
                                 {{ __('Settings') }}
                             </x-jetstream.dropdown-link>
                         @else

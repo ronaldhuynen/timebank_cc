@@ -335,7 +335,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
     public static function getProviderSettings(): array
     {
         return [
-            'alias' => 'user',
+            'alias' => __('Person'),
             'friendable' => true,
             'devices' => true,
             'default_avatar' => public_path('vendor/messenger/images/users.png'),
@@ -360,6 +360,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
                 $query->orWhere('name', 'LIKE', "%{$item}%")
+                ->orWhere('full_name', 'LIKE', "%{$item}%")
                 ->orWhere('full_name', 'LIKE', "%{$item}%");
             }
         });

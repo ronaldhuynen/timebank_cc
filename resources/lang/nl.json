@@ -39,6 +39,13 @@
     "good": "goed",
     "limited": "beperkt",
 
+    "User": "Gebruiker",
+    "Person": "Persoon",
+    "Organization": "Organizatie",
+    "Timebank": "Timebank",
+    "Admin": "Administrator",
+    "User project": "Privé-project",
+
     "Choose a country": "Selecteer een land",
     "Country": "Land",
     "Choose a city": "Selecteer een plaats",

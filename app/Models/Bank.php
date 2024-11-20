@@ -130,7 +130,7 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
     public static function getProviderSettings(): array
     {
         return [
-            'alias' => 'timebank',
+            'alias' => __('Timebank'),
             'searchable' => true,
             'friendable' => false,
             'devices' => true,
@@ -156,6 +156,7 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
                 $query->orWhere('name', 'LIKE', "%{$item}%")
+                ->orWhere('full_name', 'LIKE', "%{$item}%")
                 ->orWhere('email', 'LIKE', "%{$item}%");
             }
         });

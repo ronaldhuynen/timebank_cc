@@ -235,8 +235,13 @@ Route::group([
 
                 Route::group(['middleware' => array_values(array_filter([$authMiddleware, $authSessionMiddleware]))], function () {
                     // User & Profile...
-                    Route::get(LaravelLocalization::transRoute('routes.profile.show'), [UserProfileController::class, 'show'])
-                        ->name('profile.show');
+                    Route::get(LaravelLocalization::transRoute('routes.profile.user.show'), [UserProfileController::class, 'show'])
+                        ->name('profile.user.show');
+
+                Route::group(['middleware' => array_values(array_filter([$authMiddleware, $authSessionMiddleware]))], function () {
+                    // User & Profile...
+                    Route::get(LaravelLocalization::transRoute('routes.profile.admin.show'), [AdminProfileController::class, 'show'])
+                        ->name('profile.admin.show');
 
                     Route::group(['middleware' => 'verified'], function () {
                         // API...

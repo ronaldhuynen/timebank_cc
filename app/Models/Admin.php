@@ -106,8 +106,8 @@ class Admin extends Model implements MessengerProvider, ReacterableInterface, Re
     public static function getProviderSettings(): array
     {
         return [
-            'alias' => 'timebank',
-            'searchable' => true,
+            'alias' => __('Admin'),
+            'searchable' => false,
             'friendable' => false,
             'devices' => true,
             'default_avatar' => public_path('vendor/messenger/images/users.png'),
@@ -132,6 +132,7 @@ class Admin extends Model implements MessengerProvider, ReacterableInterface, Re
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
                 $query->orWhere('name', 'LIKE', "%{$item}%")
+                ->orWhere('full_name', 'LIKE', "%{$item}%")
                 ->orWhere('email', 'LIKE', "%{$item}%");
             }
         });

@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Events\ProfileSwitchEvent;
+use App\Models\Admin;
+use App\Models\Bank;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -40,25 +42,43 @@ class ProfileSelect extends Component
         $this->user = Auth::user();
         $this->userName = $this->user->name;
 
-        // Eager load organizations and banks relationships
-        $userWithRelations = User::with(['organizations', 'banks'])->find($this->user->id);
+        // Eager load profile relationships
+        $userWithRelations = User::with([
+            'organizations', 
+            'banks', 
+            'admins'
+            ])->find($this->user->id);
 
         // Get organizations and banks
         $orgs = $userWithRelations->organizations;
         $banks = $userWithRelations->banks;
+        $admins = $userWithRelations->admins;
 
-        // Merge organizations and banks collections
-        $profiles = $orgs->merge($banks);
+        // Merge profiles  collections
+        $profiles = $orgs
+            ->merge($banks)
+            ->merge($admins);
 
         // Map the merged collection to the desired structure
         $this->userProfiles = $profiles->map(function ($profile) {
+            if ($profile instanceof Organization) {
+                $type = 'organization';
+            } elseif ($profile instanceof Bank) {
+                $type = 'bank';
+            } elseif ($profile instanceof Admin) {
+                $type = 'admin';
+            } else {
+                $type = 'unknown';
+            }
+
             return [
                 'id' => $profile->id,
-                'type' => $profile instanceof Organization ? 'organization' : 'bank',
+                'type' => $type,
                 'name' => $profile->name,
-                'photo' => $profile->profile_photo_path
+                'photo' => $profile->profile_photo_path,
             ];
         })->toArray();
+
     }
 
 
@@ -77,7 +97,17 @@ class ProfileSelect extends Component
             
             // Determine the fully qualified class name dynamically
             $profileType = ucfirst($profile['type']);
-            $profileClassName = 'App\\Models\\' . $profileType;
+            $profileClassName = 'App\\Models\\' . $profileType;            
+            $profileModel = $profileClassName::find($profile['id']);
+            // Check if the accounts() method exists on the model
+            if (method_exists($profileModel, 'accounts')) {
+                $accounts = $profileModel->accounts()->exists()
+                    ? $profileModel->accounts()->pluck('id')->toArray()
+                    : [];
+            } else {
+                // If accounts() method doesn't exist, set accounts to an empty array
+                $accounts = [];
+            }
 
             if ($profile) {
                 Session([
@@ -85,8 +115,8 @@ class ProfileSelect extends Component
                     'activeProfileId' => $profile['id'],
                     'activeProfileName' => $profile['name'],
                     'activeProfilePhoto' => $profile['photo'],
-                    'activeProfileAccounts' => $profileClassName::find($profile['id'])->accounts()->pluck('id')->toArray()
-                ]);
+                    'activeProfileAccounts' => $accounts,
+                    ]);
             }
         } else {
             $user = Auth::user();

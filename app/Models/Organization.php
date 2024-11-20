@@ -277,7 +277,7 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
     public static function getProviderSettings(): array
     {
         return [
-            'alias' => 'organization',
+            'alias' => __('Organization'),
             'searchable' => true,
             'friendable' => true,
             'devices' => true,
@@ -303,6 +303,7 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
         $query->where(function (Builder $query) use ($searchItems) {
             foreach ($searchItems as $item) {
                 $query->orWhere('name', 'LIKE', "%{$item}%")
+                ->orWhere('full_name', 'LIKE', "%{$item}%")
                 ->orWhere('email', 'LIKE', "%{$item}%");
             }
         });

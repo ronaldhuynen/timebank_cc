@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Component;
+use RTippin\Messenger\Facades\Messenger;
 use Stevebauman\Location\Facades\Location as IpLocation;
 use Throwable;
 use WireUi\Traits\WireUiActions;
@@ -208,6 +209,9 @@ class Registration extends Component implements CreatesNewUsers
                 // throw new \Exception('Simulated error before saving account');
 
                 $user->accounts()->save($account); // create the new account for the user
+
+                // Attach user to Messenger as a provider
+                Messenger::getProviderMessenger($user);
 
                 // WireUI notification
                 $this->notification()->success(

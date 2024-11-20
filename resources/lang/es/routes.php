@@ -41,7 +41,8 @@ return [
     'messenger.join' => 'mensajero/invitacion/{invite}',
     'terms.show' => 'terminos-de-servicio',
     'policy.show' => 'politica-de-privacidad',
-    'profile.show' => 'usuario/configuraciones',
+    'profile.user.show' => 'usuario/configuraciones',
+    'profile.admin.show' => 'admin/configuraciones',
     'show.by.name' => '{name}',
 
 

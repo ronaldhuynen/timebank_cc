@@ -40,7 +40,8 @@ return [
     'messenger.join' => 'messenger/uitnodiging/{invite}',
     'terms.show' => 'algemene-voorwaarden',
     'policy.show' => 'privacybeleid',
-    'profile.show' => 'gebruiker/instellingen',
+    'profile.user.show' => 'gebruiker/instellingen',
+    'profile.admin.show' => 'admin/instellingen',
     'show.by.name' => '{name}',
 
 

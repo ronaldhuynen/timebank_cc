@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use App\Models\Locations\Location;
 use App\Models\User;
 use App\Traits\LocationTrait;
@@ -19,7 +18,7 @@ use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 
-class Bank extends Model implements MessengerProvider, ReacterableInterface, ReactableInterface
+class Admin extends Model implements MessengerProvider, ReacterableInterface, ReactableInterface
 {
     use HasFactory;
     use HasProfilePhoto;
@@ -67,42 +66,10 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
         'last_login_at',
         'last_login_ip'
     ];
-    
-    
-    /**
-    * Get the index name for the model.
-    *
-    * @return string
-    */
-    public function searchableAs()
-    {
-        return 'banks_index';
-    }
-
-    /**
-     * Get the bank's related admin's.
-     * Many-to-many.
-     */
-    public function admins()
-    {
-        return $this->belongsToMany(Admin::class);
-    }
 
 
     /**
-     * Get all of the bank's accounts.
-     * One-to-many polymorphic.
-     *
-     * @return void
-     */
-    public function accounts()
-    {
-        return $this->morphMany(Account::class, 'accountable');
-    }
-
-
-    /**
-     * Get the bank's user(s) that can manage bank profiles.
+     * Get the admin's user(s) that can manage admin profiles.
      * Many-to-many.
      */
     public function users()
@@ -110,9 +77,18 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
         return $this->belongsToMany(User::class);
     }
 
+    /**
+     * Get the admin's related bank's.
+     * Many-to-many.
+     */
+    public function banks()
+    {
+        return $this->belongsToMany(Bank::class);
+    }
+
 
     /**
-     * Get all related the locations of the bank.
+     * Get all related the locations of the admin.
      * One-to-many polymorph.
      */
     public function locations()

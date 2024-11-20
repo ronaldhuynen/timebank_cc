@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\StringHelper;
 use App\Models\Account;
+use App\Models\Admin;
 use App\Models\Bank;
 use App\Models\Language;
 use App\Models\Locations\Location;
@@ -244,6 +245,16 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
     public function banks()
     {
         return $this->belongsToMany(Bank::class);
+    }
+    
+    
+    /**
+     * Get the user's admin(s) that it can manage.
+     * Many-to-many.
+     */
+    public function admins()
+    {
+        return $this->belongsToMany(Admin::class);
     }
 
 

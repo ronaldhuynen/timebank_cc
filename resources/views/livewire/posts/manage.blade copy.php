@@ -77,7 +77,11 @@
                             <a class="mb-2 hidden font-bold text-gray-900 sm:block"
                                 href="{{ url($translation->locale . '/post/' . $translation->slug) }}"
                                 target="_blank">
-                                <x-icon name="external-link" class="h-5 w-5" /><a>
+                                 <x-icon class="h-5 w-5" mini name="arrow-top-right-on-square"  />
+                                <a>
+
+                                                   
+
                         </td>
                         <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
                             @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
@@ -141,10 +145,9 @@
                         </svg>
                     </div>
                     <div class="required flex space-x-12 py-2">
-                        <livewire:category-selectbox key="{{ Str::random() }}" :categorySelected="$categoryId" />
+                        <livewire:category-selectbox key="category-selectbox" :categorySelected="$categoryId" />
                         <!-- Use the key to keep track of component that are in a loop -->
-                        <livewire:add-translation-selectbox key="{{ Str::random() }}" :locale="$locale"
-                            :available="$localesAvailable" />
+                        <livewire:add-translation-selectbox key="add-translation-selectbox" :locale="$locale" :available="$localesOptions" />
                         <!-- Use the key to keep track of component that are in a loop -->
                     </div>
                     <div class="w-full py-2">

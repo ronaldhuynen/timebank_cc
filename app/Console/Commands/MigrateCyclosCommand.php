@@ -25,8 +25,8 @@ class MigrateCyclosCommand extends Command
         $userLimitMax = config('timebank-cc.accounts.user.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.user.limit_max');
         
         $userProjectAccountName = config('timebank-cc.accounts.user.name');
-        $userProjectLimitMin = config('timebank-cc.accounts.userProject.limit_min') === null ? 'NULL' : config('timebank-cc.accounts.userProject.limit_min');
-        $userProjectLimitMax = config('timebank-cc.accounts.userProject.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.userProject.limit_max');
+        $userProjectLimitMin = config('timebank-cc.accounts.user_project.limit_min') === null ? 'NULL' : config('timebank-cc.accounts.user_project.limit_min');
+        $userProjectLimitMax = config('timebank-cc.accounts.user_project.limit_max') === null ? 'NULL' : config('timebank-cc.accounts.user_project.limit_max');
 
         $giftAccountName = 'gift'; // Temporary name as this account will be removed after migration
         $giftLimitMin = 0;

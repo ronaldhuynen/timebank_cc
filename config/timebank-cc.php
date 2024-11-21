@@ -74,7 +74,7 @@ return [
             'limit_max' => 6000, // 100 H
             'receiving_types' => [1,2],
         ], 
-        'userProject' => [
+        'user_project' => [
             'name' =>  'personal project account',
             'limit_min' => 0,
             'receiving_types' => [1,3],
@@ -130,7 +130,7 @@ return [
         'user' => [
             'payment_types' => [1,2,3],
         ],
-        'userProject' => [
+        'user_project' => [
             'payment_types' => [1,2,3],
         ],
         'organization' => [

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Posts;
 
 use App\Models\Category;
 use App\Models\Meeting;
@@ -15,7 +15,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use WireUi\Traits\WireUiActions;
 
-class Posts extends Component
+class Manage extends Component
 {
     use WithPagination;
     use WithFileUploads;
@@ -30,10 +30,10 @@ class Posts extends Component
     public $bulkDisabled = true;
     public $categoryId;
     public $post = ['excerpt' => '','content' => ''];   // In case fields are left empty (concept post)
-    
+
     public $localeInit;
     public $locale;
-    public $localesAvailable = [];
+    public $localesOptions = [];
     public $language;
 
     public $title;
@@ -55,7 +55,7 @@ class Posts extends Component
 
     protected $paginationTheme = 'tailwind';
 
-    protected $listeners = ['categoryToParent', 'languageToParent', 'trixEditor', 'uploadImage', 'organizerSelected'];
+    protected $listeners = ['categorySelected', 'localeSelected', 'trixEditor', 'uploadImage', 'organizerSelected'];
 
 
     protected function rules()
@@ -74,7 +74,7 @@ class Posts extends Component
         'start' => 'date|nullable',
         'stop' => 'date|nullable',
         'image' => 'nullable|image|max:5120',
-        'meetingFrom' =>  'date|nullable', 
+        'meetingFrom' =>  'date|nullable',
         'meetingTill' =>  'date|nullable',
         'meeting.address' => 'string|max:100|nullable',
         'organizer.id' => 'integer|nullable',
@@ -84,14 +84,14 @@ class Posts extends Component
 
     public function mount()
     {
-        $this->reset();
+
     }
 
 
-    public function categoryToParent($value)
+    public function categorySelected($categoryId)
     {
-        $this->categoryId = $value;
-        $this->getLangOptions();
+        $this->categoryId = $categoryId;
+        $this->getLocalesOptions();
         $isMeeting = Category::where('id', $this->categoryId)->where('type', Meeting::class)->exists();
         if ($isMeeting) {
             if ($this->postId) {    // Check if we are editing an existing post or if we are creating a new one
@@ -105,22 +105,63 @@ class Posts extends Component
     }
 
 
-    public function languageToParent($value)
+    /**
+    * Get available language options for the language select-box
+    *
+    * @return void
+    */
+    public function getLocalesOptions()
+    {        
+        // Ensure categoryId is set
+        if (!$this->categoryId) {
+            $this->localesOptions = [];
+            return;
+        }
+
+        // Get available translations for the selected category
+        $localesOptions = Category::with(['translations' => function ($query) {
+            $query->select('category_id', 'locale');
+        }])->find($this->categoryId);
+
+        // Edit a post: exclude existing translations but include initial locale
+        if ($this->postId) {
+            $localesExclude = Post::find($this->postId)->translations()->whereNot('locale', $this->localeInit)->pluck('locale');
+        } else {
+            // Create a post
+            $localesExclude = [];
+        }
+
+        if ($localesOptions) {
+            $localesOptions = $localesOptions->translations()->pluck('locale');
+            $this->localesOptions = $localesOptions->diff($localesExclude);
+        } else {
+            $this->localesOptions = [];
+        }
+
+        $this->dispatch('updateLocalesOptions', $localesOptions);
+    }
+
+    //TODO NEXT:
+    // Testen andere velkden checken
+
+    public function localeSelected($locale)
     {
-        if ($value === $this->localeInit) {
-            $this->locale = $value;
-            $this->post['translation_id'] = Post::find($this->postId)->translations->first()->id;     // No new translation, so restore post['translation_id] to ignore unique slug validation
+        // Edit the initial post
+        if ($locale === $this->localeInit) {
+            $this->locale = $locale;
+            $this->post['translation_id'] = Post::find($this->postId)->translations->first()->id;     // No new post, so restore post['translation_id] to ignore unique slug validation
             $this->createTranslation = false;
-        } elseif ($value !== $this->localeInit) {
-            $this->locale = $value;
-            $this->post['translation_id'] = null;   // New translation, so reset post['translation_id'] for unique slug validation
+        } elseif ($locale !== $this->localeInit) {
+            // Add a new translation to the initial post
+            $this->locale = $locale;
+            $this->post['translation_id'] = null;   // New post, so reset post['translation_id'] for unique slug validation
             $this->createTranslation = true;
         }
         $this->setLanguageName();
     }
 
     public function setLanguageName()
-    {   
+    {
         if ($this->locale) {
             $this->language = DB::table('languages')->where('lang_code', $this->locale)->first()->name;
         }
@@ -128,7 +169,7 @@ class Posts extends Component
 
     public function organizerSelected($value)
     {
-        $this->organizer = $value; 
+        $this->organizer = $value;
     }
 
 
@@ -171,6 +212,7 @@ class Posts extends Component
         // Emit content to trix-editor component
         $this->dispatch('showModal', $this->post['content']);
 
+        // $this->dispatch('categoryDispatched', $this->post['categoryy_id']);
 
         $this->title = $this->post['title'];
         $this->content = $this->post['content'];
@@ -179,10 +221,9 @@ class Posts extends Component
         $this->locale = $this->post['locale'];
         $this->setLanguageName();
 
-        $this->categoryId = $post->category_id;
+        $this->categoryId = $post->category_id; // can be removed? Is it used?
+        $this->getLocalesOptions();
         $this->meetingShow = Category::where('id', $post->category_id)->where('type', Meeting::class)->exists();    // Toggle meeting section based on category type
-
-        $this->getLangOptions();
 
         $this->start = $post->translations->first()->start;   // x-date-time-picker and x-select need a separate public property, see start of this file
         $this->stop = $post->translations->first()->stop; // x-date-time-picker and x-select need a separate public property, see start of this file
@@ -205,7 +246,6 @@ class Posts extends Component
         if (!is_null($this->postId)) {
 
             // Add translation to post
-
             $this->validate();
 
             if ($this->createTranslation === true) {
@@ -224,18 +264,18 @@ class Posts extends Component
                 $post->translations()->save($postTranslation);
 
                 if ($this->meetingShow) {
-                    
+
                     $postMeeting = [
                         'post_id' => $this->postId,
                         'address' => $this->meetingAddress,
-                        'meetingable_id' => $this->organizer['id'],      
+                        'meetingable_id' => $this->organizer['id'],
                         'meetingable_type' => $this->organizer['type'],
                         'from' => $this->meetingFrom,
                         'till' => $this->meetingTill
                         ];
-                        Meeting::updateOrCreate(['post_id' =>  $this->postId], $postMeeting);
+                    Meeting::updateOrCreate(['post_id' =>  $this->postId], $postMeeting);
                 }
-                
+
 
                 $this->saveMedia($post);
 
@@ -254,9 +294,7 @@ class Posts extends Component
                 }
 
             } else {
-
                 // Update a post
-
                 $this->validate();
 
                 $post = Post::find($this->postId);
@@ -272,12 +310,12 @@ class Posts extends Component
                 $post->category_id = $this->categoryId;
                 $post->postable_id = Session('activeProfileId');
                 $post->postable_type = Session('activeProfileType');
-                
+
                 if ($this->meetingShow) {
                     $postMeeting = [
                         'post_id' => $this->postId,
                         'address' => $this->meetingAddress,
-                        'meetingable_id' => $this->organizer['id'],      
+                        'meetingable_id' => $this->organizer['id'],
                         'meetingable_type' => $this->organizer['type'],
                         'from' => $this->meetingFrom,
                         'till' => $this->meetingTill
@@ -304,9 +342,7 @@ class Posts extends Component
                 }
             }
         } else {
-
             // Create a new post
-
             $this->post['translation_id'] = 0;   // for unique validation on slug: do not ignore non-existing translation_id
             $this->validate();
 
@@ -329,7 +365,7 @@ class Posts extends Component
             if ($this->meetingShow) {
                 $postMeeting = [
                     'address' => $this->meetingAddress,
-                    'meetingable_id' => $this->organizer['id'],      
+                    'meetingable_id' => $this->organizer['id'],
                     'meetingable_type' => $this->organizer['type'],
                     'from' => $this->meetingFrom,
                     'till' => $this->meetingTill
@@ -390,7 +426,7 @@ class Posts extends Component
     }
 
 
-    public function updatedBulkSelected() 
+    public function updatedBulkSelected()
     {
         if (count($this->bulkSelected) > 0) {
             $this->bulkDisabled = false;
@@ -399,9 +435,9 @@ class Posts extends Component
         }
     }
 
-    
+
     public function deleteSelected()
-    {       
+    {
         $selected = PostTranslation::query()
             ->whereIn('id', $this->bulkSelected);
         $update = ['stop' => now()]; //set stop publication date at now() to prevent immediate publication of restored posts
@@ -421,36 +457,18 @@ class Posts extends Component
     public function close()
     {
         $this->showModal = false;
-        $this->reset();
+        $this->resetForm();
     }
 
 
-    /**
-    * Get available language options for the language select-box
-    *
-    * @return void
-    */
-    public function getLangOptions()
+    public function resetForm()
     {
-        // Get available translations for the selected category
-        $localesAvailable = Category::with(['translations' => function ($query) {
-            $query->select('category_id', 'locale');
-        }])->find($this->categoryId);
-
-        // Exclude existing translations but include initial locale
-        if ($this->postId) {
-            $localesExclude = Post::find($this->postId)->translations()->whereNot('locale', $this->localeInit)->pluck('locale');
-        } else {
-            $localesExclude = [];
-        }
-
-        if ($localesAvailable) {
-            $localesAvailable = $localesAvailable->translations()->pluck('locale');
-            $this->localesAvailable = $localesAvailable->diff($localesExclude);
-        } else {
-            $this->localesAvailable = [];
-        }
+        $this->reset();
+        $this->resetValidation();
+        $this->mount();
     }
+
+
 
 
     /**
@@ -467,7 +485,7 @@ class Posts extends Component
             $this->meetingTill = $this->meeting['till'];    // WireUI is not (yet) able to bind nested properties
             $this->organizer['id'] = $this->meeting['meetingable_id'];
             $this->organizer['type'] = $this->meeting['meetingable_type'];
-            if ($this->organizer['id']) {    
+            if ($this->organizer['id']) {
                 $this->dispatch('organizerExists', $this->meeting);
             }
         }
@@ -488,7 +506,7 @@ class Posts extends Component
         }
     }
 
-    
+
     public function render()
     {
         $post = Post::with([
@@ -505,9 +523,8 @@ class Posts extends Component
                 $query->select('images.id', 'caption', 'path');
             },
             ])
-            ;
-        // dd($post->where('id', 2));
-        return view('livewire.posts.admin', [
+        ;
+        return view('livewire.posts.manage', [
             'posts' => $post->latest()->paginate(10)
         ]);
     }
@@ -515,6 +532,3 @@ class Posts extends Component
 
 
 }
-
-
-

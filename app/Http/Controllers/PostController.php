@@ -133,9 +133,9 @@ class PostController extends Controller
     }
 
 
-    public function admin()
+    public function manage()
     {
-        return view('posts.index');
+        return view('posts.manage');
     }
 
 

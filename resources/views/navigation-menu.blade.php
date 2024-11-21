@@ -181,15 +181,9 @@
                     <x-slot name="content">
 
                         <!---- Switch Profile --->
-                        @php
-                            $user = Auth::user();
-                            $hasOtherProfiles =
-                                $user->organizations()->exists() ||
-                                $user->banks()->exists() ||
-                                $user->admins()->exists();
-                        @endphp
-
-                        @if ($hasOtherProfiles)
+                        @if (Auth::user()->organizations()->exists() ||
+                                Auth::user()->banks()->exists() ||
+                                Auth::user()->admins()->exists())
                             <livewire:profile-select>
                         @endif
 
@@ -282,7 +276,7 @@
                                 {{ __('Settings') }}
                             </x-jetstream.dropdown-link>
                         @elseif (session('activeProfileType') == 'App\Models\Admin')
-                            <x-jetstream.dropdown-link href="{{ route('profile.admin.show') }}">
+                            <x-jetstream.dropdown-link href="{{ route('profile.admin.settings') }}">
                                 {{ __('Settings') }}
                             </x-jetstream.dropdown-link>
                         @else

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\LangJsController;
 use App\Http\Controllers\SearchController;
@@ -234,14 +235,13 @@ Route::group([
                         : null;
 
                 Route::group(['middleware' => array_values(array_filter([$authMiddleware, $authSessionMiddleware]))], function () {
-                    // User & Profile...
+                    // User & Profile... (Native vendor Jetsream view)
                     Route::get(LaravelLocalization::transRoute('routes.profile.user.show'), [UserProfileController::class, 'show'])
                         ->name('profile.user.show');
-
-                Route::group(['middleware' => array_values(array_filter([$authMiddleware, $authSessionMiddleware]))], function () {
-                    // User & Profile...
-                    Route::get(LaravelLocalization::transRoute('routes.profile.admin.show'), [AdminProfileController::class, 'show'])
-                        ->name('profile.admin.show');
+                    
+                    // Admin & Profile... (Custom view)
+                    Route::get(LaravelLocalization::transRoute('routes.profile.admin.show'), [AdminController::class, 'settings'])
+                        ->name('profile.admin.settings');
 
                     Route::group(['middleware' => 'verified'], function () {
                         // API...

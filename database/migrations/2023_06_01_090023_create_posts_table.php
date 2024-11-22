@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('postable_type'); // Make author polymorph: user / organization / other
             $table->integer('category_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

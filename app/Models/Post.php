@@ -9,17 +9,20 @@ use App\Models\Meeting;
 use App\Models\PostTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Znck\Eloquent\Traits\BelongsToThrough;
 
+
 class Post extends Model implements HasMedia
 {
     use HasFactory;
     use BelongsToThrough;
     use InteractsWithMedia;
+    use SoftDeletes;
     use Searchable; // laravel/scout with ElasticSearch
 
 

@@ -15,6 +15,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use WireUi\Traits\WireUiActions;
 
+
 class Manage extends Component
 {
     use WithPagination;
@@ -38,8 +39,11 @@ class Manage extends Component
 
     public $title;
     public $content;
-    public $start;   // x-date-time-picker and x-select do not entangle if they do not exist beforehand
-    public $stop;     // x-date-time-picker and x-select do not entangle if they do not exist beforehand
+    public $from;   // x-date-time-picker and x-select do not entangle if they do not exist beforehand
+    public $till;     // x-date-time-picker and x-select do not entangle if they do not exist beforehand
+    public $modalStopPublication = false;
+    public $selectedTranslationId = null;    // Needed for the stopPublicationModal
+    
 
     public $image;
     public $imageCaption = '';  // TODO! Make image caption field
@@ -53,7 +57,7 @@ class Manage extends Component
     public $organizerOptions;
     public $organizer = ['id' => null, 'type' => null]; // In case fields are left empty (concept post)
 
-    protected $paginationTheme = 'tailwind';
+    public $perPage = 10;
 
     protected $listeners = ['categorySelected', 'localeSelected', 'trixEditor', 'uploadImage', 'organizerSelected'];
 
@@ -71,8 +75,8 @@ class Manage extends Component
         'post.title' => 'required|string|min:3|max:150',
         'post.excerpt' => 'string|max:300',
         'content' => 'string|nullable',
-        'start' => 'date|nullable',
-        'stop' => 'date|nullable',
+        'from' => 'date|nullable',
+        'till' => 'date|nullable',
         'image' => 'nullable|image|max:5120',
         'meetingFrom' =>  'date|nullable',
         'meetingTill' =>  'date|nullable',
@@ -225,8 +229,8 @@ class Manage extends Component
         $this->getLocalesOptions();
         $this->meetingShow = Category::where('id', $post->category_id)->where('type', Meeting::class)->exists();    // Toggle meeting section based on category type
 
-        $this->start = $post->translations->first()->start;   // x-date-time-picker and x-select need a separate public property, see start of this file
-        $this->stop = $post->translations->first()->stop; // x-date-time-picker and x-select need a separate public property, see start of this file
+        $this->from = $post->translations->first()->from;   // x-date-time-picker and x-select need a separate public property, see start of this file
+        $this->till = $post->translations->first()->till; // x-date-time-picker and x-select need a separate public property, see start of this file
 
         if ($post->media->count() > 0) {
             $this->media = $post->getFirstMediaUrl('posts');    // Do not use responsive media in livewire pages that have multiple update cycles as the placeholder img show after an update
@@ -258,8 +262,8 @@ class Manage extends Component
                     'title' => $this->post['title'],
                     'excerpt' => $this->post['excerpt'],
                     'content' => $this->content,
-                    'start' => $this->start,
-                    'stop' => $this->stop,
+                    'from' => $this->from,
+                    'till' => $this->till,
                     ]);
                 $post->translations()->save($postTranslation);
 
@@ -303,8 +307,8 @@ class Manage extends Component
                     'slug' => $this->post['slug'],
                     'excerpt' => $this->post['excerpt'],
                     'content' => $this->content,
-                    'start' => $this->start,
-                    'stop' => $this->stop,
+                    'from' => $this->from,
+                    'till' => $this->till,
                     ];
                 $post->translations()->where('id', $this->post['translation_id'])->update($postTranslation);
                 $post->category_id = $this->categoryId;
@@ -357,8 +361,8 @@ class Manage extends Component
                 'title' => $this->post['title'],
                 'excerpt' => $this->post['excerpt'],
                 'content' => $this->content,
-                'start' => $this->start,
-                'stop' => $this->stop,
+                'from' => $this->from,
+                'till' => $this->till,
                 ]);
             $post->translations()->save($translation);
 
@@ -438,19 +442,34 @@ class Manage extends Component
 
     public function deleteSelected()
     {
-        $selected = PostTranslation::query()
-            ->whereIn('id', $this->bulkSelected);
-        $update = ['stop' => now()]; //set stop publication date at now() to prevent immediate publication of restored posts
-        $selected->update($update);
-        $selected->delete();
+        // Get the selected translations
+        $selectedTranslations = PostTranslation::whereIn('id', $this->bulkSelected)->get();
 
+        // Update the 'till' attribute to prevent immediate publication of restored posts
+        $selectedTranslations->each(function ($translation) {
+            $translation->update(['till' => now()]);
+        });
+
+        // Delete the selected translations
+        PostTranslation::whereIn('id', $this->bulkSelected)->delete();
+
+        // Check if any posts have no remaining translations and if so, delete those posts
+        $postIds = $selectedTranslations->pluck('post_id')->unique();
+        foreach ($postIds as $postId) {
+            $post = Post::withTrashed()->find($postId);
+            if ($post && $post->translations()->count() === 0) {
+                $post->delete();
+            }
+        }
+
+        // Reset the bulk selection
         $this->bulkSelected = [];
         $this->bulkDisabled = true;
     }
 
 
     /**
-     * Close the modal
+     * Close the Edit post modal
      *
      * @return void
      */
@@ -491,25 +510,41 @@ class Manage extends Component
         }
     }
 
+
+    public function openStopPublicationModal($translationId)
+    {
+        $this->selectedTranslationId = $translationId;
+        $this->modalStopPublication = true;
+    }
+
+    
     /**
      * Stop publication of the post
      *
      * @param  mixed $translationId
      * @return void
      */
-    public function stop($translationId)
+    public function stopPublication($translationId)
     {
         $translation = PostTranslation::find($translationId);
         if ($translation) {
-            $stop['stop'] = now();
-            $translation->update($stop);
+                $translation->till = now();
+                $translation->save();
+                $this->resetForm();
         }
+        $this->modalStopPublication = false;
+    }
+
+    
+    public function updatedPerPage($value)
+    {
+        $this->resetPage();
     }
 
 
     public function render()
     {
-        $post = Post::with([
+        $posts = Post::with([
             'postable' => function ($query) {
                 $query->select(['id', 'name', 'email']);
             },
@@ -522,10 +557,12 @@ class Manage extends Component
             'images' => function ($query) {
                 $query->select('images.id', 'caption', 'path');
             },
-            ])
-        ;
+        ])
+        ->latest()
+        ->paginate($this->perPage);
+
         return view('livewire.posts.manage', [
-            'posts' => $post->latest()->paginate(10)
+            'posts' => $posts
         ]);
     }
 

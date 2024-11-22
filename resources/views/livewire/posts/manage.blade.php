@@ -13,111 +13,146 @@
             {{ __('Delete selected') }}
         </button>
     </div>
-    <table class="mt-6 table min-w-full border-white">
 
 
-        <!-- Table head -->
-        <thead>
-            <tr>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Id') }}</th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Category') }}</th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Language') }}</th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Title') }}</th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Start date') }}</th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('End date') }}</th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
+    <!-- Table -->
+    <table class="mt-6 border-t-white table min-w-full">
+    <thead>
+        <tr>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Id') }}</th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Category') }}</th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Language') }}</th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Title') }}</th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('From') }}</th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Till') }}</th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
+        </tr>
+    </thead>
 
-            </tr>
-        </thead>
-
-
-        <!-- Table body -->
-        <tbody>
-            @forelse ($posts as $post)
-                @if ($post->translations->count() === 0)
-                    {{-- Do not show post without any translation --}}
-                @else
-                    <tr>
-                        <td colspan="9">
-                            @foreach ($post->translations as $key => $translation)
-                    <tr class="dark:bordergray-600 hover:bg-gray-50">
-                        <td class="py3 whitespace-no-wrap border-b border-white px-6 text-sm leading-5">
+    <!-- Table body -->
+    <tbody> 
+        @forelse ($posts as $post)
+            @if ($post->translations->count() === 0)
+                {{-- Do not show post without any translation --}}
+            @else
+             <tr>
+                     @foreach ($post->translations as $translation)
+                    <tr class="border-white hover:bg-gray-50">
+                        <td class="border-white whitespace-no-wrap px-6 text-sm leading-5">
                             <input type="checkbox" wire:model.live="bulkSelected" value="{{ $translation->id }}">
                         </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                        <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
                             {{ $post->id }}
                         </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                        <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
                             @if ($post->category->translations->first())
                                 {{ $post->category->translations->first()->name }}
                             @endif
                         </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                        <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
                             {{ $translation->locale }}
                         </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
+                        <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
                             {{ $translation->title }}
                         </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                            @if ($translation->start)
-                                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->start))->isoFormat('LL') }}
+                        <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
+                            @if ($translation->from)
+                                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->from))->isoFormat('LL') }}
                             @endif
                         </td>
-                        <td class="whitespace-no-wrap border-b border-white px-6 py-3 text-sm leading-5">
-                            @if ($translation->stop)
-                                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->stop))->isoFormat('LL') }}
+                        <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
+                            @if ($translation->till)
+                                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($translation->till))->isoFormat('LL') }}
                             @endif
                         </td>
 
                         <!-- Row buttons -->
-                        <td class="whitespace-no-wrap border-b border-white align-middle text-sm leading-5">
+                        <td class="border-white whitespace-no-wrap text-sm leading-5">
                             <a class="mb-2 hidden font-bold text-gray-900 sm:block"
                                 href="{{ url($translation->locale . '/post/' . $translation->slug) }}"
                                 target="_blank">
-                                 <x-icon class="h-5 w-5" mini name="arrow-top-right-on-square"  />
-                                <a>
-
-                                                   
-
+                                <x-icon class="h-5 w-5" mini name="arrow-top-right-on-square" />
+                            </a>
                         </td>
-                        <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
-                            @if ($translation->start < \Carbon\Carbon::now() && $translation->start !== null)
-                                @if ($translation->stop > \Carbon\Carbon::now() || $translation->stop === null)
+                        <td class="border-white whitespace-no-wrap py-2.5 text-sm leading-5">
+                            @if ($translation->from < \Carbon\Carbon::now() && $translation->from !== null)
+                                @if ($translation->till > \Carbon\Carbon::now() || $translation->till === null)
                                     <button
-                                        class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:border-gray-900 focus:outline-none disabled:opacity-25"
-                                        wire:click.prevent="stop({{ $translation->id }})"
-                                        onclick="confirm('Do you want to end the publication of this post?') || event.stopImmediatePropagation()">
+                                        class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:border-gray-900 focus:outline-none disabled:opacity-25"
+                                        wire:click="openStopPublicationModal({{ $translation->id }})">
                                         {{ __('Stop') }}
                                     </button>
                                 @endif
                             @endif
                         </td>
-                        <td class="whitespace-no-wrap border-b border-white py-2.5 text-sm leading-5">
+                        <td class="border-white whitespace-no-wrap py-2.5 text-sm leading-5">
                             <button
-                                class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25"
+                                class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25"
                                 wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
                             </button>
                         </td>
                     </tr>
                 @endforeach
+               <td colspan="10" class=" my-6 py-1 border-b-gray-700"></td>
             @endif
+        </tr>
+         
         @empty
             <tr>
-                <td colspan="9">
-                    {{ __('No posts found.') }}
+                <td colspan="10" class="pb-20">
+                    {{ __('No results found') }}
                 </td>
             </tr>
-            @endforelse
-        </tbody>
-    </table>
-    <hr>
+        @endforelse
+
+    </tbody>
+</table>
+    
+
+     <!-- Pagination -->
+<div class="flex justify-between items-center relative mb-4">
+    <!-- Left Side: perPage Dropdown -->
+    <div class="flex items-center">
+        <select class="w-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-700 shadow-sm focus:border-gray-500 focus:outline-none focus:ring focus:ring-gray-500 sm:text-sm"
+                wire:model.live="perPage">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+        <span class="ml-2 text-gray-500">{{ __('per page') }}</span>
+    </div>
+
+    <!-- Right Side: Paginator -->
+    @if ($posts)
+        {{ $posts->links('livewire.long-paginator') }}
+    @endif
+</div>
 
 
-    <!-- Pagination links -->
-    {{ $posts->links() }}
+    <!----Stop puplication modal ---->
+    <x-jetstream.dialog-modal wire:model.live="modalStopPublication">
+        <x-slot name="title">
+            {{ __('Stop the publication?') }}
+        </x-slot>
+
+        <x-slot name="content">
+            {{ __('Do you want to end the publication of this post?') }} <br>
+            {{ __('You can edit the post later to publish it again.')}}
+        </x-slot>
+        <x-slot name="footer">
+            <x-jetstream.secondary-button class="ml-3 w-32 justify-center"  wire:click="$toggle('modalStopPublication')" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-jetstream.secondary-button>
+            <x-jetstream.secondary-button  class="ml-3 w-32 justify-center"  wire:click.prevent="stopPublication({{ $selectedTranslationId }})" wire:loading.attr="disabled">
+                {{ __('Ok') }}
+            </x-jetstream.secondary-button>
+        </x-slot>
+    </x-jetstream.dialog-modal>
+
+
 
 
     <!-- Edit modal -->
@@ -260,23 +295,23 @@
                             </div>
                         @endif
 
-                        <!-- Publication start and stop -->
+                        <!-- Publication from and till -->
                         <div class="flex space-x-12">
                             <div class="my-6 flex-auto">
                                 <x-datetime-picker label="{{ __('Start of publication') }}"
-                                    placeholder="{{ __('Select a date') }}" wire:model.live="start" time-format="24"
+                                    placeholder="{{ __('Select a date') }}" wire:model.live="from" time-format="24"
                                     display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                             </div>
                             <div class="my-6 flex-auto">
                                 <x-datetime-picker label="{{ __('End of publication') }}"
-                                    placeholder="{{ __('Select a date') }}" wire:model.live="stop" time-format="24"
+                                    placeholder="{{ __('Select a date') }}" wire:model.live="till" time-format="24"
                                     display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                             </div>
                         </div>
 
                         <!-- Publication warning -->
-                        @if ($start < \Carbon\Carbon::now() && $start !== null)
-                            @if ($stop > \Carbon\Carbon::now() || $stop === null)
+                        @if ($from < \Carbon\Carbon::now() && $from !== null)
+                            @if ($till > \Carbon\Carbon::now() || $till === null)
                                 <div class="mb-3 text-right">
                                     {{ __('Warning') . ': ' . __('post will be published immeditely!') }}
                                 </div>
@@ -310,13 +345,4 @@
 
         </div>
     </div>
-
-
-    <!--- Scripts body section, loaded in layouts at the end of the page just befor the </body> tag -->
-    @section('scripts_body')
-        <script>
-            {{-- console.log('scripts body section executes'); --}}
-        </script>
-    @endsection
-
 </div>

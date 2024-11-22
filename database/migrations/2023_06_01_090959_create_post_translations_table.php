@@ -21,8 +21,8 @@ return new class () extends Migration {
             $table->text('excerpt')->nullable();
             $table->text('content')->nullable();
             $table->integer('status')->unsigned()->default(1);
-            $table->dateTime('start')->nullable();
-            $table->dateTime('stop')->nullable();
+            $table->dateTime('from')->nullable();
+            $table->dateTime('till')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

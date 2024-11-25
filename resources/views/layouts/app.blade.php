@@ -23,7 +23,9 @@
     <link href="{{ asset('css/tagify.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom_tagify.css') }}" rel="stylesheet">
     @livewireStyles
-    @wireUiScripts
+
+    <!-- Scripts -->   
+     @wireUiScripts
 
     {{-- TODO: replace with self-hosted scripts --}}
     {{-- Leavlet is aan open-source JavaScript library

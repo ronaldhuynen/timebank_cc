@@ -1,8 +1,8 @@
 require('./bootstrap');
 
+import Trix from "trix";
 import { createPopper } from "@popperjs/core";
 import focus from "@alpinejs/focus";
-import Trix from "trix";
 import tagifyMin from "@yaireo/tagify";
 
 Alpine.plugin(focus);

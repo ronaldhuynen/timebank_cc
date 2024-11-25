@@ -115,8 +115,7 @@ class NewsCardFull extends Component
                     };
                 })->values();       // Use values() method to reset the collection keys after sortBy
 
-        // dump($post);
-
+    
         $lastNr = $post->count() - 1;
         if ($postNr > $lastNr) {
             $post = null;

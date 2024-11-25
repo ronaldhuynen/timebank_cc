@@ -30,9 +30,10 @@ class TrixEditor extends Component
         $this->reset();
     }
 
-    public function updatingValue($value)
+    public function updatedValue($value)
     {
         $this->dispatch('trixEditor', $value);
+        dd($value);
     }
 
 

@@ -27,7 +27,6 @@ mix.js('resources/js/echo.js', 'public/js')
     ])
     .postCss('resources/sass/custom_messenger.css', 'public/css/custom_messenger.css')
     .postCss('resources/sass/custom_tagify.css', 'public/css/custom_tagify.css')
-    .copy('node_modules/trix/dist/trix.css', 'public/css/trix.css')
     .copy(
         'node_modules/@fortawesome/fontawesome-free/webfonts',
         'public/webfonts'

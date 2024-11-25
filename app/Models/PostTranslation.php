@@ -12,7 +12,7 @@ class PostTranslation extends Model
 {
     use HasFactory, Sluggable, SoftDeletes;
 
-    protected $fillable = ['post_id', 'locale', 'slug', 'title', 'excerpt', 'content', 'status', 'start', 'stop'];
+    protected $fillable = ['post_id', 'locale', 'slug', 'title', 'excerpt', 'content', 'status', 'updated_by_user_id', 'start', 'stop'];
 
 
     /**
@@ -26,6 +26,15 @@ class PostTranslation extends Model
     }
 
 
+    /**
+     * Get the user who last updated the post translation.
+     */
+    public function updated_by_user()
+    {
+        return $this->belongsTo(User::class, 'updated_by_user_id');
+    }
+
+    
     public function sluggable(): array
     {
         return [

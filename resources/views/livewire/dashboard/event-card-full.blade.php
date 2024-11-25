@@ -17,7 +17,7 @@
                             {{ $post->excerpt }}
                         @endif
                         <div class="mb-0 mt-6 flex justify-between">
-                            <span class="text-sm font-thin text-white">{{ $post->start . ' ' . __('by') }}
+                            <span class="text-sm font-thin text-white">{{ $post->from . ' ' . __('by') }}
                                 {{ $post->author }}
                             </span>
                             <div class="flex justify-end">

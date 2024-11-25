@@ -44,7 +44,6 @@ class Manage extends Component
     public $modalStopPublication = false;
     public $selectedTranslationId = null;    // Needed for the stopPublicationModal
     
-
     public $image;
     public $imageCaption = '';  // TODO! Make image caption field
     public $media;
@@ -60,7 +59,6 @@ class Manage extends Component
     public $perPage = 10;
 
     protected $listeners = ['categorySelected', 'localeSelected', 'trixEditor', 'uploadImage', 'organizerSelected'];
-
 
     protected function rules()
     {
@@ -85,6 +83,7 @@ class Manage extends Component
         'organizer.type' => 'string|nullable',
     ];
     }
+
 
     public function mount()
     {
@@ -145,8 +144,6 @@ class Manage extends Component
         $this->dispatch('updateLocalesOptions', $localesOptions);
     }
 
-    //TODO NEXT:
-    // Testen andere velkden checken
 
     public function localeSelected($locale)
     {
@@ -164,12 +161,14 @@ class Manage extends Component
         $this->setLanguageName();
     }
 
+
     public function setLanguageName()
     {
         if ($this->locale) {
             $this->language = DB::table('languages')->where('lang_code', $this->locale)->first()->name;
         }
     }
+
 
     public function organizerSelected($value)
     {
@@ -186,7 +185,6 @@ class Manage extends Component
 
     public function edit($translationId)
     {
-        $this->showModal = true;
         $this->meetingShow = false;     // Hide the event details unless an event category is selected
         $this->createTranslation = false;
         $this->postId = PostTranslation::find($translationId)->post_id;
@@ -216,8 +214,6 @@ class Manage extends Component
         // Emit content to trix-editor component
         $this->dispatch('showModal', $this->post['content']);
 
-        // $this->dispatch('categoryDispatched', $this->post['categoryy_id']);
-
         $this->title = $this->post['title'];
         $this->content = $this->post['content'];
 
@@ -235,6 +231,9 @@ class Manage extends Component
         if ($post->media->count() > 0) {
             $this->media = $post->getFirstMediaUrl('posts');    // Do not use responsive media in livewire pages that have multiple update cycles as the placeholder img show after an update
         }
+        
+        $this->showModal = true;
+
     }
 
 
@@ -245,11 +244,12 @@ class Manage extends Component
         $this->showModal = true;
     }
 
+
     public function save()
-    {
+    {   
+        // Add translation to post
         if (!is_null($this->postId)) {
 
-            // Add translation to post
             $this->validate();
 
             if ($this->createTranslation === true) {
@@ -262,6 +262,7 @@ class Manage extends Component
                     'title' => $this->post['title'],
                     'excerpt' => $this->post['excerpt'],
                     'content' => $this->content,
+                    'updated_by_user_id' => auth()->id(),
                     'from' => $this->from,
                     'till' => $this->till,
                     ]);
@@ -279,7 +280,6 @@ class Manage extends Component
                         ];
                     Meeting::updateOrCreate(['post_id' =>  $this->postId], $postMeeting);
                 }
-
 
                 $this->saveMedia($post);
 
@@ -307,12 +307,13 @@ class Manage extends Component
                     'slug' => $this->post['slug'],
                     'excerpt' => $this->post['excerpt'],
                     'content' => $this->content,
+                    'updated_by_user_id' => auth()->id(),
                     'from' => $this->from,
                     'till' => $this->till,
                     ];
                 $post->translations()->where('id', $this->post['translation_id'])->update($postTranslation);
                 $post->category_id = $this->categoryId;
-                $post->postable_id = Session('activeProfileId');
+                $post->postable_id = Session('activeProfileId'); // TODO check config
                 $post->postable_type = Session('activeProfileType');
 
                 if ($this->meetingShow) {
@@ -350,9 +351,18 @@ class Manage extends Component
             $this->post['translation_id'] = 0;   // for unique validation on slug: do not ignore non-existing translation_id
             $this->validate();
 
-            $post = new Post(['postable_id' => Session('activeProfileId'),
-                            'postable_type' => Session('activeProfileType'),
-                            'category_id' => $this->categoryId]);
+            if (config('timebank-cc.posts.postable_is_auth_user')) {
+            // Authenicated users are stored as postables
+                $post = new Post(['postable_id' => auth()->id(),   // Store creator (article writer) id
+                                'postable_type' => get_class(auth()->user()),   // Store creator (article writer) type. I.e. "App\Models\User"
+                                ]);
+            } else {
+                // Active profiles are stored as postables
+                $post = new Post(['postable_id' => session('activeProfileId'),
+                                'postable_type' => session('activeProfileType'),
+                                ]);
+            }
+            $post['category_id'] = $this->categoryId;
             $post->save();
 
             $translation = new PostTranslation([
@@ -361,6 +371,7 @@ class Manage extends Component
                 'title' => $this->post['title'],
                 'excerpt' => $this->post['excerpt'],
                 'content' => $this->content,
+                'updated_by_user_id' => auth()->id(),
                 'from' => $this->from,
                 'till' => $this->till,
                 ]);
@@ -412,6 +423,7 @@ class Manage extends Component
         }
     }
 
+
     /**
      * Receives value from livewire trix-editor component
      *
@@ -447,7 +459,7 @@ class Manage extends Component
 
         // Update the 'till' attribute to prevent immediate publication of restored posts
         $selectedTranslations->each(function ($translation) {
-            $translation->update(['till' => now()]);
+            $translation->update(['updated_by_user_id' => auth()->id(), 'till' => now()]);
         });
 
         // Delete the selected translations
@@ -486,8 +498,6 @@ class Manage extends Component
         $this->resetValidation();
         $this->mount();
     }
-
-
 
 
     /**
@@ -553,14 +563,17 @@ class Manage extends Component
                     $query->where('locale', App::getLocale());
                 }]);
             },
-            'translations',
+            'translations' => function ($query) {               
+                $query->with(['updated_by_user' => function ($query) {
+                    $query->select('id', 'name', 'full_name', 'profile_photo_path');
+                }]);
+            },
             'images' => function ($query) {
                 $query->select('images.id', 'caption', 'path');
             },
         ])
         ->latest()
         ->paginate($this->perPage);
-
         return view('livewire.posts.manage', [
             'posts' => $posts
         ]);

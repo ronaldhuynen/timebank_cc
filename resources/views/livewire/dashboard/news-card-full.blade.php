@@ -14,7 +14,7 @@
                         <div class="mb-2 text-base text-gray-600 md:mb-6"> {{ $post->excerpt }}</div>
                     @endif
                     <div class="mb-2 mt-6 flex justify-between">
-                        <span class="text-sm font-thin text-gray-500">{{ $post->start . ' ' . __('by') }}
+                        <span class="text-sm font-thin text-gray-500">{{ $post->from . ' ' . __('by') }}
                             {{ $post->author }}
                         </span>
                         <div class="flex justify-end">

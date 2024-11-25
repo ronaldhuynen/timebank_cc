@@ -19,6 +19,23 @@ class AddTranslationSelectbox extends Component
      */
     public function mount($locale = null, $options)
     {        
+        $this->updateLocalesOptions($options);
+        
+        $locale = $locale ?? session('locale');
+        
+        // Extract lang_code values from the options collection
+        $availableLocales = $this->options ? $this->options->pluck('lang_code')->all() : [];
+
+        if (!in_array($locale, $availableLocales)) {
+            $locale = null;
+        }
+
+        $this->localeSelected = $locale;
+    }
+    
+
+    public function updateLocalesOptions($options)
+    {   
         if ($options) {
             $options = DB::table('languages')
                 ->whereIn('lang_code', $options)
@@ -32,15 +49,6 @@ class AddTranslationSelectbox extends Component
                     'name' => __('messages.' . $item->name)];
             });
         }
-
-        $this->localeSelected = $locale;
-    }
-    
-
-    public function updateLocalesOptions($options)
-    {   
-        $locale = Auth::user()->locale ?? null;
-        $this->mount($locale, $options);
     }
 
     

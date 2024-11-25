@@ -46,7 +46,7 @@
 
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="relative block" onclick="window.location='{{ url($transaction['from_relation_path']) }}'">
+                            <div class="relative block cursor-pointer" onclick="window.location='{{ url($transaction['from_relation_path']) }}'">
                                 <img alt="profile"
                                     class="mx-auto h-16 w-16 rounded-full object-cover outline outline-1 outline-offset-1 outline-gray-600"
                                     src="{{ Storage::url($transaction['from_profile_photo']) }}" />
@@ -72,7 +72,7 @@
                 <td class="w-6/16 align-top text-sm">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="relative block" onclick="window.location='{{ url($transaction['to_relation_path']) }}'">
+                            <div class="relative block cursor-pointer" onclick="window.location='{{ url($transaction['to_relation_path']) }}'">
                                 <img alt="profile"
                                     class="mx-auto h-16 w-16 rounded-full object-cover outline outline-1 outline-offset-1 outline-gray-600"
                                     src="{{ Storage::url($transaction['to_profile_photo']) }}" />

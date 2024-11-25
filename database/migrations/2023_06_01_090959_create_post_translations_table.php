@@ -21,6 +21,7 @@ return new class () extends Migration {
             $table->text('excerpt')->nullable();
             $table->text('content')->nullable();
             $table->integer('status')->unsigned()->default(1);
+            $table->integer('updated_user_id')->unsigned()->nullable();
             $table->dateTime('from')->nullable();
             $table->dateTime('till')->nullable();
             $table->timestamps();

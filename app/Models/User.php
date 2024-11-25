@@ -417,6 +417,14 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         return $this->morphMany(Post::class, 'postable');
     }
 
+  
+    /**
+     * Get all post translations updated by the user.
+     */
+    public function post_translations_updated()
+    {
+        return $this->hasMany(PostTranslation::class, 'updated_by_user_id');
+    }
 
     /**
      * Get all of the User's categories.

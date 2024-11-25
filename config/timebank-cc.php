@@ -350,4 +350,16 @@ return [
         'suggestions' => 5, // max number of suggestions to show in search bar
     ],
 
+
+    
+/*
+|--------------------------------------------------------------------------
+| Post settings
+|--------------------------------------------------------------------------
+| 
+*/
+    'posts' => [
+        'postable_is_auth_user' => true,    // true: only authenticated models (users), false: active profile models stored in session (users, organizations, banks, admins)
+    ]
+
 ];

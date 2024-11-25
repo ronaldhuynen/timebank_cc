@@ -103,9 +103,9 @@ class NewsCardFull extends Component
                 ->whereHas('translations', function ($query) {
                     $query
                     ->where('locale', App::getLocale())
-                    ->whereDate('start', '<=', now())
+                    ->whereDate('from', '<=', now())
                     ->where(function ($query) {
-                        $query->whereDate('stop', '>', now())->orWhereNull('stop');
+                        $query->whereDate('till', '>', now())->orWhereNull('till');
                     })
                     ->orderBy('updated_at', 'desc');
                 })

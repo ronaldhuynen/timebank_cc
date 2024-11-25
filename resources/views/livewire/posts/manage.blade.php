@@ -2,15 +2,15 @@
 
 
     <!-- Action buttons -->
-    <div class="">
+    <div class="ml-auto mt-6 flex space-x-4">
         <button wire:click.prevent="create"
             class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25">
-            {{ __('Add new post') }}
+            {{ __('New') }}
         </button>
         <button @if ($bulkDisabled) disabled="true" @endif wire:click.prevent="deleteSelected"
             onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
             class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white focus:border-gray-900 focus:outline-none disabled:opacity-25">
-            {{ __('Delete selected') }}
+            {{ __('Delete') }}
         </button>
     </div>
 
@@ -24,6 +24,7 @@
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Category') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Language') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Title') }}</th>
+            <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Editor') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('From') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Till') }}</th>
             <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider"></th>
@@ -38,8 +39,8 @@
             @if ($post->translations->count() === 0)
                 {{-- Do not show post without any translation --}}
             @else
-             <tr>
-                     @foreach ($post->translations as $translation)
+            <tr>
+                    @foreach ($post->translations as $translation)
                     <tr class="border-white hover:bg-gray-50">
                         <td class="border-white whitespace-no-wrap px-6 text-sm leading-5">
                             <input type="checkbox" wire:model.live="bulkSelected" value="{{ $translation->id }}">
@@ -57,6 +58,15 @@
                         </td>
                         <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
                             {{ $translation->title }}
+                        </td>
+                        <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
+                            @if ($translation->updated_by_user)
+                            <div class="relative block cursor-pointer" onclick="window.location='{{ url('user/' . $translation->updated_by_user->id) }}'">
+                                    <img alt="profile"
+                                        class="mx-auto h-6 w-6 rounded-full object-cover outline outline-1 outline-offset-0 outline-gray-600"
+                                        src="{{ $translation->updated_by_user->profile_photo_path ? Storage::url($translation->updated_by_user->profile_photo_path) : Storage::url(config('timebank-cc.profiles.user.profile_photo_path_default')) }}" />
+                            </div>
+                            @endif
                         </td>
                         <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
                             @if ($translation->from)
@@ -78,6 +88,9 @@
                             </a>
                         </td>
                         <td class="border-white whitespace-no-wrap py-2.5 text-sm leading-5">
+                        {{-- {{dump($translation->from)}} --}}
+                                                {{-- {{dump($translation->till > \Carbon\Carbon::now() )}} --}}
+
                             @if ($translation->from < \Carbon\Carbon::now() && $translation->from !== null)
                                 @if ($translation->till > \Carbon\Carbon::now() || $translation->till === null)
                                     <button
@@ -96,13 +109,13 @@
                         </td>
                     </tr>
                 @endforeach
-               <td colspan="10" class=" my-6 py-1 border-b-gray-700"></td>
+                <td colspan="11" class=" my-6 py-1 border-b-gray-700"></td>
             @endif
         </tr>
-         
+    
         @empty
             <tr>
-                <td colspan="10" class="pb-20">
+                <td colspan="11" class="pb-20">
                     {{ __('No results found') }}
                 </td>
             </tr>
@@ -112,7 +125,7 @@
 </table>
     
 
-     <!-- Pagination -->
+<!-- Pagination -->
 <div class="flex justify-between items-center relative mb-4">
     <!-- Left Side: perPage Dropdown -->
     <div class="flex items-center">
@@ -188,7 +201,9 @@
                     <div class="w-full py-4">
                         <label class="block text-sm font-medium text-gray-700">
                             {{ __('Title') }}
+                            @if ($language)
                             {{ '(' . __($language) . ')' }}
+                            @endif
                         </label>
                         <input wire:model.live.debounce.800ms="title"
                             class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
@@ -199,7 +214,9 @@
                     <div class="w-full py-4">
                         <label class="block text-sm font-medium text-gray-700">
                             {{ __('Slug') }}
+                            @if ($language)
                             {{ '(' . __($language) . ')' }}
+                            @endif
                         </label>
                         <input wire:model.blur="post.slug"
                             class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
@@ -216,7 +233,12 @@
 
 
                     <!-- Content --- WYSIWYG editor (Trix editor) -->
-                    <label class="form-label mt-4">{{ __('Content') . ' (' . __($language) . ')' }}</label>
+                    <label class="form-label mt-4">
+                    {{ __('Content') }}
+                        @if ($language)
+                        {{ '(' . __($language) . ')' }}
+                        @endif
+                    </label>
                     <livewire:trix-editor :value="$post['content']" />
                     @error('content')
                         <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
@@ -298,12 +320,21 @@
                         <!-- Publication from and till -->
                         <div class="flex space-x-12">
                             <div class="my-6 flex-auto">
-                                <x-datetime-picker label="{{ __('Start of publication') }}"
+                            @php 
+                                if ($language) {
+                                    $labelStart = __('Start of publication') . ' (' . __($language) . ')';
+                                    $labelEnd = __('End of publication') . ' (' . __($language) . ')';
+                                } else {
+                                    $labelStart = __('Start of publication');
+                                    $labelEnd = __('End of publication');
+                                }
+                            @endphp
+                                <x-datetime-picker label="{{ $labelStart }}"
                                     placeholder="{{ __('Select a date') }}" wire:model.live="from" time-format="24"
                                     display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                             </div>
                             <div class="my-6 flex-auto">
-                                <x-datetime-picker label="{{ __('End of publication') }}"
+                                <x-datetime-picker label="{{ $labelEnd }}"
                                     placeholder="{{ __('Select a date') }}" wire:model.live="till" time-format="24"
                                     display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                             </div>
@@ -312,8 +343,8 @@
                         <!-- Publication warning -->
                         @if ($from < \Carbon\Carbon::now() && $from !== null)
                             @if ($till > \Carbon\Carbon::now() || $till === null)
-                                <div class="mb-3 text-right">
-                                    {{ __('Warning') . ': ' . __('post will be published immeditely!') }}
+                                <div class="mb-3 text-right text-red-600">
+                                    {{ __('Warning: post will be published immediately!') }}
                                 </div>
                             @endif
                         @else
@@ -324,7 +355,7 @@
                         <!-- List of validation errors -->
                         <x-errors />
 
-                        <div class="ml-auto mt-6">
+                        <div class="ml-auto mt-6 flex space-x-4">
                             @if ($createTranslation === true)
                                 <button class="rounded bg-gray-900 px-4 py-2 font-bold text-white hover:bg-gray-700"
                                     type="submit">{{ $postId ? __('Add Translation') : __('Save') }}

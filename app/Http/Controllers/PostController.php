@@ -33,9 +33,9 @@ class PostController extends Controller
             'translations' => function ($query) {
                 $query
                 ->where('locale', App::getLocale());
-                // ->whereDate('start', '<=', now())    //TODO: Exclude date queries only for post Admins!
+                // ->whereDate('from', '<=', now())    //TODO: Exclude date queries only for post Admins!
                 // ->where( function($query) {
-                //     $query->whereDate('stop', '>', now())->orWhereNull('stop');
+                //     $query->whereDate('till', '>', now())->orWhereNull('till');
                 // })
             },
             ])
@@ -95,9 +95,9 @@ class PostController extends Controller
                 if (auth()->user()->id != 1) {
                     $query
                     ->where('locale', App::getLocale())->first()
-                    ->whereDate('start', '<=', now())
+                    ->whereDate('from', '<=', now())
                     ->where(function ($query) {
-                        $query->whereDate('stop', '>', now())->orWhereNull('stop');
+                        $query->whereDate('till', '>', now())->orWhereNull('till');
                     });
                 } else {
                     $query

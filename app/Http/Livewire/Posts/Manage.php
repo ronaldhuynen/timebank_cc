@@ -7,6 +7,7 @@ use App\Models\Meeting;
 use App\Models\Post;
 use App\Models\PostTranslation;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -21,6 +22,8 @@ class Manage extends Component
     use WithPagination;
     use WithFileUploads;
     use WireUiActions;
+    use HandlesAuthorization;
+
 
 
     public $search;
@@ -87,9 +90,19 @@ class Manage extends Component
 
     public function mount()
     {
-
+        $this->checkAccess();
     }
 
+    protected function checkAccess()
+    {       
+        $user = auth()->user();
+        if (
+            session('activeProfileType') != 'App\Models\Admin' ||
+            !$user->can('manage posts')
+        ) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
 
     public function categorySelected($categoryId)
     {

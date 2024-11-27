@@ -148,7 +148,9 @@ Route::group([
                 ->where(['transactionId' => '[0-9]+'])     // Add constraint: only numbers allowed
                 ->name('transaction.show');
 
-            Route::get(LaravelLocalization::transRoute('routes.posts.manage'), 'App\Http\Controllers\PostController@manage')->name('posts.manage');
+            Route::group(['middleware' => ['can:manage posts']], function () {
+                Route::get(LaravelLocalization::transRoute('routes.posts.manage'), 'App\Http\Controllers\PostController@manage')->name('posts.manage');
+            });
 
             Route::get(LaravelLocalization::transRoute('routes.post.show_by_id'), 'App\Http\Controllers\PostController@showById')
                     ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed

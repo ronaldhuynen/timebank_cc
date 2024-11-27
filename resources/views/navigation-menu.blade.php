@@ -28,11 +28,13 @@
                 <x-jetstream.nav-link :active="request()->routeIs('user.edit')" href="{{ route('user.edit') }}">
                     {{ __('Commons') }}
                 </x-jetstream.nav-link>
-                @can('manage posts')
-                    <x-jetstream.nav-link :active="request()->routeIs('posts.manage')" href="{{ route('posts.manage') }}">
-                        {{ __('Posts') }}
-                    </x-jetstream.nav-link>
-                @endcan
+                @if (session('activeProfileType') == 'App\Models\Admin')
+                    @can('manage posts')
+                        <x-jetstream.nav-link :active="request()->routeIs('posts.manage')" href="{{ route('posts.manage') }}">
+                            {{ __('Posts') }}
+                        </x-jetstream.nav-link>
+                    @endcan
+                @endif
                 <!-- Main Search Bar -->
                 @livewire('main-search-bar')
             </div>

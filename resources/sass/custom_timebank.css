@@ -1,0 +1,37 @@
+/* CUSTOM TIMEBANK STYLES TO OVERRULE OTHER STYLES */
+/* Usage: <div id="custom-timebank-style"> </div> */
+
+/* Custom styles for ordered lists */
+#custom-timebank-style ol {
+    padding-left: 10px;
+    margin-bottom: 1rem;
+}
+
+#custom-timebank-style ol li {
+    margin-bottom: 0.5rem;
+}
+
+/* Custom styles for checklists */
+#custom-timebank-style ul {
+    padding-left: 20px;
+    list-style-type: none;
+    margin-bottom: 1rem;
+}
+
+#custom-timebank-style ul li {
+    position: relative;
+    padding-left: 1.5em;
+    margin-bottom: 0.5rem;
+}
+
+
+/* Custom styles for unordered lists */
+#custom-timebank-style ul {
+    padding-left: 20px;
+    list-style-type: disc;
+    margin-bottom: 1rem;
+}
+
+#custom-timebank-style ul li {
+    margin-bottom: 0.5rem;
+}

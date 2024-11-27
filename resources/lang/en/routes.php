@@ -30,6 +30,7 @@ return [
     'statement' => 'statement/{transactionId}',
     'posts.manage' => 'posts/manage',
     'post.show_by_id' => 'post/{id}',
+    'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'post/{slug}',
     'user.show' => 'user/{id}',
     'org.show' => 'organization/{id}',

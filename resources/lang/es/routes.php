@@ -30,6 +30,7 @@ return [
     'statement' => 'estado/{transactionId}',
     'posts.manage' => 'publicaciones/administrar',
     'post.show_by_id' => 'publicacion/{postId}',
+    'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'publicacion/{slug}',
     'user.show' => 'usuario/{userId}',
     'org.show' => 'organizacion/{orgId}',

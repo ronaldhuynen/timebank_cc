@@ -82,7 +82,7 @@
                         <!-- Row buttons -->
                         <td class="border-white whitespace-no-wrap text-sm leading-5">
                             <a class="mb-2 hidden font-bold text-gray-900 sm:block"
-                                href="{{ url($translation->locale . '/post/' . $translation->slug) }}"
+                                href="{{ url($translation->locale . '/post/' . $translation->post->id) }}"
                                 target="_blank">
                                 <x-icon class="h-5 w-5" mini name="arrow-top-right-on-square" />
                             </a>
@@ -236,7 +236,7 @@
                         {{ '(' . __($language) . ')' }}
                         @endif
                     </label>
-                    <livewire:trix-editor :value="$post['content']" />
+                    <livewire:quill-editor :content="$post['translations'][0]['content']" />
                     @error('content')
                         <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
                     @enderror

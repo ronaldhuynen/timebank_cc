@@ -58,7 +58,7 @@ class Manage extends Component
 
     public $perPage = 10;
 
-    protected $listeners = ['categorySelected', 'localeSelected', 'trixEditor', 'uploadImage', 'organizerSelected'];
+    protected $listeners = ['categorySelected', 'localeSelected', 'quillEditor', 'uploadImage', 'organizerSelected'];
 
     protected function rules()
     {
@@ -211,17 +211,14 @@ class Manage extends Component
             $this->getMeeting();
         }
 
-        // Emit content to trix-editor component
-        $this->dispatch('showModal', $this->post['content']);
-
         $this->title = $this->post['title'];
-        $this->content = $this->post['content'];
-
+        // $this->content = $this->post['content'];
+        
         $this->localeInit = $this->post['locale'];
         $this->locale = $this->post['locale'];
         $this->setLanguageName();
 
-        $this->categoryId = $post->category_id; // can be removed? Is it used?
+        $this->categoryId = $post->category_id; 
         $this->getLocalesOptions();
         $this->meetingShow = Category::where('id', $post->category_id)->where('type', Meeting::class)->exists();    // Toggle meeting section based on category type
 
@@ -430,9 +427,9 @@ class Manage extends Component
      * @param  mixed $value
      * @return void
      */
-    public function trixEditor($value = null)
+    public function quillEditor($content = null)
     {
-        $this->content = $value;
+        $this->content = $content;
     }
 
 

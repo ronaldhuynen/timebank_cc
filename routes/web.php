@@ -138,7 +138,7 @@ Route::group([
             // Legacy Cyclos payment link, as used by Lekkernasuh
             Route::get('/do/member/payment', [TransactionController::class, 'doCyclosPayment']);
 
-            
+
 
 
 
@@ -157,8 +157,17 @@ Route::group([
                         return view('post.not_found');
                     });
 
+            Route::get(LaravelLocalization::transRoute('routes.post.show_by_id_international'), 'App\Http\Controllers\PostController@showById')
+                    ->name('post.show_by_id_international')
+                    ->missing(function () {
+                        return view('post.not_found');
+                    });
+
             Route::get(LaravelLocalization::transRoute('routes.post.show_by_slug'), 'App\Http\Controllers\PostController@showBySlug')
-                ->name('post.show_by_slug');
+                    ->name('post.show_by_slug')
+                    ->missing(function () {
+                        return view('post.not_found');
+                    });
 
             Route::get(LaravelLocalization::transRoute('routes.user.show'), 'App\Http\Controllers\UserController@show')
                     ->where(['userId' => '[0-9]+'])     // Add constraint: only numbers allowed
@@ -238,7 +247,7 @@ Route::group([
                     // User & Profile... (Native vendor Jetsream view)
                     Route::get(LaravelLocalization::transRoute('routes.profile.user.show'), [UserProfileController::class, 'show'])
                         ->name('profile.user.show');
-                    
+
                     // Admin & Profile... (Custom view)
                     Route::get(LaravelLocalization::transRoute('routes.profile.admin.show'), [AdminController::class, 'settings'])
                         ->name('profile.admin.settings');

@@ -625,10 +625,10 @@ messenger-style-overrides .message hr {
         /* display: none; */
 }
 
-#messenger-style-overrides b,
-strong {
+/* #messenger-style-overrides b,
+#messenger-style-overrides strong {
     font-weight: lighter;
-}
+} */
 
 #messenger-style-overrides .badge {
     font-weight: 500;
@@ -658,4 +658,11 @@ strong {
 #messenger-style-overrides .toast-success {
     background-color: #ffff;
     color: #1f2937 !important;
+}
+
+.list-inline {
+    padding-left: 10px;
+    /* Your custom padding */
+    list-style: disc;
+    /* Your custom list style */
 }

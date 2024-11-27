@@ -23,9 +23,7 @@
         @endforeach
     </ul>
 
-
-
-    <hr />
+   <hr />
 
     <div>
         {{ phpinfo() }}

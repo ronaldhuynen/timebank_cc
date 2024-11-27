@@ -30,6 +30,7 @@ return [
     'statement' => 'transactie/{transactionId}',
     'posts.manage' => 'artikelen/beheren',
     'post.show_by_id' => 'artikel/{id}',
+    'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'artikel/{slug}',
     'user.show' => 'gebruiker/{id}',
     'org.show' => 'organisatie/{id}',

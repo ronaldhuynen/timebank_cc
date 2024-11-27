@@ -30,6 +30,7 @@ return [
     'statement' => 'releve/{transactionId}',
     'posts.manage' => 'articles/gerer',
     'post.show_by_id' => 'article/{postId}',
+    'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'article/{slug}',
     'user.show' => 'utilisateur/{userId}',
     'org.show' => 'organisation/{orgId}',

@@ -13,6 +13,7 @@
         "dompdf/dompdf": "^3.0",
         "graham-campbell/markdown": "^15.2",
         "guzzlehttp/guzzle": "^7.0.1",
+        "joelwmale/livewire-quill": "^3.0",
         "laravel/fortify": "^1.21",
         "laravel/framework": "^10.0",
         "laravel/jetstream": "^4.0",

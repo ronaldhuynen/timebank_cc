@@ -22,7 +22,15 @@
     <link href="{{ asset('css/trix.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tagify.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom_tagify.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom_timebank.css') }}" rel="stylesheet">
     @livewireStyles
+    <!-- Quill editor -->
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <style>
+        .ql-editor {
+            height: 300px;
+        }
+    </style>
 
     <!-- Scripts -->   
      @wireUiScripts
@@ -119,6 +127,9 @@
     @include('messenger::scripts')
     @stack('modals')
     <script src="{{ mix('js/echo.js') }}"></script>
+    
+    <!-- Quill editor -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 
     {{-- TODO: Remove for production --}}
     <!-- Debug section for Events --->

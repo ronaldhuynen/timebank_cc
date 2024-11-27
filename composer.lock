@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6caeca0d0f61f37e93563632c08ba05",
+    "content-hash": "a5d93372a9c974eded38f52539a8550a",
     "packages": [
         {
             "name": "atomescrochus/laravel-string-similarities",
@@ -3212,6 +3212,72 @@
                 }
             ],
             "time": "2023-05-21T07:57:08+00:00"
+        },
+        {
+            "name": "joelwmale/livewire-quill",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joelwmale/livewire-quill.git",
+                "reference": "f8f0fbb97a06f4f0d7f9f717afb660e9f2d54b79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joelwmale/livewire-quill/zipball/f8f0fbb97a06f4f0d7f9f717afb660e9f2d54b79",
+                "reference": "f8f0fbb97a06f4f0d7f9f717afb660e9f2d54b79",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.0|^10.0|^11.0",
+                "illuminate/support": "^9.0|^10.0|^11.0",
+                "livewire/livewire": "^3.3|^3.4|^3.5",
+                "php": "^8.1|^8.2|^8.3|^8.4"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.17",
+                "orchestra/testbench": "^5.0|^6.0|^7.0|^8.0|^9.0",
+                "pestphp/pest": "^2.6",
+                "pestphp/pest-plugin-livewire": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Joelwmale\\LivewireQuill\\LivewireQuillServiceProvider"
+                    ],
+                    "aliases": {
+                        "LivewireQuill": "Joelmale\\LivewireQuill\\Facades\\LivewireQuill"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joelwmale\\LivewireQuill\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joel Male",
+                    "email": "joel@joelmale.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easily add QuillJS with image support to any Laravel Livewire component.",
+            "homepage": "https://github.com/joelwmale/livewire-quill",
+            "keywords": [
+                "joelwmale",
+                "laravel",
+                "livewire-quill"
+            ],
+            "support": {
+                "issues": "https://github.com/joelwmale/livewire-quill/issues",
+                "source": "https://github.com/joelwmale/livewire-quill/tree/3.0.2"
+            },
+            "time": "2024-11-21T00:42:56+00:00"
         },
         {
             "name": "joypixels/emoji-toolkit",

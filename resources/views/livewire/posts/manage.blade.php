@@ -101,7 +101,7 @@
                         <td class="border-white whitespace-no-wrap py-2.5 text-sm leading-5">
                             <button
                                 class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25"
-                                wire:click.prevent="edit({{ $translation->id }})"> {{ __('Edit') }}
+                                wire:click="edit({{ $translation->id }})"> {{ __('Edit') }}
                             </button>
                         </td>
                     </tr>
@@ -166,8 +166,9 @@
 
 
     <!-- Edit modal -->
+    @if ($showModal)
     <div
-        class="@if (!$showModal) hidden @endif fixed bottom-0 left-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
+        class="fixed bottom-0 left-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
         <div class="h-5/6 w-3/5 overflow-scroll rounded-lg bg-white">
             <form wire:submit="save" class="w-ful">
                 <div class="flex flex-col items-start p-4">
@@ -236,7 +237,11 @@
                         {{ '(' . __($language) . ')' }}
                         @endif
                     </label>
-                    <livewire:quill-editor :content="$post['translations'][0]['content']" />
+                    {{-- <livewire:quill-editor :content="$post['translations'][0]['content']" /> --}}
+                    {{-- {{ dd($content)}} --}}
+                    <livewire:quill-editor :content="$content" />
+
+                    
                     @error('content')
                         <p class="mt-2 text-sm text-red-600" id="locale-error">{{ $message }}</p>
                     @enderror
@@ -373,4 +378,5 @@
 
         </div>
     </div>
+    @endif
 </div>

@@ -1038,6 +1038,18 @@ class CategoriesTableSeeder extends Seeder
                 'updated_at' => '2007-09-23 13:04:00',
                 'deleted_at' => null,
             ),
+            85 =>
+            array(
+                'id' => 86,
+                'type' => 'App\\Models\\SiteContents\\Pay',
+                'categoryable_id' => null,
+                'categoryable_type' => null,
+                'parent_id' => null,
+                'color' => null,
+                'created_at' => '2023-06-02 16:20:59',
+                'updated_at' => '2023-06-02 16:20:59',
+                'deleted_at' => null,
+            ),
         ));
 
 

@@ -10,9 +10,9 @@ class QuillEditor extends Component
     #[Rule('required|min:10')]
     public $content;
 
-    public function mount($content): void
+    public function mount($content)
     {
-        // dump($content);
+        dump($content);
         $this->content = $content;
     }
 

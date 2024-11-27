@@ -27,11 +27,11 @@ class Manage extends Component
 
 
     public $search;
-    public $showModal = false;
+    public bool $showModal = false;
     public $createTranslation;
     public $postId;
     public $bulkSelected = [];
-    public $bulkDisabled = true;
+    public bool $bulkDisabled = true;
     public $categoryId;
     public $post = ['excerpt' => '','content' => ''];   // In case fields are left empty (concept post)
 
@@ -225,7 +225,7 @@ class Manage extends Component
         }
 
         $this->title = $this->post['title'];
-        // $this->content = $this->post['content'];
+        $this->content = $this->post['content'];
         
         $this->localeInit = $this->post['locale'];
         $this->locale = $this->post['locale'];
@@ -413,10 +413,7 @@ class Manage extends Component
                 );
                 return back();
             }
-
-
         }
-
         $this->close();
     }
 

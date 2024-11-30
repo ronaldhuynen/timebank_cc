@@ -106,13 +106,13 @@
                         </td>
                     </tr>
                 @endforeach
-                <td colspan="11" class=" my-6 py-1 border-b-gray-700"></td>
+                <td colspan="12" class=" my-6 py-1 border-b-gray-700"></td>
             @endif
         </tr>
     
         @empty
             <tr>
-                <td colspan="11" class="pb-20">
+                <td colspan="12" class="pb-20">
                     {{ __('No results found') }}
                 </td>
             </tr>
@@ -142,7 +142,7 @@
 </div>
 
 
-    <!----Stop puplication modal ---->
+    <!----Stop publication modal ---->
     <x-jetstream.dialog-modal wire:model.live="modalStopPublication">
         <x-slot name="title">
             {{ __('Stop the publication?') }}

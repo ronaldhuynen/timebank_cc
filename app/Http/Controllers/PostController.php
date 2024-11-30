@@ -82,27 +82,27 @@ class PostController extends Controller
         $postId = $postTranslation->post_id;
         $locale = $postTranslation->locale;
 
-$post = Post::with([
-    'postable' => function ($query) {
-        $query->select(['id', 'name']);
-    },
-    'category' => function ($query) {
-        $query->with('translations');
-    },
-    'meeting',
-    'translations' => function ($query) {
-        //TODO!: Currently only user 1 (Super-admin) can view unpublished posts, change to permission/role based!
-        $query->where('locale', App::getLocale());
-        if (auth()->user()->id != 1) {
-            $query->whereDate('from', '<=', now())
-                  ->where(function ($query) {
-                      $query->whereDate('till', '>', now())->orWhereNull('till');
-                  });
-        }
-    }
-])
-->where('id', $postId)
-->first();
+        $post = Post::with([
+            'postable' => function ($query) {
+                $query->select(['id', 'name']);
+            },
+            'category' => function ($query) {
+                $query->with('translations');
+            },
+            'meeting',
+            'translations' => function ($query) {
+                //TODO!: Currently only user 1 (Super-admin) can view unpublished posts, change to permission/role based!
+                $query->where('locale', App::getLocale());
+                if (auth()->user()->id != 1) {
+                    $query->whereDate('from', '<=', now())
+                        ->where(function ($query) {
+                            $query->whereDate('till', '>', now())->orWhereNull('till');
+                        });
+                }
+            }
+        ])
+        ->where('id', $postId)
+        ->first();
 
 
         if ($post->media) {

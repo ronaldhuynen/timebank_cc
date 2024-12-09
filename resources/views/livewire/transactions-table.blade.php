@@ -39,8 +39,8 @@
                                     'maxLengthHoursInput' => config('timebank-cc.maxLengthHoursInput.user'),
                                 ])
                                 {{-- TODO: if user is admin or bank:
-            <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')">
-        --}}
+                                <livewire:amount :label="__('Search amount')" :maxLengthHoursInput="config('timebank-cc.maxLengthHoursInput.bank')">
+                                --}}
                                 @error('amount')
                                     <div class="mb-3 text-sm text-red-700" role="alert">
                                         {{ __($message) }}

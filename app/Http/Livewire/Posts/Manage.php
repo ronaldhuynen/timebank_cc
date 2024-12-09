@@ -558,28 +558,65 @@ class Manage extends Component
     }
 
 
+    public function searchPosts()
+    {
+        $this->resetPage(); // Reset pagination to the first page
+    }
+
+
+
+    public function handleSearchEnter()
+    {
+        if (!$this->showModal) {
+            $this->searchPosts();
+        }
+    }
+
+
+    
+    public function resetSearch()
+    {
+        $this->search = '';
+        $this->resetPage(); // Reset pagination to the first page
+    }
+
+
     public function render()
     {
-
         $locale = App::getLocale();
         $baseLocale = config('base_language');
 
         $posts = Post::with([
             'postable:id,name,email',
-            'category', // Category translation is handled by the translation() accessor in the Post model. The blade file uses $post->category->translation
+            'category',
             'translations' => function ($query) {
-                $query->with('updated_by_user:id,name,full_name,profile_photo_path');
+                $query->with('updated_by_user:id,name,full_name,profile_photo_path')
+                ;
             },
         ])
-        ->latest()
+        ->where(function ($query) {
+            $query->whereHas('translations', function ($query) {
+                $query
+                    ->where(function ($query) {
+                        $query->where('title', 'like', '%' . $this->search . '%')
+                                ->orWhere('content', 'like', '%' . $this->search . '%');
+                    });
+            })
+            ->orWhereHas('category.translations', function ($query) {
+                $query
+                    ->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->orWhereHas('translations.updated_by_user', function ($query) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->orWhere('id', $this->search);
+        })
+        ->orderBy('updated_at', 'desc')
         ->paginate($this->perPage);
 
         return view('livewire.posts.manage', [
             'posts' => $posts
         ]);
-
     }
-
-
 
 }

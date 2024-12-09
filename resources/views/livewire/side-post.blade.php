@@ -7,7 +7,7 @@
             @endif
             </div>
 
-        <div class="post">
+      <div class="post" id="post-id-{{ $posts->id ?? 'no-id' }}">
             <h3 class="text-lg font-medium leading-6 text-gray-900">
                 {{ $posts->translations[0]->title ?? '' }}
             </h3>

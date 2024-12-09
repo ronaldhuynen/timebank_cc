@@ -13,7 +13,7 @@ class SidePost extends Component
     public bool $random = false;
     public bool $latest = false;
 
-    public function mount($type, $sticky = nu                                                                                                                                                                                                                                                                                                                                                                                                       ll, $random = null, $latest = null)
+public function mount($type, $sticky = null, $random = null, $latest = null)
     {
         $this->type = $type;
         if ($sticky) {

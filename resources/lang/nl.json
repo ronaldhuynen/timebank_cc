@@ -95,7 +95,7 @@
     "Select (multiple) languages": "Selecteer (meerdere) talen",
 
     "Select a category": "Selecteer een categorie",
-    "Untitled category": "Category zonder titel" 
+    "Untitled category": "Category zonder titel",
     "Select a translation": "Selecteer een vertaling",
 
 
@@ -136,6 +136,7 @@
     "No results found, please search again": "Geen resultaten gevonden, zoek alsjeblieft opnieuw",
     "Browse": "Bladeren",
     "Search": "Zoeken",
+    "Search keywords": "Zoek op sleutelwoorden",
     "Clear all": "Wis alles",
 
     "Error": "Fout",

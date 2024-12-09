@@ -1,6 +1,30 @@
 <div class="mt-12">
 
 
+    <!-- Search box -->
+    <div class="flex items-center mb-4">
+        <!-- Input and Reset Button Container -->
+        <div class="relative w-1/3">
+            <input type="text" wire:model="search" placeholder="{{__('Search keywords') . '...'}}"
+            wire:keydown.enter="handleSearchEnter"
+                class="w-full rounded-md border border-gray-300 px-3 py-1 text-gray-700 shadow-sm focus:border-gray-500 focus:outline-none focus:ring focus:ring-gray-500 sm:text-sm pr-10">
+            
+            <!-- Reset Button -->
+            @if($search)
+                <button wire:click.prevent="resetSearch"
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-600 focus:outline-none">
+                    <x-icon name="backspace" mini solid />
+                </button>
+            @endif
+        </div>
+        
+        <!-- Search Button -->
+        <button wire:click.prevent="searchPosts"
+            class="ml-4 focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-gray-900 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus:border-gray-900 focus:outline-none active:bg-gray-950 disabled:opacity-25">
+            {{ __('Search') }}
+        </button>
+    </div>
+
     <!-- Action buttons -->
     <div class="ml-auto mt-6 flex space-x-4">
         <button wire:click.prevent="create"

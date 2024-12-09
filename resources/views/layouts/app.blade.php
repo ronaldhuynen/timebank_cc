@@ -114,6 +114,9 @@
         <main>
             {{ $slot }}
         </main>
+
+        <!-- Footer -->
+        <x-footer />
     </div>
 
     <!-- Scripts body-->

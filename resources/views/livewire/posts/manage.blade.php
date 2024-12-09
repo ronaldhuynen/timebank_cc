@@ -51,6 +51,8 @@
                         <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
                             @if ($post->category->translation)
                                 {{ $post->category->translation->name }}
+                            @else
+                                {{ __('Untitled category')}}
                             @endif
                         </td>
                         <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
@@ -88,7 +90,7 @@
                             </a>
                         </td>
                         <td class="border-white whitespace-no-wrap py-2.5 text-sm leading-5">
-                               @if ($translation->from < \Carbon\Carbon::now() && $translation->from !== null)
+                                @if ($translation->from < \Carbon\Carbon::now() && $translation->from !== null)
                                 @if ($translation->till > \Carbon\Carbon::now() || $translation->till === null)
                                     <button
                                         class="focus:shadow-outline-gray inline-flex items-center rounded-md border border-transparent bg-red-600 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:border-gray-900 focus:outline-none disabled:opacity-25"

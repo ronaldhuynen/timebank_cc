@@ -16,7 +16,6 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use WireUi\Traits\WireUiActions;
 
-
 class Manage extends Component
 {
     use WithPagination;
@@ -46,7 +45,7 @@ class Manage extends Component
     public $till;     // x-date-time-picker and x-select do not entangle if they do not exist beforehand
     public $modalStopPublication = false;
     public $selectedTranslationId = null;    // Needed for the stopPublicationModal
-    
+
     public $image;
     public $imageCaption = '';  // TODO! Make image caption field
     public $media;
@@ -94,7 +93,7 @@ class Manage extends Component
     }
 
     protected function checkAccess()
-    {       
+    {
         $user = auth()->user();
         if (
             session('activeProfileType') != 'App\Models\Admin' ||
@@ -127,7 +126,7 @@ class Manage extends Component
     * @return void
     */
     public function getLocalesOptions()
-    {        
+    {
         // Ensure categoryId is set
         if (!$this->categoryId) {
             $this->localesOptions = [];
@@ -226,12 +225,12 @@ class Manage extends Component
 
         $this->title = $this->post['title'];
         $this->content = $this->post['content'];
-        
+
         $this->localeInit = $this->post['locale'];
         $this->locale = $this->post['locale'];
         $this->setLanguageName();
 
-        $this->categoryId = $post->category_id; 
+        $this->categoryId = $post->category_id;
         $this->getLocalesOptions();
         $this->meetingShow = Category::where('id', $post->category_id)->where('type', Meeting::class)->exists();    // Toggle meeting section based on category type
 
@@ -241,7 +240,7 @@ class Manage extends Component
         if ($post->media->count() > 0) {
             $this->media = $post->getFirstMediaUrl('posts');    // Do not use responsive media in livewire pages that have multiple update cycles as the placeholder img show after an update
         }
-        
+
         $this->showModal = true;
 
     }
@@ -256,7 +255,7 @@ class Manage extends Component
 
 
     public function save()
-    {   
+    {
         // Add translation to post
         if (!is_null($this->postId)) {
 
@@ -362,7 +361,7 @@ class Manage extends Component
             $this->validate();
 
             if (config('timebank-cc.posts.postable_is_auth_user')) {
-            // Authenicated users are stored as postables
+                // Authenicated users are stored as postables
                 $post = new Post(['postable_id' => auth()->id(),   // Store creator (article writer) id
                                 'postable_type' => get_class(auth()->user()),   // Store creator (article writer) type. I.e. "App\Models\User"
                                 ]);
@@ -534,7 +533,7 @@ class Manage extends Component
         $this->modalStopPublication = true;
     }
 
-    
+
     /**
      * Stop publication of the post
      *
@@ -545,14 +544,14 @@ class Manage extends Component
     {
         $translation = PostTranslation::find($translationId);
         if ($translation) {
-                $translation->till = now();
-                $translation->save();
-                $this->resetForm();
+            $translation->till = now();
+            $translation->save();
+            $this->resetForm();
         }
         $this->modalStopPublication = false;
     }
 
-    
+
     public function updatedPerPage($value)
     {
         $this->resetPage();
@@ -561,29 +560,24 @@ class Manage extends Component
 
     public function render()
     {
+
+        $locale = App::getLocale();
+        $baseLocale = config('base_language');
+
         $posts = Post::with([
-            'postable' => function ($query) {
-                $query->select(['id', 'name', 'email']);
-            },
-            'category' => function ($query) {
-                $query->with(['translations' => function ($query) {
-                    $query->where('locale', App::getLocale());
-                }]);
-            },
-            'translations' => function ($query) {               
-                $query->with(['updated_by_user' => function ($query) {
-                    $query->select('id', 'name', 'full_name', 'profile_photo_path');
-                }]);
-            },
-            'images' => function ($query) {
-                $query->select('images.id', 'caption', 'path');
+            'postable:id,name,email',
+            'category', // Category translation is handled by the translation() accessor in the Post model. The blade file uses $post->category->translation
+            'translations' => function ($query) {
+                $query->with('updated_by_user:id,name,full_name,profile_photo_path');
             },
         ])
         ->latest()
         ->paginate($this->perPage);
+
         return view('livewire.posts.manage', [
             'posts' => $posts
         ]);
+
     }
 
 

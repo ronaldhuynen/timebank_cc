@@ -49,8 +49,8 @@
                             {{ $post->id }}
                         </td>
                         <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
-                            @if ($post->category->translations->first())
-                                {{ $post->category->translations->first()->name }}
+                            @if ($post->category->translation)
+                                {{ $post->category->translation->name }}
                             @endif
                         </td>
                         <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">

@@ -6,6 +6,7 @@ use App\Models\CategoryTranslation;
 use App\Models\TaggableContext;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Category extends Model
@@ -36,6 +37,34 @@ class Category extends Model
         return $this->hasMany(CategoryTranslation::class);
     }
     
+
+
+    /**
+     * Get the translation attribute for the category.
+     *
+     * This method attempts to retrieve the translation for the category
+     * in the current locale. If a translation in the current locale is
+     * not found, it falls back to the base locale.
+     *
+     * @return \App\Models\Translation|null The translation object for the category in the current or base locale, or null if not found.
+     */
+    public function getTranslationAttribute()
+    {
+        $locale = App::getLocale();
+        $baseLocale = config('timebank-cc.base_language');
+
+        // Attempt to get the translation in the current locale
+        $translation = $this->translations->firstWhere('locale', $locale);
+
+        // Fallback to base locale if translation not found
+        if (!$translation) {
+            $translation = $this->translations->firstWhere('locale', $baseLocale);
+        }
+
+        return $translation;
+    }
+
+
     public function related()
     {
         

@@ -13,7 +13,7 @@ class SidePost extends Component
     public bool $random = false;
     public bool $latest = false;
 
-    public function mount($type, $sticky = null, $random = null, $latest = null)
+    public function mount($type, $sticky = nu                                                                                                                                                                                                                                                                                                                                                                                                       ll, $random = null, $latest = null)
     {
         $this->type = $type;
         if ($sticky) {
@@ -30,6 +30,7 @@ class SidePost extends Component
 
     public function render()
     {
+        // Sticky post
         if ($this->sticky) {
             $locale = App::getLocale();
 
@@ -44,11 +45,16 @@ class SidePost extends Component
                         ->limit(3);
                 }
             ])
-            ->whereHas('category', function ($query) {
+            ->whereHas('category', function ($query) {                                  
                 $query->where('type', $this->type);
             })
             ->whereHas('translations', function ($query) use ($locale) {
-                $query->where('locale', $locale);
+                $query->where('locale', $locale)
+                    ->whereDate('from', '<=', now())
+                    ->where(function ($query) {
+                        $query->whereDate('till', '>', now())->orWhereNull('till');
+                    })
+                    ->orderBy('updated_at', 'desc');
             })
             ->orderBy('created_at', 'desc')
             ->limit(3)
@@ -56,6 +62,7 @@ class SidePost extends Component
         }
 
 
+        // Random post
         if ($this->random) {
             $locale = App::getLocale();
 
@@ -71,12 +78,18 @@ class SidePost extends Component
                 $query->where('type', $this->type);
             })
             ->whereHas('translations', function ($query) use ($locale) {
-                $query->where('locale', $locale);
+                $query->where('locale', $locale)
+                    ->whereDate('from', '<=', now())
+                    ->where(function ($query) {
+                        $query->whereDate('till', '>', now())->orWhereNull('till');
+                    })
+                    ->orderBy('updated_at', 'desc');
             })
             ->inRandomOrder() // This replaces the orderBy() method
             ->first();
         }
 
+        // Latest post
         if ($this->latest) {
             $locale = App::getLocale();
 
@@ -92,7 +105,12 @@ class SidePost extends Component
                 $query->where('type', $this->type);
             })
             ->whereHas('translations', function ($query) use ($locale) {
-                $query->where('locale', $locale);
+                $query->where('locale', $locale)
+                    ->whereDate('from', '<=', now())
+                    ->where(function ($query) {
+                        $query->whereDate('till', '>', now())->orWhereNull('till');
+                    })
+                    ->orderBy('updated_at', 'desc');
             })
             ->orderBy('created_at', 'desc')
             ->first();

@@ -73,8 +73,8 @@ class Manage extends Component
             'required', 'string', 'min:3', 'max:150', 'regex:/^[\pL\pM\pN-]+$/u',
             Rule::unique('post_translations', 'slug')->ignore($this->post['translation_id'], 'id')],
         'post.title' => 'required|string|min:3|max:150',
-        'post.excerpt' => 'string|max:300',
-        'content' => 'string|nullable',
+        'post.excerpt' => 'string|max:500',
+        'content' => 'string|nullable|max:1048576', // max 1 MB in bytes
         'from' => 'date|nullable',
         'till' => 'date|nullable',
         'image' => 'nullable|image|max:5120',
@@ -146,6 +146,9 @@ class Manage extends Component
             $localesExclude = [];
         }
 
+        
+        $localesExclude = collect($localesExclude);
+
         if ($localesOptions) {
             $localesOptions = $localesOptions->translations()->pluck('locale');
             $this->localesOptions = $localesOptions->diff($localesExclude);
@@ -153,7 +156,9 @@ class Manage extends Component
             $this->localesOptions = [];
         }
 
-        $this->dispatch('updateLocalesOptions', $localesOptions);
+        $this->dispatch('updateLocalesOptions', $this->localesOptions);
+
+
     }
 
 
@@ -431,7 +436,7 @@ class Manage extends Component
 
 
     /**
-     * Receives value from livewire trix-editor component
+     * Receives value from livewire quill-editor component
      *
      * @param  mixed $value
      * @return void

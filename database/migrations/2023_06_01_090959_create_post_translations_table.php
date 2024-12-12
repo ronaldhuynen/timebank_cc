@@ -19,7 +19,7 @@ return new class () extends Migration {
             $table->string('slug')->unique();
             $table->string('title')->nullable();
             $table->text('excerpt')->nullable();
-            $table->text('content')->nullable();
+            $table->longtext('content')->nullable();
             $table->integer('status')->unsigned()->default(1);
             $table->integer('updated_user_id')->unsigned()->nullable();
             $table->dateTime('from')->nullable();

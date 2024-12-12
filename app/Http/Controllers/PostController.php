@@ -33,7 +33,7 @@ class PostController extends Controller
             'translations' => function ($query) {
                 $query
                 ->where('locale', App::getLocale());
-                // ->whereDate('from', '<=', now())    //TODO: Exclude date queries only for post Admins!
+                // ->whereDate('from', '<=', now())    //TODO: Exclude date queries ONLY for post Admins!
                 // ->where( function($query) {
                 //     $query->whereDate('till', '>', now())->orWhereNull('till');
                 // })

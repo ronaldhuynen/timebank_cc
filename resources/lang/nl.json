@@ -151,6 +151,7 @@
     "Dashboard": "Overzicht",
     "Pay": "Betalen",
     "Transactions": "Transacties",
+
     "Transaction History": "Transactie-overzicht",
     "Current balance": "Huidig saldo",
     "Search transactions": "Zoek transacties",
@@ -222,6 +223,7 @@
     "Stop": "Stop",
     "Edit": "Bewerken",
     "No posts found": "Geen artikelen gevonden",
+    "No page available in your language at the moment": "Geen pagina beschikbaar in jouw taal op dit moment",
     "Create new post": "Nieuw artikel",
     "Edit post": "Artikel bewerken",
     "Add translation": "Vertaling toevoegen",
@@ -340,5 +342,23 @@
     "Your profile has been deleted": "Je profiel is verwijderd",
     "All your personal data, including all your uploaded files and messages have just been permanently deleted.": "Al je persoonlijke gegevens, inclusief je verzonden bestanden en berichten zijn zojuist permanent verwijderd.",
     "Your profile has been deleted on:": "Je profiel is verwijderd op:",
-    "On behalf of the Timebank.cc team, hope to see you next time!": "Namens het Timebank.cc team, hopelijk tot een volgende keer!"
+    "On behalf of the Timebank.cc team, hope to see you next time!": "Namens het Timebank.cc team, hopelijk tot een volgende keer!",
+
+    "Help": "Hulp",
+    "Getting started": "Hoe te starten",
+    "FAQ": "Veel gestelde vragen",
+    "Organizations": "Organisaties",
+    "Timebank principles": "Timebank principes",
+    "Projects": "Projecten",
+    "The Hague": "Den Haag",
+    "Amsterdam, Brussels, Lisbon": "Amsterdam, Brussel, Lissabon",
+    "Work with us": "Werk met ons",
+    "Who we are": "Wie we zijn",
+    "Our philosophy": "Onze filosofie",
+    "The association": "De vereniging",
+    "History": "Geschiedenis",
+    "Press and media": "Pers en media",
+    "Research": "Onderzoek",
+    "Contact us": "Neem contact op",
+    "Meet the team": "Maak kennis met het team"
 }

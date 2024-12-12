@@ -13,7 +13,7 @@ class SidePost extends Component
     public bool $random = false;
     public bool $latest = false;
 
-public function mount($type, $sticky = null, $random = null, $latest = null)
+    public function mount($type, $sticky = null, $random = null, $latest = null)
     {
         $this->type = $type;
         if ($sticky) {
@@ -122,8 +122,6 @@ public function mount($type, $sticky = null, $random = null, $latest = null)
                 $thumbnail = $posts->getFirstMedia('*')->getUrl();
             }        
         }
-
-        //TODO NEXT: Make sure than when a post category is not translated, the English name is shown, even when de browser is Spanish
 
         return view('livewire.side-post', [
             'posts' => $posts,

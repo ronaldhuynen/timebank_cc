@@ -1,11 +1,11 @@
 <div>
         
         @if ($posts)
-                    <div class="images my-3">
-                @if ($thumbnail != null)
-                        <img src="{{ $thumbnail }}">
+            <div class="images my-3">
+            @if ($thumbnail != null)
+                <img src="{{ $thumbnail }}">
             @endif
-            </div>
+        </div>
 
       <div class="post" id="post-id-{{ $posts->id ?? 'no-id' }}">
             <h3 class="text-lg font-medium leading-6 text-gray-900">

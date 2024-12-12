@@ -1,0 +1,39 @@
+<div class="max-w-4xl mx-auto my-12 p-4">
+    @if($posts->isEmpty())
+        <p class="text-gray-700 dark:text-gray-300">
+            {{ __('No page available in your language at the moment') }}
+        </p>
+    @else
+        @foreach($posts as $post)
+                
+                <!-- Title -->
+                @if (isset($post->translations[0]->title))
+                <h2 class="text-3xl font-semibold my-12 text-gray-800 dark:text-white">{{ $post->translations[0]->title }}</h2>
+                @endif
+                <!-- Intro / excerpt -->
+                @if (isset($post->translations[0]->excerpt))
+                <p class="text-xl my-12 leading-loose text-gray-700 dark:text-gray-300">{{ $post->translations[0]->excerpt }}</p>
+                @endif
+                @if($post->hasMedia('*'))
+                    <img src="{{ $post->getFirstMediaUrl('*') }}" alt="{{ $post->translations[0]->title }}" class="w-full h-auto mb-4">
+                @endif
+                
+                <!-- Content --->
+                <div class="max-w-2xl mx-auto my-12 p-4 post mb-6 bg-white dark:bg-gray-700">
+                @if (isset($post->translations[0]->content))
+                <div class="content text-lg leading-relaxed">
+                    {!! $post->translations[0]->content !!}
+                </div>
+                @endif
+
+            </div>
+            @php
+                $update = Illuminate\Support\Carbon::createFromTimeStamp(strtotime($post->translations[0]->updated_at))->isoFormat('LL');
+            @endphp
+            <div class="text-sm font-thin mb-12 text-gray-500">
+            {{ __('Written by') . ' ' . config('timebank-cc.posts.site-content-writer') . ' ' . __('on') . ' ' . $update }}
+            </div>
+        @endforeach
+
+    @endif
+</div>

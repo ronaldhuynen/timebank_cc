@@ -80,6 +80,11 @@ Route::group([
 ], function () {
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
 
+
+    
+    //----- Unprotected non auth routes -----//
+
+
     // Fix 404 error when caching routes in combination with Livewire 3
     // See: https://github.com/mcamara/laravel-localization/issues/880
     Livewire::setUpdateRoute(function ($handle) {
@@ -90,10 +95,68 @@ Route::group([
         return view('welcome');
     })->name('welcome');
 
-
     Route::get('/goodbye', function () {
         return view('goodbye-deleted-user');
     })->name('goodbye-deleted-user');
+
+
+    /* Static Site Content */
+
+    Route::view(LaravelLocalization::transRoute('routes.static.getting-started'), 'static.getting-started')
+        ->name('static-getting-started');
+
+    Route::view(LaravelLocalization::transRoute('routes.static.faq'), 'static.faq')
+        ->name('static-faq');
+
+            
+    Route::view(LaravelLocalization::transRoute('routes.static.organizations'), 'static.organizations')
+        ->name('static-organizations');
+    
+        
+    Route::view(LaravelLocalization::transRoute('routes.static.principles'), 'static.principles')
+    ->name('static-principles');
+
+        
+    Route::view(LaravelLocalization::transRoute('routes.static.the-hague'), 'static.the-hague')
+        ->name('static-the-hague');
+
+        
+    Route::view(LaravelLocalization::transRoute('routes.static.lekkernassuh'), 'static.lekkernassuh')
+        ->name('static-lekkernassuh');
+
+        
+    Route::view(LaravelLocalization::transRoute('routes.static.amst-brus-lisb'), 'static.amst-brus-lisb')
+        ->name('static-amst-brus-lisb');
+        
+    Route::view(LaravelLocalization::transRoute('routes.static.work-w-us'), 'static.work-w-us')
+    ->name('static-work-w-us');
+
+
+    Route::view(LaravelLocalization::transRoute('routes.static.philosophy'), 'static.philosophy')
+    ->name('static-philosophy');
+
+
+    Route::view(LaravelLocalization::transRoute('routes.static.association'), 'static.association')
+    ->name('static-association');
+        
+    Route::view(LaravelLocalization::transRoute('routes.static.history'), 'static.history')
+    ->name('static-history');
+
+    Route::view(LaravelLocalization::transRoute('routes.static.press'), 'static.press-media')
+    ->name('static-press-media');
+
+    Route::view(LaravelLocalization::transRoute('routes.static.research'), 'static.research')
+    ->name('static-research');
+    
+    Route::view(LaravelLocalization::transRoute('routes.static.team'), 'static.team')
+    ->name('static-team');
+
+    Route::view(LaravelLocalization::transRoute('routes.static.messenger'), 'static.messenger')
+    ->name('static-messenger');
+
+
+
+
 
 
 
@@ -137,9 +200,6 @@ Route::group([
 
             // Legacy Cyclos payment link, as used by Lekkernasuh
             Route::get('/do/member/payment', [TransactionController::class, 'doCyclosPayment']);
-
-
-
 
 
             Route::get(LaravelLocalization::transRoute('routes.transactions'), 'App\Http\Controllers\TransactionController@transactions')->name('transactions');

@@ -73,7 +73,7 @@ return [
             'limit_min' => 0,
             'limit_max' => 6000, // 100 H
             'receiving_types' => [1,2],
-        ], 
+        ],
         'user_project' => [
             'name' =>  'personal project account',
             'limit_min' => 0,
@@ -94,18 +94,18 @@ return [
         'community' => [
             'name' => 'community account',
             'limit_min' => 0,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
-            'limit_max' => null, 
+            'limit_max' => null,
             'receiving_types' => [3,4],
         ],
         'debit' => [
             'name' => 'debit',
             'limit_min' => null,    // The 'source' bank and the debit account should have limit_min = NULL, other banks can use this config
-            'limit_max' => 0, 
+            'limit_max' => 0,
             'receiving_types' => [5],
         ],
     ],
-    'maxLengthHoursInput' => [  // Sets the default max length the amount component can have for the hours input box 
-        'user' => 3,    
+    'maxLengthHoursInput' => [  // Sets the default max length the amount component can have for the hours input box
+        'user' => 3,
         'organization' => 3,
         'bank' => 5,
         'admin' => 10,
@@ -114,7 +114,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User type permission settings  
+    | User type permission settings
     |--------------------------------------------------------------------------
     |
     | Payment types - defines which transaction types the user type can pay:
@@ -351,15 +351,16 @@ return [
     ],
 
 
-    
+
 /*
 |--------------------------------------------------------------------------
 | Post settings
 |--------------------------------------------------------------------------
-| 
+|
 */
     'posts' => [
         'postable_is_auth_user' => true,    // true: only authenticated models (users), false: active profile models stored in session (users, organizations, banks, admins)
+        'site-content-writer' => 'Timebank.cc' // Writer name for general site content such as static pages. This name can be a non-exsisting user / organization
     ]
 
 ];

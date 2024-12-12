@@ -32,6 +32,23 @@ return [
     'post.show_by_id' => 'artikel/{id}',
     'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'artikel/{slug}',
+
+    'static.getting-started' => 'starten',
+    'static.faq' => 'vraag-en-antwoord',
+    'static.organizations' => 'organizaties',
+    'static.principles' => 'principes',
+    'static.the-hague' => 'den-haag',
+    'static.lekkernassuh' => 'lekkernassuh',
+    'static.amst-brus-lisb' => 'amsterdam-brussel-lissabon',
+    'static.work-w-us' => 'werk-bij-ons',
+    'static.philosophy' => 'filosofie',
+    'static.association' => 'vereniging',
+    'static.history' => 'geschiedenis',
+    'static.press-media' => 'pers-en-media',
+    'static.research' => 'onderzoek',
+    'static.team' => 'team',
+    'static.messenger' => 'messenger',
+    
     'user.show' => 'gebruiker/{id}',
     'org.show' => 'organisatie/{id}',
     'user.edit' => 'gebruiker/bewerken',
@@ -43,7 +60,7 @@ return [
     'policy.show' => 'privacybeleid',
     'profile.user.show' => 'gebruiker/instellingen',
     'profile.admin.show' => 'admin/instellingen',
-    'show.by.name' => '{name}',
+    'show.by.name' => 'gebruiker/{name}',
 
 
 

@@ -256,15 +256,13 @@
                     </div>
 
 
-                    <!-- Content --- WYSIWYG editor (Trix editor) -->
+                    <!-- Content --- WYSIWYG editor (Quill editor) -->
                     <label class="form-label mt-4">
                     {{ __('Content') }}
                         @if ($language)
                         {{ '(' . __($language) . ')' }}
                         @endif
                     </label>
-                    {{-- <livewire:quill-editor :content="$post['translations'][0]['content']" /> --}}
-                    {{-- {{ dd($content)}} --}}
                     <livewire:quill-editor :content="$content" />
 
                     
@@ -358,12 +356,12 @@
                                 }
                             @endphp
                                 <x-datetime-picker label="{{ $labelStart }}"
-                                    placeholder="{{ __('Select a date') }}" wire:model.live="from" time-format="24"
+                                    placeholder="{{ __('Select a date') }}" wire:model.defer="from" time-format="24"
                                     display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                             </div>
                             <div class="my-6 flex-auto">
                                 <x-datetime-picker label="{{ $labelEnd }}"
-                                    placeholder="{{ __('Select a date') }}" wire:model.live="till" time-format="24"
+                                    placeholder="{{ __('Select a date') }}" wire:model.defer="till" time-format="24"
                                     display-format="DD-MM-YYYY @ H:mm" parse-format="YYYY-MM-DD HH:mm" />
                             </div>
                         </div>

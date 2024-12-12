@@ -1,69 +1,79 @@
-<footer class="mx-auto mt-24 py-4">
+<footer class="bg-white mx-auto mt-24">
 
-    <hr class="border-gray-300 dark:border-gray-200">
+    <hr class="border-gray-100 dark:border-gray-200">
 
     <div class="container py-6">
 
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 text-xs">
             <div>
-                <p class="font-semibold text-gray-800 dark:text-white">Quick Link</p>
+                <p class="font-semibold text-gray-800 dark:text-white">{{ __('Help') }}</p>
 
                 <div class="mt-1 flex flex-col items-start space-y-2">
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Home</a>
+                       href="{{ route('static-getting-started') }}">{{ __('Getting started') }}</a>
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Who We Are</a>
+                       href="{{ route('static-faq') }}">{{ __('FAQ') }}</a>
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Our Philosophy</a>
+                       href="{{ route('static-organizations') }}">{{ __('Organizations') }}</a>
+                    <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
+                       href="{{ route('static-principles') }}">{{ __('Timebank principles') }}</a>
                 </div>
             </div>
 
             <div>
-                <p class="font-semibold text-gray-800 dark:text-white">Industries</p>
+                <p class="font-semibold text-gray-800 dark:text-white">{{ __('Projects') }} </p>
 
                 <div class="mt-1 flex flex-col items-start space-y-2">
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Retail & E-Commerce</a>
+                       href="{{ route('static-the-hague') }}">{{ __('The Hague') }}</a>
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Information Technology</a>
+                       href="{{ route('static-lekkernassuh') }}">{{ __('Lekkernassuh') }}</a>
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Finance & Insurance</a>
+                       href="{{ route('static-amst-brus-lisb') }}">{{ __('Amsterdam, Brussels, Lisbon') }}</a>
+                    <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
+                       href="#">{{ __('Work with us') }}</a>
                 </div>
             </div>
 
             <div>
-                <p class="font-semibold text-gray-800 dark:text-white">Services</p>
+                <p class="font-semibold text-gray-800 dark:text-white">{{ __('Who we are') }}</p>
 
                 <div class="mt-1 flex flex-col items-start space-y-2">
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Translation</a>
+                       href="{{ route('static-philosophy') }}">{{ __('Our philosophy') }}</a>
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Proofreading & Editing</a>
+                       href="{{ route('static-association') }}">{{ __('The association') }}</a>
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">Content Creation</a>
+                       href="{{ route('static-history') }}">{{ __('History') }}</a>
+                    <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
+                       href="{{ route('static-press-media') }}">{{ __('Press and media') }}</a>
+                    <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
+                       href="{{ route('static-research') }}">{{ __('Research') }}</a>
                 </div>
             </div>
 
             <div>
-                <p class="font-semibold text-gray-800 dark:text-white">Contact Us</p>
+                <p class="font-semibold text-gray-800 dark:text-white">{{ __('Contact us') }}</p>
 
                 <div class="mt-1 flex flex-col items-start space-y-2">
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">+880 768 473 4978</a>
+                       href="{{ route('static-team') }}">{{ __('Meet the team') }}</a>
                     <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">info@merakiui.com</a>
+                       href="#">{{ __('Chat messenger') }}</a>
+                    <a class="text-gray-700 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
+                       href="#">info@timebank.cc</a>
                 </div>
             </div>
         </div>
 
         <!-- Bottom Section: Application Mark and Text -->
-        <div class="mt-10 flex w-full flex-col items-end justify-end space-y-2">
+        <div class="mt-1 flex w-full flex-col items-end justify-end space-y-2">
             <div class="flex flex-col items-center justify-center">
                 <a href="{{ route('dashboard') }}">
                     <x-jetstream.application-mark class="block h-9 w-auto" />
                 </a>
 
-                <p class="text-2xs text-gray-900 dark:text-gray-300">
+                <p class="text-2xs font-semibold text-gray-900 dark:text-gray-300">
                     {{ __('Your time is currency') }}
                 </p>
             </div>

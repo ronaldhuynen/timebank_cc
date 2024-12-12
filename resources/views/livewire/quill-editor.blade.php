@@ -9,6 +9,7 @@
                         ['bold', 'italic', 'underline', 'strike', 'link'],
                         [{'list': 'bullet' }],
                         [{ 'align': [] }],
+                        ['link', 'image', 'video'],
                         ['clean']  
                     ],
                 },

@@ -95,6 +95,11 @@ Route::group([
         return view('welcome');
     })->name('welcome');
 
+    
+    Route::view(LaravelLocalization::transRoute('routes.welcome'), 'welcome')
+        ->name('welcome');
+
+
     Route::get('/goodbye', function () {
         return view('goodbye-deleted-user');
     })->name('goodbye-deleted-user');
@@ -131,10 +136,8 @@ Route::group([
     Route::view(LaravelLocalization::transRoute('routes.static.work-w-us'), 'static.work-w-us')
     ->name('static-work-w-us');
 
-
     Route::view(LaravelLocalization::transRoute('routes.static.philosophy'), 'static.philosophy')
     ->name('static-philosophy');
-
 
     Route::view(LaravelLocalization::transRoute('routes.static.association'), 'static.association')
     ->name('static-association');

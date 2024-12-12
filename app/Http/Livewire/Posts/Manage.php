@@ -47,7 +47,8 @@ class Manage extends Component
     public $selectedTranslationId = null;    // Needed for the stopPublicationModal
 
     public $image;
-    public $imageCaption = '';  // TODO! Make image caption field
+    public $mediaOwner;
+    public $mediaCaption; 
     public $media;
 
     public $meetingShow = false;
@@ -78,6 +79,8 @@ class Manage extends Component
         'from' => 'date|nullable',
         'till' => 'date|nullable',
         'image' => 'nullable|image|max:5120',
+        'mediaOwner' => 'nullable|string|max:150',
+        'mediaCaption' => 'nullable|string|max:300',
         'meetingFrom' =>  'date|nullable',
         'meetingTill' =>  'date|nullable',
         'meeting.address' => 'string|max:100|nullable',
@@ -242,8 +245,19 @@ class Manage extends Component
         $this->from = $post->translations->first()->from;   // x-date-time-picker and x-select need a separate public property, see start of this file
         $this->till = $post->translations->first()->till; // x-date-time-picker and x-select need a separate public property, see start of this file
 
-        if ($post->media->count() > 0) {
+        // if ($post->media->count() > 0) {
+        //     $this->media = $post->getFirstMediaUrl('posts');    // Do not use responsive media in livewire pages that have multiple update cycles as the placeholder img show after an update
+        // }
+        
+        // Retrieve existing media caption
+        $mediaItem = $post->getFirstMedia('posts');
+        if ($mediaItem) {
             $this->media = $post->getFirstMediaUrl('posts');    // Do not use responsive media in livewire pages that have multiple update cycles as the placeholder img show after an update
+            $this->mediaOwner = $mediaItem->getCustomProperty('owner');
+            $this->mediaCaption = $mediaItem->getCustomProperty('caption-' . $this->locale);
+        } else {
+            $this->mediaOwner = null;
+            $this->mediaCaption = null;
         }
 
         $this->showModal = true;
@@ -425,12 +439,21 @@ class Manage extends Component
     public function saveMedia($post)
     {
         if ($this->image) {
+            // If a new image is uploaded
             $post->clearMediaCollection('posts');
             $post->addMedia($this->image->getRealPath())
                 ->withCustomProperties([
-                    'caption' => $this->imageCaption,
+                    'caption' => $this->mediaCaption,
                 ])
                 ->toMediaCollection('posts');
+            } else {    
+                // No new image uploaded – update the caption of existing media
+                $mediaItem = $post->getFirstMedia('posts');
+                if ($mediaItem) {
+                    $mediaItem->setCustomProperty('owner', $this->mediaOwner);
+                    $mediaItem->setCustomProperty('caption-' . $this->locale, $this->mediaCaption);
+                    $mediaItem->save();
+            }
         }
     }
 

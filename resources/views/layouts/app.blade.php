@@ -19,7 +19,6 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset(mix('app.css', 'vendor/messenger')) }}" id="main_css" rel="stylesheet"> {{--  Needed for Messenger notification pills in nav-bar --}}
     <link href="{{ asset('css/custom_messenger.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/trix.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tagify.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom_tagify.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom_timebank.css') }}" rel="stylesheet">
@@ -28,7 +27,7 @@
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <style>
         .ql-editor {
-            height: 300px;
+            height: 500px;
         }
     </style>
 
@@ -103,8 +102,8 @@
         <!-- Page Heading -->
         <x-notifications position="bottom-end" />
         @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="mx-auto max-w-7xl px-6 py-4 sm:px-6 lg:px-8">
+            <header class="bg-gray-900 shadow-sm mt-16">
+                <div class="mx-auto max-w-7xl px-6 py-2 sm:px-6 lg:px-8 invert-100">
                     {{ $header }}
                 </div>
             </header>

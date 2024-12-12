@@ -15,18 +15,27 @@
                 <p class="text-xl my-12 leading-loose text-gray-700 dark:text-gray-300">{{ $post->translations[0]->excerpt }}</p>
                 @endif
                 @if($post->hasMedia('*'))
-                    <img src="{{ $post->getFirstMediaUrl('*') }}" alt="{{ $post->translations[0]->title }}" class="w-full h-auto mb-4">
+                    <img src="{{ $post->getFirstMediaUrl('*') }}" alt="{{ $post->getFirstMedia('*')->getCustomProperty('caption') }}" class="w-full h-auto mb-4">
+                    <div class="text-sm font-thin mb-12 text-gray-500">
+                    <div>
+                    {{ $post->getFirstMedia('*')->getCustomProperty('caption-' . $post->translations[0]->locale) }}
+                    </div>
+                    <div>
+                    @if ($post->getFirstMedia('*')->getCustomProperty('owner'))
+                    {{ __('Images by') . ' ' . $post->getFirstMedia('*')->getCustomProperty('owner') . '.'}}
+                    @endif
+                    </div>
+                
                 @endif
                 
                 <!-- Content --->
-                <div class="max-w-2xl mx-auto my-12 p-4 post mb-6 bg-white dark:bg-gray-700">
+                <div class="text-gray-800 max-w-2xl mx-auto my-12 p-4 post mb-6 bg-white dark:bg-gray-700">
                 @if (isset($post->translations[0]->content))
-                <div class="content text-lg leading-relaxed">
-                    {!! $post->translations[0]->content !!}
-                </div>
+                    <div class="content text-lg leading-relaxed">
+                        {!! $post->translations[0]->content !!}
+                    </div>
                 @endif
-
-            </div>
+                </div>
             @php
                 $update = Illuminate\Support\Carbon::createFromTimeStamp(strtotime($post->translations[0]->updated_at))->isoFormat('LL');
             @endphp

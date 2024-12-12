@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-sm font-semibold leading-tight text-white">
-            {{ __('Getting started') }}
+        <h2 class="text-xl font-semibold leading-tight text-gray-900">
+            {{ __('Lekkernassuh') }}
         </h2>
     </x-slot>
 
@@ -11,7 +11,7 @@
             </div>
             <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                 <div class="px-3 sm:px-0">
-                        @livewire('static-post', ['type' => 'SiteContents\Static\GettingStarted' ?? null, 'limit' => 1 ])
+                        @livewire('static-post', ['type' => 'SiteContents\Static\Lekkernassuh' ?? null, 'limit' => 1 ])
                 </div>
             </div>
         </div>

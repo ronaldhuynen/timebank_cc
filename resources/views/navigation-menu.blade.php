@@ -1,4 +1,4 @@
-<nav class="border-b border-gray-100 bg-white" x-data="{ open: false }">
+<nav class="shadow-md border-b border-gray-100 bg-white fixed top-0 left-0 right-0 z-50 " x-data="{ open: false }">
     @auth
         <!-- Primary Navigation Menu -->
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

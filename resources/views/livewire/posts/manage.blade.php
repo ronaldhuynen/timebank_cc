@@ -305,6 +305,33 @@
                             @enderror
                         </div>
 
+                        <!--- Media owner --->
+                        <div class="w-full py-4">
+                        <label class="block text-sm font-medium text-gray-700">
+                            {{ __('Image caption') . ' ' . '(' . __('all languages') . ')'}}
+                        </label>
+                        <input wire:model.live.defer="mediaOwner"
+                            class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
+                        @error('mediaOwner')
+                            <p class="mt-2 text-sm text-red-600" id="media-caption-error">{{ $message }}</p>
+                        @enderror
+                        </div>
+
+                        <!--- Media caption --->
+                        <div class="w-full py-4">
+                        <label class="block text-sm font-medium text-gray-700">
+                            {{ __('Image caption') }}
+                            @if ($language)
+                                {{ '(' . __($language) . ')' }}
+                            @endif
+                        </label>
+                        <input wire:model.live.defer="mediaCaption"
+                            class="mt-2 w-full rounded-lg border border-gray-400 py-2 pl-2 pr-4 text-sm text-xl focus:border-blue-400 focus:outline-none sm:text-base" />
+                        @error('mediaCaption')
+                            <p class="mt-2 text-sm text-red-600" id="media-owner-error">{{ $message }}</p>
+                        @enderror
+                        </div>
+
                         <!-- Event details -->
                         @if ($meetingShow)
                             <!-- Event date pickers: from and till -->

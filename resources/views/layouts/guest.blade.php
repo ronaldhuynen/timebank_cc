@@ -9,14 +9,18 @@
     <!-- Scripts -->
     <wireui:scripts />
     {{-- <script src="{{ mix('js/app.js') }}" defer></script> --}}
-
-    <!-- Styles -->
+ <!-- Styles -->
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom_timebank.css') }}" rel="stylesheet">
     @livewireStyles
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    {{-- <link rel="stylesheet" href="{{ mix('css/app.css') }}"> --}}
 </head>
 <body>
-        <x-notifications position="bottom-end" />
-        <div class="min-h-screen bg-gray-100">
+    <x-jetstream.banner />
+    <x-jetstream.toaster />
+    <x-notifications position="bottom-end" />
+    <div class="min-h-screen bg-gray-100">
+       @livewire('navigation-menu-guest')
         @if (isset($header))
             <header class="bg-white shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -28,8 +32,17 @@
         <main>
             {{ $slot }}
         </main>
+
+        <!-- Footer -->
+        <x-footer />
     </div>
 
+    <!-- Scripts body-->
+    <!-- Be careful with changing the loading order! -->
     @livewireScripts
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    @stack('scripts')
+    @yield('scripts_body')
+    @yield('js')
 </body>
 </html>

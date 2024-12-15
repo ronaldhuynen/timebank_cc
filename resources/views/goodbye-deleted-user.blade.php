@@ -1,9 +1,9 @@
 <x-guest-layout>
     @if (session('result'))
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-900">
+        <div class="mt-2 text-xl font-semibold leading-tight text-gray-100">
             {{ __('Goodbye')}}
-        </h2>
+        </div>
     </x-slot>
 
     <div class="py-12">

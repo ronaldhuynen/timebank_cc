@@ -16,6 +16,7 @@ class SidePost extends Component
     public function mount($type, $sticky = null, $random = null, $latest = null)
     {
         $this->type = $type;
+
         if ($sticky) {
             $this->sticky = true;
         }

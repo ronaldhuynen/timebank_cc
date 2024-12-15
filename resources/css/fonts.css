@@ -1,0 +1,155 @@
+/* Define the font-face for Oswald Bold */
+@font-face {
+    font-family: 'Oswald';
+    src: url('/fonts/static/oswald/Oswald-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Define the font-face for Oswald ExtraLight */
+@font-face {
+    font-family: 'Oswald';
+    src: url('/fonts/static/oswald/Oswald-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+/* Define the font-face for Oswald Light */
+@font-face {
+    font-family: 'Oswald';
+    src: url('/fonts/static/oswald/Oswald-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Define the font-face for Oswald Medium */
+@font-face {
+    font-family: 'Oswald';
+    src: url('/fonts/static/oswald/Oswald-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Define the font-face for Oswald Regular */
+@font-face {
+    font-family: 'Oswald';
+    src: url('/fonts/static/oswald/Oswald-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Define the font-face for Oswald SemiBold */
+@font-face {
+    font-family: 'Oswald';
+    src: url('/fonts/static/oswald/Oswald-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+/* Define the font-face for Roboto Black */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+/* Define the font-face for Roboto Black Italic */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+/* Define the font-face for Roboto Bold */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Define the font-face for Roboto Bold Italic */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Define the font-face for Roboto Italic */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* Define the font-face for Roboto Light */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Define the font-face for Roboto Light Italic */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+/* Define the font-face for Roboto Medium */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Define the font-face for Roboto Medium Italic */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Define the font-face for Roboto Regular */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Define the font-face for Roboto Thin */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+/* Define the font-face for Roboto Thin Italic */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/static/roboto/Roboto-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+
+/* Apply the Roboto font-family to the body */
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+/* Apply the font-family to all heading elements */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', sans-serif !important;
+}

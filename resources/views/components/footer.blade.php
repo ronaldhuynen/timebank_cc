@@ -1,10 +1,8 @@
-<footer class="bg-black mx-auto mt-24">
-
-    <hr class="border-gray-100 dark:border-gray-200">
+<footer class="mx-auto bg-black pt-4">
 
     <div class="container py-6">
 
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 text-xs">
+        <div class="grid grid-cols-1 gap-6 text-xs sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             <div>
                 <p class="font-semibold text-white dark:text-white">{{ __('Help') }}</p>
 
@@ -27,7 +25,7 @@
                     <a class="text-gray-100 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
                        href="{{ route('static-the-hague') }}">{{ __('The Hague') }}</a>
                     <a class="text-gray-100 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="{{ route('static-lekkernassuh') }}">{{ __('Lekkernassuh') }}</a>
+                       href="{{ route('static-lekkernassuh') }}">{{ __('Lekkernassûh') }}</a>
                     <a class="text-gray-100 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
                        href="{{ route('static-amst-brus-lisb') }}">{{ __('Amsterdam, Brussels, Lisbon') }}</a>
                     <a class="text-gray-100 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
@@ -68,7 +66,7 @@
 
         <!-- Bottom Section: Application Mark and Text -->
         <div class="mt-1 flex w-full flex-col items-end justify-end space-y-2">
-            <div class="flex flex-col items-center justify-center invert-100">
+            <div class="invert-100 flex flex-col items-center justify-center">
                 <a href="{{ route('dashboard') }}">
                     <x-jetstream.application-mark class="block h-9 w-auto" />
                 </a>

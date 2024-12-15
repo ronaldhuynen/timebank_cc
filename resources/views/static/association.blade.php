@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-900">
+        <div class="mt-2 text-xl font-semibold leading-tight text-gray-100">
             {{ __('Association') }}
-        </h2>
+        </div>
     </x-slot>
 
     <div class="py-12">

@@ -4,26 +4,42 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+    {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
 
     <!-- Scripts -->
     <wireui:scripts />
     {{-- <script src="{{ mix('js/app.js') }}" defer></script> --}}
  <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    
     <link href="{{ asset('css/custom_timebank.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fonts.css') }}" rel="stylesheet"> <!-- Include custom fonts CSS -->
     @livewireStyles
-    {{-- <link rel="stylesheet" href="{{ mix('css/app.css') }}"> --}}
+
+    <style>
+/* Apply the Roboto font-family to the body */
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+/* Apply the font-family to all heading elements */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif !important;
+        text-transform: uppercase !important;
+}
+    </style>
+
 </head>
-<body>
+<body class="font-sans antialiased flex flex-col min-h-screen">
     <x-jetstream.banner />
     <x-jetstream.toaster />
     <x-notifications position="bottom-end" />
-    <div class="min-h-screen bg-gray-100">
+    
+    <div class="flex-grow bg-gray-100">
        @livewire('navigation-menu-guest')
         @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <header class="bg-black shadow mt-16">
+                <div class="max-w-7xl mx-auto pt-1 pb-2 px-4 sm:px-6 lg:px-8 invert-100">
                     {{ $header }}
                 </div>
             </header>
@@ -32,9 +48,11 @@
         <main>
             {{ $slot }}
         </main>
+    </div>
 
-        <!-- Footer -->
-        <x-footer />
+     <!-- Footer -->
+    <div class="w-full">
+         <x-footer />
     </div>
 
     <!-- Scripts body-->

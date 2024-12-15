@@ -17,14 +17,30 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset(mix('app.css', 'vendor/messenger')) }}" id="main_css" rel="stylesheet"> {{--  Needed for Messenger notification pills in nav-bar --}}
+    <link href="{{ asset(mix('app.css', 'vendor/messenger')) }}" id="main_css" rel="stylesheet">  Needed for Messenger notification pills in nav-bar
     <link href="{{ asset('css/custom_messenger.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tagify.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom_tagify.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom_timebank.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fonts.css') }}" rel="stylesheet"> <!-- Include custom fonts CSS -->
     @livewireStyles
-    <!-- Quill editor -->
-        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+
+
+    <style>
+/* Apply the Roboto font-family to the body */
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+/* Apply the font-family to all heading elements */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif !important;
+        text-transform: uppercase !important;
+}
+    </style>
+
+    <!-- Quill editor (without trackers) -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <style>
         .ql-editor {
             height: 500px;
@@ -32,7 +48,7 @@
     </style>
 
     <!-- Scripts -->   
-     @wireUiScripts
+    @wireUiScripts
 
     {{-- TODO: replace with self-hosted scripts --}}
     {{-- Leavlet is aan open-source JavaScript library
@@ -91,19 +107,19 @@
 
 </head>
 
-<body class="font-sans antialiased" id="messenger-style-overrides">
+<body class="font-sans antialiased flex flex-col min-h-screen">
 
     <x-jetstream.banner />
     <x-jetstream.toaster />
 
-    <div class="min-h-screen bg-gray-100">
+    <div class="flex-grow bg-gray-100">
         @livewire('navigation-menu')
-
-        <!-- Page Heading -->
         <x-notifications position="bottom-end" />
+
+        <!-- Page Heading -->        
         @if (isset($header))
-            <header class="bg-gray-900 shadow-sm mt-16">
-                <div class="mx-auto max-w-7xl px-6 py-2 sm:px-6 lg:px-8 invert-100">
+            <header class="bg-black shadow mt-10 ">
+                <div class="max-w-7xl mx-auto pt-1 pb-2 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
@@ -113,9 +129,11 @@
         <main>
             {{ $slot }}
         </main>
+    </div>
 
-        <!-- Footer -->
-        <x-footer />
+    <!-- Footer -->
+    <div class="w-full">
+         <x-footer />
     </div>
 
     <!-- Scripts body-->

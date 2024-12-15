@@ -1,10 +1,11 @@
 <!--- Authenticated users section --->
 @auth
 <x-app-layout>
+
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-900">
-            {{ __('Lekkernassuh') }}
-        </h2>
+        <div class="mt-2 text-xl font-semibold leading-tight text-gray-100">
+            {{ __('Lekkernassûh') }}
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -25,6 +26,13 @@
 <!--- Guests section -->
 @guest
 <x-guest-layout>
+
+    <x-slot name="header">
+        <div class="mt-2 font-semibold text-xl  leading-tight text-gray-900">
+            {{ __('Lekkernassûh') }}
+        </div>
+    </x-slot>
+
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div>

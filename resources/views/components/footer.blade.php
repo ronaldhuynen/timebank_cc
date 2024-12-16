@@ -57,7 +57,7 @@
                     <a class="text-gray-100 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
                        href="{{ route('static-team') }}">{{ __('Meet the team') }}</a>
                     <a class="text-gray-100 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
-                       href="#">{{ __('Chat messenger') }}</a>
+                       href="{{ route('static-team') }}">{{ __('Chat messenger') }}</a>
                     <a class="text-gray-100 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-600 dark:hover:text-blue-400"
                        href="#">info@timebank.cc</a>
                 </div>

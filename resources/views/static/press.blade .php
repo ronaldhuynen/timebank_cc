@@ -1,4 +1,8 @@
-<x-app-layout>
+@php
+    $layout = Auth::check() ? 'app-layout' : 'guest-layout';
+@endphp
+
+<x-dynamic-component :component="$layout">
     <x-slot name="header">
         <div class="mt-2 text-xl font-semibold leading-tight text-gray-900">
             {{ __('Press') }}
@@ -16,4 +20,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-dynamic-layout>

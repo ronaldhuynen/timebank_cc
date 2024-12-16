@@ -6,6 +6,7 @@ use App\View\Components\GuestLayout;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -58,6 +59,13 @@ class AppServiceProvider extends ServiceProvider
 
         // Register Guest Layout
         Blade::component('guest-layout', GuestLayout::class);
+
+
+        
+        Blade::directive('layout', function () {
+            return Auth::check() ? 'app-layout' : 'guest-layout';
+        });
+
 
     }
 }

@@ -1,12 +1,14 @@
-<x-guest-layout>
-    <!-- Your content here -->
+@php
+    $layout = Auth::check() ? 'app-layout' : 'guest-layout';
+@endphp
 
-        {{-- <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0"> --}}
-
-  
-                        @livewire('welcome.landing-post', ['type' => 'SiteContents\Welcome\Landing' ?? null, 'random' => true, 'limit' => 1])
-                        @livewire('welcome.cta-post', ['type' => 'SiteContents\Welcome\Cta' ?? null])
-
-
-</x-guest-layout>
-
+<x-dynamic-component :component="$layout">
+    <!-- Your content here --> 
+    @livewire('welcome.landing-post', ['type' => 'SiteContents\Welcome\Landing' ?? null, 'random' => true, 'limit' => 1])
+    @guest
+        @livewire('welcome.cta-post', ['type' => 'SiteContents\Welcome\Cta' ?? null])
+    @endguest
+    @auth
+        <div class="bg-black -m-6"></div>
+    @endauth
+</x-dynamic-component>

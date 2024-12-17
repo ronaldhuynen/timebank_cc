@@ -7,8 +7,9 @@
         @foreach($posts as $post)
             <div class="relative w-full p-0 m-0">
                 @if($post->hasMedia('*'))
-                    <img src="{{ $post->getFirstMediaUrl('*') }}" alt="{{ $post->getFirstMedia('*')->getCustomProperty('caption') }}" class="w-screen h-auto mb-4">
+                    <img src="{{ $post->getFirstMediaUrl('*', 'hero') }}" alt="{{ $post->getFirstMedia('*')->getCustomProperty('caption') }}" class="w-screen h-auto mb-4">
                 @endif
+                
 
                 <!-- Title -->
                 @if (isset($post->translations[0]) && isset($post->translations[0]->title))
@@ -19,26 +20,6 @@
                     </div>
                 @endif
             </div>
-
-            <!-- Intro / excerpt -->
-            {{-- @if (isset($post->translations[0]) && isset($post->translations[0]->excerpt))
-                <p class="text-lg my-12 leading-loose text-gray-800 dark:text-gray-300">{{ $post->translations[0]->excerpt }}</p>
-            @endif --}}
-
-            {{-- @if($post->hasMedia('*'))
-                <div class="text-sm font-light mb-12 text-gray-800">
-                    <div>
-                        @if (isset($post->translations[0]))
-                            {{ $post->getFirstMedia('*')->getCustomProperty('caption-' . $post->translations[0]->locale) }}
-                        @endif
-                    </div>
-                    <div>
-                        @if ($post->getFirstMedia('*')->getCustomProperty('owner'))
-                            {{ __('Images by') . ' ' . $post->getFirstMedia('*')->getCustomProperty('owner') . '.'}}
-                        @endif
-                    </div>
-                </div>
-            @endif --}}
 
             <!-- Content -->
             @if (isset($post->translations[0]) && isset($post->translations[0]->content))

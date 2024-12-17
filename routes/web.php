@@ -67,7 +67,7 @@ if (App::environment(['local', 'development', ' test' ])) {
     // Test error pages to check logging of errors and LogError middleware      
     
     // Simulate a 404 Not Found Error
-    // Change nr to test other erros:
+    // Change nr to test other errors:
     // 401, 402, 403, 404, 419, 429, 500, 503
     Route::get('/test-error-page', function () {
         abort(404);

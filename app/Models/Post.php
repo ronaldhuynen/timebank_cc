@@ -138,15 +138,29 @@ class Post extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('x-small')
-            ->focalCrop(36, 36, 50, 50);
+        $this->addMediaConversion('favicon')    //1:1
+            ->focalCrop(32, 32, 50, 50);
+            
+        $this->addMediaConversion('logo')   //1:1
+            ->focalCrop(160, 160, 50, 50);
 
-        $this->addMediaConversion('thumbnail')
+        $this->addMediaConversion('thumbnail')  // 1:1
             ->focalCrop(150, 150, 50, 50);
+        
+        $this->addMediaConversion('blog')   //3:2
+            ->focalCrop(1200, 630, 50, 50)
+            ->withResponsiveImages();
 
-        $this->addMediaConversion('4_3')
+        $this->addMediaConversion('hero')   //16:9
+            ->focalCrop(3840, 2160, 50, 50);
+            
+        $this->addMediaConversion('half_hero') //16:4.5 panoramic
+            ->focalCrop(3840, 1080, 50, 50);
+
+        $this->addMediaConversion('4_3')    //4:3
             ->focalCrop(3072, 2304, 50, 50)
             ->withResponsiveImages();
+        
     }
 
     public function registerMediaCollection(): void

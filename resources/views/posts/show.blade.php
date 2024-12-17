@@ -12,7 +12,7 @@
 
                     <div class="mt-12">
                         @if ($media != null)
-                            {{ $media('4_3') }}
+                            {{ $media('hero') }}
                         @endif
                     </div>
                     <div class="mb-2 mt-6 flex justify-between">

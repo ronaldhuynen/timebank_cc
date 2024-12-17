@@ -25,7 +25,9 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
 
                 // return redirect(RouteServiceProvider::HOME);
-                
+                session('activeProfileType', 'App\Models\User');
+                session('activeProfileId', auth()->user()->id);
+
                 return redirect()->route('dashboard'); // Redirect to the dashboard route
 
             }

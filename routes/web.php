@@ -6,6 +6,7 @@ use App\Http\Controllers\LangJsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Middleware\LogErrors;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ use Laravel\Jetstream\Jetstream;
 use Livewire\Livewire;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use RTippin\MessengerUi\Http\Controllers\ViewPortalController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +62,22 @@ if (App::environment(['local', 'development', ' test' ])) {
 
     // Optimize clear
     Route::get('/test/opt-clear', [TestController::class, 'optimizeClear'])->name('optimize-clear');
+
+
+    // Test error pages to check logging of errors and LogError middleware      
+    
+    // Simulate a 404 Not Found Error
+    // Change nr to test other erros:
+    // 401, 402, 403, 404, 419, 429, 500, 503
+    Route::get('/test-error-page', function () {
+        abort(404);
+    });
+
+    // Simulate a 500 Internal Server Error
+    Route::get('/test-500', function () {
+        throw new \Exception('Simulated server error');
+    });
+
 
 }
 

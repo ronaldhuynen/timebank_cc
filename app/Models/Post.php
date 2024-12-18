@@ -139,27 +139,41 @@ class Post extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('favicon')    //1:1
-            ->focalCrop(32, 32, 50, 50);
+            ->focalCrop(32, 32, 50, 50)
+            ->optimize()
+            ->format('gif'); // Ensure the format is set to gif to preserve transparency
             
         $this->addMediaConversion('logo')   //1:1
-            ->focalCrop(160, 160, 50, 50);
+            ->focalCrop(160, 160, 50, 50)
+            ->optimize()
+            ->format('webp'); // Ensure the format is set to webp to preserve transparency
 
         $this->addMediaConversion('thumbnail')  // 1:1
-            ->focalCrop(150, 150, 50, 50);
+            ->focalCrop(150, 150, 50, 50)
+            ->optimize()
+            ->format('webp'); // Ensure the format is set to webp to preserve transparency
         
         $this->addMediaConversion('blog')   //3:2
             ->focalCrop(1200, 630, 50, 50)
-            ->withResponsiveImages();
+            ->withResponsiveImages()
+            ->optimize()
+            ->format('webp'); // Ensure the format is set to webp to preserve transparency
 
         $this->addMediaConversion('hero')   //16:9
-            ->focalCrop(3840, 2160, 50, 50);
+            ->focalCrop(3840, 2160, 50, 50)
+            ->withResponsiveImages()
+            ->optimize()
+            ->format('webp'); // Ensure the format is set to webp to preserve transparency
             
         $this->addMediaConversion('half_hero') //16:4.5 panoramic
-            ->focalCrop(3840, 1080, 50, 50);
+            ->focalCrop(3840, 1080, 50, 50)
+            ->format('webp'); // Ensure the format is set to webp to preserve transparency
 
         $this->addMediaConversion('4_3')    //4:3
             ->focalCrop(3072, 2304, 50, 50)
-            ->withResponsiveImages();
+            ->withResponsiveImages()
+            ->optimize()
+            ->format('webp'); // Ensure the format is set to webp to preserve transparency
         
     }
 

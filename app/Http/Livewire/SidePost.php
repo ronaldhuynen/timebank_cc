@@ -117,16 +117,15 @@ class SidePost extends Component
             ->first();
         }
         
-        $thumbnail = null;
-        if ($posts) {
-            if ($posts->hasMedia('*')) {
-                $thumbnail = $posts->getFirstMedia('*')->getUrl();
-            }        
+
+        $image = null;
+        if ($posts && $posts->hasMedia('*')) {
+            $image = $posts->getFirstMediaUrl('*', 'half_hero');
         }
 
         return view('livewire.side-post', [
             'posts' => $posts,
-            'thumbnail' => $thumbnail,
+            'image' => $image,
         ]);
     }
 }

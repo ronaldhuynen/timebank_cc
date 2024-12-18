@@ -2,8 +2,8 @@
         
         @if ($posts)
             <div class="images my-3">
-            @if ($thumbnail != null)
-                <img src="{{ $thumbnail }}">
+              @if($image)
+                <img src="{{ $image }}" alt="{{ $posts->getFirstMedia('*')->getCustomProperty('caption') }}" class="w-screen h-auto mb-4">
             @endif
         </div>
 

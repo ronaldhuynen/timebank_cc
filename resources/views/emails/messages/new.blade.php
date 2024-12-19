@@ -1,7 +1,6 @@
 @component('mail::message')
-@foreach($recipient as $type => $r)
-Hello {{ $r['name'] }},
-@endforeach
+Hello {{ $recipient->name }},
+
 
 Your conversation on Timebank.cc with {{$event->thread->subject}} has an unread update:
 

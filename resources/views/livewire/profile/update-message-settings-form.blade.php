@@ -8,7 +8,7 @@
     </x-slot>
 
     <x-slot name="form">
-        <div class="col-span-6 sm:col-span-4 !font-normal">
+        <div class="col-span-8 sm:col-span-4 !font-normal">
             <x-jetstream.label for="email-settings" value="{{ __('Emails') }}" />
             <div class="p-2"></div>
             <x-checkbox id="system_messages" secondary label="{{ __('System messages') }}" wire:model="systemMessage" readonly="true" disabled="true"/>
@@ -19,8 +19,22 @@
             <div class="p-2"></div>
             <x-checkbox id="personal_chat_messages" secondary label="{{ __('Unread personal chat messages') }}" wire:model="personalChat"/>
             <x-checkbox id="group_chat_messages" secondary label="{{ __('Unread group chat messages') }}" wire:model="groupChat"/>
-        </div>
+            <div class="p-4"></div>
+            <x-jetstream.label for="unread_chat_delay" value="{{ __('Delay for sending unread chat message emails') }}" />
+            <div class="p-1"></div>
+            <div class="w-28">
+                        <div class="p-1"></div>
+                <x-maskable
+                    id="unread_chat_delay"
+                    mask="##"
+                    suffix="{{ __('hours') }}"
+                    placeholder="0"
+                    wire:model="chatUnreadDelay"
+                />
+            </div>
+        </div>   
     </x-slot>
+
 
     <x-slot name="actions">
         <x-jetstream.action-message class="mr-3" on="saved">

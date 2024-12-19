@@ -361,6 +361,17 @@ return [
     'posts' => [
         'postable_is_auth_user' => true,    // true: only authenticated models (users), false: active profile models stored in session (users, organizations, banks, admins)
         'site-content-writer' => 'Timebank.cc' // Writer name for general site content such as static pages. This name can be a non-exsisting user / organization
-    ]
+    ],
+
+
+/*
+|--------------------------------------------------------------------------
+| Custom Messenger settings
+|--------------------------------------------------------------------------
+|
+*/
+        'messenger' => [
+            'default_unread_mail_delay' => 8 * 60, // In minutes. After this delay an email will be send to notify an unread chat message
+        ]
 
 ];

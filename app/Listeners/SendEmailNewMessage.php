@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use Carbon\Carbon;
 use App\Jobs\SendEmailNewMessage as JobsSendEmailNewMessage;
+use Carbon\Carbon;
 
 
 class SendEmailNewMessage
@@ -25,17 +25,17 @@ class SendEmailNewMessage
      */
     public function handle($event)
     {
-        $minutes =1; // Delay in before New Message email is dispatched
+        // $minutes =1; // Delay in before New Message email is dispatched
 
-        // TODO: remove logs
-        info('Job will be dispatched in ' . $minutes . ' minutes');
+        // // TODO: remove logs
+        // info('Job will be dispatched in ' . $minutes . ' minutes');
 
-        info('Message data:');
-        info($event->message);
+        // info('Message data:');
+        // info($event->message);
 
-        $minutes_ago = $minutes; // time that a recipient did not read tha last message of a thread (conversation)
-        $read_before = Carbon::now()->subMinutes($minutes_ago)->toDateTimeString();
+        // $minutes_ago = $minutes; // time that a recipient did not read tha last message of a thread (conversation)
+        // $read_before = Carbon::now()->subMinutes($minutes_ago)->toDateTimeString();
 
-        dispatch(new JobsSendEmailNewMessage($event, $read_before))->delay(($minutes*60));
+        dispatch(new JobsSendEmailNewMessage($event));
     }
 }

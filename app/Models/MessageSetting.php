@@ -18,6 +18,7 @@ class MessageSetting extends Model
         'general_newsletter',
         'personal_chat',
         'group_chat',
+        'chat_unread_delay',
     ];
 
 

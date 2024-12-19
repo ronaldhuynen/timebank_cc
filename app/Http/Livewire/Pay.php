@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
+use RTippin\Messenger\Facades\MessengerComposer;
 use Stevebauman\Location\Facades\Location as IpLocation;
 use WireUi\Traits\WireUiActions;
 use function Laravel\Prompts\error;
@@ -310,18 +311,40 @@ class Pay extends Component
             //$save = false;
 
             if ($save) {
+
+                $chatDescription = $description;                
+                $chatMessage = __('messages.pay_chat_message', [
+                    'amount' => tbFormat($amount),
+                    'account_name' => $this->toAccountName,
+                ]);
+
+                
                 // Commit the database transaction
                 DB::commit();
                 // WireUI notification
                 $this->notification()->success($title = __('Transaction done!'), $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />' . '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>');
                 $this->dispatch('resetForm');
 
-                           
 
-                // Send TransferReceived mail if conditions are met
+                // Send chat message and an email if conditions are met
                 $recipient = $transfer->accountTo->accountable;
+                $sender = $transfer->accountFrom->accountable;
 
-                // Check if the recipient has message settings and an email address
+                MessengerComposer::to($recipient)
+                    ->from($sender)
+                    ->emitTyping()
+                    ->message($chatMessage);
+                MessengerComposer::to($recipient)
+                    ->from($sender)
+                    ->silent()
+                    ->message($chatDescription);
+                MessengerComposer::to($recipient)
+                    ->from($sender)
+                    ->silent()
+                    ->message(route('transaction.show', ['transactionId' => $transfer->id]));
+
+
+                // Check if the recipient has message settings for receiving this email and has also an email address
                 if (method_exists($recipient, 'message_settings')) {
                     $messageSettings = $recipient->message_settings()->first();
 

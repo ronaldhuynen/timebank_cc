@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire\Profile;
 
-use App\Models\MessageSetting;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class UpdateMessageSettingsForm extends Component
@@ -14,6 +12,7 @@ class UpdateMessageSettingsForm extends Component
     public bool $generalNewsletter;
     public bool $personalChat;
     public bool $groupChat;
+    public int $chatUnreadDelay;
 
     protected $rules = [
         'systemMessage' => 'boolean',
@@ -21,7 +20,8 @@ class UpdateMessageSettingsForm extends Component
         'localNewsletter' => 'boolean',
         'generalNewsletter' => 'boolean',
         'personalChat' => 'boolean',
-        'groupChat' => 'boolean', 
+        'groupChat' => 'boolean',
+        'chatUnreadDelay' => 'integer|max:99'  // 168 hours is one week
         ];
 
 
@@ -42,6 +42,7 @@ class UpdateMessageSettingsForm extends Component
                 'general_newsletter' => true,
                 'personal_chat' => true,
                 'group_chat' => true,
+                'chat_unread_delay' => config('timebank-cc.messenger.default_unread_mail_delay')
             ]);
         }
 
@@ -51,6 +52,7 @@ class UpdateMessageSettingsForm extends Component
         $this->generalNewsletter = $settings->general_newsletter;
         $this->personalChat = $settings->personal_chat;
         $this->groupChat = $settings->group_chat;
+        $this->chatUnreadDelay = $settings->chat_unread_delay;
     }
 
 
@@ -69,6 +71,7 @@ class UpdateMessageSettingsForm extends Component
                 'general_newsletter' => $this->generalNewsletter,
                 'personal_chat' => $this->personalChat,
                 'group_chat' => $this->groupChat,
+                'chat_unread_delay' => $this->chatUnreadDelay,
             ]
         );
 

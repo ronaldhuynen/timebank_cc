@@ -21,6 +21,7 @@ class NewMessageMail extends Mailable //implements ShouldQueue  // ShouldQueue h
      */
     public function __construct($event, $owner, $recipient)
     {
+        info($recipient);
         return $this
             ->from('messages@timebank_2.cc', 'Timebank.cc Messenger')      // Optional: set alternative from data, other than the global one.
             ->subject($event->thread->subject . __(' has an update'))
@@ -28,7 +29,7 @@ class NewMessageMail extends Mailable //implements ShouldQueue  // ShouldQueue h
             ->with([
                 'event' => $event,
                 'owner' => $owner,
-                'recipient' => $recipient->toArray()
+                'recipient' => $recipient
                 ]);
     }
 

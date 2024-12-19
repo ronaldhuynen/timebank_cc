@@ -16,8 +16,9 @@ class CreateMessageSettingsTable extends Migration
             $table->boolean('payment_received')->default(true);
             $table->boolean('local_newsletter')->default(true);
             $table->boolean('general_newsletter')->default(true);
-            $table->boolean('personal_chat')->default(true);
+            $table->boolean('personal_chat')->default(true);            
             $table->boolean('group_chat')->default(true);
+            $table->integer('chat_unread_delay')->default(config('timebank-cc.messenger.default_unread_mail_delay'));
             $table->timestamps();
         });
     }

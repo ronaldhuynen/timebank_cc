@@ -35,6 +35,8 @@ return [
     'pay_limit_error_budget_from_and_to_without_budget_to' => 'Sorry, your balance is too low for this transfer. Your balance cannot go below :limitMinFrom. Moreover, it would also exceed the maximum balance of the receiving account.',
     'pay_limit_error_budget_to' => 'Sorry, this transfer would exceed the maximum balance of the receiving account. Maximum transfer amount possible: :transferBudgetTo.',
     'pay_limit_error_budget_to_without_budget_to' => 'Sorry, this transfer would exceed the maximum balance of the receiving account. Please contact :toHolderName what to do.',
+    'pay_chat_message' => 'Hello, I have just paid :amount to your :account_name',
+
 
     // single-transaction.blade.php
     'qr_transaction_info' => ':from_relation and :to_relation can verify this transaction by scanning the code.',

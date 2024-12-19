@@ -7,14 +7,15 @@ use App\Mail\TransferReceived;
 use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\TransactionType;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
-use Stevebauman\Location\Facades\Location as IpLocation;
 
+use Stevebauman\Location\Facades\Location as IpLocation;
 use WireUi\Traits\WireUiActions;
 use function Laravel\Prompts\error;
 
@@ -315,9 +316,23 @@ class Pay extends Component
                 $this->notification()->success($title = __('Transaction done!'), $description = tbFormat($amount) . __('was paid to the ') . $this->toAccountName . __(' of ') . $this->toHolderName . '.' . '<br /><br />' . '<a href="' . route('transaction.show', ['transactionId' => $transfer->id]) . '">' . __('Show Transaction # ') . $transfer->id . '</a>');
                 $this->dispatch('resetForm');
 
-                // Send TransferReceived mail
-                $now = now();
-                Mail::to($transfer->accountTo->accountable)->later($now->addSeconds(1), new TransferReceived($transfer));
+                           
+
+                // Send TransferReceived mail if conditions are met
+                $recipient = $transfer->accountTo->accountable;
+
+                // Check if the recipient has message settings and an email address
+                if (method_exists($recipient, 'message_settings')) {
+                    $messageSettings = $recipient->message_settings()->first();
+
+                    if ($messageSettings && $messageSettings->payment_received) {
+                        // Ensure the recipient has an email attribute
+                        if (isset($recipient->email)) {
+                            $now = now();
+                            Mail::to($recipient->email)->later($now->addSeconds(2), new TransferReceived($transfer));
+                        }
+                    }
+                }
 
             } else {
                 throw new \Exception('Transaction could not be saved');

@@ -5,8 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class UserDeletedMail extends Mailable implements ShouldQueue
@@ -31,7 +29,7 @@ class UserDeletedMail extends Mailable implements ShouldQueue
      * @return $this
      */
     public function build()
-    {      
+    {
         return $this
                 ->from('admin@timebank.cc', 'Timebank.cc Administration') // Optional: set alternative from data, other than the global one.
                 ->subject(trans('messages.Your_profile_has_been_deleted', [], $this->locale))
@@ -43,6 +41,6 @@ class UserDeletedMail extends Mailable implements ShouldQueue
                     'time' => $this->result['time']
                 ]);
     }
-    
+
 
 }

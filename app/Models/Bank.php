@@ -122,6 +122,15 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
 
 
     /**
+     * Get all of the bank's message settings.
+     */
+    public function message_settings()
+    {
+        return $this->morphMany(MessageSetting::class, 'message_settingable');
+    }
+
+
+    /**
      * Rtippin Messenger:
      * Implement the MessengerProvider interface for each provider registered.
      *

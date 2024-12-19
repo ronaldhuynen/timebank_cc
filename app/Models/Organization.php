@@ -269,6 +269,15 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
 
 
     /**
+     * Get all of the organization's message settings.
+     */
+    public function message_settings()
+    {
+        return $this->morphMany(MessageSetting::class, 'message_settingable');
+    }
+
+
+    /**
      * Rtippin Messenger:
      * Implement the MessengerProvider interface for each provider registered.
      *

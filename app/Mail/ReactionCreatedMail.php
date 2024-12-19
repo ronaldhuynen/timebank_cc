@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Bank;
 use App\Models\Organization;
 use App\Models\User;
 use Cog\Laravel\Love\ReactionType\Models\ReactionType;
@@ -10,7 +11,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ReactionCreatedMail extends Mailable implements ShouldQueue  // ShouldQueue here creates the class as a background job
 {
@@ -21,7 +21,7 @@ class ReactionCreatedMail extends Mailable implements ShouldQueue  // ShouldQueu
     protected $reactionType;
     protected $reactionCount;
     protected $buttonUrl;
-    protected $locale;
+    public $locale;
 
     /**
      * Create a new message instance.
@@ -34,10 +34,19 @@ class ReactionCreatedMail extends Mailable implements ShouldQueue  // ShouldQueu
         $this->reactionType = ReactionType::fromName($reaction->getType()->name);
         $this->reactionCount = $reaction->getReactant()->getReactionCounterOfType($this->reactionType)->count;
 
-        if ($reaction->getReacter()->getReacterable()::class === User::class) {
-            $this->buttonUrl = route('user.show', ['userId' => $reaction->getReacter()->getReacterable()->id]);
-        } elseif ($reaction->getReacter()->getReacterable()::class === Organization::class) {
-            $this->buttonUrl = route('org.show', ['orgId' => $reaction->getReacter()->getReacterable()->id]);
+        $reacter = $reaction->getReacter()->getReacterable();
+
+        if ($reacter instanceof User) {
+            $userId = $reacter->id;
+            $this->buttonUrl = route('user.show', ['id' => $userId]);
+        } elseif ($reacter instanceof Organization) {
+            $organizationId = $reacter->id;
+            $this->buttonUrl = route('organization.show', ['id' => $organizationId]);
+        } elseif ($reacter instanceof Bank) {
+            $bankId = $reacter->id;
+            $this->buttonUrl = route('organization.show', ['id' => $bankId]);   
+        } else {
+            Log::warning('ReactionCreatedMail: Unknown reacter type');
         }
 
         $this->locale = $reaction->getReactant()->getReactable()->lang_preference;

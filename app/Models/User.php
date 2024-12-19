@@ -327,6 +327,15 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
 
 
     /**
+     * Get all of the user's message settings.
+     */
+    public function message_settings()
+    {
+        return $this->morphOne(MessageSetting::class, 'message_settingable');
+    }
+
+
+    /**
      * Needed for Rtippin Messenger.
      * Implement the MessengerProvider interface for each provider registered.
      *

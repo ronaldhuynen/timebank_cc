@@ -21,7 +21,7 @@ class UpdateMessageSettingsForm extends Component
         'generalNewsletter' => 'boolean',
         'personalChat' => 'boolean',
         'groupChat' => 'boolean',
-        'chatUnreadDelay' => 'integer|max:99'  // 168 hours is one week
+        'chatUnreadDelay' => 'integer|min:0|max:99'  // 168 hours is one week
         ];
 
 

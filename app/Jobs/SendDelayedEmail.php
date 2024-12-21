@@ -61,14 +61,13 @@ class SendDelayedEmail implements ShouldQueue
                 return;
             }
 
-            Log::info('Sending email to recipient', ['recipient_id' => $this->recipient->id]);
-
             // Send the email
             Mail::to($this->recipient->email)->send(new NewMessageMail($this->event, $this->owner, $this->recipient));
-
+            // TODO remove debug
             Log::info('Email sent to recipient', ['recipient_id' => $this->recipient->id]);
+        
         } catch (\Exception $e) {
-            Log::error('Error sending email', [
+            Log::error('Error sending SendDelayedEmail', [
                 'recipient_id' => $this->recipient->id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),

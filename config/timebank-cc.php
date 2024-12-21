@@ -371,7 +371,7 @@ return [
 |
 */
         'messenger' => [
-            'default_unread_mail_delay' => 8 * 60, // In minutes. After this delay an email will be send to notify an unread chat message
+            'default_unread_mail_delay' => 8, // In hours. After this delay an email will be send to notify an unread chat message
         ]
 
 ];

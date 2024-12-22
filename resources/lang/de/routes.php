@@ -57,14 +57,15 @@ return [
     'terms.show' => 'nutzungsbedingungen',
     'policy.show' => 'datenschutzrichtlinie',
     'profile.user.show' => 'benutzer/einstellungen',
+    'profile.org.show' => 'organisation/einstellungen',
     'profile.admin.show' => 'admin/einstellungen',
     'show.by.name' => 'benutzer/{name}',
 
-    'messenger.portal' => 'bote',
-    'messenger.show' => 'bote/{thread}',
-    'messenger.private.create' => 'bote/empfänger/{alias}/{id}',
-    'messenger.threads.show.call' => 'bote/threads/{thread}/anrufe/{anruf}',
-    'messenger.join.invite' => 'bote/beitreten/{einladung}',
+    'messenger.portal' => 'messenger',
+    'messenger.show' => 'messenger/{thread}',
+    'messenger.private.create' => 'messenger/empfänger/{alias}/{id}',
+    'messenger.threads.show.call' => 'messenger/threads/{thread}/anrufe/{anruf}',
+    'messenger.join.invite' => 'messenger/beitreten/{einladung}',
 
 
 

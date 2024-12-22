@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class BankController extends Controller
 {
             /**
     * Create a new controller instance.
@@ -25,7 +25,7 @@ class AdminController extends Controller
      */
     public function settings()
     {
-        return view('profile-admin.settings');
+        return view('profile-bank.settings');
     }
 
 }

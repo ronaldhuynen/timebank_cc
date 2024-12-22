@@ -59,12 +59,16 @@ return [
     'messenger.join' => 'messager/invitation/{invite}',
     'terms.show' => 'conditions-d-utilisation',
     'policy.show' => 'politique-de-confidentialite',
-    'profile.show' => 'utilisateur/parametres',
-    'profile.show' => 'administration/parametres',
+    'profile.user.show' => 'utilisateur/parametres',
+    'profile.org.show' => 'organisation/parametres',
+    'profile.admin.show' => 'administration/parametres',
     'show.by.name' => '{name}',
 
-
-
+    'messenger.portal' => 'messenger',
+    'messenger.show' => 'messenger/{thread}',
+    'messenger.private.create' => 'messenger/recipient/{alias}/{id}',
+    'messenger.threads.show.call' => 'messenger/threads/{thread}/calls/{call}',
+    'messenger.join.invite' => 'messager/rejoindre/{invite}',
 
 
 

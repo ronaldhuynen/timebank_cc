@@ -22,6 +22,29 @@
 
 
 
+    "Edit Profile": "Modifier le profil",
+    "Switch Profile": "Changer de profil",
+    "Messages": "Messages",
+    "Friends": "Amis",
+    "Settings": "Paramètres",
+    "Log Out": "Se déconnecter",
+    "Credentials": "Informations sur le profil",
+    "Profile Photo": "Photo de profil",
+    "Change Photo": "Changer la photo",
+    "Delete Photo": "Supprimer la photo",
+    "Update Password": "Mettre à jour le mot de passe",
+    "Current Password": "Mot de passe actuel",
+    "Two Factor Authentication": "Authentification à deux facteurs",
+    "Browser Sessions": "Sessions du navigateur",
+    "Log Out Other Browser Sessions": "Déconnecter les autres sessions du navigateur",
+    "Delete Account and login": "Supprimer le compte et se connecter",
+    "Delete Account": "Supprimer le compte",
+
+
+
+
+
+
     "Loading...": "Chargement...",
     "Submit": "Soumettre",
     "Save": "Sauvegarder",

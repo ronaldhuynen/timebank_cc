@@ -63,6 +63,8 @@ class Admin extends Model implements MessengerProvider, ReacterableInterface, Re
      * @var string[]
      */
     protected $fillable = [
+        'email',
+        'profile_photo_path',
         'last_login_at',
         'last_login_ip'
     ];

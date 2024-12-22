@@ -64,6 +64,8 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
      * @var string[]
      */
     protected $fillable = [
+        'email',
+        'profile_photo_path',
         'last_login_at',
         'last_login_ip'
     ];

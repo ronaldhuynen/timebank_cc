@@ -9,3 +9,4 @@ Alpine.plugin(focus);
 
 window.createPopper = createPopper;
 window.Tagify = tagifyMin;      // Needs to be loaded after Alpine
+

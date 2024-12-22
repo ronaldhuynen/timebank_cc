@@ -21,6 +21,27 @@
     "in Spanish": "auf Spanisch",
 
 
+
+    "Edit Profile": "Profil bearbeiten",
+    "Switch Profile": "Profil wechseln",
+    "Messages": "Nachrichten",
+    "Friends": "Freunde",
+    "Settings": "Einstellungen",
+    "Log Out": "Abmelden",
+    "Credentials": "Profilinformationen",
+    "Profile Photo": "Profilfoto",
+    "Change Photo": "Foto ändern",
+    "Delete Photo": "Foto löschen",
+    "Update Password": "Passwort aktualisieren",
+    "Current Password": "Aktuelles Passwort",
+    "Two Factor Authentication": "Zwei-Faktor-Authentifizierung",
+    "Browser Sessions": "Browsersitzungen",
+    "Log Out Other Browser Sessions": "Andere Browsersitzungen abmelden",
+    "Delete Account and login": "Konto und Anmeldung löschen",
+    "Delete Account": "Konto löschen",
+
+
+
     "Loading...": "Lädt...",
     "Submit": "Absenden",
     "Save": "Speichern",

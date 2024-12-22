@@ -53,7 +53,7 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-       
+
         // Rehash Cyclos salted sha256 passwords on first login
         Fortify::authenticateUsing(function (Request $request) {
             // Attempt to find the user by email or name.

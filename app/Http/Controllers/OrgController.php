@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 
 class OrgController extends Controller
 {
-        /**
+    /**
     * Create a new controller instance.
     *
     * @return void
@@ -136,4 +136,19 @@ class OrgController extends Controller
     {
         //
     }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function settings()
+    {
+        return view('profile-org.settings');
+    }
+
+
+
 }

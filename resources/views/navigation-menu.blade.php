@@ -1,4 +1,4 @@
-<nav class="shadow-md border-b border-gray-100 bg-white fixed top-0 left-0 right-0 z-50 " x-data="{ open: false }">
+<nav id="navigation-menu" class="shadow-md border-b border-gray-100 bg-white fixed top-0 left-0 right-0 z-50 " x-data="{ open: false }">
     @auth
         <!-- Primary Navigation Menu -->
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -222,7 +222,15 @@
 
                             <!---- Settings --->
                             @if (session('activeProfileType') == 'App\Models\User')
-                                <x-jetstream.dropdown-link href="{{ route('profile.user.show') }}">
+                                <x-jetstream.dropdown-link href="{{ route('profile.user.settings') }}">
+                                    {{ __('Settings') }}
+                                </x-jetstream.dropdown-link>
+                            @elseif (session('activeProfileType') == 'App\Models\Organization')
+                                <x-jetstream.dropdown-link href="{{ route('profile.org.settings') }}">
+                                    {{ __('Settings') }}
+                                </x-jetstream.dropdown-link>
+                            @elseif (session('activeProfileType') == 'App\Models\Bank')
+                                <x-jetstream.dropdown-link href="{{ route('profile.bank.settings') }}">
                                     {{ __('Settings') }}
                                 </x-jetstream.dropdown-link>
                             @elseif (session('activeProfileType') == 'App\Models\Admin')

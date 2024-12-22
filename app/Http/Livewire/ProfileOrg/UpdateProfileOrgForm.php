@@ -181,7 +181,7 @@ class UpdateProfileOrgForm extends Component
         }
 
         $this->dispatch('saved');
-        return redirect()->route('org.edit');
+        return redirect()->route('profile.admin.settings');
     }
 
 

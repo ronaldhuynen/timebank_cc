@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\LangJsController;
+use App\Http\Controllers\OrgController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransactionController;
@@ -329,7 +331,15 @@ Route::group([
                 Route::group(['middleware' => array_values(array_filter([$authMiddleware, $authSessionMiddleware]))], function () {
                     // User & Profile... (Native vendor Jetsream view)
                     Route::get(LaravelLocalization::transRoute('routes.profile.user.show'), [UserProfileController::class, 'show'])
-                        ->name('profile.user.show');
+                        ->name('profile.user.settings');
+
+                    // Organization & Profile... (Custom view)
+                    Route::get(LaravelLocalization::transRoute('routes.profile.org.show'), [OrgController::class, 'settings'])
+                        ->name('profile.org.settings');
+                        
+                    // Organization & Profile... (Custom view)
+                    Route::get(LaravelLocalization::transRoute('routes.profile.bank.show'), [BankController::class, 'settings'])
+                        ->name('profile.bank.settings');
 
                     // Admin & Profile... (Custom view)
                     Route::get(LaravelLocalization::transRoute('routes.profile.admin.show'), [AdminController::class, 'settings'])

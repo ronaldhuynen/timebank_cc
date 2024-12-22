@@ -60,8 +60,13 @@ return [
     'terms.show' => 'terminos-de-servicio',
     'policy.show' => 'politica-de-privacidad',
     'profile.user.show' => 'usuario/configuraciones',
+    'profile.org.show' => 'organizacion/configuraciones',
     'profile.admin.show' => 'admin/configuraciones',
     'show.by.name' => '{name}',
 
-
+    'messenger.portal' => 'messenger',
+    'messenger.show' => 'messenger/{thread}',
+    'messenger.private.create' => 'messenger/recipient/{alias}/{id}',
+    'messenger.threads.show.call' => 'messenger/threads/{thread}/calls/{call}',
+    'messenger.join.invite' => 'mensajero/unirse/{invite}',
 ];

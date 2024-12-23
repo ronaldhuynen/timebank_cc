@@ -9,6 +9,12 @@
         </div>
     </x-slot>
 
+    @if (session('UnauthorizedAction'))
+        <div class="alert alert-danger">
+            {{ session('UnauthorizedAction') }}
+        </div>
+    @endif
+
     {{-- Show the notification message that profile has been switched --}}
     @if (Session::has('success'))
         <livewire:notify-switch-profile>

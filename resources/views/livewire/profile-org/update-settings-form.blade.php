@@ -67,6 +67,8 @@
             <x-jetstream.input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" />
             <x-jetstream.input-error for="email" class="mt-2" />
 
+
+<!-- TODO NEXT: Email verification for Org, Bank, Admin
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! getActiveProfile()->hasVerifiedEmail())
                 <p class="text-sm mt-2">
                     {{ __('Your email address is unverified.') }}

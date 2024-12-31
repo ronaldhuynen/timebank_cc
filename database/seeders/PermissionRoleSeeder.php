@@ -77,14 +77,26 @@ class PermissionRoleSeeder extends Seeder
         $bankAdmin->givePermissionTo('manage organizations');
         
         $admin = Role::create(['name' => 'Admin']);
-        $bankAdmin->givePermissionTo('create banks');
-        $bankAdmin->givePermissionTo('update banks');
-        $bankAdmin->givePermissionTo('delete banks');
-        $bankAdmin->givePermissionTo('manage banks');
-        $bankAdmin->givePermissionTo('create admins');
-        $bankAdmin->givePermissionTo('update admins');
-        $bankAdmin->givePermissionTo('delete admins');
-        $bankAdmin->givePermissionTo('manage admins');
+        $admin->givePermissionTo('create users');
+        $admin->givePermissionTo('update users');
+        $admin->givePermissionTo('delete users');
+        $admin->givePermissionTo('manage users');  
+        $admin->givePermissionTo('create user_projects');
+        $admin->givePermissionTo('update user_projects');
+        $admin->givePermissionTo('delete user_projects');
+        $admin->givePermissionTo('manage user_projects');
+        $admin->givePermissionTo('create organizations');
+        $admin->givePermissionTo('update organizations');
+        $admin->givePermissionTo('delete organizations');
+        $admin->givePermissionTo('manage organizations');
+        $admin->givePermissionTo('create banks');
+        $admin->givePermissionTo('update banks');
+        $admin->givePermissionTo('delete banks');
+        $admin->givePermissionTo('manage banks');
+        $admin->givePermissionTo('create admins');
+        $admin->givePermissionTo('update admins');
+        $admin->givePermissionTo('delete admins');
+        $admin->givePermissionTo('manage admins');
 
         $superAdmin = Role::create(['name' => 'Super-admin']);
         // gets all permissions via Gate::before rule; see AuthServiceProvider

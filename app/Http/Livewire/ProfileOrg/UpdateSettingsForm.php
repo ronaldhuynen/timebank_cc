@@ -12,12 +12,14 @@ class UpdateSettingsForm extends Component
 {
     use WithFileUploads;
 
+    
     /**
      * The component's state.
      *
      * @var array
      */
-    public $state = [];
+    public $state;
+
 
     /**
      * The new avatar for the active profile.
@@ -26,12 +28,14 @@ class UpdateSettingsForm extends Component
      */
     public $photo;
 
+
     /**
      * Determine if the verification email was sent.
      *
      * @var bool
      */
     public $verificationLinkSent = false;
+
 
     /**
      * Prepare the component.
@@ -44,8 +48,9 @@ class UpdateSettingsForm extends Component
 
         $this->state = array_merge([
             'email' => $activeProfile->email,
-            ], $activeProfile->withoutRelations()->toArray());
+        ], $activeProfile->withoutRelations()->toArray());
     }
+
 
     /**
      * Update the active profile's profile information.
@@ -57,8 +62,10 @@ class UpdateSettingsForm extends Component
     {
         $this->resetErrorBag();
 
-
         $activeProfile = getActiveProfile();
+
+        // Check if the email has changed
+        $emailChanged = $this->state['email'] !== $activeProfile->email;
 
         if ($this->photo) {
             // Delete old file if it doesn't start with "app-images/" (as those are default images)
@@ -75,18 +82,29 @@ class UpdateSettingsForm extends Component
         // Update records of active profile
         $activeProfile->update($this->state);
 
+        // Refresh the component state with the updated model data
         $this->state = $activeProfile->fresh()->toArray();
 
+        // Update the session variable so the Blade view can display the new photo
         session(['activeProfilePhoto' => $this->state['profile_photo_path']]);
+
+        // Send email verification if the email has changed
+        if ($emailChanged) {
+            $activeProfile->forceFill(['email_verified_at' => null])->save();
+            $activeProfile->sendEmailVerificationNotification();
+        }
+        
+        // Refresh the component state with the updated model data
+        $this->state = $activeProfile->fresh()->toArray();
+        $this->state['email'] = $activeProfile->email;
 
         if (isset($this->photo)) {
             return redirect()->route('profile.org.settings');
         }
 
         $this->dispatch('saved');
-
-        $this->dispatch('refresh-navigation-menu');
     }
+
 
     /**
      * Delete active profile's profile photo.
@@ -107,6 +125,8 @@ class UpdateSettingsForm extends Component
         $defaultPath = config('timebank-cc.profiles.' . strtolower(getActiveProfileType()) . '.profile_photo_path_default');
         $this->state['profile_photo_path'] = $defaultPath;
 
+        // Update the active profile’s record
+        $activeProfile->update(['profile_photo_path' => $defaultPath]);
 
         // Refresh the component state with the updated model data
         $this->state = $activeProfile->fresh()->toArray();
@@ -118,13 +138,12 @@ class UpdateSettingsForm extends Component
 
         // Dispatch any events if desired, for example:
         $this->dispatch('saved');
-
         $this->dispatch('refresh-navigation-menu');
-
     }
 
+
     /**
-     * Sent the email verification.
+     * Send the email verification.
      *
      * @return void
      */
@@ -135,6 +154,7 @@ class UpdateSettingsForm extends Component
         $this->verificationLinkSent = true;
     }
 
+
     /**
      * Get the current active profile of the application.
      *
@@ -144,7 +164,6 @@ class UpdateSettingsForm extends Component
     {
         return getActiveProfile();
     }
-
 
 
     public function render()

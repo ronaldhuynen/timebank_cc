@@ -4,23 +4,29 @@ namespace App\Models;
 
 use App\Models\Locations\Location;
 use App\Models\User;
+use App\Notifications\VerifyProfileEmail;
 use App\Traits\LocationTrait;
 use App\Traits\TaggableWithLocale;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
 use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
+use Illuminate\Auth\MustVerifyEmail as AuthMustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 
-class Admin extends Model implements MessengerProvider, ReacterableInterface, ReactableInterface
+class Admin extends Model implements MessengerProvider, MustVerifyEmail, ReacterableInterface, ReactableInterface
 {
     use HasFactory;
+    use AuthMustVerifyEmail;
+    use Notifiable;
     use HasProfilePhoto;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use TaggableWithLocale;
@@ -166,4 +172,9 @@ class Admin extends Model implements MessengerProvider, ReacterableInterface, Re
         return '/storage/' . $this->profile_photo_path;
     }
 
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyProfileEmail());
+    }
 }

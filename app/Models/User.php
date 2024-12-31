@@ -10,6 +10,7 @@ use App\Models\Language;
 use App\Models\Locations\Location;
 use App\Models\Organization;
 use App\Models\Post;
+use App\Notifications\VerifyProfileEmail;
 use App\Traits\LocationTrait;
 use App\Traits\TaggableWithLocale;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
@@ -426,7 +427,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         return $this->morphMany(Post::class, 'postable');
     }
 
-  
+
     /**
      * Get all post translations updated by the user.
      */
@@ -441,6 +442,12 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
     public function categories()
     {
         return $this->morphMany(Category::class, 'categoryable');
+    }
+
+
+        public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyProfileEmail());
     }
 
 }

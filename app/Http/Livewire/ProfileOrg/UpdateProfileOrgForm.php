@@ -4,10 +4,8 @@ namespace App\Http\Livewire\ProfileOrg;
 
 use App\Models\Organization;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Laravel\Jetstream\Features;
 use Laravel\Jetstream\HasProfilePhoto;
 use Livewire\Component;
@@ -149,7 +147,7 @@ class UpdateProfileOrgForm extends Component
 
         $this->organization->save();
         $this->dispatch('saved');
-        Session(['activeProfilePhoto' => $this->organization->profile_photo_path ]);
+        session(['activeProfilePhoto' => $this->organization->profile_photo_path ]);
         redirect()->route('org.edit');
     }
 

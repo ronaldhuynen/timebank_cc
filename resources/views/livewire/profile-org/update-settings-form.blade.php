@@ -68,7 +68,7 @@
             <x-jetstream.input-error for="email" class="mt-2" />
 
 
-<!-- TODO NEXT: Email verification for Org, Bank, Admin
+            <!-- Email verification for Org, Bank, Admin -->
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! getActiveProfile()->hasVerifiedEmail())
                 <p class="text-sm mt-2">
                     {{ __('Your email address is unverified.') }}
@@ -78,7 +78,7 @@
                     </button>
                 </p>
 
-                @if ($this->verificationLinkSent)
+                @if ($verificationLinkSent)
                     <p v-show="verificationLinkSent" class="mt-2 font-medium text-sm text-green-600">
                         {{ __('A new verification link has been sent to your email address.') }}
                     </p>

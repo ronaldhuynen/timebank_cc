@@ -97,45 +97,63 @@ class ProfileSelect extends Component
     {
         $index = $this->userProfileIndex;
 
-        // 1) Basic check: if index is missing or out of range, fall back to user
+        // If index is missing or out of range, switch to the auth user without warning
         if ($index === null || !isset($this->userProfiles[$index])) {
-            return $this->fallbackToAuthUser();
+            return $this->switchToAuthUser(); 
         }
 
         $profileArray = $this->userProfiles[$index];
-        $profileType = ucfirst($profileArray['type']);     // e.g., 'Organization', 'Bank', 'Admin'
-        $profileClassName = 'App\\Models\\' . $profileType; // e.g., 'App\Models\Organization'
-        $profileModel = $profileClassName::find($profileArray['id']);
+        $profileType = ucfirst($profileArray['type']);
+        $profileId   = $profileArray['id'];
 
-        // 2) Guard: if the model doesn't exist or user is not related to it, fallback to user
+        // If the user is switching to their own User profile, switch without warning
+        if ($profileType === 'User' && (int) $profileId === Auth::id()) {
+            return $this->switchToAuthUser();
+        }
+
+        // Otherwise, attempt to find and validate the model
+        $profileClassName = 'App\\Models\\' . $profileType;
+        $profileModel     = $profileClassName::find($profileId);
+
+        // If the model doesn't exist or the user doesn't own it, fall back with a warning
         if (!$profileModel || !$this->userOwnsProfile($profileModel)) {
             return $this->fallbackToAuthUser();
         }
 
-        // 3) If the model supports accounts(), retrieve them; else empty array
-        $accounts = method_exists($profileModel, 'accounts')
-            ? $profileModel->accounts()->pluck('id')->toArray()
-            : [];
-
-        // 4) Update session with the chosen profile
+        // Switch to the chosen profile
         Session([
             'activeProfileType'  => $profileClassName,
-            'activeProfileId'    => $profileArray['id'],
-            'activeProfileName'  => $profileArray['name'],
-            'activeProfilePhoto' => $profileArray['photo'],
-            'activeProfileAccounts' => $accounts,
+            'activeProfileId'    => $profileModel->id,
+            'activeProfileName'  => $profileModel->name,
+            'activeProfilePhoto' => $profileModel->profile_photo_path,
+            'profile-switched-notification' => true,
         ]);
 
-        // 5) Build an array for the profile switch event
-        $activeProfile = [
-            'userId' => Auth::user()->id,
-            'type'   => session('activeProfileType'),
-            'id'     => session('activeProfileId'),
-            'name'   => session('activeProfileName'),
-            'photo'  => session('activeProfilePhoto'),
-        ];
+        // Fire the event, redirect, etc.
+        event(new ProfileSwitchEvent($profileModel));
 
-        return event(new ProfileSwitchEvent($activeProfile));
+        return redirect()->route('dashboard');
+    }
+
+
+    /**
+     * Switch to the authenticated user's own profile without logging a warning.
+     */
+    protected function switchToAuthUser()
+    {
+        $user = Auth::user();
+
+        Session([
+            'activeProfileType'  => \App\Models\User::class,
+            'activeProfileId'    => $user->id,
+            'activeProfileName'  => $user->name,
+            'activeProfilePhoto' => $user->profile_photo_path,
+            'profile-switched-notification'   => true,
+        ]);
+
+        event(new ProfileSwitchEvent($user));
+
+        return redirect()->route('dashboard');
     }
 
     
@@ -166,26 +184,31 @@ class ProfileSelect extends Component
         $this->logAndReport($warningMessage);
         
         session()->flash('error', __($warningMessage) . '. ' . __('This event has been logged') . '!');
-        session(['UnauthorizedAction' => __($warningMessage) . '. ' . __('This event has been logged') . '!']);
+        session(['unauthorizedAction' => __($warningMessage) . '. ' . __('This event has been logged') . '!']);
                 
         return event(new ProfileSwitchEvent($activeProfile));
     }
 
     /**
      * Checks if the user actually "owns" this profile.
-     * Adjust as needed depending on how your models define ownership.
      */
     protected function userOwnsProfile($profileModel)
     {
         $user = Auth::user();
+        
+        // Check if the profile model is an instance of the User model
+        if ($profileModel instanceof \App\Models\User) {
+            return $profileModel->id === $user->id;
+        }
 
         // Example for Organization / Bank / Admin relationships:
         // If the model has a `users()` relationship, check if the user is in there
         if (method_exists($profileModel, 'users')) {
             return $profileModel->users->contains($user);
         }
-        
+
         return false;
+
     }
 
 
@@ -197,10 +220,11 @@ class ProfileSelect extends Component
                     'activeProfileType' => $activeProfile['type'],
                     'activeProfileId' => $activeProfile['id'],
                     'activeProfileName' => $activeProfile['name'],
-                    'activeProfilePhoto' => $activeProfile['photo']
+                    'activeProfilePhoto' => $activeProfile['photo'],
+                    'profile-switched-notification' => true,
                 ]);
 
-        return redirect()->route('dashboard')->with('success', 'Active profile is switched!');
+        return redirect()->route('dashboard');
     }
 
 

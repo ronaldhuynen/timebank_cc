@@ -9,16 +9,22 @@
         </div>
     </x-slot>
 
-    @if (session('UnauthorizedAction'))
+    @if (session('unauthorizedAction'))
         <div class="alert alert-danger">
-            {{ session('UnauthorizedAction') }}
+            <livewire:notify-unauthorized-action>
         </div>
     @endif
 
     {{-- Show the notification message that profile has been switched --}}
-    @if (Session::has('success'))
+    @if (session('profile-switched-notification'))
         <livewire:notify-switch-profile>
     @endif
+
+    {{-- Show the notification message that the email address has been verified --}}
+    @if (session('email-verified'))
+        <livewire:notify-email-verified>
+    @endif
+
 
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">

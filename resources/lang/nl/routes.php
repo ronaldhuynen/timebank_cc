@@ -60,6 +60,7 @@ return [
     'policy.show' => 'privacybeleid',
     'profile.user.show' => 'gebruiker/instellingen',
     'profile.org.show' => 'organisatie/instellingen',
+    'profile.bank.show' => 'bank/instellingen',
     'profile.admin.show' => 'admin/instellingen',
     'show.by.name' => 'gebruiker/{name}',
 

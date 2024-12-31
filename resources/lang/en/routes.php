@@ -59,7 +59,7 @@ return [
     'policy.show' => 'privacy-policy',
     'profile.user.show' => 'user/settings',
     'profile.org.show' => 'organization/settings',
-    'profile.bank.show' => 'organization/settings',
+    'profile.bank.show' => 'bank/settings',
     'profile.admin.show' => 'admin/settings',
     'show.by.name' => 'user/{name}',
 

@@ -6,7 +6,7 @@ use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
 
-class NotifySwitchProfile extends Component
+class NotifyEmailVerified extends Component
 {
     use WireUiActions;
 
@@ -21,20 +21,20 @@ class NotifySwitchProfile extends Component
         // WireUI notification
 
         $this->notification()->success(
-            $title = __('Profile switch'),
-            $description = __('Your profile has been switched successfully')
+            $title = __('Email verified'),
+            $description = __('Your email has been verified successfully')
         );
     }
-
 
     public function dehydrate()
     {
         // Clear the session key after the component is rendered
-        session()->forget('profile-switched-notification');
+        session()->forget('email-verified');
+        session()->forget('email-profile');
     }
-    
+
     public function render()
     {
-        return view('livewire.notify-switch-profile');
+        return view('livewire.notify-email-verified');
     }
 }

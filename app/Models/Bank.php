@@ -5,24 +5,30 @@ namespace App\Models;
 
 use App\Models\Locations\Location;
 use App\Models\User;
+use App\Notifications\VerifyProfileEmail;
 use App\Traits\LocationTrait;
 use App\Traits\TaggableWithLocale;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
 use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
+use Illuminate\Auth\MustVerifyEmail as AuthMustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 
-class Bank extends Model implements MessengerProvider, ReacterableInterface, ReactableInterface
+class Bank extends Model implements MessengerProvider, MustVerifyEmail, ReacterableInterface, ReactableInterface
 {
     use HasFactory;
     use HasProfilePhoto;
+    use AuthMustVerifyEmail;
+    use Notifiable;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use TaggableWithLocale;
     use Reacterable; // cybercog/laravel-love
@@ -197,6 +203,12 @@ class Bank extends Model implements MessengerProvider, ReacterableInterface, Rea
     public function getProviderAvatarRoute(string $size = 'sm'): ?string
     {
         return '/storage/' . $this->profile_photo_path;
+    }
+
+    
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyProfileEmail());
     }
 
 }

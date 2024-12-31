@@ -6,7 +6,7 @@ use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
 
-class NotifySwitchProfile extends Component
+class NotifyUnauthorizedAction extends Component
 {
     use WireUiActions;
 
@@ -20,21 +20,20 @@ class NotifySwitchProfile extends Component
     {
         // WireUI notification
 
-        $this->notification()->success(
-            $title = __('Profile switch'),
-            $description = __('Your profile has been switched successfully')
+        $this->notification()->warning(
+            $title = __('Unauthorized action'),
+            $description = session('unauthorizedAction'),
         );
     }
-
 
     public function dehydrate()
     {
         // Clear the session key after the component is rendered
-        session()->forget('profile-switched-notification');
+        session()->forget('unauthorizedAction');
     }
-    
+
     public function render()
     {
-        return view('livewire.notify-switch-profile');
+        return view('livewire.notify-unauthorized-action');
     }
 }

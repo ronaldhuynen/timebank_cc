@@ -44,4 +44,6 @@ return [
     // transactions-table.blade.php
     'transactions_found' => '{0} No transactions|{1} :count transaction in total|[2,*] :count transactions in total',
 
+    // notify-email-verified
+    'email_of_profile_has_been_verified' => 'The email address of :profile_name has been verified successfully',
 ];

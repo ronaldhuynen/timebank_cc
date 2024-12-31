@@ -7,24 +7,30 @@ use App\Models\Language;
 use App\Models\Locations\Location;
 use App\Models\Post;
 use App\Models\User;
+use App\Notifications\VerifyProfileEmail;
 use App\Traits\LocationTrait;
 use App\Traits\TaggableWithLocale;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
 use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
+use Illuminate\Auth\MustVerifyEmail as AuthMustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
 
-class Organization extends Model implements MessengerProvider, ReacterableInterface, ReactableInterface
+class Organization extends Model implements MessengerProvider, ReacterableInterface, MustVerifyEmail, ReactableInterface
 {
     use HasFactory;
+    use AuthMustVerifyEmail;
+    use Notifiable;
     use HasProfilePhoto;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use TaggableWithLocale;
@@ -58,6 +64,16 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
         'last_login_at',
         'inactive_at',
         'deleted_at',
+    ];
+
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
 
@@ -360,6 +376,12 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
     public function categories()
     {
         return $this->morphMany(Category::class, 'categoryable');
+    }
+
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyProfileEmail());
     }
 
 }

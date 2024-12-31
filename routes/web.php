@@ -9,7 +9,9 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\LogErrors;
+use App\Http\Requests\ProfileEmailVerificationRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -85,6 +87,18 @@ if (App::environment(['local', 'development', ' test' ])) {
 
 
 
+/*
+|--------------------------------------------------------------------------
+| Email Verification Routes (No Locale Prefix)
+|--------------------------------------------------------------------------
+*/
+
+
+Route::get('/email/verify/{type}/{id}/{hash}', function (ProfileEmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect(LaravelLocalization::localizeURL(route('verification.verified')));
+})->middleware(['auth','signed'])->name('verification.verify');
+
 
 //! TODO translate js packages
 // Dynamically create routes for all available locales for the lang.js file
@@ -99,6 +113,8 @@ Route::group([
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function () {
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
+
+
 
 
     
@@ -123,6 +139,7 @@ Route::group([
     Route::get('/goodbye', function () {
         return view('goodbye-deleted-user');
     })->name('goodbye-deleted-user');
+
 
 
     /* Static Site Content */
@@ -305,9 +322,19 @@ Route::group([
                 ->name('messenger.invites.join')
                 ->middleware('auth');
 
-            // TODO NEXT: Create api routes for friends:add  a friend and check error message in toaster
 
 
+            Route::get('/email/verified', function () {
+                
+                //TODO create a verified-email view.
+                //TODO check org verification. Note that this route in inside the verified middleware group.
+            
+                // Option 1: display a “verified” view
+                // return view('verified-email');
+
+                // Option 2: redirect to your Jetstream home or dashboard
+                return redirect()->route('dashboard');
+            })->name('verification.verified');
 
 
 
@@ -334,16 +361,24 @@ Route::group([
                         ->name('profile.user.settings');
 
                     // Organization & Profile... (Custom view)
+                    Route::group(['middleware' => ['can:update organizations']], function () {
                     Route::get(LaravelLocalization::transRoute('routes.profile.org.show'), [OrgController::class, 'settings'])
                         ->name('profile.org.settings');
+                    });
                         
                     // Organization & Profile... (Custom view)
+                    Route::group(['middleware' => ['can:update banks']], function () {
                     Route::get(LaravelLocalization::transRoute('routes.profile.bank.show'), [BankController::class, 'settings'])
                         ->name('profile.bank.settings');
+                    });
 
                     // Admin & Profile... (Custom view)
-                    Route::get(LaravelLocalization::transRoute('routes.profile.admin.show'), [AdminController::class, 'settings'])
-                        ->name('profile.admin.settings');
+                    Route::group(['middleware' => ['can:update admins']], function () {
+                        Route::get(LaravelLocalization::transRoute('routes.profile.admin.show'), [AdminController::class, 'settings'])
+                            ->name('profile.admin.settings');
+                    });
+
+
 
                     Route::group(['middleware' => 'verified'], function () {
                         // API...

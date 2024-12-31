@@ -61,11 +61,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('guest-layout', GuestLayout::class);
 
 
-        
+        // Register lay-outs depending ob authorization
         Blade::directive('layout', function () {
             return Auth::check() ? 'app-layout' : 'guest-layout';
         });
-
 
     }
 }

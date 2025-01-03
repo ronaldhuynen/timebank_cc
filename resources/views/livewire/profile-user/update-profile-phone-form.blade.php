@@ -14,7 +14,7 @@
         <div class="col-span-6  -mb-6" wire:init="phonecodeInit">
         <x-jetstream.label for="phone" value="{{ __('Mobile phone') }}" />
         </div>
-            <div class="col-span-1">
+            <div class="">
                 <x-native-select
                     id="phonecode"
                     wire:model.live="phonecode"
@@ -26,20 +26,21 @@
                 </x-native-select>
             </div>
             <div class="col-span-2 -ml-3">
-                <x-jetstream.input
+                <x-input
                     id="phone"
                     placeholder="Enter mobile phone number"
-                    wire:model.blur="state.phone" 
+                    wire:model="state.phone" 
                     class="placeholder-gray-300"/>
             </div>
-            @error('phone')
-                <p class="col-span-6 -mt-6 text-sm text-red-500">{{$message}}</p>
-            @enderror
 
-        <div class="col-span-6 -mt-3">
-            <x-jetstream.checkbox id="right-label" label="Visible for my Timebank.cc friends" wire:model="state.phone_public_for_friends" />
+        <div class="col-span-6 ">
+            <x-checkbox id="public-phone-nr" label="{{ __('Visible for my Timebank.cc friends') }}" wire:model="state.phone_public_for_friends" />
         </div>
     </x-slot>
+
+    @error('state.phone') 
+        <p class="col-span-6 -mt-6 text-sm text-red-500">{{$message}}</p> 
+    @enderror
 
 
 

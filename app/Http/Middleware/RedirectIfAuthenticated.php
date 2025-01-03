@@ -24,7 +24,6 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
 
-                // return redirect(RouteServiceProvider::HOME);
                 session('activeProfileType', 'App\Models\User');
                 session('activeProfileId', auth()->user()->id);
 

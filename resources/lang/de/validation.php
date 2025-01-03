@@ -139,11 +139,34 @@ return [
     |
     */
 
-    
-    //TODO: Translate messages! See examples in en and nl folder
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'profile_user' => [
+            'name' => [
+                'disallowed' => ':Attribute darf nicht ":word" enthalten.',
+                'completely_disallowed' => ':Attribute darf nicht nur ":name" sein.',
+            ],
+        ],
+        'country' => [
+            'required_if' => ':Attribute ist erforderlich.',
+        ],
+        'division' => [
+            'required_if' => ':Attribute ist erforderlich.',
+        ],
+        'city' => [
+            'required_if' => ':Attribute ist erforderlich.',
+        ],
+        'district' => [
+            'required_if' => ':Attribute ist erforderlich.',
+        ],
+
+        // pay.blade.php
+        'amount.min' => 'Der Betrag muss mindestens :min Minute betragen.',
+        'fromAccountId.*' => 'Das Ausgangskonto ist erforderlich.',
+        'toAccountId.*' => 'Das Zielkonto ist erforderlich.',
+
+        // update-profile-phone.blade.php
+        'state.phone' => [
+            'phone' => 'Geben Sie eine gültige Mobiltelefonnummer ein.',
         ],
     ],
 
@@ -158,11 +181,38 @@ return [
     |
     */
 
-    
-    //TODO: Translate messages! See examples in en and nl folder
-    'attributes' => ['
-        state.about' => __('About field'),
-    
+    'attributes' => [
+        // registration.php
+        'name' => 'Name',
+
+        // update-profile-organization-form.blade.php
+        // update-profile-personal-form.blade.php
+        'state.about' => 'Einleitung',
+        'state.about_short' => 'Kurze Einleitung',
+        'state.motivation' => 'Motivation',
+        'languages' => 'Sprachauswahl',
+        'state.date_of_birth' => 'Geburtsdatum',
+        'socialsOptionSelected' => 'Soziale Medien',
+        'userOnSocial' => 'Profil in sozialen Medien',
+
+        // update-profile-location-form.blade.php
+        'country' => 'Land',
+        'division' => 'Provinz',
+        'city' => 'Stadt',
+        'district' => 'Bezirk',
+
+        // update-profile-skills-form.blade.php
+        'tagsArray.*' => 'Tag',
+        'newTag.name' => 'Aktivitäts-Tag',
+        'newTag.example' => 'beschreibendes Beispiel',
+        'newTag.check' => 'Überprüfung des Beispiels',
+        'newTagCategory' => 'Kategorie',
+        'selectTagTranslation' => 'Ausgewählte Übersetzung',
+        'inputTagTranslation.name' => 'übersetzter Aktivitäts-Tag',
+        'inputTagTranslation.example' => 'übersetztes Beispiel',
+
+        // pay.blade.php
+        'description' => 'Beschreibung',
     ],
 
 ];

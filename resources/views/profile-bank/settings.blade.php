@@ -6,6 +6,6 @@
     </x-slot>
 
     <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-        @livewire('profile-org.update-settings-form')
+        @livewire('profile.update-settings-form')
     </div>
 </x-app-layout>

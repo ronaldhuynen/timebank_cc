@@ -25,8 +25,17 @@ class ProfileSwitchEvent implements ShouldBroadcastNow
     public function __construct($activeProfile)
     {
         $this->activeProfile = $activeProfile;
+        $this->checkVerification();
     }
 
+    
+    public function checkVerification()
+    {
+        if (! getActiveProfile()->hasVerifiedEmail()) {
+            session(['notification.alert' => 'Your email address is unverified. Check your profile settings to re-send the verification email.']);
+        }
+    }
+    
 
     public function broadcastQueue()
     {

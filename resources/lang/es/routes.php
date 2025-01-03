@@ -61,6 +61,7 @@ return [
     'policy.show' => 'politica-de-privacidad',
     'profile.user.show' => 'usuario/configuraciones',
     'profile.org.show' => 'organizacion/configuraciones',
+    'profile.bank.show' => 'organizacion/configuraciones',
     'profile.admin.show' => 'admin/configuraciones',
     'show.by.name' => '{name}',
 

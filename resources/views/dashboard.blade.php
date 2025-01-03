@@ -15,6 +15,11 @@
         </div>
     @endif
 
+    {{-- Show the secondary / success / info / error /alert  notification session messages --}}
+    @if (session('notification'))
+        <livewire:notification>
+    @endif
+
     {{-- Show the notification message that profile has been switched --}}
     @if (session('profile-switched-notification'))
         <livewire:notify-switch-profile>
@@ -24,6 +29,8 @@
     @if (session('email-verified'))
         <livewire:notify-email-verified>
     @endif
+
+
 
 
     <div class="py-12">

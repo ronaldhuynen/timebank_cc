@@ -58,6 +58,7 @@ return [
     'policy.show' => 'datenschutzrichtlinie',
     'profile.user.show' => 'benutzer/einstellungen',
     'profile.org.show' => 'organisation/einstellungen',
+    'profile.org.show' => 'bank/einstellungen',
     'profile.admin.show' => 'admin/einstellungen',
     'show.by.name' => 'benutzer/{name}',
 

@@ -164,6 +164,11 @@ return [
         'amount.min' => 'Bedrag moet minimaal :min minuut zijn.',
         'fromAccountId.*' => 'Vanaf rekening is verplicht.',    
         'toAccountId.*' => 'Naar rekening is verlicht.',
+
+        // update-profile-phone.blade.php
+        'state.phone' => [
+            'phone' => 'Voer een geldig mobiel telefoonnummer in.',
+        ],
     ],
 
     /*
@@ -198,7 +203,6 @@ return [
         'city' => 'Plaats',
         'district' => 'Buurt',
 
-        // update-profile-skills-form.blade.php
         // update-profile-skills-form.blade.php
         'tagsArray.*' => 'label',
         'newTag.name' => 'activiteit label',

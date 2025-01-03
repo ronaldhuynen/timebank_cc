@@ -164,6 +164,11 @@ return [
         'amount.min' => 'Amount must be at least :min minute.',
         'fromAccountId.required' => 'From account is required.',  
         'toAccountId.*' => 'To account is required.',
+
+        // update-profile-phone.blade.php
+        'state.phone' => [
+            'phone' => 'Enter a valid mobile phone number.',
+        ],
     ],
 
     /*
@@ -198,7 +203,6 @@ return [
         'city' => 'City',
         'district' => 'District',
 
-        // update-profile-skills-form.blade.php
         // update-profile-skills-form.blade.php
         'tagsArray.*' => 'tags',
         'newTag.name' => 'activity tag',

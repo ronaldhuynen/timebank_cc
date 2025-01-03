@@ -6,6 +6,15 @@
     </x-slot>
 
     <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-        @livewire('profile-org.update-settings-form')
-    </div>
+        @livewire('profile.update-settings-form')
+        <x-jetstream.section-border />
+        
+        {{-- TODO NEXT: Make phone profile dynamic --}}
+        @livewire('profile-user.update-profile-phone-form')
+        <x-jetstream.section-border />
+
+        <div class="mt-10 sm:mt-0">
+            @livewire('profile.update-message-settings-form')
+        </div>
+        
 </x-app-layout>

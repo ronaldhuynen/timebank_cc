@@ -1,23 +1,28 @@
 <?php
 
-namespace App\Http\Livewire\ProfileBank;
+namespace App\Http\Livewire\Profile;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Livewire\Component;
+
+
 use Livewire\WithFileUploads;
+
 
 class UpdateSettingsForm extends Component
 {
     use WithFileUploads;
 
+    
     /**
      * The component's state.
      *
      * @var array
      */
     public $state;
+
 
     /**
      * The new avatar for the active profile.
@@ -26,12 +31,14 @@ class UpdateSettingsForm extends Component
      */
     public $photo;
 
+
     /**
      * Determine if the verification email was sent.
      *
      * @var bool
      */
     public $verificationLinkSent = false;
+
 
     /**
      * Prepare the component.
@@ -44,8 +51,9 @@ class UpdateSettingsForm extends Component
 
         $this->state = array_merge([
             'email' => $activeProfile->email,
-            ], $activeProfile->withoutRelations()->toArray());
+        ], $activeProfile->withoutRelations()->toArray());
     }
+
 
     /**
      * Update the active profile's profile information.
@@ -163,6 +171,6 @@ class UpdateSettingsForm extends Component
 
     public function render()
     {
-        return view('livewire.profile-bank.update-settings-form');
+        return view('livewire.profile.update-settings-form');
     }
 }

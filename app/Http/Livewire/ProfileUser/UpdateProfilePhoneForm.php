@@ -18,8 +18,8 @@ class UpdateProfilePhoneForm extends Component
 
 
     protected $rules = [
-        'state.phone' => 'phone:phonecode,mobile',
-        'phonecode'  => 'required_with:state.phone',
+        'state.phone' => [ 'phone:phonecode,mobile,strict', 'regex:/^[\d+()\s-]+$/', ],
+        'phonecode'  => 'required_with:state.phone,mobile',
         'state.phone_public_for_friends' =>'boolean',
     ];
 
@@ -87,7 +87,6 @@ class UpdateProfilePhoneForm extends Component
 
         if (isset($this->state['phone']) && $this->state['phone'] != '') {
             $phone = new PhoneNumber($this->state['phone'], $this->phonecode);
-            $phone->formatNational();
             $this->state['phone'] = $phone->formatNational();
         }
     }
@@ -100,6 +99,7 @@ class UpdateProfilePhoneForm extends Component
      */
     public function updateProfilePhone()
     {
+        //  dd($this->phonecode);
         $user = Auth::user();
 
         if ($this->state['phone'] != null) {
@@ -115,7 +115,7 @@ class UpdateProfilePhoneForm extends Component
 
         $user->save();
         $this->dispatch('saved');
-        $this->dispatch('refresh-navigation-menu');
+        // $this->dispatch('refresh-navigation-menu');
     }
 
 

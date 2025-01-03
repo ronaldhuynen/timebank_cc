@@ -30,6 +30,7 @@ class Dashboard extends Component
             $lastLoginAt = json_decode($activityLog, true)['properties']['old']['last_login_at'];
             $this->lastLoginAt = Carbon::createFromTimeStamp(strtotime($lastLoginAt))->diffForHumans();
         }
+
     }
 
 

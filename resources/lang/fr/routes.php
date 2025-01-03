@@ -61,6 +61,7 @@ return [
     'policy.show' => 'politique-de-confidentialite',
     'profile.user.show' => 'utilisateur/parametres',
     'profile.org.show' => 'organisation/parametres',
+    'profile.bank.show' => 'banco/parametres',
     'profile.admin.show' => 'administration/parametres',
     'show.by.name' => '{name}',
 

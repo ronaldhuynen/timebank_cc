@@ -67,15 +67,6 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
     ];
 
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
 
     /**
      * The attributes that are mass assignable.
@@ -90,8 +81,19 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
         'motivation',
         'website',
         'phone',
+        'phone_public',
         'last_login_at',
         'last_login_ip'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'phone_public' => 'boolean',
+        'email_verified_at' => 'datetime',
     ];
 
 

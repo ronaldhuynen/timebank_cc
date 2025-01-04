@@ -63,6 +63,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
         'motivation',
         'website',
         'phone',
+        'phone_public_for_friends',
         'password',
         'limit_min',
         'limit_max',
@@ -105,6 +106,7 @@ class User extends Authenticatable implements MessengerProvider, MustVerifyEmail
      * @var array
      */
     protected $casts = [
+        'phone_public_for_friends' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
 

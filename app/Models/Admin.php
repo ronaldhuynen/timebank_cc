@@ -71,8 +71,21 @@ class Admin extends Model implements MessengerProvider, MustVerifyEmail, Reacter
     protected $fillable = [
         'email',
         'profile_photo_path',
+        'phone',
+        'phone_public',
         'last_login_at',
         'last_login_ip'
+    ];
+
+    
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'phone_public' => 'boolean',
+        'email_verified_at' => 'datetime',
     ];
 
 
@@ -103,6 +116,16 @@ class Admin extends Model implements MessengerProvider, MustVerifyEmail, Reacter
     {
         return $this->morphMany(Location::class, 'locatable');
     }
+
+
+    /**
+     * Get all of the admin's message settings.
+     */
+    public function message_settings()
+    {
+        return $this->morphMany(MessageSetting::class, 'message_settingable');
+    }
+
 
 
     /**

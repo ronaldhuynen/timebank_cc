@@ -10,7 +10,7 @@
             @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                 @livewire('profile.update-settings-form')
                 <x-jetstream.section-border />
-                @livewire('profile-user.update-profile-phone-form')
+                @livewire('profile.update-profile-phone-form')
                 <x-jetstream.section-border />
             @endif
 

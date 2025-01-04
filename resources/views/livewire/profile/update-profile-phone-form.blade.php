@@ -4,8 +4,17 @@
     </x-slot>
 
     <x-slot name="description">
-        <p>{{ __('Your mobile phone can be used to authorize access to your Timebank.cc account.') }}
-        <p> {{ __('Choose if approved Timebank.cc friends will be able to see your phone number. Otherwise your number will be kept private') }} </p>
+        @if (getActiveProfileType() != 'Admin')
+            @if (getActiveProfileType() == 'User')
+                <p>{{ __('Your mobile phone can be used to authorize access to your Timebank.cc account.') }}
+                <p> {{ __('Choose if approved Timebank.cc friends will be able to see your phone number. Otherwise your number will be kept private') }} </p>
+            @else
+                <p>{{ __('A mobile phone can be used to authorize access to your Timebank.cc profile.') }}
+                <p> {{ __('Choose if Timebank.cc users will be able to see this phone number. Otherwise your number will be kept private') }} </p>
+            @endif
+        @else
+            <p>{{ __('A mobile phone can be used to authorize access to your Timebank.cc profile.') }}
+        @endif
     </x-slot>
 
     <x-slot name="form">
@@ -33,9 +42,17 @@
                     class="placeholder-gray-300"/>
             </div>
 
-        <div class="col-span-6 ">
-            <x-checkbox id="public-phone-nr" label="{{ __('Visible for my Timebank.cc friends') }}" wire:model="state.phone_public_for_friends" />
-        </div>
+        @if (getActiveProfileType() != 'Admin')
+            @if (isset($state['phone_public_for_friends']))
+                <div class="col-span-6 ">
+                    <x-checkbox id="public-phone" label="{{ __('Visible for my Timebank.cc friends') }}" wire:model.live="state.phone_public_for_friends" />
+                </div>
+            @elseif (isset($state['phone_public']))
+                <div class="col-span-6 ">
+                    <x-checkbox id="public-phone" label="{{ __('Visible for all Timebank.cc users') }}" wire:model.live="state.phone_public"/>
+                </div>
+            @endif
+        @endif
     </x-slot>
 
     @error('state.phone') 

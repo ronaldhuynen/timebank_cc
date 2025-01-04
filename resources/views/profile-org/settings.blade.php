@@ -9,12 +9,12 @@
         @livewire('profile.update-settings-form')
         <x-jetstream.section-border />
         
-        {{-- TODO NEXT: Make phone profile dynamic --}}
-        @livewire('profile-user.update-profile-phone-form')
+        @livewire('profile.update-profile-phone-form')
         <x-jetstream.section-border />
 
         <div class="mt-10 sm:mt-0">
             @livewire('profile.update-message-settings-form')
         </div>
+    </div>
         
 </x-app-layout>

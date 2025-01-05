@@ -6,17 +6,17 @@
             <x-jetstream.label for="tags" value="{{ __('Activities or skills you offer to other Timebankers') }}"
                                wire:loading.remove />
             <x-jetstream.label for="tags" value="{{ __('Loading...') }}" wire:loading />
-            <div wire:ignore>
-                <input id="tags" placeholder="{{ __('Select or create a new tag title') }}"
-                       type="text" value="{{ $tagsArray }}" x-data="{ input: @entangle('tagsArray').live }" x-ref="input" data-suggestions='@json($suggestions)'>
+            <div  wire:ignore>
+                <input class="w-full" data-suggestions='@json($suggestions)' id="tags"
+                       placeholder="{{ __('Select or create a new tag title') }}" type="text"
+                       value="{{ $tagsArray }}" x-data="{ input: @entangle('tagsArray').live }" x-ref="input">
             </div>
-
-            <div class="my-6 grid grid-cols-1">
+            <div class="my-3 grid grid-cols-1">
                 <x-errors />
             </div>
         </div>
 
-        <div class="bg-gray-white flex items-center justify-end px-0 py-3 text-right">
+        <div class="bg-gray-white flex items-center justify-end px-0 pb-3 text-right">
             <x-jetstream.action-message class="mr-3" on="saved">
                 {{ __('Saved') }}
             </x-jetstream.action-message>
@@ -35,7 +35,6 @@
                     </x-slot>
 
                     <x-slot name="content">
-
                         <div class="mt-6 grid grid-cols-1 gap-6">
                             <x-input label="{{ __('Activity tag (min. 2 words)') }} *"
                                      placeholder="{{ __('Accurate and unique name for this activity, avoid vague or general keywords') }}"
@@ -118,9 +117,12 @@
                         <div class="my-6 grid grid-cols-1">
                             <x-errors />
                         </div>
+                      <x-skill-tag-warning />
                     </x-slot>
-
+           
                     <x-slot name="footer">
+
+                     
                         <x-jetstream.secondary-button wire:click="cancelCreateTag" wire:loading.attr="disabled">
                             {{ __('Cancel') }}
                         </x-jetstream.secondary-button>

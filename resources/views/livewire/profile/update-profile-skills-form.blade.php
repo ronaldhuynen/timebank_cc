@@ -6,7 +6,7 @@
         <x-slot name="description">
                 <div class="">
                     @livewire('side-post', [
-                        'type' => 'SiteContents\User\Edit\Skill' ?? null, 
+                        'type' => 'SiteContents\User\Edit\Skills' ?? null, 
                         'sticky' => false, 'random' => true, 
                         'fallbackTitle' => __('Activities and skills'),
                         'fallbackDescription' => __('Add tags to describe the type of work or assistance you are offering at the moment to our community.') ]),

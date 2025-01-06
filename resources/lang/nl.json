@@ -57,6 +57,8 @@
     "Admin": "Administrator",
     "User project": "Privé-project",
 
+    "Location": "Lokatie",
+    "Most exchanges take place in your own area. Please indicate where this is so you can easily meet other Timebankers who are around.": "De meeste uitwisselingen vinden plaats in je eigen regio. Geef hier aan waar dit is, zodat je eenvoudig andere Timebankers uit je buurt kunt ontmoeten.",
     "Choose a country": "Selecteer een land",
     "Country": "Land",
     "Choose a city": "Selecteer een plaats",
@@ -255,6 +257,8 @@
     
 
     "Transfer Timebank.cc Hours": "Betaal Timebank.cc uren",
+    "Your time is currency": "Onze tijd is jouw munt",
+    "Timebank Hours can only be used to trade work, help, or services. Each hour equals 60 minutes of work. They can’t be turned into euros, emphasizing that all work is valued equally. These simple rules ensure that no profit can be made, keeping the focus on cooperation and mutual support.": "Timebank-uren zijn alleen bedoeld om werk, hulp of diensten uit te wisselen. Een uur staat gelijk aan 60 minuten werk. Ze kunnen niet worden omgezet in euro's, zodat al het werk evenveel waard is. Deze simpele regels zorgen ervoor dat niemand winst maakt en dat uitwisselingen gaan om samenwerking en wederzijdse hulp.",
     "Amount": "Bedrag",
     "Amount of time": "Bedrag aan tijd",
     "Account": "Rekening",

@@ -359,8 +359,15 @@ return [
 |
 */
     'posts' => [
-        'postable_is_auth_user' => true,    // true: only authenticated models (users), false: active profile models stored in session (users, organizations, banks, admins)
-        'site-content-writer' => 'Timebank.cc' // Writer name for general site content such as static pages. This name can be a non-exsisting user / organization
+        'postable_is_auth_user' => true,    // Post editor profile that is stored. Set to true: Users, set to false: active profile models stored in session (users, organizations, banks, admins)
+        'site-content-writer' => 'Timebank.cc', // Writer name for general site content such as static pages. This name can be a non-exsisting user / organization
+        'title_rule' => 'required|string|min:3|max:150',
+        'excerpt_rule' => 'nullable|string|string|max:500',
+        'content_rule' => 'nullable|string|max:1048576', // max 1 MB in bytes
+        'image_rule' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:6144', // max 6 MB
+        'media_owner_rule' => 'nullable|string|max:150',
+        'media_caption_rule' => 'nullable|string|max:300',
+        'meeting_address_rule' => 'nullable|string|max:100',
     ],
 
 
@@ -371,7 +378,7 @@ return [
 |
 */
         'messenger' => [
-            'default_unread_mail_delay' => 8, // In hours. After this delay an email will be send to notify an unread chat message
+            'default_unread_mail_delay' => 8, // In hours. After this default delay an email will be send to notify an unread chat message. Users / profiles can change this in their settings
         ]
 
 ];

@@ -13,7 +13,7 @@
                         'type' => 'SiteContents\Pay\Sticky' ?? null, 
                         'sticky' => true,
                         'fallbackTitle' => __('Your time is currency'),
-                        'fallbackDescription' => __('Timebank Hours are used only to trade work, help, or services. Each hour equals 60 minutes of work. They can’t be turned into euros, emphasizing that all work is valued equally. These simple rules ensure that no profit can be made, keeping the focus on cooperation and mutual support.') ])
+                        'fallbackDescription' => __('Timebank Hours can only be used to trade work, help, or services. Each hour equals 60 minutes of work. They can’t be turned into euros, emphasizing that all work is valued equally. These simple rules ensure that no profit can be made, keeping the focus on cooperation and mutual support.') ])
                     @livewire('side-post', [
                         'type' => 'SiteContents\Pay' ?? null, 
                         'random' => true,

@@ -1,11 +1,16 @@
 <x-jetstream.form-section submit="updateProfileInformation">
-    <x-slot name="title">
-        {{ __('Locations') }}
-    </x-slot>
+        <x-slot name="title">
+        </x-slot>
 
-    <x-slot name="description">
-        {{ __('Where are you mostly located? And what is a good place for Timebank.cc exchanges?') }}
-    </x-slot>
+        <x-slot name="description">
+                <div class="">
+                    @livewire('side-post', [
+                        'type' => 'SiteContents\User\Edit\Location' ?? null, 
+                        'sticky' => false, 'random' => true, 
+                        'fallbackTitle' => __('Location'),
+                        'fallbackDescription' => __('Most exchanges take place in your own area. Please indicate where this is so you can easily meet other Timebankers who are around.') ]),
+                </div>
+        </x-slot>
 
     <x-slot name="form">
 

@@ -47,6 +47,7 @@ class Manage extends Component
     public $selectedTranslationId = null;    // Needed for the stopPublicationModal
 
     public $image;
+    public bool $imagePreviewable;
     public $mediaOwner;
     public $mediaCaption; 
     public $media;
@@ -66,27 +67,26 @@ class Manage extends Component
     protected function rules()
     {
         //  Note that most fields are not required, this is to store concept posts
-        //  TODO: make certain fields required when publish start date is selected?
         return [
         'categoryId' => 'required|integer',
-        'locale' => 'required|string',
+        'locale' => 'required|string|min:2|max:3',
         'post.slug' =>  [
             'required', 'string', 'min:3', 'max:150', 'regex:/^[\pL\pM\pN-]+$/u',
             Rule::unique('post_translations', 'slug')->ignore($this->post['translation_id'], 'id')],
-        'post.title' => 'required|string|min:3|max:150',
-        'post.excerpt' => 'string|max:500',
-        'content' => 'string|nullable|max:1048576', // max 1 MB in bytes
+        'post.title' => config('timebank-cc.posts.title_rule'),
+        'post.excerpt' =>  config('timebank-cc.posts.excerpt_rule'),
+        'content' =>  config('timebank-cc.posts.content_rule'),
         'from' => 'date|nullable',
         'till' => 'date|nullable',
-        'image' => 'nullable|image|max:5120',
-        'mediaOwner' => 'nullable|string|max:150',
-        'mediaCaption' => 'nullable|string|max:300',
+        'image' =>  config('timebank-cc.posts.image_rule'),
+        'mediaOwner' =>  config('timebank-cc.posts.media_owner_rule'),
+        'mediaCaption' =>  config('timebank-cc.posts.media_caption_rule'),
         'meetingFrom' =>  'date|nullable',
         'meetingTill' =>  'date|nullable',
-        'meeting.address' => 'string|max:100|nullable',
+        'meeting.address' =>  config('timebank-cc.posts.meeting_address_rule'),
         'organizer.id' => 'integer|nullable',
         'organizer.type' => 'string|nullable',
-    ];
+        ];
     }
 
 
@@ -472,7 +472,41 @@ class Manage extends Component
 
     public function updatedImage()
     {
-        // info('updated image');
+        $this->validateOnly('image');
+    }
+
+    public function updatingImage($newValue)
+    {
+        // If there's no file, just return
+        if (!$newValue) return;
+        // Check extension before storing it in $this->image
+        $ext = strtolower($newValue->getClientOriginalExtension() ?? '');
+        // Disallow non-image extensions
+        if (!in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
+            $this->image = null;
+            $this->media = null;
+            $this->addError('image', 'Unsupported file type: ' . $ext);
+            $this->imagePreviewable = false;
+        }   else {
+            $this->imagePreviewable = true;
+        }
+    }
+
+    public function removeImage()
+    {
+        // Clear the current upload preview
+        $this->image = null;
+
+        // If editing an existing post, remove any saved media
+        if ($this->postId) {
+            $post = Post::find($this->postId);
+            if ($post) {
+                $post->clearMediaCollection('posts');
+                // update the preview in the modal
+                $this->image = null;
+                $this->media = null;
+            }
+        }
     }
 
 

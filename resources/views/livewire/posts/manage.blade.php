@@ -276,22 +276,32 @@
                         <!-- Image upload -->
                         <div class="w-1/2">
                             <label class="form-label mt-6">{{ __('Image') }}</label>
-
-                            @if ($image === null)
-                                <img src="{{ $media }}"
-                                    class="mb-2 h-48 w-64 rounded-md border border-gray-600 object-cover">
-                            @else
-                                <!-- Preview image -->
-                                {{-- Make sure that that object cover class w and h is 4 by 3 proportion as images will later be cropped in 4 by 3 proportions --}}
-                                <img src="{{ $image->temporaryUrl() }}"
-                                    class="mb-2 h-48 w-64 rounded-md border border-gray-600 object-cover">
-                            @endif
+                            
+                        @if ($image && $imagePreviewable)
+                            {{-- New upload preview --}}
+                            <img src="{{ $image->temporaryUrl() }}"
+                                class="mb-2 w-64 rounded-md border border-gray-600">
+                        @elseif ($media)
+                            {{-- Existing post image --}}
+                            <img src="{{ $media }}"
+                                class="mb-2 w-64 rounded-md border border-gray-600">
+                        @elseif ($image && !$imagePreviewable)
+                            {{-- Not na image  file type --}}
+                            <div class="mb-2 h-36 w-64 flex items-center justify-center border border-gray-600">
+                                <span class="text-red-500">{{ __('Error') }}</span>
+                            </div>
+                        @else
+                            {{-- No image --}}
+                            <div class="mb-2 h-36 w-64 flex items-center justify-center border border-gray-600">
+                                <span>{{ __('No image') }}</span>
+                            </div>
+                        @endif
                             <div x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
                                 x-on:livewire-upload-finish="isUploading = false; progress = 5"
                                 x-on:livewire-upload-error="isUploading = false"
                                 x-on:livewire-upload-progress="progress = $event.detail.progress">
                                 <!-- File Input -->
-                                <input type="file" wire:model.live="image">
+                                <input type="file" wire:model="image" accept="image/*" >
                                 <!-- Progress Bar -->
                                 <div x-show.transition="isUploading"
                                     class="flex-start my-6 flex h-4 w-64 overflow-hidden rounded bg-gray-100 font-sans text-xs font-medium">
@@ -301,9 +311,16 @@
                                 </div>
                             </div>
                             @error('image')
-                                <span class="error">{{ $message }}</span>
+                                <span class="error text-red-500 py-2">{{ $message }}</span>
                             @enderror
                         </div>
+                        @if ($image)
+                            <div class="mt-2">
+                                <button type="button" wire:click="removeImage" class="rounded bg-gray-500 px-4 font-bold text-white hover:bg-gray-600">
+                                    {{ __('Delete') . ' ' . __('Image') }}
+                                </button>
+                            </div>
+                        @endif
 
                         <!--- Media owner --->
                         <div class="w-full py-4">

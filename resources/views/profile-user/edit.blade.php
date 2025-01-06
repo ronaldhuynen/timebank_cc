@@ -6,13 +6,11 @@
     </x-slot>
 
     <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-        
         @livewire('profile-user.update-profile-personal-form')
         <x-jetstream.section-border />
         @livewire('locations.update-profile-location-form')
         <x-jetstream.section-border />
         @livewire('profile.update-profile-skills-form')
-
     </div>
 
 </x-app-layout>

@@ -1,9 +1,9 @@
 <div id="updateFocus">
     <div id="update">
         @if(!$updateMode)
-            @include('livewire.socials-form-create')
+            @include('livewire.profile.socials-form-create')
         @else
-            @include('livewire.socials-form-update')
+            @include('livewire.profile.socials-form-update')
         @endif
     </div>
 

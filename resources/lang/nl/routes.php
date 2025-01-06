@@ -53,6 +53,8 @@ return [
     'org.show' => 'organisatie/{id}',
     'user.edit' => 'gebruiker/bewerken',
     'org.edit' => 'organisatie/bewerken',
+    'bank.edit' => 'bank/bewerken',
+    'admin.edit' => 'admin/bewerken',
     'users-overview' => 'gebruikers-overzicht',
     'search.show' => 'zoeken',
     'messenger.join' => 'messenger/uitnodiging/{invite}',

@@ -143,6 +143,26 @@ class Bank extends Model implements MessengerProvider, MustVerifyEmail, Reactera
 
 
     /**
+     * Get all of the languages for the organization.
+     * Many-to-many polymorphic.
+     */
+    public function languages()
+    {
+        return $this->morphToMany(Language::class, 'languagable')->withPivot('competence');
+    }
+
+
+    /**
+     * Get all of the social for the organization.
+     * Many-to-many polymorphic.
+     */
+    public function socials()
+    {
+        return $this->morphToMany(Social::class, 'sociable')->withPivot('id', 'user_on_social', 'server_of_social');
+    }
+
+    
+    /**
      * Get all of the bank's message settings.
      */
     public function message_settings()

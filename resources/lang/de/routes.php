@@ -52,6 +52,8 @@ return [
     'org.show' => 'organisation/{id}',
     'user.edit' => 'benutzer/bearbeiten',
     'org.edit' => 'organisation/bearbeiten',
+    'bank.edit' => 'bank/bearbeiten',
+    'admin.edit' => 'admin/bearbeiten',
     'users-overview' => 'benutzerübersicht',
     'search.show' => 'suche',
     'terms.show' => 'nutzungsbedingungen',

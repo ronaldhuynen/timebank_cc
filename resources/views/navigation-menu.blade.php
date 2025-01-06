@@ -76,11 +76,11 @@
                                     @if ($language)
                                         <div class="block px-4 py-2">
                                             <a class="text-gray-900 transition hover:text-gray-700 focus:border-gray-300 focus:text-gray-700"
-                                               href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
-                                               hreflang="{{ $localeCode }}" rel="alternate">
+                                                href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                                                hreflang="{{ $localeCode }}" rel="alternate">
                                                 {{ $language->flag }}
                                                 <span
-                                                      class="ml-3 text-gray-400">{{ Lang::get($language->name, [], $localeCode) }}
+                                                    class="ml-3 text-gray-400">{{ Lang::get($language->name, [], $localeCode) }}
                                                 </span>
                                             </a>
                                         </div>
@@ -104,7 +104,7 @@
                                 <button
                                         class="border-1 hover:border-grey-900 focus:border-grey-900 flex rounded-full border-2 border-white text-sm shadow-sm transition focus:border-gray-300">
                                     <img alt="{{ Session('activeProfileName') }}" class="h-9 w-9 rounded-full object-cover"
-                                         src="{{ Storage::url(Session('activeProfilePhoto')) }}" />
+                                        src="{{ Storage::url(Session('activeProfilePhoto')) }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
@@ -113,10 +113,10 @@
                                         {{ Session('activeProfileName') }}
 
                                         <svg class="-mr-0.5 ml-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20"
-                                             xmlns="http://www.w3.org/2000/svg">
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path clip-rule="evenodd"
-                                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                  fill-rule="evenodd" />
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                fill-rule="evenodd" />
                                         </svg>
 
                                     </button>
@@ -133,16 +133,21 @@
                                 <livewire:profile-select>
                             @endif
 
-                            <!---- Edit profile --->
+                            <!---- Edit profile info--->
                             @if (session('activeProfileType') == 'App\Models\User')
                                 <x-jetstream.dropdown-link :active="request()->routeIs('user.edit')" href="{{ route('user.edit') }}">
-                                    {{ __('Edit Profile') }}
+                                    {{ __('Edit profile') }}
                                 </x-jetstream.dropdown-link>
                             @elseif (session('activeProfileType') == 'App\Models\Organization')
-                                <x-jetstream.dropdown-link :active="request()->routeIs('org.show')" href="{{ route('org.edit') }}">
+                                <x-jetstream.dropdown-link :active="request()->routeIs('org.edit')" href="{{ route('org.edit') }}">
+                                    {{ __('Edit profile') }}
+                                </x-jetstream.dropdown-link>
+                            @elseif (session('activeProfileType') == 'App\Models\Bank')
+                                <x-jetstream.dropdown-link :active="request()->routeIs('bank.edit')" href="{{ route('bank.edit') }}">
                                     {{ __('Edit profile') }}
                                 </x-jetstream.dropdown-link>
                             @else
+                                {{-- Disabled link --}}
                                 <span class="block cursor-default px-4 py-2 text-sm leading-5 text-gray-400">
                                     {{ __('Edit profile') }}
                                 </span>
@@ -153,40 +158,40 @@
                             {{-- @if (session('activeProfileType') != 'App\Models\Admin') --}}
                             <x-jetstream.dropdown-link href="{{ route('messenger.portal') }}">
                                 {{ __('Messages') }} <span class="badge-pill badge-danger mr-n2 badge"
-                                      id="nav_thread_count"></span>
+                                    id="nav_thread_count"></span>
                             </x-jetstream.dropdown-link>
                             {{-- @else
                             <span class="block cursor-default px-4 py-2 text-sm leading-5 text-gray-400">
                                 {{ __('Messages') }}
                             </span>
-                        @endif --}}
+                            @endif --}}
 
                             <!--- Messender Friends --->
                             @if (in_array(session('activeProfileType'), ['App\Models\User', 'App\Models\Organization']))
                                 <div class="nav-item dropdown block px-4 py-2 text-sm leading-5 text-gray-900 transition hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-                                     id="pending_friends_nav">
+                                    id="pending_friends_nav">
                                     <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown block pb-0 pt-1"
-                                       data-toggle="dropdown" href="#" id="click_friends_tab" onClick="drop()">
+                                        data-toggle="dropdown" href="#" id="click_friends_tab" onClick="drop()">
                                         {{ __('Friends') }} <span class="badge-pill badge-danger mr-n2 badge"
-                                              id="nav_friends_count"></span>
+                                            id="nav_friends_count"></span>
                                     </a>
 
                                     <div aria-labelledby="click_friends_tab"
-                                         class="dropdown-menu dropdown-menu-right notify-drop bg-light">
+                                        class="dropdown-menu dropdown-menu-right notify-drop bg-light">
                                         <div class="row">
                                             <div class="col-12 pill-tab-nav">
                                                 <nav class="nav nav-pills flex-column flex-sm-row" id="nav-friend-tabs"
-                                                     role="tablist">
+                                                    role="tablist">
                                                     <a aria-controls="f_pending" aria-selected="true"
-                                                       class="flex-sm-fill text-sm-center nav-link h6 active"
-                                                       data-toggle="pill" href="#f_pending" id="tab-pending"
-                                                       role="tab"><i class="fas fa-user-friends"></i>
+                                                        class="flex-sm-fill text-sm-center nav-link h6 active"
+                                                        data-toggle="pill" href="#f_pending" id="tab-pending"
+                                                        role="tab"><i class="fas fa-user-friends"></i>
                                                         {{ __('Pending') }}
                                                     </a>
                                                     <a aria-controls="f_sent" aria-selected="false"
-                                                       class="flex-sm-fill text-sm-center nav-link h6" data-toggle="pill"
-                                                       href="#f_sent" id="tab-sent" role="tab"><i
-                                                           class="fas fa-user-friends"></i>
+                                                        class="flex-sm-fill text-sm-center nav-link h6" data-toggle="pill"
+                                                        href="#f_sent" id="tab-sent" role="tab"><i
+                                                            class="fas fa-user-friends"></i>
                                                         {{ __('Sent') }}
                                                     </a>
                                                 </nav>
@@ -197,7 +202,7 @@
                                                 <div class="drop-content list-group" id="pending_friends_ctnr">
                                                     <div class="col-12 text-center">
                                                         <div class="spinner-grow spinner-grow-sm text-primary"
-                                                             role="status">
+                                                            role="status">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -206,7 +211,7 @@
                                                 <div class="drop-content list-group" id="sent_friends_ctnr">
                                                     <div class="col-12 text-center">
                                                         <div class="spinner-grow spinner-grow-sm text-primary"
-                                                             role="status">
+                                                            role="status">
                                                         </div>
                                                     </div>
                                                 </div>

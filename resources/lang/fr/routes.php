@@ -53,6 +53,8 @@ return [
     'org.show' => 'organisation/{id}',
     'user.edit' => 'utilisateur/modifier',
     'org.edit' => 'organisation/modifier',
+    'bank.edit' => 'banque/modifier',
+    'admin.edit' => 'admin/modifier',
     'users-overview' => 'apercu-utilisateurs',
     'user.show' => 'utilisateur/{userId}',
     'search.show' => 'recherche',
@@ -62,7 +64,7 @@ return [
     'profile.user.show' => 'utilisateur/parametres',
     'profile.org.show' => 'organisation/parametres',
     'profile.bank.show' => 'banco/parametres',
-    'profile.admin.show' => 'administration/parametres',
+    'profile.admin.show' => 'admin/parametres',
     'show.by.name' => '{name}',
 
     'messenger.portal' => 'messenger',

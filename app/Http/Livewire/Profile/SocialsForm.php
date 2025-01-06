@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Profile;
 
 use App\Models\Social;
 use Illuminate\Support\Carbon;
@@ -111,6 +111,6 @@ class SocialsForm extends Component
     public function render()
     {
         $this->getSocials();
-        return view('livewire.socials-form');
+        return view('livewire.profile.socials-form');
     }
 }

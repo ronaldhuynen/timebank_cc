@@ -290,6 +290,13 @@ Route::group([
 
             Route::get(LaravelLocalization::transRoute('routes.org.edit'), 'App\Http\Controllers\OrgController@edit')
                     ->name('org.edit');
+ 
+            Route::get(LaravelLocalization::transRoute('routes.bank.edit'), 'App\Http\Controllers\BankController@edit')
+                    ->name('bank.edit');
+
+            Route::get(LaravelLocalization::transRoute('routes.admin.edit'), 'App\Http\Controllers\AdminController@edit')
+                    ->name('admin.edit');
+
 
             Route::get(LaravelLocalization::transRoute('routes.users-overview'), 'App\Http\Controllers\UserController@index')
                     ->name('users-overview');

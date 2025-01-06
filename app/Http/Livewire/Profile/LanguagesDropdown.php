@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\ProfileUser;
+namespace App\Http\Livewire\Profile;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +13,7 @@ class LanguagesDropdown extends Component
     public $langSelectedOptions = [];
     public $langOptions;
     public $languages;
+    public string $label;
 
     /**
      * Prepare the component.
@@ -36,6 +37,16 @@ class LanguagesDropdown extends Component
 
         $this->langSelectedOptions = $languages;
         $this->langSelected = $this->langSelectedOptions->pluck('id');
+
+        $type = getActiveProfileType();
+        if ( $type == 'Organization') {
+            $this->label = __('What language(s) does your organization use?');
+        } elseif ( $type == 'Bank') {
+            $this->label = __('What language(s) does your bank use?');
+        } else {
+            // Users, or other types
+            $this->label = __('What language(s) do you speak?');
+        }
     }
 
 
@@ -53,6 +64,6 @@ class LanguagesDropdown extends Component
 
     public function render()
     {
-        return view('livewire.profile-user.languages-dropdown');
+        return view('livewire.profile.languages-dropdown');
     }
 }

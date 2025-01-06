@@ -17,7 +17,6 @@ class UpdateProfilePersonalForm extends Component
     use WithFileUploads;
     use HasProfilePhoto;
 
-
     public $state = [];
     public $user;
     public $photo;
@@ -46,7 +45,12 @@ class UpdateProfilePersonalForm extends Component
      * @return void
      */
     public function mount()
-    {
+    {        
+        // Check if the active profile is 'User'
+        if (getActiveProfileType() !== 'User' && Auth::user()->id === session('activeProfileId')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $this->state = Auth::user()->withoutRelations()->toArray();
         $this->website = $this->state['website'];
         $this->user = Auth::user();
@@ -121,37 +125,38 @@ class UpdateProfilePersonalForm extends Component
     */
     public function updateProfilePersonalForm()
     {
+        $user = Auth::user();
+
         if (isset($this->photo)) {
-            $this->user->updateProfilePhoto($this->photo);
+            $user->updateProfilePhoto($this->photo);
         }
 
         $this->validate();  // 2nd validation, just before save method
 
-        $this->user->about = $this->state['about'];
-        $this->user->about_short = $this->state['about_short'];
-        $this->user->motivation = $this->state['motivation'];
-        $this->user->date_of_birth = $this->state['date_of_birth'];
-        $this->user->website =  $this->website;
-
+        $user->about = $this->state['about'];
+        $user->about_short = $this->state['about_short'];
+        $user->motivation = $this->state['motivation'];
+        $user->date_of_birth = $this->state['date_of_birth'];
+        $user->website =  $this->website;
 
         if (isset($this->languages)) {
 
-            $languages = collect($this->languages)->Map(function ($lang, $key) {
+            $languages = collect($this->languages)->Map(function ($lang, $key) use ($user) {
                 return [
                     'language_id' => $lang['langId'],
                     'competence' => $lang['compId'],
                     'languagable_type' => User::class,
-                    'languagable_id' => $this->user->id,
+                    'languagable_id' => $user->id,
                 ];
             })->toArray();
 
-            $this->user->languages()->detach(); // Remove all languages of this user before inserting the new ones
+            $user->languages()->detach(); // Remove all languages of this user before inserting the new ones
             DB::table('languagables')->insert($languages);
         }
 
-        $this->user->save();
+        $user->save();
         $this->dispatch('saved');
-        Session(['activeProfilePhoto' => $this->user->profile_photo_path ]);
+        Session(['activeProfilePhoto' => $user->profile_photo_path ]);
         redirect()->route('user.edit');
     }
 
@@ -162,31 +167,33 @@ class UpdateProfilePersonalForm extends Component
      */
     public function deleteProfilePhoto()
     {
+        $user = Auth::user();
+
         if (! Features::managesProfilePhotos()) {
             return;
         }
 
-        if (is_null($this->user->profile_photo_path)) {
+        if (is_null($user->profile_photo_path)) {
             return;
         }
 
 
         // Only delete a profile-photo, and not a default-photo in 'app-images/'
-        if (str_starts_with($this->user->profile_photo_path, 'profile-photos/')) {
-            Storage::disk(isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('jetstream.profile_photo_disk', 'public'))->delete($this->user->profile_photo_path);
+        if (str_starts_with($user->profile_photo_path, 'profile-photos/')) {
+            Storage::disk(isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('jetstream.profile_photo_disk', 'public'))->delete($user->profile_photo_path);
 
-            $this->user->forceFill([
+            $user->forceFill([
                 'profile_photo_path' =>  config('timebank-cc.profiles.user.profile_photo_path_default'),
             ])->save();
 
-            Session(['activeProfilePhoto' => $this->user->profile_photo_path ]);
+            Session(['activeProfilePhoto' => $user->profile_photo_path ]);
         }
 
         $this->dispatch('saved');
-        return redirect()->route('user.edit');
+        Session(['activeProfilePhoto' => $user->profile_photo_path ]);
+        return redirect()->route('user.edit'); // Reloads the navigation bar with the new profile photo
     }
-
-
+    
 
     public function addUrlScheme($url, $scheme = 'https://')
     {

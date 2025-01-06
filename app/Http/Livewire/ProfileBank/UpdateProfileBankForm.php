@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\ProfileOrg;
+namespace App\Http\Livewire\ProfileBank;
 
-use App\Models\Organization;
+use App\Models\Bank;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -11,13 +11,13 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class UpdateProfileOrgForm extends Component
+class UpdateProfileBankForm extends Component
 {
     use WithFileUploads;
     use HasProfilePhoto;
 
     public $state = [];
-    public $organization;
+    public $bank;
     public $photo;
     public $languages;
     public $website;
@@ -47,15 +47,16 @@ class UpdateProfileOrgForm extends Component
      */
     public function mount()
     {        
-        // Check if the active profile is 'Organization'
-        if (getActiveProfileType() !== 'Organization' || !userOwnsProfile(getActiveProfile()) ) {
+        // Check if the active profile is 'Bank'
+        if (getActiveProfileType() !== 'Bank' || !userOwnsProfile(getActiveProfile()) ) {
             abort(403, 'Unauthorized action.');
+            // TODO: Add log and report
         }
 
-        $this->state = Organization::find(session('activeProfileId'))->toArray();
+        $this->state = Bank::find(session('activeProfileId'))->toArray();
         $this->website = $this->state['website'];
-        $this->organization = Organization::find(session('activeProfileId'));
-        $this->organization['profile_photo_url'] = url(Storage::url($this->organization->profile_photo_path));
+        $this->bank = Bank::find(session('activeProfileId'));
+        $this->bank['profile_photo_url'] = url(Storage::url($this->bank->profile_photo_path));
         
         $this->getLanguages();
     }
@@ -77,7 +78,7 @@ class UpdateProfileOrgForm extends Component
         });
 
         // Create an array of the pre-selected language options
-        $languages = $this->organization->languages;
+        $languages = $this->bank->languages;
         $languages = $languages->map(function ($language, $key) use ($langOptions) {
             $competence = DB::table('language_competences')->find($language->pivot->competence);
             $langSelected = collect($langOptions)->where('name', trans($language->name) . ' - ' . trans($competence->name));
@@ -123,59 +124,59 @@ class UpdateProfileOrgForm extends Component
 
     
     /**
-    * Update the organization's profile contact information.
+    * Update the bank's profile contact information.
     *
     * @return void
     */
     public function updateProfilePersonalForm()
     {
-        $org = getActiveProfile();
-        if ( !userOwnsProfile($org) ) {
+        $bank = getActiveProfile();
+        if ( !userOwnsProfile($bank) ) {
             abort(403, 'Unauthorized action.');
             // TODO: Add log and report
         }
 
         if (isset($this->photo)) {
-            $org->updateProfilePhoto($this->photo);  // Trait (use HasProfilePhoto) needs to attached to Organization model for this to work
+            $bank->updateProfilePhoto($this->photo);  // Trait (use HasProfilePhoto) needs to attached to Bank model for this to work
         }
 
         $this->validate();  // 2nd validation, just before save method
 
-        $org->about = $this->state['about'];
-        $org->about_short = $this->state['about_short'];
-        $org->motivation = $this->state['motivation'];
-        $org->website =  str_replace(['http://', 'https://', ], '', $this->website);
+        $bank->about = $this->state['about'];
+        $bank->about_short = $this->state['about_short'];
+        $bank->motivation = $this->state['motivation'];
+        $bank->website =  str_replace(['http://', 'https://', ], '', $this->website);
 
         if (isset($this->languages)) {
 
-            $languages = collect($this->languages)->Map(function ($lang, $key) use ($org) {
+            $languages = collect($this->languages)->Map(function ($lang, $key) use ($bank) {
                 return [
                     'language_id' => $lang['langId'],
                     'competence' => $lang['compId'],
-                    'languagable_type' => Organization::class,
-                    'languagable_id' => $org->id,
+                    'languagable_type' => Bank::class,
+                    'languagable_id' => $bank->id,
                 ];
             })->toArray();
 
-            $org->languages()->detach(); // Remove all languages of this organization before inserting the new ones
+            $bank->languages()->detach(); // Remove all languages of this organization before inserting the new ones
             DB::table('languagables')->insert($languages);
         }
 
-        $org->save();
+        $bank->save();
         $this->dispatch('saved');
-        session(['activeProfilePhoto' => $org->profile_photo_path ]);
+        session(['activeProfilePhoto' => $bank->profile_photo_path ]);
         redirect()->route('org.edit');
     }
 
     /**
-     * Delete organization's profile photo.
+     * Delete the bank's profile photo.
      *
      * @return void
      */
     public function deleteProfilePhoto()
     {       
-        $org = getActiveProfile();
-        if (!userOwnsProfile($org)) {
+        $bank = getActiveProfile();
+        if (!userOwnsProfile($bank)) {
             abort(403, 'Unauthorized action.');
             // TODO: Add log and report
         }
@@ -184,19 +185,19 @@ class UpdateProfileOrgForm extends Component
             return;
         }
 
-        if (is_null($org->profile_photo_path)) {
+        if (is_null($bank->profile_photo_path)) {
             return;
         }
 
         // Only delete a profile-photo, and not a default-photo in 'app-images/'
-        if (str_starts_with($org->profile_photo_path, 'profile-photos/')) {
-            Storage::disk(isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('jetstream.profile_photo_disk', 'public'))->delete($org->profile_photo_path);
+        if (str_starts_with($bank->profile_photo_path, 'profile-photos/')) {
+            Storage::disk(isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('jetstream.profile_photo_disk', 'public'))->delete($bank->profile_photo_path);
 
-            $org->forceFill([
+            $bank->forceFill([
                 'profile_photo_path' =>  config('timebank-cc.profiles.organization.profile_photo_path_default'),
             ])->save();
 
-            Session(['activeProfilePhoto'=> $org->profile_photo_path ]);
+            Session(['activeProfilePhoto'=> $bank->profile_photo_path ]);
         }
 
         $this->dispatch('saved');
@@ -213,6 +214,6 @@ class UpdateProfileOrgForm extends Component
     
     public function render()
     {
-        return view('livewire.profile-org.update-profile-org-form');
+        return view('livewire.profile-bank.update-profile-bank-form');
     }
 }

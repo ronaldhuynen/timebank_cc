@@ -53,6 +53,8 @@ return [
     'org.show' => 'organization/{id}',
     'user.edit' => 'user/edit',
     'org.edit' => 'organization/edit',
+    'bank.edit' => 'bank/edit',
+    'admin.edit' => 'admin/edit',
     'users-overview' => 'users-overview',
     'search.show' => 'search',
     'terms.show' => 'terms-of-service',

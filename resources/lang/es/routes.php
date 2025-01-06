@@ -53,6 +53,8 @@ return [
     'org.show' => 'organizacion/{id}',
     'user.edit' => 'usuario/editar',
     'org.edit' => 'organizacion/editar',
+    'bank.edit' => 'banco/editar',
+    'admin.edit' => 'admin/editar',
     'users-overview' => 'resumen-usuarios',
     'user.show' => 'usuario/{id}',
     'search.show' => 'buscar',
@@ -61,7 +63,7 @@ return [
     'policy.show' => 'politica-de-privacidad',
     'profile.user.show' => 'usuario/configuraciones',
     'profile.org.show' => 'organizacion/configuraciones',
-    'profile.bank.show' => 'organizacion/configuraciones',
+    'profile.bank.show' => 'banco/configuraciones',
     'profile.admin.show' => 'admin/configuraciones',
     'show.by.name' => '{name}',
 

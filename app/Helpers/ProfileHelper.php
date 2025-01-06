@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 /**
@@ -37,5 +38,28 @@ if (!function_exists('getActiveProfileType')) {
         }
 
         return null;
+    }
+}
+
+    /**
+     * Checks if the user actually "owns" this profile.
+     */
+if (!function_exists('userOwnsProfile')) {
+    function userOwnsProfile($profileModel)
+    {
+        $user = Auth::user();
+        
+        // Check if the profile model is an instance of the User model
+        if ($profileModel instanceof \App\Models\User) {
+            return $profileModel->id === $user->id;
+        }
+
+        // Example for Organization / Bank / Admin relationships:
+        // If the model has a `users()` relationship, check if the user is in there
+        if (method_exists($profileModel, 'users')) {
+            return $profileModel->users->contains($user);
+        }
+
+        return false;
     }
 }

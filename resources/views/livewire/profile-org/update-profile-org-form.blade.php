@@ -5,7 +5,7 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Other users will recognize your organization by your name and photo.') }}
+        {{ __('A complete profile makes it easier for others to connect with your organization. Adding a photo, an introduction, a motivation for working with Timebank, and the languages your organization uses gives a clearer picture of who you are and why you use Timebank.cc') }}
     </x-slot>
 
     <x-slot name="form">
@@ -34,8 +34,8 @@
 
                 <!-- New Profile Photo Preview -->
                 <div class="mt-3 mb-3" x-show="photoPreview" style="display: none;">
-                    <span class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
-                          x-bind:style="'background-image: url(\'' + photoPreview + '\');'">
+                <span class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
+                        x-bind:style="'background-image: url(\'' + photoPreview + '\');'">
                     </span>
                 </div>
 
@@ -85,13 +85,19 @@
 
         <!--- Languages -->
         <div class="col-span-6 sm:col-span-4">
-            @livewire('profile-org.languages-dropdown', ['languages' => $languages])
+            @livewire('profile.languages-dropdown', ['languages' => $languages])
             <x-jetstream.input-error for="languages" class="mt-2" />
+        </div>
+
+        <!--- Social media -->
+        <div class="col-span-6 sm:col-span-4">
+            @livewire('profile.socials-form')
+            <x-jetstream.input-error for="socials" class="mt-2" />
         </div>
 
         <!-- Website -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jetstream.label for="website" value="{{ __('Organization Website') }}" />
+            <x-jetstream.label for="website" value="{{ __('Organization website') }}" />
             <x-jetstream.input
                 placeholder="website.org"
                 wire:model.blur="website"

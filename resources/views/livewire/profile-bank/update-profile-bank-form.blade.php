@@ -1,15 +1,11 @@
 <x-jetstream.form-section submit="updateProfilePersonalForm">
     <x-slot name="title">
+        {{ __('Bank information') }}
+
     </x-slot>
 
     <x-slot name="description">
-        <div class="">
-            @livewire('side-post', [
-                'type' => 'SiteContents\User\Edit\PersonalInfo' ?? null, 
-                'sticky' => false, 'random' => true, 
-                'fallbackTitle' => __('Personal info'),
-                'fallbackDescription' => __('A complete profile makes it easier for others to connect with you. Adding a photo, an introduction, your motivation for joining Timebank, and the languages you speak gives a clearer picture of who you are and why you are here. This helps to create mutual trust and makes exchanges more personal and enjoyable.') ]),
-        </div>
+        {{ __('A complete profile makes it easier for others to connect with your bank. Adding a photo, an introduction, a motivation for working with Timebank, and the languages your bank uses gives a clearer picture of who you are and why you use Timebank.cc') }}
     </x-slot>
 
     <x-slot name="form">
@@ -33,12 +29,12 @@
 
                 <!-- Current Profile Photo -->
                 <div class="mt-3 mb-3" x-show="! photoPreview">
-                    <img src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}" class="rounded-full h-20 w-20 object-cover">
+                    <img src="{{ $this->bank->profile_photo_url }}" alt="{{ $this->bank->name }}" class="rounded-full h-20 w-20 object-cover">
                 </div>
 
                 <!-- New Profile Photo Preview -->
                 <div class="mt-3 mb-3" x-show="photoPreview" style="display: none;">
-                    <span class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
+                <span class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
                         x-bind:style="'background-image: url(\'' + photoPreview + '\');'">
                     </span>
                 </div>
@@ -47,7 +43,7 @@
                     {{ __('Change Photo') }}
                 </x-jetstream.secondary-button>
 
-                @if ($this->user->profile_photo_path)
+                @if ($this->bank->profile_photo_path)
                     <x-jetstream.secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto" x-on:click.prevent="">
                         {{ __('Delete Photo') }}
                     </x-jetstream.secondary-button>
@@ -57,12 +53,12 @@
             </div>
         @endif
 
-        <!-- About Me -->
+        <!-- Description -->
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
-                wire:model.live.debounce.500ms="state.about" 
-                label="{{ __('Please introduce yourself')}}" 
-                placeholder="{{ __('Relevant background info about you') }}" 
+                wire:model.live.debounce.800ms="state.about" 
+                label="{{ __('Please introduce your bank')}} *" 
+                placeholder="{{ __('What does your bank do? And why?') }}" 
                 class="placeholder-gray-300"/>
             <x-jetstream.input-error for="about" class="mt-2" />
         </div>
@@ -72,7 +68,7 @@
             <x-textarea 
                 wire:model.live.debounce.500ms="state.about_short" 
                 label="{{ __('Introduction in one sentence')}} *" 
-                placeholder="{{ __('Someone who is interested in... ') }}" 
+                placeholder="{{ __('I.e. your goal or slogan') }}" 
                 class="placeholder-gray-300"/>
             <x-jetstream.input-error for="about" class="mt-2" />
         </div>
@@ -80,9 +76,9 @@
         <!-- Motivation -->
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
-                wire:model.live.debounce.500ms="state.motivation" 
-                label="{{ __('Why are you a Timbanker?') }} *" 
-                placeholder="{{__('Just trying out or serious about a new value system?')}}" 
+                wire:model.live.debounce.800ms="state.motivation" 
+                label="{{ __('Why is your bank using Timebank?') }} *" 
+                placeholder="{{__('Reaching out to a new community or serious about a new value system?')}}" 
                 class="placeholder-gray-300"/>
             <x-jetstream.input-error for="motivation" class="mt-2" />
         </div>
@@ -99,36 +95,16 @@
             <x-jetstream.input-error for="socials" class="mt-2" />
         </div>
 
-
-        <!-- Birth Date -->
-        <div class="col-span-6 sm:col-span-4">
-            <div class="col-span-2 sm:col-span-1">
-                <!-- min age is 5 and max is 120 to prevent obvious faulty inputs / typo's -->
-                <x-datetime-picker 
-                    label="{{__('Date of birth') . ' ' . __('(DD-MM-YYYY)') }}"
-                    without-time
-                    without-tips
-                    display-format="DD-MM-YYYY"
-                    placeholder="{{__('Select a date')}}"
-                    wire:model="state.date_of_birth"
-                    :max="now()->subYears(5)" 
-                    :min="now()->subYears(120)"
-                    class="placeholder-gray-300"
-                />
-                <x-jetstream.input-error for="date_of_birth" class="mt-2" />
-            </div>
-        </div>
-
-
         <!-- Website -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jetstream.label for="website" value="{{ __('My website') }}" />
+            <x-jetstream.label for="website" value="{{ __('Bank website') }}" />
             <x-jetstream.input
                 placeholder="website.org"
                 wire:model.blur="website"
                 class="placeholder-gray-300"
             />
         </div>
+
     </x-slot>
 
     <!-- List of validation errors -->

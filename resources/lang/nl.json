@@ -22,7 +22,10 @@
 
     "Removed message": "Verwijderd bericht",
 
+    "Activities and skills": "Activiteiten en vaardigheden",
+    "Add tags to describe the type of work or assistance you are offering at the moment to our community.": "Voeg labels toe om het soort werk of hulp te beschrijven dat je op dit moment aan onze gemeenschap aanbiedt.",
     "Activities or skills you offer to other Timebankers": "Activiteiten of vaardigheden die je aan andere Timebankers aanbied",
+    "Select or create a new tag title": "Selecteer of maak een nieuw activiteit-label",
     "Add a new activity or skill to Timebank.cc": "Voeg een nieuwe activiteit of vaardigheid toe aan Timebank.cc",
     "Accurate and unique tag title for this activity, avoid vague or general keywords": "Exacte en unieke labelnaam voor deze activiteit, vermijd vage of algemene sleutelwoorden",
     "Activity tag (min. 2 words)": "Activiteit label (min. 2 woorden)",
@@ -38,6 +41,9 @@
     "We can not detect that this is in :locale. Check also your example below.": "We kunnen niet detecteren dat dit :locale is. Controleer ook je voorbeeld hieronder.",
     "We can not detect that this is in :locale. Try to use more words.": "We kunnen niet detecteren dat dit :locale is. Gebruik evt. meer woorden.",
     "The :attribute must be at least 2 words.": "Het :attribute dient minimaal 2 woorden te hebben.",
+    "Please add new tags responsibly!": "Wees verantwoord met het toevoegen van nieuwe labels!",
+    "Your name will be linked to this tag keyword.": "Je naam wordt gekoppeld aan dit label.",
+    "New activity tags are reviewed, and inappropriate or useless labels can be removed without notice.": "Nieuwe activiteit-labels worden gecontroleerd en ongepaste of nutteloze labels kunnen zonder bericht worden verwijderd.",
 
     "error(s) found, please correct the following:": "fout(en) gevonden, corrigeer het volgende:",
 
@@ -78,6 +84,8 @@
     "Delete Account and login": "Rekening en login verwijderen",
     "Delete Account": "Verwijder Rekening",
 
+    "Update your profile": "Je profiel bewerken",
+    "Personal info": "Persoonlijke info",
     "Your Profile": "Jouw profiel",
     "Please introduce yourself": "Introduceer jezelf alsjeblieft",
     "Please introduce your organization": "Introduceer je organisatie alsjeblieft",

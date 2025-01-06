@@ -1,7 +1,6 @@
 <x-jetstream.form-section submit="updateProfilePersonalForm">
     <x-slot name="title">
-        {{ __('Personal') }}
-
+        {{ __('Personal info') }}
     </x-slot>
 
     <x-slot name="description">

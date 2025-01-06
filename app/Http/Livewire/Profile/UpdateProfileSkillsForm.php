@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
-use Mcamara\LaravelLocalization\LaravelLocalization;
 use Throwable;
 use WireUi\Traits\WireUiActions;
 
@@ -492,6 +491,8 @@ class UpdateProfileSkillsForm extends Component
 
         $this->modalVisible = false;
         $this->save();
+
+        // TODO: Send email to admins when new tag is created. Include a block / report inappropriate button in email.
         // Emit an event to reinitialize the component
         $this->dispatch('reinitializeComponent');
     }

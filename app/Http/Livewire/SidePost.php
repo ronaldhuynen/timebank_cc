@@ -12,10 +12,14 @@ class SidePost extends Component
     public bool $sticky = false;
     public bool $random = false;
     public bool $latest = false;
+    public $fallbackTitle = null;
+    public $fallbackDescription = null;
 
-    public function mount($type, $sticky = null, $random = null, $latest = null)
+    public function mount($type, $sticky = null, $random = null, $latest = null, $fallbackTitle = null, $fallbackDescription = null) 
     {
-        $this->type = $type;
+        $this->type = $type;        
+        $this->fallbackTitle = $fallbackTitle;
+        $this->fallbackDescription = $fallbackDescription;
 
         if ($sticky) {
             $this->sticky = true;

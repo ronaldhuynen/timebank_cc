@@ -9,8 +9,16 @@
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <div class="px-3 sm:px-0">
-                    @livewire('side-post', ['type' => 'SiteContents\Pay\Sticky' ?? null, 'sticky' => true ])
-                    @livewire('side-post', ['type' => 'SiteContents\Pay' ?? null, 'random' => true ])
+                    @livewire('side-post', [
+                        'type' => 'SiteContents\Pay\Sticky' ?? null, 
+                        'sticky' => true,
+                        'fallbackTitle' => __('Your time is currency'),
+                        'fallbackDescription' => __('Timebank Hours are used only to trade work, help, or services. Each hour equals 60 minutes of work. They can’t be turned into euros, emphasizing that all work is valued equally. These simple rules ensure that no profit can be made, keeping the focus on cooperation and mutual support.') ])
+                    @livewire('side-post', [
+                        'type' => 'SiteContents\Pay' ?? null, 
+                        'random' => true,
+                        'fallbackTitle' => '',
+                        'fallbackDescription' => '' ])
                 </div>
             </div>
             <div class="mt-0 md:col-span-2 md:mt-0">

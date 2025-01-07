@@ -289,12 +289,44 @@ return [
 
             'email' => 'required|email|unique:users,email|max:40',
             'password' => 'required|min:6|same:passwordConfirmation',
-            'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',
+            'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1536', // max 1,5 MB
             'about' => 'nullable|string|max:400',   //TODO: check max with legacy cyclos data
+            'about_short' => 'nullable|string|max:150',   
             'motivation' => 'nullable|string|max:200',  //TODO: check max with legacy cyclos data
             'date_of_birth' => 'nullable|date',
-            'website' => 'nullable|string|max:150',
+            'languages' => 'required',
+            'website' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
         ],
+        'profile_organization' => [
+            'email' => 'required|email|unique:organizations,email|max:40',
+            'password' => 'required|min:6|same:passwordConfirmation',
+            'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1536', // max 1,5 MB
+            'about' => 'nullable|string|max:400',   //TODO: check max with legacy cyclos data
+            'about_short' => 'nullable|string|max:150',   
+            'motivation' => 'nullable|string|max:200',  //TODO: check max with legacy cyclos data
+            'languages' => 'required',
+            'website' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+        ],
+        'profile_bank' => [
+            'email' => 'required|email|unique:bank,email|max:40',
+            'password' => 'required|min:6|same:passwordConfirmation',
+            'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1536', // max 1,5 MB
+            'about' => 'nullable|string|max:400',   //TODO: check max with legacy cyclos data
+            'about_short' => 'nullable|string|max:150',   
+            'motivation' => 'nullable|string|max:200',  //TODO: check max with legacy cyclos data
+            'languages' => 'required',
+            'website' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+        ],
+        'profile_admin' => [
+            'email' => 'required|email|unique:admin,email|max:40',
+            'password' => 'required|min:6|same:passwordConfirmation',
+            'profile_photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1536', // max 1,5 MB
+        ],
+
+
+
+
+
         // TODO: move validation rules in Livewire Posts to this config
         // 'posts' => [
         //     'title' =>  'required|string|unique:users,name|min:3|max:40',

@@ -1,7 +1,6 @@
 <x-jetstream.form-section submit="updateProfilePersonalForm">
     <x-slot name="title">
         {{ __('Organization info') }}
-
     </x-slot>
 
     <x-slot name="description">
@@ -57,7 +56,7 @@
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
                 wire:model.live.debounce.800ms="state.about" 
-                label="{{ __('Please introduce your organization')}} *" 
+                label="{{ __('Introduce your organization')}} *" 
                 placeholder="{{ __('What does your organization do? And why?') }}" 
                 class="placeholder-gray-300"/>
             <x-jetstream.input-error for="about" class="mt-2" />

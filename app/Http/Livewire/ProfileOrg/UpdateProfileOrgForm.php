@@ -29,13 +29,12 @@ class UpdateProfileOrgForm extends Component
     public function rules()
     {
         return [
-            'photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',
-            'state.about' => 'required|string|max:900',   //TODO: check max with legacy cyclos data
-            'state.about_short' => 'required|string|max:150',   //TODO: check max with legacy cyclos data
-            'state.motivation' => 'required|string|max:200',  //TODO: check max with legacy cyclos data
-            'languages' => 'required',
-            'languages.id' => 'integer',
-            'website' => 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+            'photo' => config('timebank-cc.rules.profile_organization.profile_photo'),
+            'state.about' => config('timebank-cc.rules.profile_organization.about'),
+            'state.about_short' => config('timebank-cc.rules.profile_organization.about_short'),
+            'state.motivation' => config('timebank-cc.rules.profile_organization.motivation'),
+            'languages' => config('timebank-cc.rules.profile_organization.languages'),
+            'website' => config('timebank-cc.rules.profile_organization.website'),
         ];
     }
 

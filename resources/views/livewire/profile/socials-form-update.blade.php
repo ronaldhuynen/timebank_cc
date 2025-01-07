@@ -14,10 +14,10 @@
         </x-select>
     </div>
         <div class="grid grid-cols-1 gap-6 mt-3 mb-3 md:grid-cols-2">
-        <x-jetstream.input wire:model.live="userOnSocial" label="Username on medium" placeholder="AccountName" prefix="@ " />
+        <x-jetstream.input wire:model.live="userOnSocial" label="{{ __('Your username on social media') }}" placeholder="{{ __('account-name') }}" prefix="@ " />
         @if(App\Models\Social::find($socialsOptionSelected))
             @if(Str::contains(App\Models\Social::find($socialsOptionSelected)->url_structure, '#'))
-            <x-jetstream.input wire:model.live="serverOfSocial" label="Server of social" placeholder="Server name" prefix="@ " />
+            <x-jetstream.input wire:model.live="serverOfSocial" label="{{ __('Server of social media') }}" placeholder="{{ __('server-name.org') }}" prefix="@ " />
             @endif
         @endif
         </div>

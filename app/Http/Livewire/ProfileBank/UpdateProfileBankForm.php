@@ -29,16 +29,14 @@ class UpdateProfileBankForm extends Component
     public function rules()
     {
         return [
-            'photo' => 'nullable|mimes:gif,jpg,jpeg,png,svg|max:1024',
-            'state.about' => 'required|string|max:900',   //TODO: check max with legacy cyclos data
-            'state.about_short' => 'required|string|max:150',   //TODO: check max with legacy cyclos data
-            'state.motivation' => 'required|string|max:200',  //TODO: check max with legacy cyclos data
-            'languages' => 'required',
-            'languages.id' => 'integer',
-            'website' => 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+            'photo' => config('timebank-cc.rules.profile_bank.profile_photo'),
+            'state.about' => config('timebank-cc.rules.profile_bank.about'),
+            'state.about_short' => config('timebank-cc.rules.profile_bank.about_short'),
+            'state.motivation' => config('timebank-cc.rules.profile_bank.motivation'),
+            'languages' => config('timebank-cc.rules.profile_bank.languages'),
+            'website' => config('timebank-cc.rules.profile_bank.website'),
         ];
     }
-
 
     /**
      * Prepare the component.
@@ -140,7 +138,19 @@ class UpdateProfileBankForm extends Component
             $bank->updateProfilePhoto($this->photo);  // Trait (use HasProfilePhoto) needs to attached to Bank model for this to work
         }
 
-        $this->validate();  // 2nd validation, just before save method
+        // $this->validate();  // 2nd validation, just before save method
+
+        
+try {
+    $this->validate();  // 2nd validation, just before save method
+} catch (\Illuminate\Validation\ValidationException $e) {
+    // Log validation errors
+    \Log::error('Validation errors:', $e->errors());
+    // Optionally, you can display the errors to the user
+    $this->addError('validation', 'Validation failed. Please check your input.');
+    return;
+}
+
 
         $bank->about = $this->state['about'];
         $bank->about_short = $this->state['about_short'];
@@ -158,14 +168,14 @@ class UpdateProfileBankForm extends Component
                 ];
             })->toArray();
 
-            $bank->languages()->detach(); // Remove all languages of this organization before inserting the new ones
+            $bank->languages()->detach(); // Remove all languages of this bank before inserting the new ones
             DB::table('languagables')->insert($languages);
         }
 
         $bank->save();
         $this->dispatch('saved');
         session(['activeProfilePhoto' => $bank->profile_photo_path ]);
-        redirect()->route('org.edit');
+        redirect()->route('bank.edit');
     }
 
     /**
@@ -194,14 +204,14 @@ class UpdateProfileBankForm extends Component
             Storage::disk(isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('jetstream.profile_photo_disk', 'public'))->delete($bank->profile_photo_path);
 
             $bank->forceFill([
-                'profile_photo_path' =>  config('timebank-cc.profiles.organization.profile_photo_path_default'),
+                'profile_photo_path' =>  config('timebank-cc.profiles.bank.profile_photo_path_default'),
             ])->save();
 
             Session(['activeProfilePhoto'=> $bank->profile_photo_path ]);
         }
 
         $this->dispatch('saved');
-        return redirect()->route('org.edit');
+        return redirect()->route('bank.edit');
     }
 
 

@@ -57,8 +57,8 @@
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
                 wire:model.live.debounce.800ms="state.about" 
-                label="{{ __('Please introduce your bank')}} *" 
-                placeholder="{{ __('What does your bank do? And why?') }}" 
+                label="{{ __('Introduce your bank')}} *" 
+                placeholder="{{ __('What does your bank do? And who are you?') }}" 
                 class="placeholder-gray-300"/>
             <x-jetstream.input-error for="about" class="mt-2" />
         </div>
@@ -77,7 +77,7 @@
         <div class="col-span-6 sm:col-span-4">
             <x-textarea 
                 wire:model.live.debounce.800ms="state.motivation" 
-                label="{{ __('Why is your bank using Timebank?') }} *" 
+                label="{{ __('What is your motivation to start a Timebank?') }} *" 
                 placeholder="{{__('Reaching out to a new community or serious about a new value system?')}}" 
                 class="placeholder-gray-300"/>
             <x-jetstream.input-error for="motivation" class="mt-2" />
@@ -97,7 +97,7 @@
 
         <!-- Website -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jetstream.label for="website" value="{{ __('Bank website') }}" />
+            <x-jetstream.label for="website" value="{{ __('External website') }}" />
             <x-jetstream.input
                 placeholder="website.org"
                 wire:model.blur="website"

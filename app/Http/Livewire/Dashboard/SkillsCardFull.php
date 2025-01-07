@@ -198,6 +198,9 @@ class SkillsCardFull extends Component
 
         $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initTagIds, App::getLocale(), App::getFallbackLocale())); // Translate to app locale, if not available to fallback locale, if not available do not translate
 
+        // TODO!!
+        //FIXME Zie aantekeningen Joplin: TODO! SkillCardFull BUG OPLOSSEN
+
         $tags = $translatedTags->map(function ($item, $key) {
             return [
                 'tag_id' => $item['tag_id'],

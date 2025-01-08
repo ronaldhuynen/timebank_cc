@@ -431,72 +431,72 @@ class SkillsCardFull extends Component
         $this->dispatch('remove'); // Removes last value of the tagsArray on front-end only
     }
 
-    public function createTag()
-    {
-        $this->validate();
-        $this->resetErrorBag();
+    // public function createTag()
+    // {
+    //     $this->validate();
+    //     $this->resetErrorBag();
 
-        $owner = session('activeProfileType')::find(session('activeProfileId'));
-        $owner->tag($this->newTag['name']);
-        $name = str_replace('-', ' ', (new TagService())->normalize($this->newTag['name'])); // Use the normalized name that is stored in db
+    //     $owner = session('activeProfileType')::find(session('activeProfileId'));
+    //     $owner->tag($this->newTag['name']);
+    //     $name = str_replace('-', ' ', (new TagService())->normalize($this->newTag['name'])); // Use the normalized name that is stored in db
 
-        $tag = Tag::whereHas('locale', function ($query) {
-            $query->where('locale', app()->getLocale());
-        })
-            ->where('name', $name)
-            ->first();
+    //     $tag = Tag::whereHas('locale', function ($query) {
+    //         $query->where('locale', app()->getLocale());
+    //     })
+    //         ->where('name', $name)
+    //         ->first();
 
-        $locale = ['example' => $this->newTag['example']];
-        $tagLocale = $tag->locale()->update($locale);
-        $context = [
-            'category_id' => $this->newTagCategory,
-            'updated_by_user' => auth()->user()->id,
-        ];
+    //     $locale = ['example' => $this->newTag['example']];
+    //     $tagLocale = $tag->locale()->update($locale);
+    //     $context = [
+    //         'category_id' => $this->newTagCategory,
+    //         'updated_by_user' => auth()->user()->id,
+    //     ];
 
-        if ($this->translateRadioButton === 'select') {
-            // Attach an existing context in the base language to the new tag. See config('timebank-cc.base_language')
-            // Note that the category_id and updated_by_user is not updated when selecting an existing context!
-            $tagContext = Tag::find($this->selectTagTranslation)
-                ->contexts()
-                ->first();
-            $tag->contexts()->attach($tagContext->id);
-        } elseif ($this->translateRadioButton === 'input') {
-            // Create a new context for the new tag
-            $tagContext = $tag->contexts()->create($context);
+    //     if ($this->translateRadioButton === 'select') {
+    //         // Attach an existing context in the base language to the new tag. See config('timebank-cc.base_language')
+    //         // Note that the category_id and updated_by_user is not updated when selecting an existing context!
+    //         $tagContext = Tag::find($this->selectTagTranslation)
+    //             ->contexts()
+    //             ->first();
+    //         $tag->contexts()->attach($tagContext->id);
+    //     } elseif ($this->translateRadioButton === 'input') {
+    //         // Create a new context for the new tag
+    //         $tagContext = $tag->contexts()->create($context);
 
-            // Create a new (English) translation of the tag
-            $owner->tag($this->inputTagTranslation['name']);
-            $nameTranslation = str_replace('-', ' ', Str::slug($this->inputTagTranslation['name'])); // Use the normalized name that is stored in db
-            $tagTranslation = Tag::where('name', $nameTranslation)->first();
+    //         // Create a new (English) translation of the tag
+    //         $owner->tag($this->inputTagTranslation['name']);
+    //         $nameTranslation = str_replace('-', ' ', Str::slug($this->inputTagTranslation['name'])); // Use the normalized name that is stored in db
+    //         $tagTranslation = Tag::where('name', $nameTranslation)->first();
 
-            $locale = [
-                'example' => $this->inputTagTranslation['example'],
-                'locale' => config('timebank-cc.base_language'),
-            ];
-            $tagTranslationLocale = $tagTranslation->locale()->update($locale);
+    //         $locale = [
+    //             'example' => $this->inputTagTranslation['example'],
+    //             'locale' => config('timebank-cc.base_language'),
+    //         ];
+    //         $tagTranslationLocale = $tagTranslation->locale()->update($locale);
 
-            // Attach the context to the new tag and the translation
-            $tag->contexts()->attach($tagContext->id);
-            $tagTranslation->contexts()->attach($tagContext->id);
-        } else {
-            // Create a new context for the new tag without translation
-            $tagContext = $tag->contexts()->create($context);
-        }
+    //         // Attach the context to the new tag and the translation
+    //         $tag->contexts()->attach($tagContext->id);
+    //         $tagTranslation->contexts()->attach($tagContext->id);
+    //     } else {
+    //         // Create a new context for the new tag without translation
+    //         $tagContext = $tag->contexts()->create($context);
+    //     }
 
-        // Update newTagsArray with the new tag for save method
-        $this->newTagsArray = collect($this->newTagsArray)->transform(function ($item, $key) {
-            if (isset($item['value']) && $item['value'] === $this->newTag['name']) {
-                $item['title'] = $this->newTag['example'];
-                $item['locale'] = app()->getLocale();
-            }
-            return $item;
-        });
+    //     // Update newTagsArray with the new tag for save method
+    //     $this->newTagsArray = collect($this->newTagsArray)->transform(function ($item, $key) {
+    //         if (isset($item['value']) && $item['value'] === $this->newTag['name']) {
+    //             $item['title'] = $this->newTag['example'];
+    //             $item['locale'] = app()->getLocale();
+    //         }
+    //         return $item;
+    //     });
 
-        $this->modalVisible = false;
-        $this->save();
-        // Emit an event to reinitialize the component
-        $this->dispatch('reinitializeComponent');
-    }
+    //     $this->modalVisible = false;
+    //     $this->save();
+    //     // Emit an event to reinitialize the component
+    //     $this->dispatch('reinitializeComponent');
+    // }
 
     /**
      * Update the user's skill tags information.
@@ -506,65 +506,64 @@ class SkillsCardFull extends Component
     public function save()
     {
         if ($this->newTagsArray) {
-            if (count($this->newTagsArray) > 0) {
-                try {
-                    // Use a transaction for saving skill tags
-                    DB::transaction(function () {
-                        // Make sure we can count newTag for conditional validation rules
-                        if ($this->newTag === null) {
-                            $this->newTag = [];
-                        }
+            try {
+                // Use a transaction for saving skill tags
+                DB::transaction(function () {
+                    // Make sure we can count newTag for conditional validation rules
+                    if ($this->newTag === null) {
+                        $this->newTag = [];
+                    }
 
-                        $owner = session('activeProfileType')::find(session('activeProfileId'));
+                    $owner = getActiveProfile();
 
-                        $this->validate();
-                        $this->resetErrorBag();
+                    $this->validate();
+                    $this->resetErrorBag();
 
-                        // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
-                        $untagForeign = collect($this->initTagsArray)->pluck('taggable_tag_id');
+                    // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
+                    $untagForeign = collect($this->initTagsArray)->pluck('taggable_tag_id');
 
-                        // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
-                        if (count($this->initTagsArray) > 0) {
-                            $retagReadOnly = collect($this->initTagsArrayTranslated)
-                                ->where('readonly', true)
-                                ->pluck('tag_id')
-                                ->toArray();
+                    // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
+                    if (count($this->initTagsArray) > 0) {
+                        $retagReadOnly = collect($this->initTagsArrayTranslated)
+                            ->where('readonly', true)
+                            ->pluck('tag_id')
+                            ->toArray();
 
-                            $retagForeign = implode(', ', $retagReadOnly);
-                            $untagForeign = $untagForeign->diff($retagReadOnly);
-                        }
-                        // untag the result of the selection(s), the tags marked read-only are not untagged
-                        $owner->untagById($untagForeign);
+                        $retagForeign = implode(', ', $retagReadOnly);
+                        $untagForeign = $untagForeign->diff($retagReadOnly);
+                    }
+                    // untag the result of the selection(s), the tags marked read-only are not untagged
+                    $owner->untagById($untagForeign);
 
-                        // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
-                        $this->newTagsArray = collect($this->newTagsArray);
-                        $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
-
-                        $owner->tag($tag);
-
-                        // WireUI notification
-                        $this->notification()->success($title = __('Your have updated your profile successfully!'));
-                    });
-                    // end of transaction
-                } catch (Throwable $e) {
+                    // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
+                    $this->newTagsArray = collect($this->newTagsArray);
+                    $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
+                    // dd($tag);
+                    $owner->tag($tag);
+                    
                     // WireUI notification
-                    // TODO!: create event to send error notification to admin
-                    $this->notification([
-                        'title' => __('Update failed!'),
-                        'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
-                        'icon' => 'error',
-                        'timeout' => 100000,
-                    ]);
-                }
-                $this->forgetCachedSkills();
-                $this->cacheSkills();
-                $this->initTagsArray = [];
-                $this->newTag = null;
-                $this->newTagsArray = null;
-                $this->newTagCategory = null;
-                $this->dispatch('refreshComponent');
-                $this->dispatch('saved');
+                    $this->notification()->success($title = __('Your have updated your profile successfully!'));
+                });
+                // end of transaction
+            } catch (Throwable $e) {
+                // WireUI notification
+                // TODO!: create event to send error notification to admin
+                $this->notification([
+                    'title' => __('Update failed!'),
+                    'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
+                    'icon' => 'error',
+                    'timeout' => 100000,
+                ]);
             }
+            // dd('success?');
+            $this->forgetCachedSkills();
+            $this->cacheSkills();
+            $this->initTagsArray = [];
+            $this->newTag = null;
+            $this->newTagsArray = null;
+            $this->newTagCategory = null;
+            $this->dispatch('refreshComponent');
+            $this->dispatch('saved');
         }
     }
 

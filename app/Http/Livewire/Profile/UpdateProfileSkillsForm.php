@@ -505,65 +505,63 @@ class UpdateProfileSkillsForm extends Component
     public function save()
     {
         if ($this->newTagsArray) {
-            if (count($this->newTagsArray) > 0) {
-                try {
-                    // Use a transaction for saving skill tags
-                    DB::transaction(function () {
-                        // Make sure we can count newTag for conditional validation rules
-                        if ($this->newTag === null) {
-                            $this->newTag = [];
-                        }
+            try {
+                // Use a transaction for saving skill tags
+                DB::transaction(function () {
+                    // Make sure we can count newTag for conditional validation rules
+                    if ($this->newTag === null) {
+                        $this->newTag = [];
+                    }
 
-                        $owner = session('activeProfileType')::find(session('activeProfileId'));
+                    $owner = getActiveProfile();
 
-                        $this->validate();
-                        $this->resetErrorBag();
+                    $this->validate();
+                    $this->resetErrorBag();
 
-                        // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
-                        $untagForeign = collect($this->initTagsArray)->pluck('taggable_tag_id');
+                    // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
+                    $untagForeign = collect($this->initTagsArray)->pluck('taggable_tag_id');
 
-                        // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
-                        if (count($this->initTagsArray) > 0) {
-                            $retagReadOnly = collect($this->initTagsArrayTranslated)
-                                ->where('readonly', true)
-                                ->pluck('tag_id')
-                                ->toArray();
+                    // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
+                    if (count($this->initTagsArray) > 0) {
+                        $retagReadOnly = collect($this->initTagsArrayTranslated)
+                            ->where('readonly', true)
+                            ->pluck('tag_id')
+                            ->toArray();
 
-                            $retagForeign = implode(', ', $retagReadOnly);
-                            $untagForeign = $untagForeign->diff($retagReadOnly);
-                        }
-                        // untag the result of the selection(s), the tags marked read-only are not untagged
-                        $owner->untagById($untagForeign);
+                        $retagForeign = implode(', ', $retagReadOnly);
+                        $untagForeign = $untagForeign->diff($retagReadOnly);
+                    }
+                    // untag the result of the selection(s), the tags marked read-only are not untagged
+                    $owner->untagById($untagForeign);
 
-                        // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
-                        $this->newTagsArray = collect($this->newTagsArray);
-                        $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
+                    // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
+                    $this->newTagsArray = collect($this->newTagsArray);
+                    $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
 
-                        $owner->tag($tag);
+                    $owner->tag($tag);
 
-                        // WireUI notification
-                        $this->notification()->success($title = __('Your have updated your profile successfully!'));
-                    });
-                    // end of transaction
-                } catch (Throwable $e) {
                     // WireUI notification
-                    // TODO!: create event to send error notification to admin
-                    $this->notification([
-                        'title' => __('Update failed!'),
-                        'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
-                        'icon' => 'error',
-                        'timeout' => 100000,
-                    ]);
-                }
-                $this->forgetCachedSkills();
-                $this->cacheSkills();
-                $this->initTagsArray = [];
-                $this->newTag = null;
-                $this->newTagsArray = null;
-                $this->newTagCategory = null;
-                $this->dispatch('refreshComponent');
-                $this->dispatch('saved');
+                    $this->notification()->success($title = __('Your have updated your profile successfully!'));
+                });
+                // end of transaction
+            } catch (Throwable $e) {
+                // WireUI notification
+                // TODO!: create event to send error notification to admin
+                $this->notification([
+                    'title' => __('Update failed!'),
+                    'description' => __('Sorry, your data could not be saved!') . '<br /><br />' . __('Our team has ben notified about this error. Please try again later.') . '<br /><br />' . $e->getMessage(),
+                    'icon' => 'error',
+                    'timeout' => 100000,
+                ]);
             }
+            $this->forgetCachedSkills();
+            $this->cacheSkills();
+            $this->initTagsArray = [];
+            $this->newTag = null;
+            $this->newTagsArray = null;
+            $this->newTagCategory = null;
+            $this->dispatch('refreshComponent');
+            $this->dispatch('saved');
         }
     }
 

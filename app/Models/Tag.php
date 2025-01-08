@@ -45,7 +45,7 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     {
         return $this->tag_id;
     }
- 
+
     /**
      * Get the key name used to index the model.
      */

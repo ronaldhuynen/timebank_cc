@@ -54,11 +54,11 @@ trait TaggableWithLocale
                 $result = $result
                         ->first()
                         ->tags
-                          ->pluck('normalized')
-                          ->unique()
-                          ->values()
-                          ->reject($tagName)
-                          ->flatten()
+                        ->pluck('normalized')
+                        ->unique()
+                        ->values()
+                        ->reject($tagName)
+                        ->flatten()
                 ;
             } else {
                 $result = [];
@@ -202,7 +202,7 @@ trait TaggableWithLocale
                 })->select('normalized');
             }
         )
-          ->get();
+        ->get();
 
         if ($result->count() != 0) {
 
@@ -564,16 +564,14 @@ trait TaggableWithLocale
     protected function addOneTag(string $tagName): void
     {
         /** @var Tag $tag */
-        $tag = app(TagService::class)->findOrCreate(str_replace("-", " ", $tagName));   // Customization: str_replace to improve normalization
-        $tagKey = $tag->getKey();
-
+        $tag = app(TagService::class)->findOrCreate($tagName);
+        $tagKey = $tag->getKey(); 
         if (!$this->getAttribute('tags')->contains($tagKey)) {
             $this->tags()->attach($tagKey);
         }
 
         $locale = ['locale' => App::getLocale()];      // Customization: include App Locale when adding a tag
         TaggableLocale::updateOrCreate(['taggable_tag_id' => $tag->getKey()], $locale);    // Customization: include App Locale when adding a tag
-
     }
 
     /**

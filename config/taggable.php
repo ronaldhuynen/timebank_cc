@@ -55,6 +55,7 @@ return [
     'taggedModels' => [
         'users' => \App\Models\User::class,
         'organizations' => App\Models\Organization::class,
+        'banks' => App\Models\Bank::class,
     ],
 
     /**

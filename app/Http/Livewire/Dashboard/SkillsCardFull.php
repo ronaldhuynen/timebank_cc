@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Dashboard;
 
 use App\Helpers\StringHelper;
+use App\Jobs\SendEmailNewTag;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\TaggableLocale;
@@ -197,9 +198,6 @@ class SkillsCardFull extends Component
             ->toArray();
 
         $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initTagIds, App::getLocale(), App::getFallbackLocale())); // Translate to app locale, if not available to fallback locale, if not available do not translate
-
-        // TODO!!
-        //FIXME Zie aantekeningen Joplin: TODO! SkillCardFull BUG OPLOSSEN
 
         $tags = $translatedTags->map(function ($item, $key) {
             return [
@@ -436,9 +434,9 @@ class SkillsCardFull extends Component
         $this->validate();
         $this->resetErrorBag();
 
-        $owner = session('activeProfileType')::find(session('activeProfileId'));
+        $owner = getActiveProfile();
         $owner->tag($this->newTag['name']);
-        $name = str_replace('-', ' ', (new TagService())->normalize($this->newTag['name'])); // Use the normalized name that is stored in db
+        $name = (new TagService())->normalize($this->newTag['name']); // Use the normalized name that is stored in db
 
         $tag = Tag::whereHas('locale', function ($query) {
             $query->where('locale', app()->getLocale());
@@ -466,9 +464,8 @@ class SkillsCardFull extends Component
 
             // Create a new (English) translation of the tag
             $owner->tag($this->inputTagTranslation['name']);
-            $nameTranslation = str_replace('-', ' ', Str::slug($this->inputTagTranslation['name'])); // Use the normalized name that is stored in db
+            $nameTranslation = (new TagService())->normalize($this->inputTagTranslation['name']); // Use the normalized name that is stored in db
             $tagTranslation = Tag::where('name', $nameTranslation)->first();
-
             $locale = [
                 'example' => $this->inputTagTranslation['example'],
                 'locale' => config('timebank-cc.base_language'),
@@ -478,6 +475,9 @@ class SkillsCardFull extends Component
             // Attach the context to the new tag and the translation
             $tag->contexts()->attach($tagContext->id);
             $tagTranslation->contexts()->attach($tagContext->id);
+
+            // The translation now has been recorded. Next, detach owner from this translation as only th locale tag should be attached to the owner
+            $owner->untagById([$tagTranslation->tag_id]);
         } else {
             // Create a new context for the new tag without translation
             $tagContext = $tag->contexts()->create($context);
@@ -494,11 +494,15 @@ class SkillsCardFull extends Component
 
         $this->modalVisible = false;
         $this->save();
+
+        // Dispatch the SendEmailNewTag job
+        SendEmailNewTag::dispatch($tag->tag_id);
+
         // Emit an event to reinitialize the component
         $this->dispatch('reinitializeComponent');
     }
 
-    
+
     /**
      * Update the user's skill tags information.
      *
@@ -541,7 +545,7 @@ class SkillsCardFull extends Component
                     $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
                     // dd($tag);
                     $owner->tag($tag);
-                    
+
                     // WireUI notification
                     $this->notification()->success($title = __('Your have updated your profile successfully!'));
                 });

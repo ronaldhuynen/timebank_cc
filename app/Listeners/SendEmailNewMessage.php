@@ -17,6 +17,7 @@ class SendEmailNewMessage
     {
     }
 
+    
     /**
      * Handle the event.
      *
@@ -25,17 +26,6 @@ class SendEmailNewMessage
      */
     public function handle($event)
     {
-        // $minutes =1; // Delay in before New Message email is dispatched
-
-        // // TODO: remove logs
-        // info('Job will be dispatched in ' . $minutes . ' minutes');
-
-        // info('Message data:');
-        // info($event->message);
-
-        // $minutes_ago = $minutes; // time that a recipient did not read tha last message of a thread (conversation)
-        // $read_before = Carbon::now()->subMinutes($minutes_ago)->toDateTimeString();
-
         dispatch(new JobsSendEmailNewMessage($event));
     }
 }

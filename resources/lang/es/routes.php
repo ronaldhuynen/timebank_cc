@@ -42,10 +42,10 @@ return [
     'static.amst-brus-lisb'=> 'amsterdam-bruselas-lisboa',
     'static.work-w-us'=> 'trabaja-con-nosotros',
     'static.philosophy'=> 'filosofía',
-    'static.association'=> 'asociación',
+    'static.association'=> 'asociacion',
     'static.history' => 'historia',
     'static.press-media' => 'prensa-medios',
-    'static.research'=> 'investigación',
+    'static.research'=> 'investigacion',
     'static.team'=> 'equipo',
     'static.messenger'=> 'mensajero',
 

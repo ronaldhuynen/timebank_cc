@@ -12,6 +12,8 @@ class TaggableLocale extends Model
     use HasFactory;
     use TaggableWithLocale;
 
+    protected $table = 'taggable_locales';
+
     protected static function boot()
     {
         parent::boot();

@@ -57,7 +57,7 @@ return [
     'admin.edit' => 'admin/modifier',
     'users-overview' => 'apercu-utilisateurs',
     'user.show' => 'utilisateur/{userId}',
-    'search.show' => 'recherche',
+    'search.show' => 'rechercher',
     'messenger.join' => 'messager/invitation/{invite}',
     'terms.show' => 'conditions-d-utilisation',
     'policy.show' => 'politique-de-confidentialite',

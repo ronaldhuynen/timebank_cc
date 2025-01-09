@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Profile;
 
 use App\Helpers\StringHelper;
+use App\Jobs\SendEmailNewTag;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\TaggableLocale;
@@ -435,7 +436,7 @@ class UpdateProfileSkillsForm extends Component
 
         $owner = session('activeProfileType')::find(session('activeProfileId'));
         $owner->tag($this->newTag['name']);
-        $name = str_replace('-', ' ', (new TagService())->normalize($this->newTag['name'])); // Use the normalized name that is stored in db
+        $name = (new TagService())->normalize($this->newTag['name']); // Use the normalized name that is stored in db
 
         $tag = Tag::whereHas('locale', function ($query) {
             $query->where('locale', app()->getLocale());
@@ -463,9 +464,8 @@ class UpdateProfileSkillsForm extends Component
 
             // Create a new (English) translation of the tag
             $owner->tag($this->inputTagTranslation['name']);
-            $nameTranslation = str_replace('-', ' ', Str::slug($this->inputTagTranslation['name'])); // Use the normalized name that is stored in db
+            $nameTranslation = (new TagService())->normalize($this->inputTagTranslation['name']); // Use the normalized name that is stored in db            $tagTranslation = Tag::where('name', $nameTranslation)->first();
             $tagTranslation = Tag::where('name', $nameTranslation)->first();
-
             $locale = [
                 'example' => $this->inputTagTranslation['example'],
                 'locale' => config('timebank-cc.base_language'),
@@ -475,6 +475,9 @@ class UpdateProfileSkillsForm extends Component
             // Attach the context to the new tag and the translation
             $tag->contexts()->attach($tagContext->id);
             $tagTranslation->contexts()->attach($tagContext->id);
+            
+            // The translation now has been recorded. Next, detach owner from this translation as only th locale tag should be attached to the owner
+            $owner->untagById([$tagTranslation->tag_id]);
         } else {
             // Create a new context for the new tag without translation
             $tagContext = $tag->contexts()->create($context);
@@ -492,7 +495,9 @@ class UpdateProfileSkillsForm extends Component
         $this->modalVisible = false;
         $this->save();
 
-        // TODO: Send email to admins when new tag is created. Include a block / report inappropriate button in email.
+        // Dispatch the SendEmailNewTag job
+        SendEmailNewTag::dispatch($tag->tag_id);
+
         // Emit an event to reinitialize the component
         $this->dispatch('reinitializeComponent');
     }

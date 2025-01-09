@@ -44,7 +44,7 @@ class Category extends Model
      *
      * This method attempts to retrieve the translation for the category
      * in the current locale. If a translation in the current locale is
-     * not found, it falls back to the base locale.
+     * not found, it falls back to the base locale defined in the timebank-cc config.
      *
      * @return \App\Models\Translation|null The translation object for the category in the current or base locale, or null if not found.
      */

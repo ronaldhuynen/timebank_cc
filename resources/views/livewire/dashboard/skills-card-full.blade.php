@@ -138,4 +138,12 @@
         @endif
 
         <script src="{{ asset('js/skilltags.js') }}"></script>
+        <script>
+document.addEventListener('livewire:load', () => {
+    document.addEventListener('reloadPage', () => {
+        console.log('ReloadPage');
+        window.location.reload();
+    });
+});
+</script>
 </div>

@@ -3,11 +3,6 @@ let tagify;
 document.addEventListener('DOMContentLoaded', function () {
     initializeTagify();
 
-    // Listen for Livewire event
-    Livewire.on('reinitializeTagify', () => {
-        initializeTagify();
-    });
-
     // Listen for custom event to update Tagify
     window.addEventListener('tagifyChange', function (e) {
         if (tagify) {
@@ -79,7 +74,12 @@ function initializeTagify() {
         onChange(e);
     }
 
+    function onReloadPage() {
+        window.location.reload();
+    }
+
     input.addEventListener('change', onChange);
     window.addEventListener('load', onLoaded);
     window.addEventListener('remove', onRemove);
+    window.addEventListener('reloadPage', onReloadPage);
 }

@@ -607,6 +607,7 @@ class SkillsCardFull extends Component
                     'timeout' => 100000,
                 ]);
             }
+            $this->dispatch('saved');
             $this->forgetCachedSkills();
             $this->cacheSkills();
             $this->initTagsArray = [];
@@ -614,8 +615,8 @@ class SkillsCardFull extends Component
             $this->newTagsArray = null;
             $this->newTagCategory = null;
             $this->dispatch('refreshComponent');
-            $this->dispatch('saved');
             $this->dispatch('reinitializeTagify');
+            $this->dispatch('reloadPage');
         }
     }
 

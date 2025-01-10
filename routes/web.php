@@ -23,7 +23,6 @@ use Livewire\Livewire;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use RTippin\MessengerUi\Http\Controllers\ViewPortalController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,8 +67,8 @@ if (App::environment(['local', 'development', ' test' ])) {
     Route::get('/test/opt-clear', [TestController::class, 'optimizeClear'])->name('optimize-clear');
 
 
-    // Test error pages to check logging of errors and LogError middleware      
-    
+    // Test error pages to check logging of errors and LogError middleware
+
     // Simulate a 404 Not Found Error
     // Change nr to test other errors:
     // 401, 402, 403, 404, 419, 429, 500, 503
@@ -117,7 +116,7 @@ Route::group([
 
 
 
-    
+
     //----- Unprotected non auth routes -----//
 
 
@@ -131,7 +130,7 @@ Route::group([
         return view('welcome');
     })->name('welcome');
 
-    
+
     Route::view(LaravelLocalization::transRoute('routes.welcome'), 'welcome')
         ->name('welcome');
 
@@ -150,26 +149,26 @@ Route::group([
     Route::view(LaravelLocalization::transRoute('routes.static.faq'), 'static.faq')
         ->name('static-faq');
 
-            
+
     Route::view(LaravelLocalization::transRoute('routes.static.organizations'), 'static.organizations')
         ->name('static-organizations');
-    
-        
+
+
     Route::view(LaravelLocalization::transRoute('routes.static.principles'), 'static.principles')
     ->name('static-principles');
 
-        
+
     Route::view(LaravelLocalization::transRoute('routes.static.the-hague'), 'static.the-hague')
         ->name('static-the-hague');
 
-        
+
     Route::view(LaravelLocalization::transRoute('routes.static.lekkernassuh'), 'static.lekkernassuh')
         ->name('static-lekkernassuh');
 
-        
+
     Route::view(LaravelLocalization::transRoute('routes.static.amst-brus-lisb'), 'static.amst-brus-lisb')
         ->name('static-amst-brus-lisb');
-        
+
     Route::view(LaravelLocalization::transRoute('routes.static.work-w-us'), 'static.work-w-us')
     ->name('static-work-w-us');
 
@@ -178,7 +177,7 @@ Route::group([
 
     Route::view(LaravelLocalization::transRoute('routes.static.association'), 'static.association')
     ->name('static-association');
-        
+
     Route::view(LaravelLocalization::transRoute('routes.static.history'), 'static.history')
     ->name('static-history');
 
@@ -187,7 +186,7 @@ Route::group([
 
     Route::view(LaravelLocalization::transRoute('routes.static.research'), 'static.research')
     ->name('static-research');
-    
+
     Route::view(LaravelLocalization::transRoute('routes.static.team'), 'static.team')
     ->name('static-team');
 
@@ -252,6 +251,10 @@ Route::group([
                 Route::get(LaravelLocalization::transRoute('routes.posts.manage'), 'App\Http\Controllers\PostController@manage')->name('posts.manage');
             });
 
+            Route::group(['middleware' => ['can:manage posts']], function () {
+                Route::get(LaravelLocalization::transRoute('routes.posts.manage'), 'App\Http\Controllers\PostController@manage')->name('posts.manage');
+            });
+
             Route::get(LaravelLocalization::transRoute('routes.post.show_by_id'), 'App\Http\Controllers\PostController@showById')
                     ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed
                     ->name('post.show_by_id')
@@ -290,7 +293,7 @@ Route::group([
 
             Route::get(LaravelLocalization::transRoute('routes.org.edit'), 'App\Http\Controllers\OrgController@edit')
                     ->name('org.edit');
- 
+
             Route::get(LaravelLocalization::transRoute('routes.bank.edit'), 'App\Http\Controllers\BankController@edit')
                     ->name('bank.edit');
 
@@ -332,10 +335,10 @@ Route::group([
 
 
             Route::get('/email/verified', function () {
-                
+
                 //TODO create a verified-email view.
                 //TODO check org verification. Note that this route in inside the verified middleware group.
-            
+
                 // Option 1: display a “verified” view
                 // return view('verified-email');
 
@@ -369,14 +372,14 @@ Route::group([
 
                     // Organization & Profile... (Custom view)
                     Route::group(['middleware' => ['can:update organizations']], function () {
-                    Route::get(LaravelLocalization::transRoute('routes.profile.org.show'), [OrgController::class, 'settings'])
-                        ->name('profile.org.settings');
+                        Route::get(LaravelLocalization::transRoute('routes.profile.org.show'), [OrgController::class, 'settings'])
+                            ->name('profile.org.settings');
                     });
-                        
+
                     // Organization & Profile... (Custom view)
                     Route::group(['middleware' => ['can:update banks']], function () {
-                    Route::get(LaravelLocalization::transRoute('routes.profile.bank.show'), [BankController::class, 'settings'])
-                        ->name('profile.bank.settings');
+                        Route::get(LaravelLocalization::transRoute('routes.profile.bank.show'), [BankController::class, 'settings'])
+                            ->name('profile.bank.settings');
                     });
 
                     // Admin & Profile... (Custom view)

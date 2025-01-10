@@ -12,7 +12,6 @@ use Cviebrock\EloquentTaggable\Services\TagService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Throwable;
@@ -190,22 +189,23 @@ class SkillsCardFull extends Component
 
     protected function getInitialTags()
     {
-        $this->initTagIds = getActiveProfile()->tags()->orderBy('name')->get()->pluck('tag_id');
+        $this->initTagIds = getActiveProfile()->tags()->get()->pluck('tag_id');
 
         $this->initTagsArray = TaggableLocale::whereIn('taggable_tag_id', $this->initTagIds)
             ->select('taggable_tag_id', 'locale', 'example', 'updated_by_user')
             ->get()
             ->toArray();
 
-        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initTagIds, App::getLocale(), App::getFallbackLocale())); // Translate to app locale, if not available to fallback locale, if not available do not translate
+        $translatedTags = collect((new Tag())->translateTagIdsWithContexts($this->initTagIds));
 
         $tags = $translatedTags->map(function ($item, $key) {
             return [
+                'original_tag_id' => $item['original_tag_id'],
                 'tag_id' => $item['tag_id'],
                 'value' => $item['tag'],
-                'readonly' => $item['locale']['locale'] == App::getLocale() ? false : true, // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
-                'locale' => $item['locale']['locale'],
-                'example' => $item['locale']['example'],
+                'readonly' => $item['locale'] == App::getLocale() ? false : true, // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
+                'locale' => $item['locale'],
+                'example' => $item['example'],
                 'category' => $item['category'],
                 'category_path' => $item['category_path'],
                 'category_color' => $item['category_color'],
@@ -224,6 +224,7 @@ class SkillsCardFull extends Component
         $this->tagsArray = json_encode($tags->toArray());
     }
 
+
     protected function getLanguageDetector()
     {
         if (!$this->langDetector) {
@@ -233,12 +234,14 @@ class SkillsCardFull extends Component
         return $this->langDetector;
     }
 
+
     public function updatedNewTagName()
     {
         $this->resetErrorBag('newTag.name');
         $this->newTagsArray = $this->initTagsArray;
         $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
     }
+
 
     public function updatedNewTagExample()
     {
@@ -258,6 +261,7 @@ class SkillsCardFull extends Component
         }
     }
 
+
     public function updatedNewTagCategory()
     {
         $this->selectTagTranslation = [];
@@ -265,11 +269,13 @@ class SkillsCardFull extends Component
         $this->translationOptions = $this->relatedTag($this->newTagCategory, config('timebank-cc.base_language'));
     }
 
+
     public function updatedInputTagTranslationName()
     {
         $this->resetErrorBag('inputTagTranslation.name');
         $this->inputTagTranslation['name'] = StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
     }
+
 
     public function updatedInputTagTranslationExample()
     {
@@ -285,11 +291,13 @@ class SkillsCardFull extends Component
         $this->inputTagTranslation['example'] = StringHelper::DutchTitleCase($this->inputTagTranslation['example']);
     }
 
+
     public function updatingTagsArray()
     {
         // Note this is updating, not updated, as Tagify catches the json too soon.
         // $this->tagsArray = json_encode(json_decode($this->tagsArray));    // re-encode the json
     }
+
 
     public function updatedTagsArray()
     {
@@ -339,13 +347,14 @@ class SkillsCardFull extends Component
         }
     }
 
+
     public function updatedTranslationVisible()
     {
-        // dd($this->translationVisible);
         if ($this->translationVisible) {
             $this->updatedNewTagCategory();
         }
     }
+
 
     public function updatedTranslateRadioButton()
     {
@@ -358,6 +367,7 @@ class SkillsCardFull extends Component
         }
     }
 
+
     public function updatedSelectTagTranslation()
     {
         $this->translateRadioButton = 'select';
@@ -365,12 +375,14 @@ class SkillsCardFull extends Component
         $this->dispatch('disableInput'); // Script inside view skills-form.blade.php
     }
 
+
     public function updatedInputTagTranslation()
     {
         $this->translateRadioButton = 'input';
         $this->inputDisabled = false;
         $this->dispatch('disableSelect'); // Script inside view skills-form.blade.php
     }
+
 
     public function relatedTag($category, $locale = null)
     {
@@ -417,6 +429,7 @@ class SkillsCardFull extends Component
         return $suggestions;
     }
 
+
     public function cancelCreateTag()
     {
         $this->resetErrorBag();
@@ -429,6 +442,8 @@ class SkillsCardFull extends Component
         $this->dispatch('remove'); // Removes last value of the tagsArray on front-end only
     }
 
+    // TODO NEXT: create a method that cleans the tagables with the same context, only a single context in the app()->locale should remain as taggable
+    
     public function createTag()
     {
         $this->validate();
@@ -462,7 +477,7 @@ class SkillsCardFull extends Component
             // Create a new context for the new tag
             $tagContext = $tag->contexts()->create($context);
 
-            // Create a new (English) translation of the tag
+            // Create a new base language translation of the tag
             $owner->tag($this->inputTagTranslation['name']);
             $nameTranslation = (new TagService())->normalize($this->inputTagTranslation['name']); // Use the normalized name that is stored in db
             $tagTranslation = Tag::where('name', $nameTranslation)->first();
@@ -478,6 +493,9 @@ class SkillsCardFull extends Component
 
             // The translation now has been recorded. Next, detach owner from this translation as only th locale tag should be attached to the owner
             $owner->untagById([$tagTranslation->tag_id]);
+            // Also clean up owner's tags that have similar context but have different locale. Only the tag in owner's app()->getLocale() should remain in db.
+            $owner->cleanTaggables();
+
         } else {
             // Create a new context for the new tag without translation
             $tagContext = $tag->contexts()->create($context);
@@ -525,21 +543,19 @@ class SkillsCardFull extends Component
                     $this->resetErrorBag();
 
                     // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
-                    $untagForeign = collect($this->initTagsArray)->pluck('taggable_tag_id');
+                    $initTagIds= collect($this->initTagsArray)->pluck('taggable_tag_id');
 
-                    // Select (to include) foreign tags that are (initially) read-only and that have no translation in current user locale.
+                    // Select foreign tags that are (initially) read-only and that have no translation in current user locale.
                     if (count($this->initTagsArray) > 0) {
                         $retagReadOnly = collect($this->initTagsArrayTranslated)
-                            ->where('readonly', true)
-                            ->pluck('tag_id')
-                            ->toArray();
-
+                            ->where('readonly', true)  // should be true
+                            ->pluck('original_tag_id')
+                            ->toArray();    
                         $retagForeign = implode(', ', $retagReadOnly);
-                        $untagForeign = $untagForeign->diff($retagReadOnly);
+                        $untagForeign = $initTagIds->diff($retagReadOnly);
+                        // untag the result of the selection(s), the tags marked read-only are not untagged
+                        $owner->untagById($untagForeign);
                     }
-                    // untag the result of the selection(s), the tags marked read-only are not untagged
-                    $owner->untagById($untagForeign);
-
                     // Select the new tags: without the ones stored in only a foreign language as a user should always switch locale to input another language.
                     $this->newTagsArray = collect($this->newTagsArray);
                     $tag = $this->newTagsArray->where('readonly', '<>', true)->pluck('value')->toArray();
@@ -549,7 +565,7 @@ class SkillsCardFull extends Component
                     // WireUI notification
                     $this->notification()->success($title = __('Your have updated your profile successfully!'));
                 });
-                // end of transaction
+            //     // end of transaction
             } catch (Throwable $e) {
                 // WireUI notification
                 // TODO!: create event to send error notification to admin
@@ -560,7 +576,6 @@ class SkillsCardFull extends Component
                     'timeout' => 100000,
                 ]);
             }
-            // dd('success?');
             $this->forgetCachedSkills();
             $this->cacheSkills();
             $this->initTagsArray = [];
@@ -571,6 +586,7 @@ class SkillsCardFull extends Component
             $this->dispatch('saved');
         }
     }
+
 
     public function forgetCachedSkills()
     {
@@ -584,6 +600,7 @@ class SkillsCardFull extends Component
         }
     }
 
+
     public function cacheSkills()
     {
         $profileType = strtolower(basename(str_replace('\\', '/', session('activeProfileType')))); // Get the profile type (user / organization) from the session and convert to lowercase
@@ -594,11 +611,12 @@ class SkillsCardFull extends Component
             $translatedTags = collect((new Tag())->translateTagIdsWithContexts($tagIds, App::getLocale(), App::getFallbackLocale())); // Translate to app locale, if not available to fallback locale, if not available do not translate
             $skills = $translatedTags->map(function ($item, $key) {
                 return [
+                    'original_tag_id' => $item['original_tag_id'],
                     'tag_id' => $item['tag_id'],
                     'name' => $item['tag'],
-                    'foreign' => $item['locale']['locale'] == App::getLocale() ? false : true, // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
-                    'locale' => $item['locale']['locale'],
-                    'example' => $item['locale']['example'],
+                    'foreign' => $item['locale'] == App::getLocale() ? false : true, // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
+                    'locale' => $item['locale'],
+                    'example' => $item['example'],
                     'category' => $item['category'],
                     'category_path' => $item['category_path'],
                     'category_color' => $item['category_color'],
@@ -611,6 +629,7 @@ class SkillsCardFull extends Component
 
         $this->tagsArray = json_encode($skillsCache->toArray());
     }
+
 
     public function render()
     {

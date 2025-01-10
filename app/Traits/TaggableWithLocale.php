@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class TaggableWithLocale
@@ -318,18 +319,21 @@ trait TaggableWithLocale
         $tag = Tag::find($tagId);
         $translatedTag = $tag->translation;
         $category = Category::find($tag->contexts->pluck('category_id')->first());
-        $translatedCategory = $category->translation;        
+        $translatedCategory = $category->translation;
         $categoryPathIds = $category->ancestorsAndSelf->sortBy('id')->pluck('id');
-        $categoryPath = implode(' > ',
+        $categoryPath = implode(
+            ' > ',
             CategoryTranslation::whereIn('category_id', $categoryPathIds)
                             ->where('locale', App::getLocale())
                             ->pluck('name')
-                            ->toArray() );                    
+                            ->toArray()
+        );
         $categoryColor = $category->rootAncestor ? $category->rootAncestor->color : $category->color;
-        
+
         // Map and return the finalized result
         return [
-            'tag_id' => $translatedTag,
+            'original_tag_id' => $tagId,
+            'tag_id' => $translatedTag->tag_id,
             'tag' => StringHelper::dutchTitleCase($translatedTag->normalized),
             'example' => $translatedTag->example,
             'locale' => $translatedTag->locale,
@@ -374,26 +378,17 @@ trait TaggableWithLocale
     }
 
 
-    public function translateTagIdsWithContexts($array, $toLocale = null, $toFallbackLocale = null)
+
+    public function translateTagIdsWithContexts($tagIds)
     {
-
-        if (!$toLocale) {
-            $toFallbackLocale = app()->getFallBackLocale();
-        }
-
-        if (!$toFallbackLocale) {
-            $toFallbackLocale = app()->getFallBackLocale();
-        }
-
-        $collection = collect($array);
-        $translated = $collection->map(function ($item, $key) use ($toLocale, $toFallbackLocale) {
-            $item = $this->translateTagIdWithContext($item, $toLocale, $toFallbackLocale);
+        $collectionIds = collect($tagIds);
+        $translated = $collectionIds->map(function ($item) {
+            $item = $this->translateTagIdWithContext($item);
             return $item;
         });
 
         return $translated;
     }
-
 
     /**
      * Get an array of normalized tags for a given locale.
@@ -408,6 +403,38 @@ trait TaggableWithLocale
             $query->where('locale', $locale);
         })->pluck('normalized')->toArray();
         return $array;
+    }
+
+
+    /**
+     * Clean up duplicate taggables with different locales.
+     *
+     * This method retrieves the tags associated with the current model along with their contexts.
+     * It identifies context IDs that appear more than once and finds the corresponding tag IDs.
+     * It then retrieves the tag IDs that are associated with locales different from the current locale.
+     * Finally, it removes these duplicate tags from the model.
+     *
+     * @return mixed The result of the untagging operation.
+     */
+    public function cleanTaggables()
+    {
+        // Get the tags with their contexts
+        $tagsWithContexts = $this->tags()->with('contexts')->get();
+        $contextIds = $tagsWithContexts->pluck('contexts.*.id')->flatten();
+
+        // Find the context IDs that appear more than once
+        $duplicateContextIds = $contextIds->duplicates()->flatten();
+
+        $duplicateTagIds = DB::table('taggable_locale_context')
+            ->whereIn('context_id', $duplicateContextIds)
+            ->pluck('tag_id');
+
+        $duplicateTagsIdsForeign = DB::table('taggable_locales')
+                ->where('locale', '!=' , App::getLocale())
+                ->whereIn('taggable_tag_id', $duplicateTagIds)
+                ->pluck('taggable_tag_id');
+
+        return $this->untagById($duplicateTagsIdsForeign);
     }
 
 
@@ -596,7 +623,7 @@ trait TaggableWithLocale
     {
         /** @var Tag $tag */
         $tag = app(TagService::class)->findOrCreate($tagName);
-        $tagKey = $tag->getKey(); 
+        $tagKey = $tag->getKey();
         if (!$this->getAttribute('tags')->contains($tagKey)) {
             $this->tags()->attach($tagKey);
         }

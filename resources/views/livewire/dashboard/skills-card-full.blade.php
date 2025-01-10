@@ -97,19 +97,22 @@
                                         value="input" wire:model.live="translateRadioButton" />
                                     <div id="input-translation">
                                         <div class="my-6 grid grid-cols-1 gap-6 pl-6">
-                                            <x-jetstream.input :disabled="$inputDisabled"
-                                                placeholder="'{{ $newTag['name'] . '\' ' . __('in') . ' ' . config('timebank-cc.base_language_name') ?? __('Activity tag name in') . ' ' . config('timebank-cc.base_language_name') }}"
+
+                                            <x-input label="{{ __('Activity tag in') . ' ' . config('timebank-cc.base_language_name') . ' ' .  __('(min. 2 words)') }}"
+                                                placeholder="{{ !empty($newTag['name'])
+                                                    ? '\'' . $newTag['name'] . '\'' . ' ' . __('in') . ' ' . config('timebank-cc.base_language_name')
+                                                    : __('Activity tag name in') . ' ' . config('timebank-cc.base_language_name') }}"
                                                 wire:key="nameInput"
                                                 wire:model.defer="inputTagTranslation.name" />
-                                        </div>
+                                            </div>
 
                                         <div class="mt-6 grid grid-cols-1 gap-6 pl-6">
-                                            <x-jetstream.input :disabled="$inputDisabled" label=""
-                                                label="{{ __('Descriptive example in English') }}"
-                                                placeholder="{{ __('Give a practical example that clearly illustrates') }} {{ $inputTagTranslation['name'] ?? __('this activity') }} "
-                                                wire:key="translationExample"
+                                             <x-input label="{{ __('Descriptive example in') . ' ' . config('timebank-cc.base_language_name') }} *"
+                                                placeholder="{{ !empty($newTag['example'])
+                                                ? '\'' . $newTag['example'] . '\'' . ' ' . __('in') . ' ' . config('timebank-cc.base_language_name')
+                                                : __('Give a practical example in') . ' ' . config('timebank-cc.base_language_name') }}"
                                                 wire:model.defer="inputTagTranslation.example" />
-                                        </div>
+                                            </div>
                                     </div>
                                 @endif
                             </div>
@@ -117,7 +120,7 @@
                         <div class="my-6 grid grid-cols-1">
                             <x-errors />        
                             <x-skill-tag-warning />
-                       </div>
+                        </div>
                     </x-slot>
 
                     <x-slot name="footer">

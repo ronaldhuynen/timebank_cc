@@ -63,18 +63,16 @@ function initializeTagify() {
     function onChange(e) {
         const component = Livewire.find(input.closest('[wire\\:id]').getAttribute('wire:id'));
         component.set('tagsArray', e.target.value);
-        console.log('onChange is executed');
+        // console.log('onChange is executed');
     }
 
     function onRemove(e) {
         onChange(e);
         // Listen for Livewire updates to modalVisible
         setTimeout(() => {
-            // Your logic to remove the tag
-            console.log('Removing tag after delay');
             // Example: Remove the first tag
             tagify.removeTag(e.target.value);
-        }, 1000); // 1 second delay
+        }, 500); // 0.5 second delay
     }
 
     function onLoaded(e) {

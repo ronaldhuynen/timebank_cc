@@ -231,88 +231,6 @@ trait TaggableWithLocale
     }
 
 
-    public function OLDtranslateTagIdWithContext($tagId, $toLocale, $toFallbackLocale)
-    {
-        $sourceLocale = TaggableLocale::where('taggable_tag_id', $tagId)->value('locale');
-
-        // Load all relevant translations in one go
-        $result = Tag::where('tag_id', $tagId)
-            ->with([
-                'contexts.tags' => function ($query) use ($toLocale, $toFallbackLocale, $sourceLocale) {
-                    $query->whereHas('locale', function ($query) use ($toLocale, $toFallbackLocale, $sourceLocale) {
-                        $query->whereIn('locale', [$toLocale, $toFallbackLocale, $sourceLocale]);
-                    })
-                    ->with(['locale' => function ($query) {
-                        $query;
-                    }]);
-                },
-                'contexts.category' => function ($query) use ($toLocale, $toFallbackLocale, $sourceLocale) {
-                    $query->with(['translations' => function ($query) use ($toLocale, $toFallbackLocale, $sourceLocale) {
-                        $query->whereIn('locale', [$toLocale, $toFallbackLocale, $sourceLocale])
-                            ->select('category_id', 'name', 'locale');
-                    }]);
-                }
-            ])
-            ->first();
-
-        // If no results, return an empty array
-        if (!$result || !$result->contexts->first()) {
-            return [];
-        }
-
-        $contexts = $result->contexts->first();
-
-
-        //Make sure we don't get lost in translation when translating back to source locale!
-        if ($sourceLocale != $toLocale) {
-            // Prioritize and filter the loaded translations based on the locale
-            $tag = $contexts->tags->filter(function ($tag) use ($toFallbackLocale) {
-                return optional($tag->locale)->locale == $toFallbackLocale;
-            })->first() ?? $contexts->tags->first();
-        } else {
-            // No re-translating back to source locale
-            $tag = Tag::find($tagId);
-        }
-
-        // Similar approach for categories
-        if ($sourceLocale != $toLocale) {
-            $categoryTranslation = $contexts->category->translations
-                ->firstWhere('locale', $toLocale)
-                ?? $contexts->category->translations->first();
-        } else {
-            // No re-translating back to source locale
-            $categoryId = $tag->contexts->pluck('category_id')->first();
-            $categoryWithoutTrans = [
-                'name' => Category::find($categoryId)->translations->where('locale', $sourceLocale)->first()->name,
-                'category_id' => $categoryId,
-            ];
-            $categoryTranslation = $categoryWithoutTrans;
-            $categoryTranslation = (object)$categoryTranslation;
-        }
-
-        $categoryPath = $contexts->category->ancestorsAndSelf->sortBy('id')->pluck('id');
-        $categoryColor = $contexts->category->rootAncestor ? $contexts->category->rootAncestor->color : $contexts->category->color;
-
-
-        // Map and return the finalized result
-        return [
-            'tag_id' => $tag->tag_id,
-            'tag' => StringHelper::dutchTitleCase($tag->normalized),
-            'category_id' => $categoryTranslation->category_id,
-            'category' => $categoryTranslation->name,
-            'category_path' => implode(
-                ' > ',
-                CategoryTranslation::whereIn('category_id', $categoryPath)
-                    ->where('locale', $toLocale)
-                    ->pluck('name')
-                    ->toArray()
-            ),
-            'category_color' => $categoryColor,
-            'locale' => $tag->locale
-        ];
-    }
-
-
     public function translateTagIdWithContext($tagId)
     {
         $sourceLocale = TaggableLocale::where('taggable_tag_id', $tagId)->value('locale');
@@ -334,7 +252,7 @@ trait TaggableWithLocale
         return [
             'original_tag_id' => $tagId,
             'tag_id' => $translatedTag->tag_id,
-            'tag' => StringHelper::dutchTitleCase($translatedTag->normalized),
+            'tag' => $translatedTag->name,
             'example' => $translatedTag->example,
             'locale' => $translatedTag->locale,
             'category_id' => $category->id,
@@ -419,18 +337,22 @@ trait TaggableWithLocale
     public function cleanTaggables()
     {
         // Get the tags with their contexts
-        $tagsWithContexts = $this->tags()->with('contexts')->get();
-        $contextIds = $tagsWithContexts->pluck('contexts.*.id')->flatten();
+        $tagsWithContexts = $this->tags()->with('localeContext')->get();
+        $tagIds = $tagsWithContexts->pluck('tag_id');
+        $contextIds = $tagsWithContexts->pluck('localeContext.context_id')->flatten();
 
         // Find the context IDs that appear more than once
         $duplicateContextIds = $contextIds->duplicates()->flatten();
 
         $duplicateTagIds = DB::table('taggable_locale_context')
             ->whereIn('context_id', $duplicateContextIds)
-            ->pluck('tag_id');
+            ->whereIn('tag_id', $tagIds)
+            ->pluck('tag_id')
+            ->duplicates()
+            ->flatten();
 
         $duplicateTagsIdsForeign = DB::table('taggable_locales')
-                ->where('locale', '!=' , App::getLocale())
+                ->where('locale', '!=', App::getLocale())
                 ->whereIn('taggable_tag_id', $duplicateTagIds)
                 ->pluck('taggable_tag_id');
 

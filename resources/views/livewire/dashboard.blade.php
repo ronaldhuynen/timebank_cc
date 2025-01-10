@@ -11,7 +11,7 @@
                         <x-jetstream.application-logo class="block h-12 w-auto" />
                     </div>
                     <div>
-                        @livewire('dashboard.skills-card-full')
+                        <livewire:dashboard.skills-card-full />
                     </div>
                 </div>
         </div>

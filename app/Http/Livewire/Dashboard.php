@@ -17,7 +17,7 @@ class Dashboard extends Component
     {
         $this->user = [
             'name' => auth()->user()->name,
-            'firstName' => Str::words(auth()->user()->name, 1,''),
+            'firstName' => Str::words(auth()->user()->name, 1, ''),
             'birthday' => auth()->user()->date_of_birth,
         ];
 
@@ -26,13 +26,12 @@ class Dashboard extends Component
         ->where('subject_type', 'App\Models\User')
         ->whereNotNull('properties->old->last_login_at')
         ->get('properties')->last();
-        if(isset($activityLog)) {
+        if (isset($activityLog)) {
             $lastLoginAt = json_decode($activityLog, true)['properties']['old']['last_login_at'];
             $this->lastLoginAt = Carbon::createFromTimeStamp(strtotime($lastLoginAt))->diffForHumans();
         }
 
     }
-
 
     public function render()
     {

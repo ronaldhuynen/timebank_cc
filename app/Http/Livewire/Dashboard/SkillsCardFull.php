@@ -3,12 +3,12 @@
 namespace App\Http\Livewire\Dashboard;
 
 use App\Helpers\StringHelper;
+use App\Http\Livewire\Dashboard;
 use App\Jobs\SendEmailNewTag;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\TaggableLocale;
 use App\Traits\TaggableWithLocale;
-use Cviebrock\EloquentTaggable\Services\TagService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -305,16 +305,17 @@ class SkillsCardFull extends Component
 
         $localesToCheck = [app()->getLocale(), '']; // Only current locale and tags without locale should be checked for any new tag keywords
         $newTagsArrayLocal = $this->newTagsArray->whereIn('locale', $localesToCheck);
-
-        $suggestions = collect($this->suggestions);
+        // map suggestion to lower case for search normalization of the $newEntries
+        $suggestions = collect($this->suggestions)->map(function ($value) {
+            return strtolower($value);
+        });
         // Retrieve new tag entries not present in suggestions
         $newEntries = $newTagsArrayLocal->filter(function ($newItem) use ($suggestions) {
-            return !$suggestions->contains($newItem['value']);
+            return !$suggestions->contains(strtolower($newItem['value']));
         });
-
         // Add a new skill modal if there are new entries
         if (count($newEntries) > 0) {
-            $this->newTag['name'] = ucfirst($newEntries->flatten()->first());
+            $this->newTag['name'] = app()->getLocale() == 'de' ? $newEntries->flatten()->first() : ucfirst($newEntries->flatten()->first());
 
             $this->categoryOptions = Category::with([
                 'translations' => function ($query) {
@@ -376,6 +377,12 @@ class SkillsCardFull extends Component
     }
 
 
+    /**
+     * Handles the update of input tag translation.
+     *
+     * Sets the translateRadioButton to 'input', enables input fields by setting inputDisabled to false,
+     * and dispatches a 'disableSelect' event to disable certain selections in the frontend.
+     */
     public function updatedInputTagTranslation()
     {
         $this->translateRadioButton = 'input';
@@ -384,12 +391,31 @@ class SkillsCardFull extends Component
     }
 
 
+    /**
+     * Updates the visibility of the modal. If the modal becomes invisible, dispatches the 'remove' event to remove the last value of the tags array on the front-end.
+     */
+    public function updatedModalVisible()
+    {
+        if ($this->modalVisible == false) {
+            $this->dispatch('remove'); // Removes last value of the tagsArray on front-end only
+            $this->dispatch('reinitializeComponent');
+        }
+    }
+
+
+    /**
+     * Retrieves a list of related tags based on the specified category and locale.
+     *
+     * @param int|null $category The ID of the category to filter related tags. If null, all tags in the locale are suggested.
+     * @param string|null $locale The locale to use for tag names. If not provided, the application's current locale is used.
+     *
+     * @return \Illuminate\Support\Collection A collection of tags containing 'tag_id' and 'name' keys, sorted by name.
+     */
     public function relatedTag($category, $locale = null)
     {
         if (!$locale) {
             $locale = app()->getLocale();
         }
-
         if ($category) {
             // A category is selected: suggest related tags (family bloodline) within this category in $locale language
             $related = Category::find($category)->bloodline->pluck('id');
@@ -430,6 +456,11 @@ class SkillsCardFull extends Component
     }
 
 
+    /**
+     * Cancels the creation of a new tag by resetting error messages,
+     * clearing input fields, hiding translation and modal visibility,
+     * and resetting tag arrays to their initial state.
+     */
     public function cancelCreateTag()
     {
         $this->resetErrorBag();
@@ -439,11 +470,11 @@ class SkillsCardFull extends Component
         $this->newTagsArray = $this->initTagsArray;
         $this->tagsArray = json_encode($this->initTagsArray);
         $this->modalVisible = false;
-        $this->dispatch('remove'); // Removes last value of the tagsArray on front-end only
+        $this->updatedModalVisible();
     }
 
-    // TODO NEXT: create a method that cleans the tagables with the same context, only a single context in the app()->locale should remain as taggable
-    
+
+
     public function createTag()
     {
         $this->validate();
@@ -451,7 +482,7 @@ class SkillsCardFull extends Component
 
         $owner = getActiveProfile();
         $owner->tag($this->newTag['name']);
-        $name = (new TagService())->normalize($this->newTag['name']); // Use the normalized name that is stored in db
+        $name = $this->newTag['name'];
 
         $tag = Tag::whereHas('locale', function ($query) {
             $query->where('locale', app()->getLocale());
@@ -468,7 +499,7 @@ class SkillsCardFull extends Component
 
         if ($this->translateRadioButton === 'select') {
             // Attach an existing context in the base language to the new tag. See config('timebank-cc.base_language')
-            // Note that the category_id and updated_by_user is not updated when selecting an existing context!
+            // Note that the category_id and updated_by_user is not updated when selecting an existing context
             $tagContext = Tag::find($this->selectTagTranslation)
                 ->contexts()
                 ->first();
@@ -479,7 +510,7 @@ class SkillsCardFull extends Component
 
             // Create a new base language translation of the tag
             $owner->tag($this->inputTagTranslation['name']);
-            $nameTranslation = (new TagService())->normalize($this->inputTagTranslation['name']); // Use the normalized name that is stored in db
+            $nameTranslation = $this->inputTagTranslation['name'];
             $tagTranslation = Tag::where('name', $nameTranslation)->first();
             $locale = [
                 'example' => $this->inputTagTranslation['example'],
@@ -491,7 +522,7 @@ class SkillsCardFull extends Component
             $tag->contexts()->attach($tagContext->id);
             $tagTranslation->contexts()->attach($tagContext->id);
 
-            // The translation now has been recorded. Next, detach owner from this translation as only th locale tag should be attached to the owner
+            // The translation now has been recorded. Next, detach owner from this translation as only the locale tag should be attached to the owner
             $owner->untagById([$tagTranslation->tag_id]);
             // Also clean up owner's tags that have similar context but have different locale. Only the tag in owner's app()->getLocale() should remain in db.
             $owner->cleanTaggables();
@@ -502,27 +533,27 @@ class SkillsCardFull extends Component
         }
 
         // Update newTagsArray with the new tag for save method
-        $this->newTagsArray = collect($this->newTagsArray)->transform(function ($item, $key) {
+        $this->newTagsArray = collect($this->newTagsArray)->transform(function ($item) {
             if (isset($item['value']) && $item['value'] === $this->newTag['name']) {
                 $item['title'] = $this->newTag['example'];
                 $item['locale'] = app()->getLocale();
             }
             return $item;
+            // dd($this->newTagsArray);
         });
 
-        $this->modalVisible = false;
         $this->save();
+        $this->modalVisible = false;
 
         // Dispatch the SendEmailNewTag job
         SendEmailNewTag::dispatch($tag->tag_id);
-
-        // Emit an event to reinitialize the component
-        $this->dispatch('reinitializeComponent');
     }
 
 
     /**
-     * Update the user's skill tags information.
+     * Saves the newTagsArray: attaches the current tags to the profile model.
+     * Ignores the tags that are marked read-only (no app locale and no base language locale).
+     * Dispatches notification on success or error.
      *
      * @return void
      */
@@ -543,14 +574,14 @@ class SkillsCardFull extends Component
                     $this->resetErrorBag();
 
                     // Select (to exclude) initial tags in other locales to remove possible tags with a similar context but with different locales
-                    $initTagIds= collect($this->initTagsArray)->pluck('taggable_tag_id');
+                    $initTagIds = collect($this->initTagsArray)->pluck('taggable_tag_id');
 
                     // Select foreign tags that are (initially) read-only and that have no translation in current user locale.
                     if (count($this->initTagsArray) > 0) {
                         $retagReadOnly = collect($this->initTagsArrayTranslated)
                             ->where('readonly', true)  // should be true
                             ->pluck('original_tag_id')
-                            ->toArray();    
+                            ->toArray();
                         $retagForeign = implode(', ', $retagReadOnly);
                         $untagForeign = $initTagIds->diff($retagReadOnly);
                         // untag the result of the selection(s), the tags marked read-only are not untagged
@@ -565,7 +596,7 @@ class SkillsCardFull extends Component
                     // WireUI notification
                     $this->notification()->success($title = __('Your have updated your profile successfully!'));
                 });
-            //     // end of transaction
+                // end of transaction
             } catch (Throwable $e) {
                 // WireUI notification
                 // TODO!: create event to send error notification to admin
@@ -584,6 +615,7 @@ class SkillsCardFull extends Component
             $this->newTagCategory = null;
             $this->dispatch('refreshComponent');
             $this->dispatch('saved');
+            $this->dispatch('reinitializeTagify');
         }
     }
 

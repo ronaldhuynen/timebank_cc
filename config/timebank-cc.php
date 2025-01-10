@@ -342,12 +342,11 @@ return [
     |--------------------------------------------------------------------------
     | Translations are linked by their context to one base language.
     |
-    | IMPORTANT: This language is also used as fallback locale, therefore all names, titles, terms, etc. must be at least in this language.
-    |
+    | IMPORTANT: This language is also used as fallback locale, therefore all names, titles, terms, etc. must be at least in this language!
+    | IMPORTANT: The base language can not be changed in an existing project, unless the new base language pre-exists for all translations!
     */
-    'base_language' => 'en',
-    'base_language_name' => 'English',
-
+    'base_language' => 'en',    // Do not change in existing project, see note above
+    'base_language_name' => 'English', // Do not change in existing project, see note above
 
     /*
     |--------------------------------------------------------------------------

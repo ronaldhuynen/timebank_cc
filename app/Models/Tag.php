@@ -109,6 +109,12 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     }
 
 
+    public function localeContext()
+    {
+        return $this->hasOne(TaggableLocaleContext::class, 'tag_id');
+    }
+
+
 
     /**
      * Scope to find tags by name.
@@ -157,20 +163,21 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
      */
     public function getTranslationAttribute()
     {
-        $locale = App::getLocale();
         $baseLocale = config('timebank-cc.base_language');
-
         // Retrieve all translations using the translations() method
         $translations = $this->translations();
 
         // Attempt to get the translation in the current locale
-        $translation = $translations->firstWhere('locale', $locale);
+        $translation = $translations->firstWhere('locale', App::getLocale());
 
         // Fallback to base locale if translation not found
         if (!$translation) {
-            $translation = $translations->firstWhere('locale', $baseLocale);
+            $translation = $translations->firstWhere('locale', $baseLocale);    
+            // Fallback to only available locale if no translation in base locale is not found
+            if (!$translation) {
+                return $translations->first(); //We can do first() as tags can only be translated to the base locale. So there are no other translations.
+            }
         }
-
         return $translation;
     }
 

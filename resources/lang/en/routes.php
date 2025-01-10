@@ -21,7 +21,7 @@
 return [
     "welcome" => "welcome",
     "goodbye-deleted-user" => "goodbye",
-    "dashboard"    =>  "dashboard",
+    "dashboard" => "dashboard",
     "pay" => "pay",
     'pay-to-name' => 'pay/{name}',
     'pay-amount-to-name' => 'pay/{hours}/{minutes}/to/{name}',
@@ -32,6 +32,10 @@ return [
     'post.show_by_id' => 'post/{id}',
     'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'post/{slug}',
+    'categories.manage' => 'categories/manage',
+    'tags.manage' => 'tags/manage',
+    'permissions.manage' => 'permissions/manage',
+    'roles.manage' => 'roles/manage',
 
     'static.getting-started' => 'getting-started',
     'static.faq' => 'faq',

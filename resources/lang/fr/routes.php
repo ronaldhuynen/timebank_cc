@@ -32,6 +32,10 @@ return [
     'post.show_by_id' => 'article/{id}',
     'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'article/{slug}',
+    'categories.manage' => 'categories/gerer',
+    'tags.manage' => 'etiquettes/gerer',
+    'permissions.manage' => 'permissions/gerer',
+    'roles.manage' => 'roles/gerer',
 
     'static.getting-started' => 'commencer',
     'static.faq'=> 'faq',

@@ -32,6 +32,10 @@ return [
     'post.show_by_id' => 'artikel/{id}',
     'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'artikel/{slug}',
+    'categories.manage' => 'categorieen/beheren',
+    'tags.manage' => 'labels/beheren',
+    'permissions.manage' => 'rechten/beheren',
+    'roles.manage' => 'rollen/beheren',
 
     'static.getting-started' => 'starten',
     'static.faq' => 'vraag-en-antwoord',

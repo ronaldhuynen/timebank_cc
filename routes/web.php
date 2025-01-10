@@ -241,20 +241,18 @@ Route::group([
             Route::get('/do/member/payment', [TransactionController::class, 'doCyclosPayment']);
 
 
-            Route::get(LaravelLocalization::transRoute('routes.transactions'), 'App\Http\Controllers\TransactionController@transactions')->name('transactions');
+            Route::get(LaravelLocalization::transRoute('routes.transactions'), 'App\Http\Controllers\TransactionController@transactions')
+                ->name('transactions');
 
             Route::get(LaravelLocalization::transRoute('routes.statement'), 'App\Http\Controllers\TransactionController@statement')
                 ->where(['transactionId' => '[0-9]+'])     // Add constraint: only numbers allowed
                 ->name('transaction.show');
 
             Route::group(['middleware' => ['can:manage posts']], function () {
-                Route::get(LaravelLocalization::transRoute('routes.posts.manage'), 'App\Http\Controllers\PostController@manage')->name('posts.manage');
+                Route::get(LaravelLocalization::transRoute('routes.posts.manage'), 'App\Http\Controllers\PostController@manage')
+                    ->name('posts.manage');
             });
-
-            Route::group(['middleware' => ['can:manage posts']], function () {
-                Route::get(LaravelLocalization::transRoute('routes.posts.manage'), 'App\Http\Controllers\PostController@manage')->name('posts.manage');
-            });
-
+            
             Route::get(LaravelLocalization::transRoute('routes.post.show_by_id'), 'App\Http\Controllers\PostController@showById')
                     ->where(['postId' => '[0-9]+'])     // Add constraint: only numbers allowed
                     ->name('post.show_by_id')
@@ -300,9 +298,31 @@ Route::group([
             Route::get(LaravelLocalization::transRoute('routes.admin.edit'), 'App\Http\Controllers\AdminController@edit')
                     ->name('admin.edit');
 
-
-            Route::get(LaravelLocalization::transRoute('routes.users-overview'), 'App\Http\Controllers\UserController@index')
+            Route::group(['middleware' => ['can:manage users']], function () {
+                Route::get(LaravelLocalization::transRoute('routes.users.manage'), 'App\Http\Controllers\UserController@index')
                     ->name('users-overview');
+            });
+                    
+            Route::group(['middleware' => ['can:manage categories']], function () {
+                Route::get(LaravelLocalization::transRoute('routes.categories.manage'), 'App\Http\Controllers\CategoryController@manage')
+                    ->name('categories.manage');
+            });
+
+            Route::group(['middleware' => ['can:manage tags']], function () {
+                Route::get(LaravelLocalization::transRoute('routes.tags.manage'), 'App\Http\Controllers\TagController@manage')
+                    ->name('tags.manage');
+            });
+            
+            Route::group(['middleware' => ['can:manage permissions']], function () {
+                Route::get(LaravelLocalization::transRoute('routes.permissions.manage'), 'App\Http\Controllers\PermissionController@manage')
+                    ->name('permissions.manage');
+            });
+
+            Route::group(['middleware' => ['can:manage roles']], function () {
+                Route::get(LaravelLocalization::transRoute('routes.roles.manage'), 'App\Http\Controllers\RoleController@manage')
+                    ->name('roles.manage');
+            });
+
 
             // Route::get('/send-friend-request', SendFriendRequest::class);
 

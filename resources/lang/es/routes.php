@@ -32,6 +32,10 @@ return [
     'post.show_by_id' => 'publicacion/{id}',
     'post.show_by_id_international' => 'post/{id}',
     'post.show_by_slug' => 'publicacion/{slug}',
+    'categories.manage' => 'categorias/gestionar',
+    'tags.manage' => 'etiquetas/gestionar',
+    'permissions.manage' => 'permisos/gestionar',
+    'roles.manage' => 'roles/gestionar',
     
     'static.getting-started' => 'empezar',
     'static.faq'=> 'preguntas-frecuentes',

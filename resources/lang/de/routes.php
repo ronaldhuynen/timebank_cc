@@ -27,10 +27,15 @@ return [
     'pay-amount-to-name-description' => 'bezahlen/{stunden}/{minuten}/an/{name}/beschreibung/{beschreibung}',
     'transactions' => 'transaktionen',
     'statement' => 'auszug/{transaktionsId}',
-    'posts.manage' => 'beiträge/verwalten',
+    'posts.manage' => 'beitrage/verwalten',
     'post.show_by_id' => 'beitrag/{id}',
     'post.show_by_id_international' => 'beitrag/{id}',
     'post.show_by_slug' => 'beitrag/{slug}',
+    'categories.manage' => 'kategorien/verwalten',
+    'tags.manage' => 'tags/verwalten',
+    'permissions.manage' => 'berechtigungen/verwalten',
+    'roles.manage' => 'rollen/verwalten',
+
 
     'static.getting-started' => 'anfangen',
     'static.faq' => 'faq',

@@ -16,8 +16,8 @@
                         {{ __('Dashboard') }}
                     </x-jetstream.nav-link>
 
-                    <!-- Only if activeProfile has any accounts -->
-                    @if (session('activeProfileAccounts'))
+                    <!-- Only if activeProfile has the accounts relation and has any accounts -->
+                    @if ( method_exists(getActiveProfile(), 'accounts') && getActiveProfile()->has('accounts') )  
                         <x-jetstream.nav-link :active="request()->routeIs('pay')" href="{{ route('pay') }}">
                             {{ __('Pay') }}
                         </x-jetstream.nav-link>
@@ -29,13 +29,31 @@
                     <x-jetstream.nav-link :active="request()->routeIs('user.edit')" href="{{ route('user.edit') }}">
                         {{ __('Commons') }}
                     </x-jetstream.nav-link>
-                    @if (session('activeProfileType') == 'App\Models\Admin')
                         @can('manage posts')
                             <x-jetstream.nav-link :active="request()->routeIs('posts.manage')" href="{{ route('posts.manage') }}">
                                 {{ __('Posts') }}
                             </x-jetstream.nav-link>
                         @endcan
-                    @endif
+                        @can('manage categories')
+                            <x-jetstream.nav-link :active="request()->routeIs('categories.manage')" href="{{ route('categories.manage') }}">
+                                {{ __('Categories') }}
+                            </x-jetstream.nav-link>
+                        @endcan
+                        @can('manage tags')
+                            <x-jetstream.nav-link :active="request()->routeIs('tags.manage')" href="{{ route('tags.manage') }}">
+                                {{ __('Tags') }}
+                            </x-jetstream.nav-link>
+                        @endcan
+                        @can('manage permissions')
+                            <x-jetstream.nav-link :active="request()->routeIs('permissions.manage')" href="{{ route('permissions.manage') }}">
+                                {{ __('Permissions') }}
+                            </x-jetstream.nav-link>
+                        @endcan
+                        @can('manage roles')
+                            <x-jetstream.nav-link :active="request()->routeIs('roles.manage')" href="{{ route('roles.manage') }}">
+                                {{ __('Roles') }}
+                            </x-jetstream.nav-link>
+                        @endcan
                     <!-- Main Search Bar -->
                     @livewire('main-search-bar')
                 </div>

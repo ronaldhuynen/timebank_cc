@@ -22,6 +22,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Bank extends Model implements MessengerProvider, MustVerifyEmail, ReacterableInterface, ReactableInterface
 {
@@ -29,6 +30,7 @@ class Bank extends Model implements MessengerProvider, MustVerifyEmail, Reactera
     use HasProfilePhoto;
     use AuthMustVerifyEmail;
     use Notifiable;
+    use HasRoles;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use TaggableWithLocale;
     use Reacterable; // cybercog/laravel-love

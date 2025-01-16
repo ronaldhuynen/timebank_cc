@@ -500,6 +500,7 @@ trait TaggableWithLocale
         return $this->untag($names);
     }
 
+
     /**
      * Remove all tags from the model and assign the given ones.
      *
@@ -524,6 +525,7 @@ trait TaggableWithLocale
         return $this->detag()->tagById($ids);
     }
 
+
     /**
      * Remove all tags from the model.
      *
@@ -535,6 +537,7 @@ trait TaggableWithLocale
 
         return $this->load('tags');
     }
+
 
     /**
      * Add one tag to the model.
@@ -608,6 +611,7 @@ trait TaggableWithLocale
         return app(TagService::class)->makeTagArray($this, 'normalized');
     }
 
+
     /**
      * Determine if a given tag is attached to the model.
      *
@@ -625,6 +629,7 @@ trait TaggableWithLocale
 
         return in_array($normalized, $this->getTagArrayNormalizedAttribute(), true);
     }
+
 
     /**
      * Query scope for models that have all of the given tags.

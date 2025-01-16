@@ -391,19 +391,19 @@ Route::group([
                         ->name('profile.user.settings');
 
                     // Organization & Profile... (Custom view)
-                    Route::group(['middleware' => ['can:update organizations']], function () {
+                    Route::group(['middleware' => ['can:manage organizations']], function () {
                         Route::get(LaravelLocalization::transRoute('routes.profile.org.show'), [OrgController::class, 'settings'])
                             ->name('profile.org.settings');
                     });
 
                     // Organization & Profile... (Custom view)
-                    Route::group(['middleware' => ['can:update banks']], function () {
+                    Route::group(['middleware' => ['can:manage banks']], function () {
                         Route::get(LaravelLocalization::transRoute('routes.profile.bank.show'), [BankController::class, 'settings'])
                             ->name('profile.bank.settings');
                     });
 
                     // Admin & Profile... (Custom view)
-                    Route::group(['middleware' => ['can:update admins']], function () {
+                    Route::group(['middleware' => ['can:manage admins']], function () {
                         Route::get(LaravelLocalization::transRoute('routes.profile.admin.show'), [AdminController::class, 'settings'])
                             ->name('profile.admin.settings');
                     });

@@ -25,6 +25,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Organization extends Model implements MessengerProvider, ReacterableInterface, MustVerifyEmail, ReactableInterface
 {
@@ -32,6 +33,7 @@ class Organization extends Model implements MessengerProvider, ReacterableInterf
     use AuthMustVerifyEmail;
     use Notifiable;
     use HasProfilePhoto;
+    use HasRoles;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use TaggableWithLocale;
     use Reacterable; // cybercog/laravel-love

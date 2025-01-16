@@ -21,12 +21,14 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Scout\Searchable;
 use RTippin\Messenger\Contracts\MessengerProvider;
 use RTippin\Messenger\Traits\Messageable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Model implements MessengerProvider, MustVerifyEmail, ReacterableInterface, ReactableInterface
 {
     use HasFactory;
     use AuthMustVerifyEmail;
     use Notifiable;
+    use HasRoles;
     use HasProfilePhoto;
     use Messageable; // RTippin Messenger: Default trait to satisfy MessengerProvider interface
     use TaggableWithLocale;

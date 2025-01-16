@@ -30,29 +30,39 @@
                         {{ __('Commons') }}
                     </x-jetstream.nav-link>
                         @can('manage posts')
-                            <x-jetstream.nav-link :active="request()->routeIs('posts.manage')" href="{{ route('posts.manage') }}">
-                                {{ __('Posts') }}
-                            </x-jetstream.nav-link>
+                            @profile('admin')
+                                <x-jetstream.nav-link :active="request()->routeIs('posts.manage')" href="{{ route('posts.manage') }}">
+                                    {{ __('Posts') }}
+                                </x-jetstream.nav-link>
+                            @endprofile
                         @endcan
                         @can('manage categories')
-                            <x-jetstream.nav-link :active="request()->routeIs('categories.manage')" href="{{ route('categories.manage') }}">
-                                {{ __('Categories') }}
-                            </x-jetstream.nav-link>
+                            @profile('admin')
+                                <x-jetstream.nav-link :active="request()->routeIs('categories.manage')" href="{{ route('categories.manage') }}">
+                                    {{ __('Categories') }}
+                                </x-jetstream.nav-link>
+                            @endprofile
                         @endcan
                         @can('manage tags')
-                            <x-jetstream.nav-link :active="request()->routeIs('tags.manage')" href="{{ route('tags.manage') }}">
-                                {{ __('Tags') }}
-                            </x-jetstream.nav-link>
+                            @profile('admin')
+                                <x-jetstream.nav-link :active="request()->routeIs('tags.manage')" href="{{ route('tags.manage') }}">
+                                    {{ __('Tags') }}
+                                </x-jetstream.nav-link>
+                            @endprofile
                         @endcan
                         @can('manage permissions')
-                            <x-jetstream.nav-link :active="request()->routeIs('permissions.manage')" href="{{ route('permissions.manage') }}">
-                                {{ __('Permissions') }}
-                            </x-jetstream.nav-link>
+                            @profile('admin')
+                                <x-jetstream.nav-link :active="request()->routeIs('permissions.manage')" href="{{ route('permissions.manage') }}">
+                                    {{ __('Permissions') }}
+                                </x-jetstream.nav-link>
+                            @endprofile
                         @endcan
                         @can('manage roles')
-                            <x-jetstream.nav-link :active="request()->routeIs('roles.manage')" href="{{ route('roles.manage') }}">
-                                {{ __('Roles') }}
-                            </x-jetstream.nav-link>
+                            @profile('admin')
+                                <x-jetstream.nav-link :active="request()->routeIs('roles.manage')" href="{{ route('roles.manage') }}">
+                                    {{ __('Roles') }}
+                                </x-jetstream.nav-link>
+                            @endprofile
                         @endcan
                     <!-- Main Search Bar -->
                     @livewire('main-search-bar')

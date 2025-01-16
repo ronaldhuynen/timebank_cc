@@ -25,6 +25,19 @@ class AppServiceProvider extends ServiceProvider
             'app\Overrides\Matchish\ScoutElasticSearch\ElasticSearch\EloquentHitsIteratorAggregate'
         );
 
+
+
+        // Register custom Blade directive to conditionally check on activeProfile type (User, Organization, Bank, Admin)
+        Blade::directive('profile', function ($expression) {
+            return "<?php if (strtolower(getActiveProfileType()) === strtolower($expression)): ?>";
+        });
+
+        Blade::directive('endprofile', function () {
+            return "<?php endif; ?>";
+        });
+
+
+
     }
 
     /**

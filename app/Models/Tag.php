@@ -27,7 +27,23 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
 
     protected $table = 'taggable_tags';
     protected $primaryKey = 'tag_id';
+    protected $appends = ['locales', 'categories'];
 
+
+
+    /**
+     * Boot the model and add event listeners.
+     *
+     * The 'deleting' event listener performs the following actions:
+     * - Detaches all relationships with users, organizations, and banks.
+     * - Deletes all locales and contexts directly tied to the tag.
+     * 
+     * This listener ensures that when a Tag instance is deleted, 
+     * all related data and associations are properly cleaned up to 
+     * maintain data integrity and avoid orphaned records.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();
@@ -42,8 +58,8 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
             $tag->contexts()->delete();
         });
     }
-    // TODO NEXT: Check delete with translations and email with translation!
 
+    
     /**
      * Get the index name for the model.
      *
@@ -96,7 +112,6 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     }
 
 
-
     public function localeCode()
     {
         return $this->hasOne(TaggableLocale::class, 'taggable_tag_id')->select('locale');
@@ -135,6 +150,7 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
 
     /**
      * Get all related tags with their locales using a raw query.
+     * Note: this is not a relationship definition!
      *
      * @return \Illuminate\Support\Collection
      */
@@ -149,9 +165,49 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
                     ->from('taggable_locale_context')
                     ->where('tag_id', $this->tag_id);
             })
+            ->distinct()
             ->get();
     }
 
+
+    public function getLocalesAttribute()
+    {
+        // Get context_ids for current tag
+        $contextIds = DB::table('taggable_locale_context')
+            ->where('tag_id', $this->tag_id)
+            ->pluck('context_id');
+
+        // Get tag_ids that share these context_ids
+        $relatedTagIds = DB::table('taggable_locale_context')
+            ->whereIn('context_id', $contextIds)
+            ->pluck('tag_id');
+
+        // Get translations for these tags
+        return DB::table('taggable_tags as tt')
+            ->join('taggable_locales as tl', 'tt.tag_id', '=', 'tl.taggable_tag_id')
+            ->whereIn('tt.tag_id', $relatedTagIds)
+            ->select('tt.tag_id', 'tt.name', 'tl.*')
+            ->get();
+    }
+
+
+    public function getCategoriesAttribute()
+    {
+        // Get context_ids for current tag
+        $contextIds = DB::table('taggable_locale_context')
+            ->where('tag_id', $this->tag_id)
+            ->pluck('context_id');
+
+        // Get categories for these contexts
+        $category = DB::table('taggable_contexts as tc')
+            ->join('categories as c', 'tc.category_id', '=', 'c.id')
+            ->whereIn('tc.id', $contextIds)
+            ->pluck('c.id');
+
+        return Category::find($category)->select('id','color');
+    }
+
+    
     /**
      * Get the translation attribute for the tag.
      *
@@ -180,8 +236,4 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
         }
         return $translation;
     }
-
-//TODO NEXT: Fix how the SkillTagForms show and save the tags with the new translation() method.
-
-
 }

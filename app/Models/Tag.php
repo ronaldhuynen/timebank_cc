@@ -28,6 +28,8 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     protected $table = 'taggable_tags';
     protected $primaryKey = 'tag_id';
     protected $appends = ['locales', 'categories'];
+    // protected $appends = ['categories'];
+
 
 
 
@@ -199,12 +201,20 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
             ->pluck('context_id');
 
         // Get categories for these contexts
-        $category = DB::table('taggable_contexts as tc')
+        $categoryId = DB::table('taggable_contexts as tc')
             ->join('categories as c', 'tc.category_id', '=', 'c.id')
             ->whereIn('tc.id', $contextIds)
             ->pluck('c.id');
+        
+        // Get the first category ID
+        $firstCategoryId = $categoryId->first();
 
-        return Category::find($category)->select('id','color');
+        // Find the category by its ID
+        $category = Category::find($firstCategoryId);
+        
+        $categoryWithRelated = $category ? $category->related() : null;
+
+        return $categoryWithRelated;
     }
 
     

@@ -132,6 +132,10 @@ class PostController extends Controller
 
     public function manage()
     {
+        if (getActiveProfileType() !== 'Admin') {
+            abort(403, __('Admin profile required'));
+        }
+
         return view('posts.manage');
     }
 

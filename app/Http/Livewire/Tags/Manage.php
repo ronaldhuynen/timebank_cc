@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\WireUiActions;
 
 class Manage extends Component
 {
     use WithPagination;
+    use WireUiActions;
 
 
     public string $search = '';
@@ -43,7 +45,7 @@ class Manage extends Component
     public bool $editTagContextChanged = false;
     public $categoryOptions = [];
 
-    public $perPage = 5;
+    public $perPage = 10;
 
 
     public function openDeleteTagModal($tagId)
@@ -148,12 +150,30 @@ class Manage extends Component
      */
     public function deleteTag()
     {
-        $tag = Tag::find($this->selectedTagId);
-        if ($tag) {
-            $tag->delete(); // The Tag model has a listener that also deletes associates models
-            $this->resetForm();
-            $this->resetPage();
+        try {
+            $tag = Tag::find($this->selectedTagId);
+            if ($tag) {
+                $tag->delete(); // The Tag model has a listener that also deletes associates models
+                $this->resetForm();
+                $this->resetPage();
+
+                $this->notification()->success(
+                    $title = __('Deleted'),
+                    $description = __('Tag') . ' ' . __('was deleted successfully!')
+                );
+            } else {
+                $this->notification()->error(
+                    $title = __('Error!'),
+                    $description = __('Tag not found.')
+                );
+            }
+        } catch (\Exception $e) {
+            $this->notification()->error(
+                $title = __('Error!'),
+                $description = __('Oops, could not delete the') . ' ' . __('tag') . '!' . $e->getMessage()
+            );
         }
+
         $this->modalDeleteTag = false;
     }
 
@@ -166,30 +186,43 @@ class Manage extends Component
      */
     public function updateTag()
     {
-        $tag = Tag::find($this->selectedTagId);
-        if ($tag) {
-            // Update the tag name
-            $tag->name = $this->editTag['name'];
-            $tag->save();
+        try {
+            DB::transaction(function () {
+                $tag = Tag::find($this->selectedTagId);
+                if ($tag) {
+                    $tag->name = $this->editTag['name'];
+                    $tag->save();
 
-            // Update the locale example
-            $locale = $tag->locale()->first();
-            if ($locale) {
-                $locale->example = $this->editTag['example'];
-                $locale->save();
-            }
-            // Update the context category_id
-            $context = $tag->contexts()->first();
-            if ($context) {
-                $context->category_id = $this->editTag['category'];
-                $context->save();
-            }
-            $this->resetForm();
-            $this->resetPage();
+                    $locale = $tag->locale()->first();
+                    if ($locale) {
+                        $locale->example = $this->editTag['example'];
+                        $locale->save();
+                    }
+
+                    $context = $tag->contexts()->first();
+                    if ($context) {
+                        $context->category_id = $this->editTag['category'];
+                        $context->save();
+                    }
+
+                    $this->resetForm();
+                    $this->resetPage();
+                }
+
+                $this->notification()->success(
+                    $title = __('Saved'),
+                    $description = __('Tag').' '.__('is saved successfully!')
+                );
+
+                $this->modalEditTag = false;
+            });
+        } catch (Exception $e) {
+            $this->notification()->error(
+                $title = __('Error!'),
+                $description = __('Oops, we have an error: the tag was not saved!').' '.$e->getMessage()
+            );
+            return back();
         }
-
-        // TODO wirui notification and transaction and validation!
-        $this->modalEditTag = false;
     }
 
 
@@ -239,35 +272,38 @@ class Manage extends Component
 
     public function render()
     {
-
+        // Base query
         $tagsQuery = Tag::orderBy('updated_at', 'desc');
 
+        // 1) Apply search
         if ($this->search) {
             $tagsQuery->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
                     ->orWhere('tag_id', 'like', '%' . $this->search . '%');
             });
         }
-        $tags = $tagsQuery->paginate($this->perPage);
 
+        // 2) Paginate normally
+        $tagsPaginator = $tagsQuery->paginate($this->perPage);
 
-        // Flatten the entire $tags collection and include categories in each locale
-        $flattenedTags = $tags->getCollection()->flatMap(function ($tag) {
+        // 3) Flatten just the current page’s items
+        $flattened = $tagsPaginator->getCollection()->flatMap(function ($tag) {
             return $tag->locales->sortByDesc('updated_at')->map(function ($locale) use ($tag) {
                 $locale->categories = $tag->categories->first();
                 return $locale;
             });
         });
-        // Replace the original collection with the flattened collection
-        $tags->setCollection($flattenedTags);
-        // Filter for distinct tag_id records as the translation attribute will multiply results
-        $uniqueTags = $flattenedTags->unique('tag_id')->values();
-        // Replace the original collection with the filtered collection
-        $tags->setCollection($uniqueTags);
 
+        // 4) Remove duplicates by tag_id
+        $unique = $flattened->unique('tag_id')->values();
 
+        // 5) Replace the paginator's collection with the deduplicated results
+        $tagsPaginator->setCollection($unique);
+
+        // 6) Return the paginator to the view
         return view('livewire.tags.manage', [
-            'tags' => $tags
+            'tags' => $tagsPaginator,
         ]);
+
     }
 }

@@ -49,7 +49,7 @@ class Manage extends Component
     public $image;
     public bool $imagePreviewable;
     public $mediaOwner;
-    public $mediaCaption; 
+    public $mediaCaption;
     public $media;
 
     public $meetingShow = false;
@@ -149,7 +149,7 @@ class Manage extends Component
             $localesExclude = [];
         }
 
-        
+
         $localesExclude = collect($localesExclude);
 
         if ($localesOptions) {
@@ -248,7 +248,7 @@ class Manage extends Component
         // if ($post->media->count() > 0) {
         //     $this->media = $post->getFirstMediaUrl('posts');    // Do not use responsive media in livewire pages that have multiple update cycles as the placeholder img show after an update
         // }
-        
+
         // Retrieve existing media caption
         $mediaItem = $post->getFirstMedia('posts');
         if ($mediaItem) {
@@ -315,7 +315,7 @@ class Manage extends Component
                 if ($post) {
                     $this->notification()->success(
                         $title = __('Saved'),
-                        $description = __('Post is saved successfully')
+                        $description = __('Post') . ' ' . __('is saved successfully')
                     );
                 } else {
                     $this->notification()->error(
@@ -446,13 +446,13 @@ class Manage extends Component
                     'caption' => $this->mediaCaption,
                 ])
                 ->toMediaCollection('posts');
-            } else {    
-                // No new image uploaded – update the caption of existing media
-                $mediaItem = $post->getFirstMedia('posts');
-                if ($mediaItem) {
-                    $mediaItem->setCustomProperty('owner', $this->mediaOwner);
-                    $mediaItem->setCustomProperty('caption-' . $this->locale, $this->mediaCaption);
-                    $mediaItem->save();
+        } else {
+            // No new image uploaded – update the caption of existing media
+            $mediaItem = $post->getFirstMedia('posts');
+            if ($mediaItem) {
+                $mediaItem->setCustomProperty('owner', $this->mediaOwner);
+                $mediaItem->setCustomProperty('caption-' . $this->locale, $this->mediaCaption);
+                $mediaItem->save();
             }
         }
     }
@@ -478,7 +478,9 @@ class Manage extends Component
     public function updatingImage($newValue)
     {
         // If there's no file, just return
-        if (!$newValue) return;
+        if (!$newValue) {
+            return;
+        }
         // Check extension before storing it in $this->image
         $ext = strtolower($newValue->getClientOriginalExtension() ?? '');
         // Disallow non-image extensions
@@ -487,7 +489,7 @@ class Manage extends Component
             $this->media = null;
             $this->addError('image', 'Unsupported file type: ' . $ext);
             $this->imagePreviewable = false;
-        }   else {
+        } else {
             $this->imagePreviewable = true;
         }
     }
@@ -635,7 +637,7 @@ class Manage extends Component
     }
 
 
-    
+
     public function resetSearch()
     {
         $this->search = '';
@@ -669,7 +671,7 @@ class Manage extends Component
                     ->where('name', 'like', '%' . $this->search . '%');
             })
             ->orWhereHas('translations.updated_by_user', function ($query) {
-            $query->where('name', 'like', '%' . $this->search . '%');
+                $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->orWhere('id', $this->search);
         })

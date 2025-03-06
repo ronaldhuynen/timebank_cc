@@ -88,7 +88,7 @@
                             {{ $taggable_tag->example }}
                         </td>
                         <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
-                            {{$categoryPath}}
+                            {{-- {{$categoryPath}} --}}
                         </td>
                         <td class="border-white whitespace-no-wrap px-6 mt-3 text-sm leading-5">
                             @if ($taggable_tag->updated_by_user)
@@ -154,7 +154,9 @@
 
         <!-- Right Side: Paginator -->
         @if ($tags)
+            // TODO NEXT! Fix the paginator!!
             {{ $tags->links('livewire.long-paginator') }}
+            {{-- {{ $tags->links() }} --}}
         @endif
     </div>
 
@@ -202,7 +204,7 @@
                     <div class="flex-1">{{ trans('messages.' . $lang) }}</div>
                 </div>
                 <div class="flex">
-                    <div class="w-1/3">{{ __('Andere talen aanwezig') }}:</div>
+                    <div class="w-1/3">{{ __('Other languages present') }}:</div>
                     <div class="flex-1">
                 @foreach ($selectedTag->translations() as $translation)
                     @if ($translation->locale != $selectedTag->locale->locale)
@@ -219,10 +221,10 @@
             </div>
             @if ($countTotal > 0)
                 <div class="text-red-500">
-                    {{ __('Deleting this tag, will remove this tag from all profiles.')}}
+                    {{ __('Profiles affected')}}: {{$countTotal}}
                 </div>
             @endif
-            {{ __('This can not be undone!')}}
+            {{ __('This can not be undone')}}!
         </x-slot>
         <x-slot name="footer">
             <x-jetstream.secondary-button class="ml-3 w-32 justify-center"  wire:click="resetForm"  wire:loading.attr="disabled">
@@ -322,7 +324,7 @@
                     {{ __('Profiles affected')}}: {{$countTotal}}
                 </div>
             @endif
-            {{ __('This can not be undone.')}}
+            {{ __('This can not be undone')}}!
         </x-slot>
         <x-slot name="footer">
             <x-jetstream.secondary-button class="ml-3 w-32 justify-center"  wire:click="resetForm"  wire:loading.attr="disabled">

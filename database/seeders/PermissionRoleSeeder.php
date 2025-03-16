@@ -37,7 +37,6 @@ class PermissionRoleSeeder extends Seeder
         // Re-enable foreign key constraints
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-
         // create permissions
         Permission::create(['name' => 'create posts']);
         Permission::create(['name' => 'update posts']);
@@ -109,7 +108,7 @@ class PermissionRoleSeeder extends Seeder
 
 
         $superAdmin = Role::create(['name' => 'Super-admin']);
-        // gets all permissions via Gate::before rule; see AuthServiceProvider
+        // Gets all permissions via Gate::before rule; see AuthServiceProvider
 
 
         // // create demo users

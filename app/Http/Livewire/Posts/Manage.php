@@ -544,6 +544,9 @@ class Manage extends Component
             }
         }
 
+        
+        $this->resetPage();
+
         // Reset the bulk selection
         $this->bulkSelected = [];
         $this->bulkDisabled = true;
@@ -647,9 +650,6 @@ class Manage extends Component
 
     public function render()
     {
-        $locale = App::getLocale();
-        $baseLocale = config('base_language');
-
         $posts = Post::with([
             'postable:id,name,email',
             'category',

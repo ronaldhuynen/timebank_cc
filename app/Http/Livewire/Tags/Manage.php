@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Tags;
 
 use App\Models\Category;
 use App\Models\Tag;
-use App\Models\TaggableContext;
 use App\Models\TaggableLocaleContext;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +15,6 @@ class Manage extends Component
 {
     use WithPagination;
     use WireUiActions;
-
 
     public string $search = '';
     public bool $showModal = false;
@@ -44,9 +42,8 @@ class Manage extends Component
     public bool $editTagChanged = false;
     public bool $editTagContextChanged = false;
     public $categoryOptions = [];
-
-    public $perPage = 10;
-
+ 
+    public $perPage = 10; // default 10 results per page
 
     public function openDeleteTagModal($tagId)
     {
@@ -173,7 +170,7 @@ class Manage extends Component
                 $description = __('Oops, could not delete the') . ' ' . __('tag') . '!' . $e->getMessage()
             );
         }
-
+        $this->resetPage(); 
         $this->modalDeleteTag = false;
     }
 
@@ -240,8 +237,7 @@ class Manage extends Component
         ]);
     }
 
-
-    public function updatedPerPage($value)
+    public function updatingPerPage()
     {
         $this->resetPage();
     }
@@ -249,18 +245,17 @@ class Manage extends Component
 
     public function searchTags()
     {
-        $this->resetPage(); // Reset pagination to the first page
+        $this->resetPage();
     }
-
 
 
     public function handleSearchEnter()
     {
         if (!$this->showModal) {
             $this->searchTags();
+            $this->resetPage(); 
         }
     }
-
 
 
     public function resetSearch()
@@ -269,41 +264,25 @@ class Manage extends Component
         $this->searchTags();
     }
 
-
     public function render()
     {
-        // Base query
+                // Base query
         $tagsQuery = Tag::orderBy('updated_at', 'desc');
 
-        // 1) Apply search
+        // Apply search
         if ($this->search) {
             $tagsQuery->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
                     ->orWhere('tag_id', 'like', '%' . $this->search . '%');
             });
         }
-
-        // 2) Paginate normally
+        
+        // Standard Livewire pagination
         $tagsPaginator = $tagsQuery->paginate($this->perPage);
 
-        // 3) Flatten just the current page’s items
-        $flattened = $tagsPaginator->getCollection()->flatMap(function ($tag) {
-            return $tag->locales->sortByDesc('updated_at')->map(function ($locale) use ($tag) {
-                $locale->categories = $tag->categories->first();
-                return $locale;
-            });
-        });
 
-        // 4) Remove duplicates by tag_id
-        $unique = $flattened->unique('tag_id')->values();
-
-        // 5) Replace the paginator's collection with the deduplicated results
-        $tagsPaginator->setCollection($unique);
-
-        // 6) Return the paginator to the view
         return view('livewire.tags.manage', [
             'tags' => $tagsPaginator,
         ]);
-
     }
 }

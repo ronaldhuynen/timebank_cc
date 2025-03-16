@@ -233,6 +233,7 @@ trait TaggableWithLocale
 
     public function translateTagIdWithContext($tagId)
     {
+        if ($tagId) {
         $sourceLocale = TaggableLocale::where('taggable_tag_id', $tagId)->value('locale');
         $tag = Tag::find($tagId);
         $translatedTag = $tag->translation;
@@ -260,6 +261,9 @@ trait TaggableWithLocale
             'category_path' => $categoryPath,
             'category_color' => $categoryColor,
         ];
+        } else {
+            return false;
+        }
     }
 
 

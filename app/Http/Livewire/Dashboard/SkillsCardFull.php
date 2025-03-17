@@ -292,12 +292,6 @@ class SkillsCardFull extends Component
     }
 
 
-    public function updatingTagsArray()
-    {
-        // Note this is updating, not updated, as Tagify catches the json too soon.
-        // $this->tagsArray = json_encode(json_decode($this->tagsArray));    // re-encode the json
-    }
-
 
     public function updatedTagsArray()
     {

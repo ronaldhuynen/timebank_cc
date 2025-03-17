@@ -16,9 +16,7 @@ return new class () extends Migration {
             $table->id();
             $table->unsignedBigInteger('taggable_tag_id'); // Foreign key column
             $table->string('locale', 6);
-            $table->string('descr_short', 200)->nullable();
-            $table->string('descr_long')->nullable();
-            $table->string('example', 300)->nullable();
+            $table->string('comment', 500)->nullable();
             $table->unsignedBigInteger('updated_by_user')->nullable();
             $table->timestamps();
 

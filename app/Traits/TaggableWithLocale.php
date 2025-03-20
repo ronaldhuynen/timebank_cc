@@ -234,33 +234,33 @@ trait TaggableWithLocale
     public function translateTagIdWithContext($tagId)
     {
         if ($tagId) {
-        $sourceLocale = TaggableLocale::where('taggable_tag_id', $tagId)->value('locale');
-        $tag = Tag::find($tagId);
-        $translatedTag = $tag->translation;
-        $category = Category::find($tag->contexts->pluck('category_id')->first());
-        $translatedCategory = $category->translation;
-        $categoryPathIds = $category->ancestorsAndSelf->sortBy('id')->pluck('id');
-        $categoryPath = implode(
-            ' > ',
-            CategoryTranslation::whereIn('category_id', $categoryPathIds)
-                            ->where('locale', App::getLocale())
-                            ->pluck('name')
-                            ->toArray()
-        );
-        $categoryColor = $category->rootAncestor ? $category->rootAncestor->color : $category->color;
+            $sourceLocale = TaggableLocale::where('taggable_tag_id', $tagId)->value('locale');
+            $tag = Tag::find($tagId);
+            $translatedTag = $tag->translation;
+            $category = Category::find($tag->contexts->pluck('category_id')->first());
+            $translatedCategory = $category->translation;
+            $categoryPathIds = $category->ancestorsAndSelf->sortBy('id')->pluck('id');
+            $categoryPath = implode(
+                ' > ',
+                CategoryTranslation::whereIn('category_id', $categoryPathIds)
+                                ->where('locale', App::getLocale())
+                                ->pluck('name')
+                                ->toArray()
+            );
+            $categoryColor = $category->rootAncestor ? $category->rootAncestor->color : $category->color;
 
-        // Map and return the finalized result
-        return [
-            'original_tag_id' => $tagId,
-            'tag_id' => $translatedTag->tag_id,
-            'tag' => $translatedTag->name,
-            'example' => $translatedTag->example,
-            'locale' => $translatedTag->locale,
-            'category_id' => $category->id,
-            'category' => $translatedCategory->name,
-            'category_path' => $categoryPath,
-            'category_color' => $categoryColor,
-        ];
+            // Map and return the finalized result
+            return [
+                'original_tag_id' => $tagId,
+                'tag_id' => $translatedTag->tag_id,
+                'tag' => $translatedTag->name,
+                'comment' => $translatedTag->comment,
+                'locale' => $translatedTag->locale,
+                'category_id' => $category->id,
+                'category' => $translatedCategory->name,
+                'category_path' => $categoryPath,
+                'category_color' => $categoryColor,
+            ];
         } else {
             return false;
         }

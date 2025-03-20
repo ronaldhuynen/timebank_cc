@@ -46,7 +46,7 @@
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Id') }}</th>
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Language') }}</th>
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Tag') }}</th>
-                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Example') }}</th>
+                <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Comment') }}</th>
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Category') }}</th>
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Editor') }}</th>
                 <th class="px-6 py-3 text-left text-sm leading-4 tracking-wider">{{ __('Updated') }}</th>
@@ -90,7 +90,7 @@
                             </span>
                         </td>
                         <td class="whitespace-no-wrap mt-3 border-white px-6 text-sm leading-5">
-                            {{ $taggable_tag->locale->example }}
+                            {{ $taggable_tag->locale->comment }}
                         </td>
                         <td class="whitespace-no-wrap mt-3 border-white px-6 text-sm leading-5">
                             {{ $categoryPath }}
@@ -186,8 +186,8 @@
                 </div>
                 <div class="mb-2 flex flex-col space-y-2">
                     <div class="flex">
-                        <div class="w-1/3">{{ __('Example') }}:</div>
-                        <div class="flex-1">{{ $selectedTag->locale->example }}</div>
+                        <div class="w-1/3">{{ __('Comment') }}:</div>
+                        <div class="flex-1">{{ $selectedTag->locale->comment }}</div>
                     </div>
                     <div class="flex">
                         <div class="w-1/3">{{ __('Category') }}:</div>
@@ -277,10 +277,10 @@
                         </div>
                     </div>
                     <div class="flex">
-                        <div class="w-1/3">{{ __('Example') }}:</div>
+                        <div class="w-1/3">{{ __('Comment') }}:</div>
                         <div class="flex-1">
                             <textarea class="w-full rounded-md border border-gray-300 px-3 py-1 pr-10 text-gray-700 shadow-sm focus:border-gray-500 focus:outline-none focus:ring focus:ring-gray-500 sm:text-sm"
-                                      rows="3" wire:model.lazy="editTag.example">
+                                      rows="3" wire:model.lazy="editTag.comment">
                         </textarea>
                         </div>
                     </div>

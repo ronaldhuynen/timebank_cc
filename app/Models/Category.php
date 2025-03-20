@@ -14,6 +14,7 @@ class Category extends Model
     use HasFactory;
     use HasRecursiveRelationships;
 
+    protected $appends = ['translation', 'relatedPathTranslation', 'relatedColor'];
     protected $fillable = ['type', 'country_id', 'division_id', 'city_id', 'district_id'];
 
 
@@ -66,12 +67,32 @@ class Category extends Model
 
 
     public function related()
-    {
-        
+    {   
         return $this->ancestorsAndSelf()->get();
-
     }
 
+
+    public function getRelatedPathTranslationAttribute()
+    {
+        $categoryPathIds = $this->ancestorsAndSelf->sortBy('id')->pluck('id');
+        $categoryPath = implode(
+            ' > ',
+            CategoryTranslation::whereIn('category_id', $categoryPathIds)
+                            ->where('locale', App::getLocale())
+                            ->pluck('name')
+                            ->toArray()
+        );
+
+        return $categoryPath;
+    }
+
+
+    public function getRelatedColorAttribute()
+    {
+        $categoryColor = $this->rootAncestor ? $this->rootAncestor->color : $this->color;
+
+        return $categoryColor;
+    }
 
     /**
      * Get the polymorph relation of this type of category (i.e. division, user, organization).

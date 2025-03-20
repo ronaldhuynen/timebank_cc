@@ -7,6 +7,7 @@ use App\Models\Tag;
 use App\Models\TaggableLocaleContext;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\WireUiActions;
@@ -42,8 +43,20 @@ class Manage extends Component
     public bool $editTagChanged = false;
     public bool $editTagContextChanged = false;
     public $categoryOptions = [];
- 
+
     public $perPage = 10; // default 10 results per page
+
+    protected function rules()
+    {
+        return [
+        'tagId' => 'required|integer',
+        'locale' => 'required|string|min:2|max:3',
+        'tag.name' => config('timebank-cc.tags.name_rule'),
+        'tag.example' => config('timebank-cc.tags.tags'),
+        'organizer.id' => 'integer|nullable',
+        'organizer.type' => 'string|nullable',
+        ];
+    }
 
     public function openDeleteTagModal($tagId)
     {
@@ -110,7 +123,7 @@ class Manage extends Component
 
         $this->initTag = [
             'name' => $this->selectedTag->name,
-            'example' => $this->selectedTag->locale->example,
+            'comment' => $this->selectedTag->locale->comment,
             'category' => $categoryPath];
         $this->editTag = $this->initTag;
 
@@ -126,8 +139,8 @@ class Manage extends Component
                 $this->editTagChanged = true;
             }
         }
-        if ($value === 'example') {
-            if ($prop !== $this->initTag['example']) {
+        if ($value === 'comment') {
+            if ($prop !== $this->initTag['comment']) {
                 $this->editTagChanged = true;
             }
         }
@@ -170,7 +183,7 @@ class Manage extends Component
                 $description = __('Oops, could not delete the') . ' ' . __('tag') . '!' . $e->getMessage()
             );
         }
-        $this->resetPage(); 
+        $this->resetPage();
         $this->modalDeleteTag = false;
     }
 
@@ -192,7 +205,7 @@ class Manage extends Component
 
                     $locale = $tag->locale()->first();
                     if ($locale) {
-                        $locale->example = $this->editTag['example'];
+                        $locale->comment = $this->editTag['comment'];
                         $locale->save();
                     }
 
@@ -253,7 +266,7 @@ class Manage extends Component
     {
         if (!$this->showModal) {
             $this->searchTags();
-            $this->resetPage(); 
+            $this->resetPage();
         }
     }
 
@@ -266,7 +279,7 @@ class Manage extends Component
 
     public function render()
     {
-                // Base query
+        // Base query
         $tagsQuery = Tag::orderBy('updated_at', 'desc');
 
         // Apply search
@@ -276,7 +289,7 @@ class Manage extends Component
                     ->orWhere('tag_id', 'like', '%' . $this->search . '%');
             });
         }
-        
+
         // Standard Livewire pagination
         $tagsPaginator = $tagsQuery->paginate($this->perPage);
 

@@ -28,7 +28,6 @@ class Tag extends \Cviebrock\EloquentTaggable\Models\Tag
     protected $table = 'taggable_tags';
     protected $primaryKey = 'tag_id';
     protected $appends = ['locales', 'categories'];
-    // protected $appends = ['categories'];
 
 
 

@@ -42,8 +42,9 @@ class SkillsCardFull extends Component
     public $inputDisabled = true;
     public $translateRadioButton = false;
 
-    public $baseLanguageOk = null;
-    public $sessionLanguageOk = null;
+    public bool $sessionLanguageOk = false;
+    public bool $sessionLanguageIgnored = false;
+    public bool $baseLanguageOk = false;
 
     protected $langDetector = null;
     protected $listeners = ['save', 'cancelCreateTag', 'refreshComponent' => '$refresh'];
@@ -71,39 +72,13 @@ class SkillsCardFull extends Component
                         }
                     },
                     function ($attribute, $value, $fail) {
-                        if ($this->sessionLanguageOk !== true) {
+                        if (!$this->sessionLanguageOk && !$this->sessionLanguageIgnored) {
                             $currentLocale = app()->getLocale();
                             $locale = \Locale::getDisplayName($currentLocale, $currentLocale);
-                            $fail(__('We can not detect that this is in :locale. Check also your example below.', ['locale' => $locale]));
+                            $fail(__('We can not detect that this is in :locale. You can ignore this validation below.', ['locale' => $locale]));
                         }
                     },
                 ],
-            ),
-            'newTag.example' => Rule::when(
-                function ($input) {
-                    // Check if newTag is not an empty array
-                    return count($input['newTag']) > 0;
-                },
-                [
-                    'required',
-                    'string',
-                    'min:10',
-                    'max:100',
-                    function ($attribute, $value, $fail) {
-                        if ($this->sessionLanguageOk !== true) {
-                            $currentLocale = app()->getLocale();
-                            $locale = \Locale::getDisplayName($currentLocale, $currentLocale);
-                            $fail(__('We can not detect that this is in :locale. Try to use more words.', ['locale' => $locale]));
-                        }
-                    },
-                ],
-            ),
-            'newTag.check' => Rule::when(
-                function ($input) {
-                    // Check if newTag is not an empty array
-                    return count($input['newTag']) > 0;
-                },
-                ['required', 'accepted'],
             ),
             'newTagCategory' => Rule::when(
                 function ($input) {
@@ -147,27 +122,6 @@ class SkillsCardFull extends Component
                     },
                 ],
             ),
-            'inputTagTranslation.example' => Rule::when(
-                function ($input) {
-                    // Check if existing tag translation is selected
-                    return $this->translationVisible === true && $this->translateRadioButton == 'input';
-                },
-                [
-                    'required',
-                    'string',
-                    'min:10',
-                    'max:100',
-                    function ($attribute, $value, $fail) {
-                        if ($this->baseLanguageOk !== true) {
-                            $baseLocale = config('timebank-cc.base_language');
-                            $currentLocale = app()->getLocale();
-                            $locale = \Locale::getDisplayName($baseLocale, $currentLocale);
-                            // If baseLanguageOk is not true, fail the validation for this field
-                            $fail(__('We can not detect that this is in :locale , please modify.', ['locale' => $locale]));
-                        }
-                    },
-                ],
-            ),
         ];
     }
 
@@ -175,7 +129,9 @@ class SkillsCardFull extends Component
     {
         $this->getSuggestions();
         $this->getInitialTags();
+        $this->getLanguageDetector();
         $this->dispatch('load');
+
     }
 
     protected function getSuggestions()
@@ -192,7 +148,7 @@ class SkillsCardFull extends Component
         $this->initTagIds = getActiveProfile()->tags()->get()->pluck('tag_id');
 
         $this->initTagsArray = TaggableLocale::whereIn('taggable_tag_id', $this->initTagIds)
-            ->select('taggable_tag_id', 'locale', 'example', 'updated_by_user')
+            ->select('taggable_tag_id', 'locale', 'updated_by_user')
             ->get()
             ->toArray();
 
@@ -205,7 +161,6 @@ class SkillsCardFull extends Component
                 'value' => $item['tag'],
                 'readonly' => $item['locale'] == App::getLocale() ? false : true, // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
                 'locale' => $item['locale'],
-                'example' => $item['example'],
                 'category' => $item['category'],
                 'category_path' => $item['category_path'],
                 'category_color' => $item['category_color'],
@@ -224,6 +179,23 @@ class SkillsCardFull extends Component
         $this->tagsArray = json_encode($tags->toArray());
     }
 
+    public function checkSessionLanguage()
+    {
+        // Ensure the language detector is initialized
+        $this->getLanguageDetector();
+
+        $detectedLanguage = $this->langDetector->detectSimple($this->newTag['name']);
+        if ($detectedLanguage === session('locale')) {
+            $this->sessionLanguageOk = true;
+            // No need to ignore language detection when session locale is detected
+            $this->sessionLanguageIgnored = false;
+        } else {
+            $this->sessionLanguageOk = false;
+        }
+
+        $this->validateOnly('newTag.name');
+    }
+
 
     protected function getLanguageDetector()
     {
@@ -238,27 +210,27 @@ class SkillsCardFull extends Component
     public function updatedNewTagName()
     {
         $this->resetErrorBag('newTag.name');
+
+        // Check if name is the profiles's session's locale
+        $this->checkSessionLanguage();
         $this->newTagsArray = $this->initTagsArray;
         $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
-    }
 
-
-    public function updatedNewTagExample()
-    {
-        $this->resetErrorBag('newTag.example');
-        $this->newTag['example'] = StringHelper::DutchTitleCase($this->newTag['example']);
-
-        $langDetector = $this->getLanguageDetector();
-        $detectedLanguage = $langDetector->detectSimple($this->newTag['name'] . ' ' . $this->newTag['example']);
-        if ($detectedLanguage === session('locale')) {
-            $this->sessionLanguageOk = true;
-        } else {
-            $this->sessionLanguageOk = false;
-        }
 
         if (app()->getLocale() != config('timebank-cc.base_language')) {
             $this->translationVisible = true;
         }
+
+    }
+
+    public function updatedSessionLanguageIgnored()
+    {
+        if (!$this->sessionLanguageIgnored) {
+            $this->checkSessionLanguage();
+        }
+
+        // Revalidate the newTag.name field
+        $this->validateOnly('newTag.name');
     }
 
 
@@ -266,7 +238,7 @@ class SkillsCardFull extends Component
     {
         $this->selectTagTranslation = [];
         // Suggest related tags in base language (English) and possibly based on the category of the new tag
-        $this->translationOptions = $this->relatedTag($this->newTagCategory, config('timebank-cc.base_language'));
+        $this->translationOptions = $this->relatedTag(null, config('timebank-cc.base_language'));
     }
 
 
@@ -274,21 +246,6 @@ class SkillsCardFull extends Component
     {
         $this->resetErrorBag('inputTagTranslation.name');
         $this->inputTagTranslation['name'] = StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
-    }
-
-
-    public function updatedInputTagTranslationExample()
-    {
-        $this->resetErrorBag('inputTagTranslation.example');
-        $langDetector = $this->getLanguageDetector();
-        $this->inputTagTranslation['name'] ?? ($this->inputTagTranslation['name'] = '');
-        $detectedLanguage = $langDetector->detectSimple($this->inputTagTranslation['name'] . ' ' . $this->inputTagTranslation['example']);
-        if ($detectedLanguage === config('timebank-cc.base_language')) {
-            $this->baseLanguageOk = true;
-        } else {
-            $this->baseLanguageOk = false;
-        }
-        $this->inputTagTranslation['example'] = StringHelper::DutchTitleCase($this->inputTagTranslation['example']);
     }
 
 
@@ -309,34 +266,24 @@ class SkillsCardFull extends Component
         });
         // Add a new skill modal if there are new entries
         if (count($newEntries) > 0) {
-            $this->newTag['name'] = app()->getLocale() == 'de' ? $newEntries->flatten()->first() : ucfirst($newEntries->flatten()->first());
-
-            $this->categoryOptions = Category::with([
-                'translations' => function ($query) {
-                    $query->where('locale', app()->getLocale())->select('id', 'category_id', 'name');
-                },
-            ])
-                ->whereHas('translations', function ($query) {
-                    $query->where('locale', app()->getLocale());
-                })
-                ->where('type', Tag::class)
+            $this->newTag['name'] = app()->getLocale() == 'de' ? $newEntries->flatten()->first() : ucfirst($newEntries->flatten()->first());           
+            $this->categoryOptions = Category::where('type', Tag::class)
                 ->get()
-                ->flatMap(function ($category) {
-                    return $category->translations;
-                })
-                ->mapWithKeys(function ($translation) {
-                    return [$translation->category_id => $translation->name];
-                })
-                ->map(function ($name, $index) {
+                ->map(function ($category) {
+                    // Include all attributes, including appended ones
                     return [
-                        'category_id' => $index, // +1 removed!
-                        'name' => ucfirst($name),
+                        'category_id' => $category->id,
+                        'name' => ucfirst($category->translation->name ?? ''), // Use the appended 'translation' attribute
+                        'relatedPathTranslation' => $category->relatedPathTranslation ?? '', // Appended attribute
+                        'relatedColor' => $category->relatedColor ?? '', // Appended attribute
                     ];
+                    //TODO NEXT: Now that we also have related path and color, include this in blade component
                 })
                 ->sortBy('name')
                 ->values();
-
             $this->modalVisible = true;
+            $this->checkSessionLanguage();
+
         } else {
             $newEntries = false;
         }
@@ -411,7 +358,7 @@ class SkillsCardFull extends Component
             $locale = app()->getLocale();
         }
         if ($category) {
-            // A category is selected: suggest related tags (family bloodline) within this category in $locale language
+            // A category is given: suggest related tags (family bloodline) within this category in $locale language
             $related = Category::find($category)->bloodline->pluck('id');
 
             $suggestions = Tag::with(['locale', 'contexts'])
@@ -484,8 +431,6 @@ class SkillsCardFull extends Component
             ->where('name', $name)
             ->first();
 
-        $locale = ['example' => $this->newTag['example']];
-        $tagLocale = $tag->locale()->update($locale);
         $context = [
             'category_id' => $this->newTagCategory,
             'updated_by_user' => auth()->user()->id,
@@ -507,7 +452,6 @@ class SkillsCardFull extends Component
             $nameTranslation = $this->inputTagTranslation['name'];
             $tagTranslation = Tag::where('name', $nameTranslation)->first();
             $locale = [
-                'example' => $this->inputTagTranslation['example'],
                 'locale' => config('timebank-cc.base_language'),
             ];
             $tagTranslationLocale = $tagTranslation->locale()->update($locale);
@@ -529,7 +473,6 @@ class SkillsCardFull extends Component
         // Update newTagsArray with the new tag for save method
         $this->newTagsArray = collect($this->newTagsArray)->transform(function ($item) {
             if (isset($item['value']) && $item['value'] === $this->newTag['name']) {
-                $item['title'] = $this->newTag['example'];
                 $item['locale'] = app()->getLocale();
             }
             return $item;
@@ -643,7 +586,6 @@ class SkillsCardFull extends Component
                     'name' => $item['tag'],
                     'foreign' => $item['locale'] == App::getLocale() ? false : true, // Mark all tags in a foreign language read-only, as users need to switch locale to edit/update/etc foreign tags
                     'locale' => $item['locale'],
-                    'example' => $item['example'],
                     'category' => $item['category'],
                     'category_path' => $item['category_path'],
                     'category_color' => $item['category_color'],

@@ -7,7 +7,6 @@ use App\Models\Tag;
 use App\Models\TaggableLocaleContext;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\WireUiActions;

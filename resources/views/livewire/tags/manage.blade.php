@@ -261,7 +261,7 @@
             @endphp
 
             <x-slot name="content">
-                {{ __('Always make sure that the exact meaning of a tag never changes!') }}
+                {{ __('Always make sure that the meaning of a tag never changes!') }}
                 <div class='my-3 text-xl'>
                     <span
                           class="bg-{{ $categoryColor }}-300 inline-flex items-center rounded-md px-3 py-2 text-sm font-normal">

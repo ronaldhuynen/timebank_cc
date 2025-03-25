@@ -35,12 +35,18 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <div class="mt-6 grid grid-cols-1 gap-6">
-                            <x-input label="{{ __('Activity tag (min. 2 words)') }} *"
-                                placeholder="{{ __('Accurate and unique name for this activity, avoid vague or general keywords') }}"
-                                wire:model.live="newTag.name" />
+                        <div class='my-3 text-xl'>
+                            <span
+                                class="bg-{{ $categoryColor }}-300 inline-flex items-center rounded-md px-3 py-2 text-sm font-normal">
+                                {{ $newTag['name'] }}
+                            </span>
                         </div>
                         <div class="mt-6 grid grid-cols-1 gap-6">
+                            <x-input label="{{ __('Activity tag (min. 2 words)') }}"
+                                placeholder="{{ __('Accurate and unique name for this activity, avoid vague or general keywords') }}"
+                                wire:model.lazy="newTag.name" />
+                        </div>
+                        <div class="mt-3 grid grid-cols-1 gap-6">
                             <x-checkbox :disabled="$sessionLanguageOk" id="right-label" label="{{ __('Ignore language detection') }}"
                                         wire:model.live="sessionLanguageIgnored" />
                         </div>
@@ -85,20 +91,23 @@
                                              label="{{ __('Or create a new Activity tag in ' . config('timebank-cc.base_language_name')) }}"
                                              value="input" wire:model.live="translateRadioButton" />
                                     <div id="input-translation">
-                                        <div class="my-6 grid grid-cols-1 gap-6 pl-6">
+                                        <div class="mt-6 grid grid-cols-1 gap-6 pl-6">
 
                                             <x-input label="{{ __('Activity tag in') . ' ' . config('timebank-cc.base_language_name') . ' ' . __('(min. 2 words)') }}"
                                                      placeholder="{{ !empty($newTag['name'])
                                                          ? '\'' . $newTag['name'] . '\'' . ' ' . __('in') . ' ' . config('timebank-cc.base_language_name')
                                                          : __('Activity tag name in') . ' ' . config('timebank-cc.base_language_name') }}"
                                                      wire:key="nameInput" wire:model.live="inputTagTranslation.name" :disabled="$translateRadioButton === 'select'" />
-
+                                            <div class=" grid grid-cols-1 gap-6">
+                                                <x-checkbox :disabled="$baseLanguageOk" id="right-label" label="{{ __('Ignore language detection') }}"
+                                                    wire:model.live="baseLanguageIgnored" />
+                                            </div>
                                             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                                                 <x-select :options="$categoryOptions" class="placeholder-gray-300" id="category"
                                                           label="{{ __('Category') }}" option-label="name"
                                                           option-value="category_id"
                                                           placeholder="{{ __('Select a category') }}"
-                                                          wire:model="newTagCategory"
+                                                          wire:model.live="newTagCategory"
                                                           :disabled="$translateRadioButton === 'select'" />
                                             </div>
 
@@ -108,16 +117,16 @@
                                 @endif
                             </div>
                             @if (!$translationVisible)
-                                <div class="mt-2 grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <div class="mt-3 grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <x-select :options="$categoryOptions" class="placeholder-gray-300" id="category"
                                               label="{{ __('Category') }}" option-label="name"
                                               option-value="category_id" placeholder="{{ __('Select a category') }}"
-                                              wire:model="newTagCategory" />
+                                              wire:model.live="newTagCategory" />
                                 </div>
                             @endif
                         @endif
                         <div class="my-6 grid grid-cols-1">
-                            <x-errors />
+                            {{-- <x-errors /> --}}
                             <x-skill-tag-warning />
                         </div>
                     </x-slot>

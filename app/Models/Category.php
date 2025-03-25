@@ -14,7 +14,7 @@ class Category extends Model
     use HasFactory;
     use HasRecursiveRelationships;
 
-    protected $appends = ['translation', 'relatedPathTranslation', 'relatedColor'];
+    protected $appends = ['translation', 'relatedPathTranslation', 'relatedPathExSelfTranslation', 'relatedColor'];
     protected $fillable = ['type', 'country_id', 'division_id', 'city_id', 'district_id'];
 
 
@@ -74,7 +74,22 @@ class Category extends Model
 
     public function getRelatedPathTranslationAttribute()
     {
-        $categoryPathIds = $this->ancestorsAndSelf->sortBy('id')->pluck('id');
+        $categoryPathIds = $this->ancestors->pluck('id');
+        $categoryPath = implode(
+            ' > ',
+            CategoryTranslation::whereIn('category_id', $categoryPathIds)
+                            ->where('locale', App::getLocale())
+                            ->pluck('name')
+                            ->toArray()
+        );
+
+        return $categoryPath;
+    }
+
+    
+    public function getRelatedPathExSelfTranslationAttribute()
+    {
+        $categoryPathIds = $this->ancestors->pluck('id');
         $categoryPath = implode(
             ' > ',
             CategoryTranslation::whereIn('category_id', $categoryPathIds)

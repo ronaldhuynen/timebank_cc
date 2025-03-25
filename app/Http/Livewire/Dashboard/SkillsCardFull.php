@@ -35,6 +35,7 @@ class SkillsCardFull extends Component
     public $newTag = [];
     public $newTagCategory;
     public $categoryOptions = [];
+    public $categoryColor = 'gray';
     public $translationOptions = [];
 
     public $selectTagTranslation;
@@ -45,6 +46,7 @@ class SkillsCardFull extends Component
     public bool $sessionLanguageOk = false;
     public bool $sessionLanguageIgnored = false;
     public bool $baseLanguageOk = false;
+    public bool $baseLanguageIgnored = false;
 
     protected $langDetector = null;
     protected $listeners = ['save', 'cancelCreateTag', 'refreshComponent' => '$refresh'];
@@ -75,7 +77,7 @@ class SkillsCardFull extends Component
                         if (!$this->sessionLanguageOk && !$this->sessionLanguageIgnored) {
                             $currentLocale = app()->getLocale();
                             $locale = \Locale::getDisplayName($currentLocale, $currentLocale);
-                            $fail(__('We can not detect that this is in :locale. You can ignore this validation below.', ['locale' => $locale]));
+                            $fail(__('We can not detect that this is in :locale, however you can ignore this validation below.', ['locale' => $locale]));
                         }
                     },
                 ],
@@ -112,12 +114,10 @@ class SkillsCardFull extends Component
                         }
                     },
                     function ($attribute, $value, $fail) {
-                        if ($this->baseLanguageOk !== true) {
+                            if (!$this->baseLanguageOk && !$this->baseLanguageIgnored){
                             $baseLocale = config('timebank-cc.base_language');
-                            $currentLocale = app()->getLocale();
-                            $locale = \Locale::getDisplayName($baseLocale, $currentLocale);
-                            // If baseLanguageOk is not true, fail the validation for this field
-                            $fail(__('We can not detect that this is in :locale , please modify.', ['locale' => $locale]));
+                            $locale = \Locale::getDisplayName($baseLocale, $baseLocale);
+                            $fail(__('We can not detect that this is in :locale, however you can ignore this validation below.', ['locale' => $locale]));
                         }
                     },
                 ],
@@ -139,7 +139,7 @@ class SkillsCardFull extends Component
         $suggestions = (new Tag())->localTagArray(app()->getLocale());
 
         $this->suggestions = collect($suggestions)->map(function ($value) {
-            return StringHelper::DutchTitleCase($value);
+            return app()->getLocale() == 'de' ? $value : StringHelper::DutchTitleCase($value);
         });
     }
 
@@ -197,6 +197,23 @@ class SkillsCardFull extends Component
     }
 
 
+    public function checkBaseLanguage()
+    {
+        // Ensure the language detector is initialized
+        $this->getLanguageDetector();
+        $detectedLanguage = $this->langDetector->detectSimple($this->inputTagTranslation['name']);
+
+        if ($detectedLanguage === config('timebank-cc.base_language')) {
+            $this->baseLanguageOk = true;
+            // No need to ignore language detection when base locale is detected
+            $this->baseLanguageIgnored = false;
+        } else {
+            $this->baseLanguageOk = false;
+        }
+        $this->validateOnly('inputTagTranslation.name');
+    }
+
+
     protected function getLanguageDetector()
     {
         if (!$this->langDetector) {
@@ -214,9 +231,7 @@ class SkillsCardFull extends Component
         // Check if name is the profiles's session's locale
         $this->checkSessionLanguage();
         $this->newTagsArray = $this->initTagsArray;
-        $this->newTag['name'] = StringHelper::DutchTitleCase($this->newTag['name']);
-
-
+        $this->newTag['name'] = app()->getLocale() == 'de' ? $this->newTag['name'] : StringHelper::DutchTitleCase($this->newTag['name']);
         if (app()->getLocale() != config('timebank-cc.base_language')) {
             $this->translationVisible = true;
         }
@@ -234,18 +249,30 @@ class SkillsCardFull extends Component
     }
 
 
+    public function updatedBaseLanguageIgnored()
+    {
+        if (!$this->baseLanguageIgnored) {
+            $this->checkBaseLanguage();
+        } else {
+            $this->resetErrorBag('inputTagTranslation.name');
+        }
+    }
+
+
     public function updatedNewTagCategory()
     {
+        $this->categoryColor = collect($this->categoryOptions)
+            ->firstWhere('category_id', $this->newTagCategory)['color'] ?? 'gray';
         $this->selectTagTranslation = [];
-        // Suggest related tags in base language (English) and possibly based on the category of the new tag
-        $this->translationOptions = $this->relatedTag(null, config('timebank-cc.base_language'));
+          // Suggest related tags in base language (English) and possibly based on the category of the new tag
+        $this->translationOptions = $this->relatedTag(config('timebank-cc.base_language')); // TODO: move!
+        $this->resetErrorBag('inputTagTranslationCategory');
     }
 
 
     public function updatedInputTagTranslationName()
     {
-        $this->resetErrorBag('inputTagTranslation.name');
-        $this->inputTagTranslation['name'] = StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
+        $this->inputTagTranslation['name'] = app()->getLocale() == 'de' ? $this->inputTagTranslation['name'] : StringHelper::DutchTitleCase($this->inputTagTranslation['name']);
     }
 
 
@@ -266,18 +293,17 @@ class SkillsCardFull extends Component
         });
         // Add a new skill modal if there are new entries
         if (count($newEntries) > 0) {
-            $this->newTag['name'] = app()->getLocale() == 'de' ? $newEntries->flatten()->first() : ucfirst($newEntries->flatten()->first());           
+            $this->newTag['name'] = app()->getLocale() == 'de' ? $newEntries->flatten()->first() : ucfirst($newEntries->flatten()->first());
             $this->categoryOptions = Category::where('type', Tag::class)
                 ->get()
                 ->map(function ($category) {
-                    // Include all attributes, including appended ones
+                    // Include all attributes, including appended ones'de'
                     return [
                         'category_id' => $category->id,
                         'name' => ucfirst($category->translation->name ?? ''), // Use the appended 'translation' attribute
-                        'relatedPathTranslation' => $category->relatedPathTranslation ?? '', // Appended attribute
-                        'relatedColor' => $category->relatedColor ?? '', // Appended attribute
+                        'description' => $category->relatedPathExSelfTranslation ?? '', // Appended attribute
+                        'color' => $category->relatedColor ?? 'gray',
                     ];
-                    //TODO NEXT: Now that we also have related path and color, include this in blade component
                 })
                 ->sortBy('name')
                 ->values();
@@ -307,6 +333,9 @@ class SkillsCardFull extends Component
             $this->inputDisabled = false;
             $this->dispatch('disableSelect'); // Script inside view skills-form.blade.php
         }
+        $this->resetErrorBag('selectTagTranslation');
+        $this->resetErrorBag('inputTagTranslation.name');
+        $this->resetErrorBag('newTagCategory');
     }
 
 
@@ -315,8 +344,10 @@ class SkillsCardFull extends Component
         $this->translateRadioButton = 'select';
         $this->inputDisabled = true;
         $this->dispatch('disableInput'); // Script inside view skills-form.blade.php
+        if ($this->selectTagTranslation) {
+            $this->categoryColor = Tag::find($this->selectTagTranslation)->categories->first()->relatedColor ?? 'gray';
+        }
     }
-
 
     /**
      * Handles the update of input tag translation.
@@ -329,6 +360,7 @@ class SkillsCardFull extends Component
         $this->translateRadioButton = 'input';
         $this->inputDisabled = false;
         $this->dispatch('disableSelect'); // Script inside view skills-form.blade.php
+        $this->checkBaseLanguage();
     }
 
 
@@ -352,50 +384,38 @@ class SkillsCardFull extends Component
      *
      * @return \Illuminate\Support\Collection A collection of tags containing 'tag_id' and 'name' keys, sorted by name.
      */
-    public function relatedTag($category, $locale = null)
-    {
-        if (!$locale) {
-            $locale = app()->getLocale();
-        }
-        if ($category) {
-            // A category is given: suggest related tags (family bloodline) within this category in $locale language
-            $related = Category::find($category)->bloodline->pluck('id');
-
-            $suggestions = Tag::with(['locale', 'contexts'])
-                ->whereHas('locale', function ($query) use ($locale) {
-                    $query->whereIn('locale', [$locale]);
-                })
-                ->whereHas('contexts', function ($query) use ($related) {
-                    $query->whereIn('category_id', $related);
-                })
-                ->pluck('normalized', 'tag_id')
-                ->map(function ($name, $index) {
-                    return [
-                        'tag_id' => $index,
-                        'name' => StringHelper::DutchTitleCase($name),
-                    ];
-                })
-                ->sortBy('name')
-                ->values();
-        } else {
-            // No category is selected: suggest all tags in $locale language
-            $suggestions = Tag::with(['locale', 'contexts'])
-                ->whereHas('locale', function ($query) use ($locale) {
-                    $query->where('locale', $locale);
-                })
-                ->pluck('normalized', 'tag_id')
-                ->map(function ($name, $index) {
-                    return [
-                        'tag_id' => $index,
-                        'name' => StringHelper::DutchTitleCase($name),
-                    ];
-                })
-                ->sortBy('name')
-                ->values();
-        }
-        return $suggestions;
+public function relatedTag($locale = null)
+{
+    if (!$locale) {
+        $locale = app()->getLocale();
     }
 
+    // Eager-load the relationships needed. Limit to reduce load if you have many tags.
+    $tags = Tag::with(['locale', 'contexts.category'])
+        ->whereHas('locale', function ($query) use ($locale) {
+            $query->where('locale', $locale);
+        })
+        ->get();
+
+    // Build suggestions array from the loaded tags
+    $suggestions = $tags->map(function ($tag) {
+        // The first related category, if any
+        $category = optional($tag->contexts->first())->category;
+
+        // For the description, you can choose:
+        // 1) Use a appended path attribute, e.g. $category?->relatedPathTranslation
+        // 2) Or use the translation name directly, e.g. optional($category?->translation)->name
+        $description = optional(optional($category)->translation)->name ?? '';
+
+        return [
+            'tag_id'      => $tag->tag_id,
+            'name'        => app()->getLocale() == 'de' ? $tag->normalized : StringHelper::DutchTitleCase($tag->normalized),
+            'description' => $description, // for subtext in select box
+        ];
+    })->sortBy('name')->values();
+
+    return $suggestions;
+}
 
     /**
      * Cancels the creation of a new tag by resetting error messages,
@@ -476,7 +496,6 @@ class SkillsCardFull extends Component
                 $item['locale'] = app()->getLocale();
             }
             return $item;
-            // dd($this->newTagsArray);
         });
 
         $this->save();
